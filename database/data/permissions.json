@@ -1,0 +1,33 @@
+[
+	{
+		"group": "Permissions",
+		"level": 0,
+		"labels": [
+			{ "name": "Index Permissions",   "route_name": "permissions.index" },
+			{ "name": "Update Permissions",  "route_name": "permissions.update" },
+			{ "name": "Show Permissions",    "route_name": "permissions.show" },
+			{ "name": "Store Permissions",   "route_name": "permissions.store" },
+			{ "name": "Destroy Permissions", "route_name": "permissions.destroy" },
+			{ "name": "Clean Permissions",   "route_name": "permissions.clean" }
+		]
+	},
+	{
+		"group": "Roles",
+		"level": 1,
+		"labels": [
+			{ "name": "Index Roles",   "route_name": "roles.index" },
+			{ "name": "Update Roles",  "route_name": "roles.update" },
+			{ "name": "Show Roles",    "route_name": "roles.show" },
+			{ "name": "Store Roles",   "route_name": "roles.store" },
+			{ "name": "Destroy Roles", "route_name": "roles.destroy" }
+		]
+	},
+	{
+		"group": "Role Permissions",
+		"level": 1,
+		"labels": [
+			{ "name": "Index Role Permissions", "route_name": "roles.permissions.index" },
+			{ "name": "Store Role Permissions", "route_name": "roles.permissions.store" }
+		]
+	}
+]
