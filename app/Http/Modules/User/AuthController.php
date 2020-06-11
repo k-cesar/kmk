@@ -60,20 +60,30 @@ class AuthController extends Controller
             'email'    => 'required|email',
             'password' => 'required|string',
         ]);
-
+        
         if ($validator->fails()) {
             return $this->errorResponse(422, 'Datos inválidos', $validator->errors());
         }
 
-        if (! $token = auth()->attempt($validator->validated())) {
+        $user = User::query()
+            ->where('email', $validator->validated()['email'])
+            ->first();
+
+        if (!$user || !Hash::check($validator->validated()['password'], $user->password)) {
             return $this->errorResponse(401, 'No Autorizado');
         }
 
-        $user = JWTAuth::user();
+        if ($user->token && JWTAuth::setToken($user->token)->check()) {
+            return $this->errorResponse(409, 'Sesión Activa');
+        }
+
+        $user->token = auth()->attempt($validator->validated());
+        $user->save();
 
         $permissionsByModules = $user->getPermissionsByModules();
+    
+        return $this->respondWithTokenAndPermissionsByModules($user->token, $permissionsByModules);
         
-        return $this->respondWithTokenAndPermissionsByModules($token, $permissionsByModules);
     }
 
     /**
@@ -93,6 +103,10 @@ class AuthController extends Controller
      */
     public function logout()
     {
+        $user = auth()->user();
+        $user->token = null;
+        $user->save();
+
         auth()->logout();
 
         return $this->showMessage('Cierre de Sesión Exitoso');
@@ -105,7 +119,11 @@ class AuthController extends Controller
      */
     public function refresh()
     {
-        return $this->respondWithToken(auth()->refresh());
+        $user = auth()->user();
+        $user->token = auth()->refresh();
+        $user->save();
+
+        return $this->respondWithToken($user->token);
     }
 
     /**
