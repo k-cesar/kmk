@@ -62,5 +62,16 @@
 			{ "name": "Almacenar Empresas",  "route_name": "companies.store" },
 			{ "name": "Eliminar Empresas",   "route_name": "companies.destroy" }
 		]
+	},
+	{
+		"group": "Ubicaciones",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Ubicaciones",     "route_name": "locations.index" },
+			{ "name": "Actualizar Ubicaciones", "route_name": "locations.update" },
+			{ "name": "Mostrar Ubicaciones",    "route_name": "locations.show" },
+			{ "name": "Almacenar Ubicaciones",  "route_name": "locations.store" },
+			{ "name": "Eliminar Ubicaciones",   "route_name": "locations.destroy" }
+		]
 	}
 ]

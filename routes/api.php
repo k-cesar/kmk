@@ -31,6 +31,8 @@ Route::group(['middleware' => ['auth', 'access']], function () {
 
     Route::resource('currencies', 'Currency\CurrencyController')->except('create', 'edit');
 
+    Route::resource('locations', 'Location\LocationController')->except('create', 'edit');
+
 });
 
 /***********************************************************************************************************************

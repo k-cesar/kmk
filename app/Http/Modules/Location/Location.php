@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Http\Modules\Company;
+namespace App\Http\Modules\Location;
 
-use App\Http\Modules\Currency\Currency;
-use App\Http\Modules\Location\Location;
+use App\Http\Modules\Company\Company;
 use App\Traits\SecureDeletes;
 use Illuminate\Database\Eloquent\Model;
 
-class Company extends Model
+class Location extends Model
 {
     use SecureDeletes;
 
@@ -20,12 +19,11 @@ class Company extends Model
      * @var array
      */
     protected $fillable = [
-        'nit',
+        'company_id',
         'name',
-        'comercial_name',
-        'comercial_address',
         'active',
-        'currency_id',
+        'type',
+        'municipalities_id',
     ];
 
     /**
@@ -42,22 +40,12 @@ class Company extends Model
     }
 
     /**
-     * Get the currency that owns the company.
+     * Get the company that owns the location.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function currency()
+    public function company()
     {
-        return $this->belongsTo(Currency::class);
-    }
-
-    /**
-     * Get the locations for the company.
-     * 
-     * @return @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function companies()
-    {
-        return $this->hasMany(Location::class);
+        return $this->belongsTo(Company::class);
     }
 }
