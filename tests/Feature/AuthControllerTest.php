@@ -93,7 +93,7 @@ class AuthControllerTest extends ApiTestCase
 
     $this->getJson('/api/auth/me')
       ->assertOK()
-      ->assertExactJson($user->toArray());
+      ->assertJson($user->toArray());
   }
 
 }

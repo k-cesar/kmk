@@ -18,7 +18,7 @@ class PermissionController extends Controller
      */
     public function index()
     {
-        $permissions = Permission::all();
+        $permissions = Permission::paginate();
 
         return $this->showAll($permissions);
     }
@@ -94,7 +94,7 @@ class PermissionController extends Controller
 
         app()['cache']->forget('spatie.permission.cache');
 
-        $permissions = Permission::all();
+        $permissions = Permission::paginate();
 
         return $this->showAll($permissions);
     }

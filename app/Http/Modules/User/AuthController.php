@@ -30,19 +30,22 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'     => 'required|string|max:255',
-            'email'    => 'required|string|email|unique:users|max:255',
-            'password' => 'required|string|confirmed|min:8',
+            'name'      => 'required|string|max:100',
+            'last_name' => 'required|string|max:100',
+            'username'  => 'required|string|max:50|alpha_dash|unique:users',
+            'email'     => 'required|string|email|max:255|unique:users',
+            'password'  => 'required|string|confirmed|min:8',
         ]);
 
         if ($validator->fails()) {
             return $this->errorResponse(422, 'Datos inválidos', $validator->errors());
         }
 
-        $user = User::create(array_merge(
-            $validator->validated(),
-            ['password' => Hash::make($request->password)]
-        ));
+        $user = User::create(array_merge($validator->validated(), [
+            'active'    => 'Y',
+            'user_type' => 'Tipo1', 
+            'password'  => Hash::make($request->password),
+        ]));
 
         return $this->showOne($user, 201);
     }

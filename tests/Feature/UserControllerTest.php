@@ -1,0 +1,143 @@
+<?php
+
+namespace Tests\Feature;
+
+use Tests\ApiTestCase;
+use App\Http\Modules\User\User;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+
+class UserControllerTest extends ApiTestCase
+{
+  use DatabaseMigrations, RefreshDatabase;
+
+  public function setUp(): void
+  {
+    parent::setUp();
+
+    $this->seed();
+  }
+
+  /**
+   * @test
+   */
+  public function a_guest_cannot_access_to_user_resources()
+  {
+    $this->getJson(route('users.index'))->assertUnauthorized();
+    $this->getJson(route('users.show', rand()))->assertUnauthorized();
+    $this->postJson(route('users.store'))->assertUnauthorized();
+    $this->putJson(route('users.update', rand()))->assertUnauthorized();
+    $this->deleteJson(route('users.destroy', rand()))->assertUnauthorized();
+  }
+
+  /**
+   * @test
+   */
+  public function an_user_without_permission_cannot_access_to_user_resources()
+  {
+    $this->signIn();
+
+    $randomUserId = User::all()->random()->id;
+
+    $this->getJson(route('users.index'))->assertForbidden();
+    $this->getJson(route('users.show', $randomUserId))->assertForbidden();
+    $this->postJson(route('users.store'))->assertForbidden();
+    $this->putJson(route('users.update', $randomUserId))->assertForbidden();
+    $this->deleteJson(route('users.destroy', $randomUserId))->assertForbidden();
+  }
+
+  /**
+   * @test
+   */
+  public function an_user_with_role_with_permission_can_see_all_users()
+  {
+
+    $role = $this->getRoleWithPermissionsTo(['users.index']);
+    $user = $this->signInWithRole($role);
+
+    $response = $this->getJson(route('users.index'))
+        ->assertOk();
+    
+    foreach (User::limit(10)->get() as $user) {
+      $response->assertJsonFragment($user->toArray());
+    }
+  }
+
+  /**
+   * @test
+   */
+  public function an_user_with_role_with_permission_can_see_a_user()
+  {
+    $role = $this->getRoleWithPermissionsTo(['users.show']);
+    $user = $this->signInWithRole($role);
+
+    $newUser = factory(User::class)->create();
+
+    $this->getJson(route('users.show', $newUser->id))
+      ->assertOk()
+      ->assertJson($newUser->toArray());
+  }
+
+  /**
+   * @test
+   */
+  public function an_user_with_role_with_permission_can_store_a_user()
+  {
+    $role = $this->getRoleWithPermissionsTo(['users.store']);
+    $user = $this->signInWithRole($role);
+
+    $attributes = factory(User::class)->raw();
+    $attributes['password_confirmation'] = $attributes['password'];
+
+    $this->postJson(route('users.store'), $attributes)
+      ->assertCreated();
+    
+    unset($attributes['password']);
+    unset($attributes['password_confirmation']);
+    unset($attributes['remember_token']);
+    unset($attributes['email_verified_at']);
+
+    $this->assertDatabaseHas('users', $attributes);
+  }
+
+
+  /**
+   * @test
+   */
+  public function an_user_with_role_with_permission_can_update_a_user()
+  {
+    $role = $this->getRoleWithPermissionsTo(['users.update']);
+    $user = $this->signInWithRole($role);
+
+    $attributes = factory(User::class)->raw();
+    $attributes['update_password'] = false;
+
+    $this->putJson(route('users.update', $user->id), $attributes)
+      ->assertOk();
+
+    unset($attributes['password']);
+    unset($attributes['update_password']);
+    unset($attributes['remember_token']);
+    unset($attributes['email_verified_at']);
+
+    $this->assertDatabaseHas('users', $attributes);
+  }
+
+  /**
+   * @test
+   */
+  public function an_user_with_role_with_permission_can_destroy_a_user()
+  {
+    $role = $this->getRoleWithPermissionsTo(['users.destroy']);
+    $user = $this->signInWithRole($role);
+
+    $newUser = factory(User::class)->create();
+
+    $this->deleteJson(route('users.destroy', $newUser->id))
+      ->assertOk();
+
+    $this->assertDatabaseMissing('users', $newUser->toArray());
+  }
+
+}

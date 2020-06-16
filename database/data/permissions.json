@@ -29,5 +29,16 @@
 			{ "name": "Index Role Permissions", "route_name": "roles.permissions.index" },
 			{ "name": "Store Role Permissions", "route_name": "roles.permissions.store" }
 		]
+	},
+	{
+		"group": "Usuarios",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Usuarios",     "route_name": "users.index" },
+			{ "name": "Actualizar Usuarios", "route_name": "users.update" },
+			{ "name": "Mostrar Usuarios",    "route_name": "users.show" },
+			{ "name": "Almacenar Usuarios",  "route_name": "users.store" },
+			{ "name": "Eliminar Usuarios",   "route_name": "users.destroy" }
+		]
 	}
 ]

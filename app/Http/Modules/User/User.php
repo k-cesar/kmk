@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\User;
 
+use App\Traits\SecureDeletes;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
@@ -11,7 +12,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable, HasRoles;
+    use Notifiable, HasRoles, SecureDeletes;
+
+    const ACTIVE_OPTION_Y = 'Y';
+    const ACTIVE_OPTION_N = 'N';
 
     /**
      * The attributes that are mass assignable.
@@ -19,7 +23,13 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'last_name',
+        'username', 
+        'email', 
+        'active', 
+        'password',
+        'user_type', 
     ];
 
     /**
@@ -28,7 +38,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'token',
     ];
 
     /**
@@ -58,6 +68,19 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    /**
+     * Returns all active options available
+     *
+     * @return array
+     */
+    public  static function getActiveOptions()
+    {
+        return [
+            self::ACTIVE_OPTION_Y,
+            self::ACTIVE_OPTION_N
+        ];
     }
 
     /**

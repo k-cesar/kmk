@@ -3,7 +3,10 @@
 namespace App\Traits;
 
 use Illuminate\Support\Collection;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 trait ApiResponser
 {
@@ -37,14 +40,14 @@ trait ApiResponser
   /**
    * Returns a response with the collection given in json format 
    *
-   * @param \Illuminate\Support\Collection $collection
+   * @param \Illuminate\Pagination\LengthAwarePaginator $paginator
    * @param int $code
    * 
    * @return \Illuminate\Http\JsonResponse
    */
-  protected function showAll(Collection $collection, $code = 200)
+  protected function showAll(LengthAwarePaginator $paginator, $code = 200)
   {
-    return $this->successResponse(['data' => $collection], $code);
+    return $this->successResponse($paginator, $code);
   }
 
   /**
@@ -71,6 +74,29 @@ trait ApiResponser
   protected function showMessage($message, $code = 200)
   {
     return $this->successResponse(['message' => $message], $code);
+  }
+
+  /**
+   * Returns a LengthAwarePaginator created from data given
+   *
+   * @param mixed $items
+   * @return \Illuminate\Pagination\LengthAwarePaginator
+   */
+  protected function paginate($items, $perPage = 15, $page = null, $options = [])
+  {
+    Validator::validate(request()->all(), [
+      "per_page" => "sometimes|integer|min:1|max:100",
+    ]);
+
+    $perPage = request()->per_page ?: $perPage;
+    
+    $items = $items instanceof Collection ? $items : Collection::make($items);
+
+    $page = $page ?: (Paginator::resolveCurrentPage() ?: 1);
+
+    $options['path'] = LengthAwarePaginator::resolveCurrentPath();
+    
+    return new LengthAwarePaginator($items->forPage($page, $perPage), $items->count(), $perPage, $page, $options);
   }
 
 }

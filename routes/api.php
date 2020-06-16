@@ -25,6 +25,9 @@ Route::group(['middleware' => ['auth', 'access']], function () {
 
     Route::resource('roles.permissions', 'Role\RolePermissionController')->only('index', 'store');
     
+    Route::resource('users', 'User\UserController')->except('create', 'edit');
+    
+    
 });
 
 /***********************************************************************************************************************

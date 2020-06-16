@@ -34,7 +34,7 @@ class RolePermissionController extends Controller
     {
         $permissions = $role->getAllPermissions();
 
-        return $this->showAll($permissions);
+        return $this->showAll($this->paginate($permissions));
     }
 
     /**
@@ -67,6 +67,6 @@ class RolePermissionController extends Controller
         
         $permissions = $role->getAllPermissions();
 
-        return $this->showAll($permissions);
+        return $this->showAll($this->paginate($permissions));
     }
 }
