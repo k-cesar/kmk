@@ -29,7 +29,7 @@ class CompanyRequest extends FormRequest
       'comercial_name'    => 'required|string|max:255',
       'comercial_address' => 'required|string|max:255',
       'active'            => 'required|string|in:'.implode(',', Company::getActiveOptions()),
-      'currency_id'       => 'required|integer'
+      'currency_id'       => 'required|exists:currencies,id'
     ];
 
     return $rules;

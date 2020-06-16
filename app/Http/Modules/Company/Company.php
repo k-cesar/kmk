@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\Company;
 
+use App\Http\Modules\Currency\Currency;
 use App\Traits\SecureDeletes;
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,5 +38,15 @@ class Company extends Model
             self::ACTIVE_OPTION_Y,
             self::ACTIVE_OPTION_N
         ];
+    }
+
+    /**
+     * Get the currency that owns the company.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function currency()
+    {
+        return $this->belongsTo(Currency::class);
     }
 }

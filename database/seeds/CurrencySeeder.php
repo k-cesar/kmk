@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Modules\Company\Company;
+use App\Http\Modules\Currency\Currency;
 use Illuminate\Database\Seeder;
 
-class CompanySeeder extends Seeder
+class CurrencySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +12,6 @@ class CompanySeeder extends Seeder
      */
     public function run()
     {
-        factory(Company::class, 2)->create();
+        factory(Currency::class, 2)->create();
     }
 }

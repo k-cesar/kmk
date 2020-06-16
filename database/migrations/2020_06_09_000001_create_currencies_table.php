@@ -25,7 +25,6 @@ class CreateCurrenciesTable extends Migration
             $table->string('symbol', 10)->nullable();
             $table->string('description', 20)->nullable();
             $table->enum('active', ['Y', 'N'])->nullable();
-            $table->unsignedBigInteger('company')->nullable();
             $table->enum('main_currency', ['Y', 'N'])->nullable();
 
             $table->timestamps();

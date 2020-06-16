@@ -13,9 +13,9 @@ class CompanyController extends Controller
    */
   public function index()
   {
-    $companys = Company::paginate();
+    $companies = Company::paginate();
 
-    return $this->showAll($companys);
+    return $this->showAll($companies);
   }
 
   /**

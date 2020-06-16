@@ -42,6 +42,17 @@
 		]
 	},
 	{
+		"group": "Monedas",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Monedas",     "route_name": "currencies.index" },
+			{ "name": "Actualizar Monedas", "route_name": "currencies.update" },
+			{ "name": "Mostrar Monedas",    "route_name": "currencies.show" },
+			{ "name": "Almacenar Monedas",  "route_name": "currencies.store" },
+			{ "name": "Eliminar Monedas",   "route_name": "currencies.destroy" }
+		]
+	},
+	{
 		"group": "Empresas",
 		"level": 1,
 		"labels": [

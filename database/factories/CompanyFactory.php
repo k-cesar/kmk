@@ -5,6 +5,7 @@
 use Illuminate\Support\Arr;
 use Faker\Generator as Faker;
 use App\Http\Modules\Company\Company;
+use App\Http\Modules\Currency\Currency;
 
 $factory->define(Company::class, function (Faker $faker) {
 
@@ -14,6 +15,6 @@ $factory->define(Company::class, function (Faker $faker) {
         'comercial_name'    => $faker->company,
         'comercial_address' => $faker->address,
         'active'            => Arr::random(Company::getActiveOptions()),
-        'currency_id'       => 1,
+        'currency_id'       => factory(Currency::class)->create(),
     ];
 });
