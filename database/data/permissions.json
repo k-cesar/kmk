@@ -40,5 +40,16 @@
 			{ "name": "Almacenar Usuarios",  "route_name": "users.store" },
 			{ "name": "Eliminar Usuarios",   "route_name": "users.destroy" }
 		]
+	},
+	{
+		"group": "Empresas",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Empresas",     "route_name": "companies.index" },
+			{ "name": "Actualizar Empresas", "route_name": "companies.update" },
+			{ "name": "Mostrar Empresas",    "route_name": "companies.show" },
+			{ "name": "Almacenar Empresas",  "route_name": "companies.store" },
+			{ "name": "Eliminar Empresas",   "route_name": "companies.destroy" }
+		]
 	}
 ]

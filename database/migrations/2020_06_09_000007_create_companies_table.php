@@ -31,7 +31,7 @@ class CreateCompaniesTable extends Migration
 
             $table->index(["currency_id"], "{$this->tableName}_currency_id");
 
-            $table->foreign('currency_id')->references('id')->on('currencies');
+            // $table->foreign('currency_id')->references('id')->on('currencies');
         
             $table->timestamps();
             $table->softDeletes();
