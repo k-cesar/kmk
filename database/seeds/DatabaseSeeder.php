@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             RoleSeeder::class,
             CurrencySeeder::class,
+            CountrySeeder::class,
             // CompanySeeder::class,
             UserSeeder::class,
         ]);

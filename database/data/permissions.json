@@ -42,6 +42,17 @@
 		]
 	},
 	{
+		"group": "Países",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Países",     "route_name": "countries.index" },
+			{ "name": "Actualizar Países", "route_name": "countries.update" },
+			{ "name": "Mostrar Países",    "route_name": "countries.show" },
+			{ "name": "Almacenar Países",  "route_name": "countries.store" },
+			{ "name": "Eliminar Países",   "route_name": "countries.destroy" }
+		]
+	},
+	{
 		"group": "Usuarios",
 		"level": 1,
 		"labels": [
