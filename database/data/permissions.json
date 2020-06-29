@@ -31,17 +31,6 @@
 		]
 	},
 	{
-		"group": "Usuarios",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Usuarios",     "route_name": "users.index" },
-			{ "name": "Actualizar Usuarios", "route_name": "users.update" },
-			{ "name": "Mostrar Usuarios",    "route_name": "users.show" },
-			{ "name": "Almacenar Usuarios",  "route_name": "users.store" },
-			{ "name": "Eliminar Usuarios",   "route_name": "users.destroy" }
-		]
-	},
-	{
 		"group": "Monedas",
 		"level": 1,
 		"labels": [
@@ -53,6 +42,17 @@
 		]
 	},
 	{
+		"group": "Usuarios",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Usuarios",     "route_name": "users.index" },
+			{ "name": "Actualizar Usuarios", "route_name": "users.update" },
+			{ "name": "Mostrar Usuarios",    "route_name": "users.show" },
+			{ "name": "Almacenar Usuarios",  "route_name": "users.store" },
+			{ "name": "Eliminar Usuarios",   "route_name": "users.destroy" }
+		]
+	},
+	{
 		"group": "Empresas",
 		"level": 1,
 		"labels": [
@@ -61,17 +61,6 @@
 			{ "name": "Mostrar Empresas",    "route_name": "companies.show" },
 			{ "name": "Almacenar Empresas",  "route_name": "companies.store" },
 			{ "name": "Eliminar Empresas",   "route_name": "companies.destroy" }
-		]
-	},
-	{
-		"group": "Ubicaciones",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Ubicaciones",     "route_name": "locations.index" },
-			{ "name": "Actualizar Ubicaciones", "route_name": "locations.update" },
-			{ "name": "Mostrar Ubicaciones",    "route_name": "locations.show" },
-			{ "name": "Almacenar Ubicaciones",  "route_name": "locations.store" },
-			{ "name": "Eliminar Ubicaciones",   "route_name": "locations.destroy" }
 		]
 	}
 ]

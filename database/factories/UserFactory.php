@@ -2,6 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use App\Http\Modules\Company\Company;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 use App\Http\Modules\User\User;
@@ -21,12 +22,12 @@ use Illuminate\Support\Arr;
 $factory->define(User::class, function (Faker $faker) {
     return [
         'name'              => $faker->name,
-        'last_name'         => $faker->lastName,
         'username'          => Str::slug($faker->unique()->userName),
-        'active'            => Arr::random(User::getActiveOptions()),
         'email'             => $faker->unique()->safeEmail,
-        'email_verified_at' => now(),
-        'user_type'         => $faker->word,
+        'phone'             => $faker->unique()->phoneNumber,
+        // 'email_verified_at' => now(),
+        // 'company_id'        => factory(Company::class),
+        'type'              => 'SELLER',
         'password'          => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',   // password
         'remember_token'    => Str::random(10),
     ];

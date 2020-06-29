@@ -24,7 +24,7 @@ class CreateCurrenciesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name')->unique();
             $table->string('symbol', 2);
-            $table->string('abbr', 16)->unique();
+            $table->string('abbreviation', 16)->unique();
             $table->text('description')->nullable();
             $table->tinyInteger('disabled')->default(0);
             $table->timestamps();
