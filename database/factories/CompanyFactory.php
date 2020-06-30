@@ -2,19 +2,23 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use Illuminate\Support\Arr;
 use Faker\Generator as Faker;
 use App\Http\Modules\Company\Company;
+use App\Http\Modules\Country\Country;
 use App\Http\Modules\Currency\Currency;
 
 $factory->define(Company::class, function (Faker $faker) {
 
     return [
-        'nit'               => $faker->bankAccountNumber,
-        'name'              => $faker->company,
-        'comercial_name'    => $faker->company,
-        'comercial_address' => $faker->address,
-        'active'            => Arr::random(Company::getActiveOptions()),
-        'currency_id'       => factory(Currency::class)->create(),
+        'name'                  => $faker->company,
+        'reason'                => $faker->paragraph,
+        'nit'                   => $faker->unique()->randomNumber(8),
+        'phone'                 => rand(100000,9999999),
+        'country_id'            => factory(Country::class),
+        'currency_id'           => factory(Currency::class)->create(),
+        'allow_add_products'    => rand(0, 1),
+        'allow_add_stores'      => rand(0, 1),
+        'is_electronic_invoice' => rand(0, 1),
+        'uses_fel'              => rand(0, 1),
     ];
 });

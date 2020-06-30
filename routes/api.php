@@ -28,6 +28,8 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     Route::resource('currencies', 'Currency\CurrencyController')->except('create', 'edit');
     
     Route::resource('countries', 'Country\CountryController')->except('create', 'edit');
+    
+    Route::resource('companies', 'Company\CompanyController')->except('create', 'edit');
 
     Route::resource('users', 'User\UserController')->except('create', 'edit');
     

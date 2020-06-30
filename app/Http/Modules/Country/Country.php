@@ -29,4 +29,14 @@ class Country extends Model
         return $this->belongsTo(Currency::class);
     }
 
+    /**
+     * Get the companies for the country.
+     * 
+     * @return @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function companies()
+    {
+        return $this->hasMany(Company::class);
+    }
+
 }

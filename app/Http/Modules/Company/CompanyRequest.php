@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\Company;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CompanyRequest extends FormRequest
@@ -24,13 +25,39 @@ class CompanyRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'nit'               => 'required|string|max:50',
-      'name'              => 'required|string|max:100',
-      'comercial_name'    => 'required|string|max:255',
-      'comercial_address' => 'required|string|max:255',
-      'active'            => 'required|string|in:'.implode(',', Company::getActiveOptions()),
-      'currency_id'       => 'required|exists:currencies,id'
+      'name'                  => 'required|string|max:255',
+      'reason'                => 'required|string|max:1000',
+      'phone'                 => 'required|digits_between:1,50|unique:companies',
+      'currency_id'           => 'required|exists:currencies,id',
+      'country_id'            => 'required|exists:countries,id',
+      'allow_add_products'    => 'required|boolean',
+      'allow_add_stores'      => 'required|boolean',
+      'is_electronic_invoice' => 'required|boolean',
+      'uses_fel'              => 'required|boolean',
+      'nit'                   => [
+        'required', 
+        'digits_between:1,15',
+        Rule::unique('companies', 'nit')
+          ->where(function ($query) {
+            return $query->where('country_id', $this->get('country_id'));
+          }),
+      ],
     ];
+
+    if ($this->isMethod('PUT')) {
+
+      $rules['phone'] = "required|digits_between:1,50|unique:companies,phone,{$this->company->phone},phone";
+
+      $rules['nit'] = [
+        'required', 
+        'digits_between:1,15',
+        Rule::unique('companies', 'nit')
+          ->where(function ($query) {
+            return $query->where('country_id', $this->get('country_id'))
+              ->where('id', '!=', $this->company->id);
+          })
+      ];
+    }
 
     return $rules;
   }
