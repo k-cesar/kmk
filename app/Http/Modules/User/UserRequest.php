@@ -30,9 +30,8 @@ class UserRequest extends FormRequest
       'name'            => 'required|string|max:100',
       'type'            => 'required|in:'.implode(',', User::getOptionsTypes()),
       'email'           => 'sometimes|nullable|string|email|max:255|unique:users',
-      'username'        => 'required|string|max:50|alpha_dash|unique:users',
       'company_id'      => 'required|exists:companies,id',
-      'username'        => 'required|string|max:100|unique:users',
+      'username'        => 'required|string|max:100|alpha_dash|unique:users',
       'password'        => 'required|string|min:8|max:25|confirmed',
       'update_password' => 'sometimes|nullable|boolean',
       'phone'           => [

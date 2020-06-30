@@ -19,11 +19,12 @@ class AuthControllerTest extends ApiTestCase
   public function a_guest_can_register()
   {
     $attributes = factory(User::class)->raw();
+    $attributes['password'] = 'password';
     $attributes['password_confirmation'] = $attributes['password']; 
 
     $this->postJson(route('api.register'), $attributes)
       ->assertCreated()
-      ->assertJson(Arr::only($attributes, 'email'));
+      ->assertJson(Arr::only($attributes, 'username'));
   }
 
   /**
@@ -34,7 +35,7 @@ class AuthControllerTest extends ApiTestCase
     $user = factory(User::class)->create();
 
     $attributes = [
-      'email'    => $user->email,
+      'username' => $user->username,
       'password' => 'password'
     ];
 
