@@ -2,9 +2,10 @@
 
 namespace App\Http\Modules\Company;
 
-use App\Http\Modules\Currency\Currency;
-use App\Http\Modules\Location\Location;
 use App\Traits\SecureDeletes;
+use App\Http\Modules\User\User;
+use App\Http\Modules\Country\Country;
+use App\Http\Modules\Currency\Currency;
 use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
@@ -47,6 +48,16 @@ class Company extends Model
     public function country()
     {
         return $this->belongsTo(Country::class);
+    }
+
+    /**
+     * Get the users for the company.
+     * 
+     * @return @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function users()
+    {
+        return $this->hasMany(User::class);
     }
 
 }

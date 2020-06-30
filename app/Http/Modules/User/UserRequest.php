@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\User;
 
+use Illuminate\Validation\Rule;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Http\FormRequest;
@@ -26,36 +27,42 @@ class UserRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'name'      => 'required|string|max:100',
-      'last_name' => 'required|string|max:100',
-      'username'  => 'required|string|max:50|alpha_dash|unique:users',
-      'email'     => 'required|string|email|max:255|unique:users',
-      'active'    => 'required|string|in:'.implode(',', User::getActiveOptions()),
-      'user_type' => 'required|string|max:20',
-      'password'  => 'required|string|min:8|confirmed',
-      'roles.*'   => "sometimes|in:{$this->getAllowedRoles()}",
+      'name'            => 'required|string|max:100',
+      'type'            => 'required|in:'.implode(',', User::getOptionsTypes()),
+      'email'           => 'sometimes|nullable|string|email|max:255|unique:users',
+      'username'        => 'required|string|max:50|alpha_dash|unique:users',
+      'company_id'      => 'required|exists:companies,id',
+      'username'        => 'required|string|max:100|unique:users',
+      'password'        => 'required|string|min:8|max:25|confirmed',
+      'update_password' => 'sometimes|nullable|boolean',
+      'phone'           => [
+        'required', 
+        'digits_between:1,50',
+        Rule::unique('users', 'phone')
+          ->where(function ($query) {
+            return $query->where('company_id', $this->get('company_id'));
+          }),
+      ],
+
     ];
 
     if ($this->isMethod('PUT')) {
       $rules['username'] = "required|string|max:50|alpha_dash|unique:users,username,{$this->user->username},username";
-      $rules['email']    = "required|string|email|max:255|unique:users,email,{$this->user->email},email";
-      $rules['password'] = 'exclude_unless:update_password,true|required|string|min:8|confirmed';
+      $rules['email']    = "sometimes|nullable|string|email|max:255|unique:users,email,{$this->user->email},email";
+      $rules['password'] = 'exclude_unless:update_password,1|required|string|min:8|max:25|confirmed';
+
+      $rules['phone'] = [
+        'required', 
+        'digits_between:1,50',
+        Rule::unique('users', 'phone')
+          ->where(function ($query) {
+            return $query->where('company_id', $this->get('company_id'))
+            ->where('id', '!=', $this->user->id);
+          }),
+        ];
     }
 
     return $rules;
-  }
-
-  /**
-   * Get the allowed roles name for the authenticaed user
-   *
-   * @return string
-   */
-  protected function getAllowedRoles()
-  {
-    return Role::where('level', '>=', auth()->user()->getMinimunRoleLevel())
-      ->get()
-      ->pluck('name')
-      ->implode(',');
   }
 
   /**

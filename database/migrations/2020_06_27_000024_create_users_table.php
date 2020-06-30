@@ -26,7 +26,7 @@ class CreateUsersTable extends Migration
             $table->enum('type', ['ADMIN_MASTER', 'ADMIN_ENTERPRISE', 'ADMIN_STORES', 'SELLER'])->default('SELLER');
             $table->string('email', 100)->nullable();
             $table->string('phone', 50);
-            // $table->unsignedBigInteger('company_id');
+            $table->unsignedBigInteger('company_id');
             $table->string('username', 100);
             $table->text('password');
             $table->text('token')->nullable();
@@ -34,9 +34,9 @@ class CreateUsersTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            // $table->unique(['company_id', 'phone']);
+            $table->unique(['company_id', 'phone']);
 
-            // $table->foreign('company_id')->references('id')->on('companies');
+            $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 

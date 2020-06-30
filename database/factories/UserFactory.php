@@ -6,7 +6,6 @@ use App\Http\Modules\Company\Company;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 use App\Http\Modules\User\User;
-use Illuminate\Support\Arr;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,10 +23,9 @@ $factory->define(User::class, function (Faker $faker) {
         'name'              => $faker->name,
         'username'          => Str::slug($faker->unique()->userName),
         'email'             => $faker->unique()->safeEmail,
-        'phone'             => $faker->unique()->phoneNumber,
-        // 'email_verified_at' => now(),
-        // 'company_id'        => factory(Company::class),
-        'type'              => 'SELLER',
+        'phone'             => rand(1000000, 9999999),
+        'company_id'        => factory(Company::class),
+        'type'              => $faker->randomElement(User::getOptionsTypes()),
         'password'          => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',   // password
         'remember_token'    => Str::random(10),
     ];

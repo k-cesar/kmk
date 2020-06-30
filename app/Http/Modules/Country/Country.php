@@ -3,6 +3,8 @@
 namespace App\Http\Modules\Country;
 
 use App\Traits\SecureDeletes;
+use App\Http\Modules\Company\Company;
+use App\Http\Modules\Currency\Currency;
 use Illuminate\Database\Eloquent\Model;
 
 class Country extends Model
