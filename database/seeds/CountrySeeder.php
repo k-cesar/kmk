@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Modules\Location\Location;
+use App\Http\Modules\Country\Country;
 use Illuminate\Database\Seeder;
 
-class LocationSeeder extends Seeder
+class CountrySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +12,6 @@ class LocationSeeder extends Seeder
      */
     public function run()
     {
-        factory(Location::class, 2)->create();
+        factory(Country::class, 2)->create();
     }
 }

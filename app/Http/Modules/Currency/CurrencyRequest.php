@@ -24,11 +24,17 @@ class CurrencyRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'symbol'        => 'required|string|max:10',
-      'description'   => 'required|string|max:20',
-      'active'        => 'required|string|in:'.implode(',', Currency::getActiveOptions()),
-      'main_currency' => 'required|string|in:'.implode(',', Currency::getMainCurrencyOptions()),
+      'name'         => 'required|string|max:255|unique:currencies',
+      'symbol'       => 'required|string|max:2',
+      'abbreviation' => 'required|string|max:16|unique:currencies',
+      'description'  => 'sometimes|string|max:500|nullable',
+      'disabled'     => 'required|boolean',
     ];
+
+    if ($this->isMethod('PUT')) {
+      $rules['name']         = "required|string|max:255|unique:currencies,name,{$this->currency->name},name";
+      $rules['abbreviation'] = "required|string|max:16|unique:currencies,abbreviation,{$this->currency->abbreviation},abbreviation";
+    }
 
     return $rules;
   }

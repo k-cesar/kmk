@@ -2,17 +2,15 @@
 
 namespace App\Http\Modules\Company;
 
-use App\Http\Modules\Currency\Currency;
-use App\Http\Modules\Location\Location;
 use App\Traits\SecureDeletes;
+use App\Http\Modules\User\User;
+use App\Http\Modules\Country\Country;
+use App\Http\Modules\Currency\Currency;
 use Illuminate\Database\Eloquent\Model;
 
 class Company extends Model
 {
     use SecureDeletes;
-
-    const ACTIVE_OPTION_Y = 'Y';
-    const ACTIVE_OPTION_N = 'N';
 
     /**
      * The attributes that are mass assignable.
@@ -20,26 +18,17 @@ class Company extends Model
      * @var array
      */
     protected $fillable = [
-        'nit',
         'name',
-        'comercial_name',
-        'comercial_address',
-        'active',
+        'reason',
+        'nit',
+        'phone',
+        'country_id',
         'currency_id',
+        'allow_add_products',
+        'allow_add_stores',
+        'is_electronic_invoice',
+        'uses_fel',
     ];
-
-    /**
-     * Returns all active options available
-     *
-     * @return array
-     */
-    public  static function getActiveOptions()
-    {
-        return [
-            self::ACTIVE_OPTION_Y,
-            self::ACTIVE_OPTION_N
-        ];
-    }
 
     /**
      * Get the currency that owns the company.
@@ -52,12 +41,23 @@ class Company extends Model
     }
 
     /**
-     * Get the locations for the company.
+     * Get the country that owns the company.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function country()
+    {
+        return $this->belongsTo(Country::class);
+    }
+
+    /**
+     * Get the users for the company.
      * 
      * @return @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function companies()
+    public function users()
     {
-        return $this->hasMany(Location::class);
+        return $this->hasMany(User::class);
     }
+
 }

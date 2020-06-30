@@ -31,17 +31,6 @@
 		]
 	},
 	{
-		"group": "Usuarios",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Usuarios",     "route_name": "users.index" },
-			{ "name": "Actualizar Usuarios", "route_name": "users.update" },
-			{ "name": "Mostrar Usuarios",    "route_name": "users.show" },
-			{ "name": "Almacenar Usuarios",  "route_name": "users.store" },
-			{ "name": "Eliminar Usuarios",   "route_name": "users.destroy" }
-		]
-	},
-	{
 		"group": "Monedas",
 		"level": 1,
 		"labels": [
@@ -50,6 +39,17 @@
 			{ "name": "Mostrar Monedas",    "route_name": "currencies.show" },
 			{ "name": "Almacenar Monedas",  "route_name": "currencies.store" },
 			{ "name": "Eliminar Monedas",   "route_name": "currencies.destroy" }
+		]
+	},
+	{
+		"group": "Países",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Países",     "route_name": "countries.index" },
+			{ "name": "Actualizar Países", "route_name": "countries.update" },
+			{ "name": "Mostrar Países",    "route_name": "countries.show" },
+			{ "name": "Almacenar Países",  "route_name": "countries.store" },
+			{ "name": "Eliminar Países",   "route_name": "countries.destroy" }
 		]
 	},
 	{
@@ -64,14 +64,14 @@
 		]
 	},
 	{
-		"group": "Ubicaciones",
+		"group": "Usuarios",
 		"level": 1,
 		"labels": [
-			{ "name": "Listar Ubicaciones",     "route_name": "locations.index" },
-			{ "name": "Actualizar Ubicaciones", "route_name": "locations.update" },
-			{ "name": "Mostrar Ubicaciones",    "route_name": "locations.show" },
-			{ "name": "Almacenar Ubicaciones",  "route_name": "locations.store" },
-			{ "name": "Eliminar Ubicaciones",   "route_name": "locations.destroy" }
+			{ "name": "Listar Usuarios",     "route_name": "users.index" },
+			{ "name": "Actualizar Usuarios", "route_name": "users.update" },
+			{ "name": "Mostrar Usuarios",    "route_name": "users.show" },
+			{ "name": "Almacenar Usuarios",  "route_name": "users.store" },
+			{ "name": "Eliminar Usuarios",   "route_name": "users.destroy" }
 		]
 	}
 ]

@@ -3,6 +3,7 @@
 namespace App\Http\Modules\User;
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -30,11 +31,21 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'      => 'required|string|max:100',
-            'last_name' => 'required|string|max:100',
-            'username'  => 'required|string|max:50|alpha_dash|unique:users',
-            'email'     => 'required|string|email|max:255|unique:users',
-            'password'  => 'required|string|confirmed|min:8',
+            'name'            => 'required|string|max:100',
+            'type'            => 'required|in:'.implode(',', User::getOptionsTypes()),
+            'email'           => 'sometimes|nullable|string|email|max:255|unique:users',
+            'username'        => 'required|string|max:100|alpha_dash|unique:users',
+            'company_id'      => 'required|exists:companies,id',
+            'password'        => 'required|string|min:8|max:25|confirmed',
+            'update_password' => 'sometimes|nullable|boolean',
+            'phone'           => [
+              'required', 
+              'digits_between:1,50',
+              Rule::unique('users', 'phone')
+                ->where(function ($query) use ($request) {
+                  return $query->where('company_id', $request->get('company_id'));
+                }),
+            ],
         ]);
 
         if ($validator->fails()) {
@@ -42,8 +53,6 @@ class AuthController extends Controller
         }
 
         $user = User::create(array_merge($validator->validated(), [
-            'active'    => 'Y',
-            'user_type' => 'Tipo1', 
             'password'  => Hash::make($request->password),
         ]));
 
@@ -60,7 +69,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email'    => 'required|email',
+            'username' => 'required|string',
             'password' => 'required|string',
         ]);
         
@@ -69,7 +78,7 @@ class AuthController extends Controller
         }
 
         $user = User::query()
-            ->where('email', $validator->validated()['email'])
+            ->where('username', $validator->validated()['username'])
             ->first();
 
         if (!$user || !Hash::check($validator->validated()['password'], $user->password)) {

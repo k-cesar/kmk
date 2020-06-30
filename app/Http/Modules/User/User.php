@@ -4,6 +4,7 @@ namespace App\Http\Modules\User;
 
 use App\Traits\SecureDeletes;
 use Spatie\Permission\Models\Role;
+use App\Http\Modules\Company\Company;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
@@ -14,8 +15,10 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable, HasRoles, SecureDeletes;
 
-    const ACTIVE_OPTION_Y = 'Y';
-    const ACTIVE_OPTION_N = 'N';
+    const OPTION_TYPE_ADMIN_MASTER     = 'ADMIN_MASTER';
+    const OPTION_TYPE_ADMIN_ENTERPRISE = 'ADMIN_ENTERPRISE';
+    const OPTION_TYPE_ADMIN_STORES     = 'ADMIN_STORES';
+    const OPTION_TYPE_SELLER           = 'SELLER';
 
     /**
      * The attributes that are mass assignable.
@@ -24,12 +27,12 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $fillable = [
         'name',
-        'last_name',
-        'username', 
-        'email', 
-        'active', 
+        'type',
+        'email',
+        'phone',
+        'company_id',
+        'username',
         'password',
-        'user_type', 
     ];
 
     /**
@@ -39,15 +42,6 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $hidden = [
         'password', 'remember_token', 'token',
-    ];
-
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
     ];
 
     /**
@@ -71,16 +65,28 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * Returns all active options available
+     * Returns all types options availables
      *
      * @return array
      */
-    public  static function getActiveOptions()
+    public static function getOptionsTypes()
     {
         return [
-            self::ACTIVE_OPTION_Y,
-            self::ACTIVE_OPTION_N
+            self::OPTION_TYPE_ADMIN_MASTER,
+            self::OPTION_TYPE_ADMIN_ENTERPRISE,
+            self::OPTION_TYPE_ADMIN_STORES,
+            self::OPTION_TYPE_SELLER,
         ];
+    }
+
+    /**
+     * Get the company that owns the user.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
     }
 
     /**

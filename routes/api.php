@@ -25,13 +25,13 @@ Route::group(['middleware' => ['auth', 'access']], function () {
 
     Route::resource('roles.permissions', 'Role\RolePermissionController')->only('index', 'store');
     
-    Route::resource('users', 'User\UserController')->except('create', 'edit');
+    Route::resource('currencies', 'Currency\CurrencyController')->except('create', 'edit');
+    
+    Route::resource('countries', 'Country\CountryController')->except('create', 'edit');
     
     Route::resource('companies', 'Company\CompanyController')->except('create', 'edit');
 
-    Route::resource('currencies', 'Currency\CurrencyController')->except('create', 'edit');
-
-    Route::resource('locations', 'Location\LocationController')->except('create', 'edit');
+    Route::resource('users', 'User\UserController')->except('create', 'edit');
 
 });
 

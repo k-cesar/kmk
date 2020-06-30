@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Modules\Currency;
+namespace App\Http\Modules\Country;
 
-use App\Http\Modules\Company\Company;
-use App\Http\Modules\Country\Country;
 use App\Traits\SecureDeletes;
+use App\Http\Modules\Company\Company;
+use App\Http\Modules\Currency\Currency;
 use Illuminate\Database\Eloquent\Model;
 
-class Currency extends Model
+class Country extends Model
 {
     use SecureDeletes;
 
@@ -18,24 +18,21 @@ class Currency extends Model
      */
     protected $fillable = [
         'name',
-        'symbol',
-        'abbreviation',
-        'description',
-        'disabled',
+        'currency_id',
     ];
 
     /**
-     * Get the countries for the currency.
+     * Get the currency that owns the country.
      * 
-     * @return @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function countries()
+    public function currency()
     {
-        return $this->hasMany(Country::class);
+        return $this->belongsTo(Currency::class);
     }
 
     /**
-     * Get the companies for the currency.
+     * Get the companies for the country.
      * 
      * @return @return \Illuminate\Database\Eloquent\Relations\HasMany
      */

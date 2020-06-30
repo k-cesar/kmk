@@ -16,7 +16,7 @@ class UserControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed();
+    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder']);
   }
 
   /**
@@ -84,10 +84,13 @@ class UserControllerTest extends ApiTestCase
    */
   public function an_user_with_role_with_permission_can_store_a_user()
   {
+    $this->withExceptionHandling();
+
     $role = $this->getRoleWithPermissionsTo(['users.store']);
     $user = $this->signInWithRole($role);
 
     $attributes = factory(User::class)->raw();
+    $attributes['password'] = 'password';
     $attributes['password_confirmation'] = $attributes['password'];
 
     $this->postJson(route('users.store'), $attributes)
@@ -96,7 +99,6 @@ class UserControllerTest extends ApiTestCase
     unset($attributes['password']);
     unset($attributes['password_confirmation']);
     unset($attributes['remember_token']);
-    unset($attributes['email_verified_at']);
 
     $this->assertDatabaseHas('users', $attributes);
   }
@@ -119,7 +121,6 @@ class UserControllerTest extends ApiTestCase
     unset($attributes['password']);
     unset($attributes['update_password']);
     unset($attributes['remember_token']);
-    unset($attributes['email_verified_at']);
 
     $this->assertDatabaseHas('users', $attributes);
   }
