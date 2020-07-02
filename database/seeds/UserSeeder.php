@@ -27,6 +27,12 @@ class UserSeeder extends Seeder
       'email'     => 'stalin@kemok.io',
     ])->assignRole(config('app.role_super_admin_name'));
 
+    factory(User::class)->create([
+      'name'      => 'Nelson Torres',
+      'username'  => 'nelson',
+      'email'     => 'ntorres144@gmail.com',
+    ])->assignRole(config('app.role_super_admin_name'));
+
     factory(User::class, 2);
   }
 }

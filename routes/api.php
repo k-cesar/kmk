@@ -33,6 +33,8 @@ Route::group(['middleware' => ['auth', 'access']], function () {
 
     Route::resource('users', 'User\UserController')->except('create', 'edit');
 
+    Route::resource('productDepartments', 'ProductDepartment\ProductDepartmentController')->except('create', 'edit');
+
 });
 
 /***********************************************************************************************************************

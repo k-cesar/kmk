@@ -73,5 +73,27 @@
 			{ "name": "Almacenar Usuarios",  "route_name": "users.store" },
 			{ "name": "Eliminar Usuarios",   "route_name": "users.destroy" }
 		]
+	},
+	{
+		"group": "Productos",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Categorías",     "route_name": "productCategories.index" },
+			{ "name": "Actualizar Categorías", "route_name": "productCategories.update" },
+			{ "name": "Mostrar Categorías",    "route_name": "productCategories.show" },
+			{ "name": "Almacenar Categorías",  "route_name": "productCategories.store" },
+			{ "name": "Eliminar Categorías",   "route_name": "productCategories.destroy" },
+			{ "name": "Listar Departamentos de Productos",     "route_name": "productDepartments.index" },
+			{ "name": "Actualizar Departamentos de Productos", "route_name": "productDepartments.update" },
+			{ "name": "Mostrar Departamentos de Productos",    "route_name": "productDepartments.show" },
+			{ "name": "Almacenar Departamentos de Productos",  "route_name": "productDepartments.store" },
+			{ "name": "Eliminar Departamentos de Productos",   "route_name": "productDepartments.destroy" },
+			{ "name": "Listar Productos",     "route_name": "product.index" },
+			{ "name": "Actualizar Productos", "route_name": "product.update" },
+			{ "name": "Mostrar Productos",    "route_name": "product.show" },
+			{ "name": "Almacenar Productos",  "route_name": "product.store" },
+			{ "name": "Eliminar Productos",   "route_name": "product.destroy" }
+		]
 	}
+
 ]
