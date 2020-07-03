@@ -22,41 +22,41 @@ class ProductDepartmentControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function a_guest_cannot_access_to_productDepartment_resources()
+  public function a_guest_cannot_access_to_product_department_resources()
   {
-    $this->getJson(route('productDepartments.index'))->assertUnauthorized();
-    $this->getJson(route('productDepartments.show', rand()))->assertUnauthorized();
-    $this->postJson(route('productDepartments.store'))->assertUnauthorized();
-    $this->putJson(route('productDepartments.update', rand()))->assertUnauthorized();
-    $this->deleteJson(route('productDepartments.destroy', rand()))->assertUnauthorized();
+    $this->getJson(route('product-departments.index'))->assertUnauthorized();
+    $this->getJson(route('product-departments.show', rand()))->assertUnauthorized();
+    $this->postJson(route('product-departments.store'))->assertUnauthorized();
+    $this->putJson(route('product-departments.update', rand()))->assertUnauthorized();
+    $this->deleteJson(route('product-departments.destroy', rand()))->assertUnauthorized();
   }
 
   /**
    * @test
    */
-  public function an_user_without_permission_cannot_access_to_productDepartment_resources()
+  public function an_user_without_permission_cannot_access_to_product_department_resources()
   {
     $this->signIn();
     
     $randomProductDepartmentId = ProductDepartment::all()->random()->id;
 
-    $this->getJson(route('productDepartments.index'))->assertForbidden();
-    $this->getJson(route('productDepartments.show', $randomProductDepartmentId))->assertForbidden();
-    $this->postJson(route('productDepartments.store'))->assertForbidden();
-    $this->putJson(route('productDepartments.update', $randomProductDepartmentId))->assertForbidden();
-    $this->deleteJson(route('productDepartments.destroy', $randomProductDepartmentId))->assertForbidden();
+    $this->getJson(route('product-departments.index'))->assertForbidden();
+    $this->getJson(route('product-departments.show', $randomProductDepartmentId))->assertForbidden();
+    $this->postJson(route('product-departments.store'))->assertForbidden();
+    $this->putJson(route('product-departments.update', $randomProductDepartmentId))->assertForbidden();
+    $this->deleteJson(route('product-departments.destroy', $randomProductDepartmentId))->assertForbidden();
   }
 
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_productDepartments()
+  public function an_user_with_role_with_permission_can_see_all_product_departments()
   {
 
-    $role = $this->getRoleWithPermissionsTo(['productDepartments.index']);
+    $role = $this->getRoleWithPermissionsTo(['product-departments.index']);
     $user = $this->signInWithRole($role);
 
-    $response = $this->getJson(route('productDepartments.index'))
+    $response = $this->getJson(route('product-departments.index'))
       ->assertOk();
     
     foreach (ProductDepartment::limit(10)->get() as $productDepartment) {
@@ -67,14 +67,14 @@ class ProductDepartmentControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_productDepartment()
+  public function an_user_with_role_with_permission_can_see_a_product_department()
   {
-    $role = $this->getRoleWithPermissionsTo(['productDepartments.show']);
+    $role = $this->getRoleWithPermissionsTo(['product-departments.show']);
     $user = $this->signInWithRole($role);
 
     $productDepartment = factory(ProductDepartment::class)->create();
 
-    $this->getJson(route('productDepartments.show', $productDepartment->id))
+    $this->getJson(route('product-departments.show', $productDepartment->id))
       ->assertOk()
       ->assertJson($productDepartment->toArray());
   }
@@ -82,14 +82,14 @@ class ProductDepartmentControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_productDepartment()
+  public function an_user_with_role_with_permission_can_store_a_product_department()
   {
-    $role = $this->getRoleWithPermissionsTo(['productDepartments.store']);
+    $role = $this->getRoleWithPermissionsTo(['product-departments.store']);
     $user = $this->signInWithRole($role);
 
     $attributes = factory(ProductDepartment::class)->raw();
 
-    $this->postJson(route('productDepartments.store'), $attributes)
+    $this->postJson(route('product-departments.store'), $attributes)
       ->assertCreated();
     
     $this->assertDatabaseHas('product_departments', $attributes);
@@ -99,34 +99,34 @@ class ProductDepartmentControllerTest extends ApiTestCase
   /**
    * @test
    */
- /* public function an_user_with_role_with_permission_can_update_a_productDepartment()
+  public function an_user_with_role_with_permission_can_update_a_product_department()
   {
     $this->withExceptionHandling();
 
-    $role = $this->getRoleWithPermissionsTo(['productDepartments.update']);
+    $role = $this->getRoleWithPermissionsTo(['product-departments.update']);
     $user = $this->signInWithRole($role);
 
     $productDepartment = factory(ProductDepartment::class)->create();
 
     $attributes = factory(ProductDepartment::class)->raw();
 
-    $this->putJson(route('productDepartments.update', $productDepartment->id), $attributes)
+    $this->putJson(route('product-departments.update', $productDepartment->id), $attributes)
       ->assertOk();
 
     $this->assertDatabaseHas('product_departments', $attributes);
-  }*/
+  }
 
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_productDepartment()
+  public function an_user_with_role_with_permission_can_destroy_a_product_department()
   {
-    $role = $this->getRoleWithPermissionsTo(['productDepartments.destroy']);
+    $role = $this->getRoleWithPermissionsTo(['product-departments.destroy']);
     $user = $this->signInWithRole($role);
 
     $productDepartment = factory(ProductDepartment::class)->create();
 
-    $this->deleteJson(route('productDepartments.destroy', $productDepartment->id))
+    $this->deleteJson(route('product-departments.destroy', $productDepartment->id))
       ->assertOk();
 
     $this->assertDatabaseMissing('product_departments', $productDepartment->toArray());

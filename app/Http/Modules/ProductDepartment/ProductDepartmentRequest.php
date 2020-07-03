@@ -24,11 +24,11 @@ class ProductDepartmentRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'name'         => 'required|string|max:255|unique:currencies'     
+      'name' => 'required|string|max:255|unique:product_departments'     
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['name']         = "required|string|max:255|unique:currencies,name,{$this->currency->name},name";     
+      $rules['name'] = "required|string|max:255|unique:product_departments,name,\"{$this->product_department->name}\",name";
     }
 
     return $rules;
