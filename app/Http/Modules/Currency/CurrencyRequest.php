@@ -32,8 +32,8 @@ class CurrencyRequest extends FormRequest
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['name']         = "required|string|max:255|unique:currencies,name,{$this->currency->name},name";
-      $rules['abbreviation'] = "required|string|max:16|unique:currencies,abbreviation,{$this->currency->abbreviation},abbreviation";
+      $rules['name']         = "required|string|max:255|unique:currencies,name,\"{$this->currency->name}\",name";
+      $rules['abbreviation'] = "required|string|max:16|unique:currencies,abbreviation,\"{$this->currency->abbreviation}\",abbreviation";
     }
 
     return $rules;

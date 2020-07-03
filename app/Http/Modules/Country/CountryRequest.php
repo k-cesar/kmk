@@ -29,7 +29,7 @@ class CountryRequest extends FormRequest
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['name'] = "required|string|max:150|unique:countries,name,{$this->country->name},name";
+      $rules['name'] = "required|string|max:150|unique:countries,name,\"{$this->country->name}\",name";
     }
 
     return $rules;
