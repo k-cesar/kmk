@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             MakerSeeder::class,
             BrandSeeder::class,
+            ProviderSeeder::class,
         ]);
     }
 }

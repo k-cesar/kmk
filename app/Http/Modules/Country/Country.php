@@ -5,6 +5,7 @@ namespace App\Http\Modules\Country;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Company\Company;
 use App\Http\Modules\Currency\Currency;
+use App\Http\Modules\Provider\Provider;
 use Illuminate\Database\Eloquent\Model;
 
 class Country extends Model
@@ -34,11 +35,21 @@ class Country extends Model
     /**
      * Get the companies for the country.
      * 
-     * @return @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function companies()
     {
         return $this->hasMany(Company::class);
+    }
+
+    /**
+     * Get the providers for the country.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function providers()
+    {
+        return $this->hasMany(Provider::class);
     }
 
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Modules\Brand;
 
 use App\Traits\SecureDeletes;
+use App\Http\Modules\Maker\Maker;
 use Illuminate\Database\Eloquent\Model;
 
 class Brand extends Model

@@ -27,7 +27,7 @@ class Currency extends Model
     /**
      * Get the countries for the currency.
      * 
-     * @return @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function countries()
     {
@@ -37,7 +37,7 @@ class Currency extends Model
     /**
      * Get the companies for the currency.
      * 
-     * @return @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function companies()
     {

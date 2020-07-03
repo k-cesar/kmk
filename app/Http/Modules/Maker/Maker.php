@@ -22,7 +22,7 @@ class Maker extends Model
     /**
      * Get the brands for the maker.
      * 
-     * @return @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function brands()
     {
