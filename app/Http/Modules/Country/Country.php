@@ -7,10 +7,11 @@ use App\Http\Modules\Company\Company;
 use App\Http\Modules\Currency\Currency;
 use App\Http\Modules\Provider\Provider;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Country extends Model
 {
-    use SecureDeletes;
+    use SoftDeletes, SecureDeletes;
 
     /**
      * The attributes that are mass assignable.

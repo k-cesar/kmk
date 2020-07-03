@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Modules\Maker;
+namespace App\Http\Modules\PaymentMethod;
 
 use App\Traits\SecureDeletes;
-use App\Http\Modules\Brand\Brand;
+use App\Http\Modules\Company\Company;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Maker extends Model
+class PaymentMethod extends Model
 {
     use SoftDeletes, SecureDeletes;
 
@@ -18,16 +18,17 @@ class Maker extends Model
      */
     protected $fillable = [
         'name',
+        'company_id',
     ];
 
     /**
-     * Get the brands for the maker.
+     * Get the company that owns the brand.
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function brands()
+    public function company()
     {
-        return $this->hasMany(Brand::class);
+        return $this->belongsTo(Company::class);
     }
 
 }

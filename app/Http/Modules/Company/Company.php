@@ -7,10 +7,12 @@ use App\Http\Modules\User\User;
 use App\Http\Modules\Country\Country;
 use App\Http\Modules\Currency\Currency;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Modules\PaymentMethod\PaymentMethod;
 
 class Company extends Model
 {
-    use SecureDeletes;
+    use SoftDeletes, SecureDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -58,6 +60,16 @@ class Company extends Model
     public function users()
     {
         return $this->hasMany(User::class);
+    }
+
+    /**
+     * Get the payment methods for the company.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function paymentMethods()
+    {
+        return $this->hasMany(PaymentMethod::class);
     }
 
 }

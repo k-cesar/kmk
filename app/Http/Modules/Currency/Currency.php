@@ -2,14 +2,15 @@
 
 namespace App\Http\Modules\Currency;
 
+use App\Traits\SecureDeletes;
 use App\Http\Modules\Company\Company;
 use App\Http\Modules\Country\Country;
-use App\Traits\SecureDeletes;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Currency extends Model
 {
-    use SecureDeletes;
+    use SoftDeletes, SecureDeletes;
 
     /**
      * The attributes that are mass assignable.
