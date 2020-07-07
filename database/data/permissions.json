@@ -73,5 +73,16 @@
 			{ "name": "Almacenar Usuarios",  "route_name": "users.store" },
 			{ "name": "Eliminar Usuarios",   "route_name": "users.destroy" }
 		]
+	},
+	{
+		"group": "Fabricantes",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Fabricantes",     "route_name": "makers.index" },
+			{ "name": "Actualizar Fabricantes", "route_name": "makers.update" },
+			{ "name": "Mostrar Fabricantes",    "route_name": "makers.show" },
+			{ "name": "Almacenar Fabricantes",  "route_name": "makers.store" },
+			{ "name": "Eliminar Fabricantes",   "route_name": "makers.destroy" }
+		]
 	}
 ]
