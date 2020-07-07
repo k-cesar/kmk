@@ -95,5 +95,16 @@
 			{ "name": "Almacenar Marcas",  "route_name": "brands.store" },
 			{ "name": "Eliminar Marcas",   "route_name": "brands.destroy" }
 		]
+	},
+	{
+		"group": "Proveedores",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Proveedores",     "route_name": "providers.index" },
+			{ "name": "Actualizar Proveedores", "route_name": "providers.update" },
+			{ "name": "Mostrar Proveedores",    "route_name": "providers.show" },
+			{ "name": "Almacenar Proveedores",  "route_name": "providers.store" },
+			{ "name": "Eliminar Proveedores",   "route_name": "providers.destroy" }
+		]
 	}
 ]

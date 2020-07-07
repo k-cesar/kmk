@@ -36,6 +36,8 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     Route::resource('makers', 'Maker\MakerController')->except('create', 'edit');
 
     Route::resource('brands', 'Brand\BrandController')->except('create', 'edit');
+    
+    Route::resource('providers', 'Provider\ProviderController')->except('create', 'edit');
 
 });
 
