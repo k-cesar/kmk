@@ -8,12 +8,13 @@ use App\Http\Modules\Company\Company;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable, HasRoles, SecureDeletes;
+    use Notifiable, HasRoles, SoftDeletes, SecureDeletes;
 
     const OPTION_TYPE_ADMIN_MASTER     = 'ADMIN_MASTER';
     const OPTION_TYPE_ADMIN_ENTERPRISE = 'ADMIN_ENTERPRISE';

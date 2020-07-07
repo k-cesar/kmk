@@ -106,5 +106,16 @@
 			{ "name": "Almacenar Proveedores",  "route_name": "providers.store" },
 			{ "name": "Eliminar Proveedores",   "route_name": "providers.destroy" }
 		]
+	},
+	{
+		"group": "Métodos de Pago",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Métodos de Pago",     "route_name": "payment-methods.index" },
+			{ "name": "Actualizar Métodos de Pago", "route_name": "payment-methods.update" },
+			{ "name": "Mostrar Métodos de Pago",    "route_name": "payment-methods.show" },
+			{ "name": "Almacenar Métodos de Pago",  "route_name": "payment-methods.store" },
+			{ "name": "Eliminar Métodos de Pago",   "route_name": "payment-methods.destroy" }
+		]
 	}
 ]

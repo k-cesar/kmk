@@ -28,13 +28,13 @@ class CreatePurchasesTable extends Migration
             $table->string('invoice', 100);
             $table->timestamp('date');
             $table->double('total');
-            $table->enum('payment_method', ['CASH', 'CREDIT', 'DEBIT']);
+            $table->unsignedBigInteger('payment_method_id');
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('provider_id')->references('id')->on('providers');
 
-            $table->foreign('store_id')->references('id')->on('stores');
+            $table->foreign('payment_method_id')->references('id')->on('payment_methods');
         });
     }
 

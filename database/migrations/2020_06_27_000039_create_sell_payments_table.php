@@ -23,15 +23,16 @@ class CreateSellPaymentsTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('sell_id');
-            $table->enum('payment_method', ['CASH', 'CREDIT', 'DEBIT']);
             $table->double('amount');
             $table->string('card_four_digits', 4);
             $table->string('authorization', 100);
             $table->enum('status', ['VERIFIED', 'UNVERIFIED']);
+            $table->unsignedBigInteger('payment_method_id');
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('sell_id')->references('id')->on('sells');
+            $table->foreign('payment_method_id')->references('id')->on('payment_methods');
         });
     }
 
