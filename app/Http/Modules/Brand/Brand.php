@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Modules\Maker;
+namespace App\Http\Modules\Brand;
 
-use App\Http\Modules\Brand\Brand;
 use App\Traits\SecureDeletes;
 use Illuminate\Database\Eloquent\Model;
 
-class Maker extends Model
+class Brand extends Model
 {
     use SecureDeletes;
 
@@ -17,16 +16,17 @@ class Maker extends Model
      */
     protected $fillable = [
         'name',
+        'maker_id',
     ];
 
     /**
-     * Get the brands for the maker.
+     * Get the maker that owns the brand.
      * 
-     * @return @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function brands()
+    public function maker()
     {
-        return $this->hasMany(Brand::class);
+        return $this->belongsTo(Maker::class);
     }
 
 }

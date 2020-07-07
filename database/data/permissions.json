@@ -84,5 +84,16 @@
 			{ "name": "Almacenar Fabricantes",  "route_name": "makers.store" },
 			{ "name": "Eliminar Fabricantes",   "route_name": "makers.destroy" }
 		]
+	},
+	{
+		"group": "Marcas",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Marcas",     "route_name": "brands.index" },
+			{ "name": "Actualizar Marcas", "route_name": "brands.update" },
+			{ "name": "Mostrar Marcas",    "route_name": "brands.show" },
+			{ "name": "Almacenar Marcas",  "route_name": "brands.store" },
+			{ "name": "Eliminar Marcas",   "route_name": "brands.destroy" }
+		]
 	}
 ]
