@@ -26,7 +26,7 @@ class UomRequest extends FormRequest
     $rules = [
       'name'         => 'required|string|max:255|unique:uoms',
       'abbreviation' => 'required|string|max:16|unique:uoms',
-      'description'  => 'sometimes|nullable|string|max:500|unique:uoms',
+      'description'  => 'sometimes|nullable|string|max:500',
     ];
 
     if ($this->isMethod('PUT')) {
