@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             BrandSeeder::class,
             ProviderSeeder::class,
             PaymentMethodSeeder::class,
+            UomSeeder::class,
         ]);
     }
 }
