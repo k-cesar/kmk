@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             ProviderSeeder::class,
             PaymentMethodSeeder::class,
             UomSeeder::class,
+            SocioeconomicLevelSeeder::class,
         ]);
     }
 }

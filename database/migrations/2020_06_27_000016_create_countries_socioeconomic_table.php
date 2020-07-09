@@ -30,7 +30,7 @@ class CreateCountriesSocioeconomicTable extends Migration
 
             $table->foreign('country_id')->references('id')->on('countries');
 
-            $table->foreign('socioeconomic_id')->references('id')->on('socioeconomic_level');
+            $table->foreign('socioeconomic_id')->references('id')->on('socioeconomic_levels');
         });
     }
 

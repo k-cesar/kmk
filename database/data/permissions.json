@@ -128,5 +128,16 @@
 			{ "name": "Almacenar Unidades de Medida",  "route_name": "uoms.store" },
 			{ "name": "Eliminar Unidades de Medida",   "route_name": "uoms.destroy" }
 		]
+	},
+	{
+		"group": "Niveles Socioeconómicos",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Niveles Socioeconómicos",     "route_name": "socioeconomic-levels.index" },
+			{ "name": "Actualizar Niveles Socioeconómicos", "route_name": "socioeconomic-levels.update" },
+			{ "name": "Mostrar Niveles Socioeconómicos",    "route_name": "socioeconomic-levels.show" },
+			{ "name": "Almacenar Niveles Socioeconómicos",  "route_name": "socioeconomic-levels.store" },
+			{ "name": "Eliminar Niveles Socioeconómicos",   "route_name": "socioeconomic-levels.destroy" }
+		]
 	}
 ]

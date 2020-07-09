@@ -52,7 +52,7 @@ class CreateStoresTable extends Migration
 
             $table->foreign('store_format_id')->references('id')->on('store_formats');
 
-            $table->foreign('socioeconomic_level_id')->references('id')->on('socioeconomic_level');
+            $table->foreign('socioeconomic_level_id')->references('id')->on('socioeconomic_levels');
 
             $table->foreign('state_id')->references('id')->on('states');
 
