@@ -5,10 +5,11 @@ namespace App\Http\Modules\Brand;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Maker\Maker;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Brand extends Model
 {
-    use SecureDeletes;
+    use SoftDeletes, SecureDeletes;
 
     /**
      * The attributes that are mass assignable.

@@ -117,5 +117,16 @@
 			{ "name": "Almacenar Métodos de Pago",  "route_name": "payment-methods.store" },
 			{ "name": "Eliminar Métodos de Pago",   "route_name": "payment-methods.destroy" }
 		]
+	},
+	{
+		"group": "Unidades de Medida",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Unidades de Medida",     "route_name": "uoms.index" },
+			{ "name": "Actualizar Unidades de Medida", "route_name": "uoms.update" },
+			{ "name": "Mostrar Unidades de Medida",    "route_name": "uoms.show" },
+			{ "name": "Almacenar Unidades de Medida",  "route_name": "uoms.store" },
+			{ "name": "Eliminar Unidades de Medida",   "route_name": "uoms.destroy" }
+		]
 	}
 ]

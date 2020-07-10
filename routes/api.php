@@ -41,6 +41,8 @@ Route::group(['middleware' => ['auth', 'access']], function () {
 
     Route::resource('payment-methods', 'PaymentMethod\PaymentMethodController')->except('create', 'edit');
 
+    Route::resource('uoms', 'Uom\UomController')->except('create', 'edit');
+
 });
 
 /***********************************************************************************************************************
