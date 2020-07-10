@@ -4,17 +4,17 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSocioeconomicLevelTable extends Migration
+class CreateSocioeconomicLevelsTable extends Migration
 {
     /**
      * Schema table name to migrate
      * @var string
      */
-    public $tableName = 'socioeconomic_level';
+    public $tableName = 'socioeconomic_levels';
 
     /**
      * Run the migrations.
-     * @table socioeconomic_level
+     * @table socioeconomic_levels
      *
      * @return void
      */
