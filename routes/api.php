@@ -44,6 +44,8 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     Route::resource('uoms', 'Uom\UomController')->except('create', 'edit');
 
     Route::resource('socioeconomic-levels', 'SocioeconomicLevel\SocioeconomicLevelController')->except('create', 'edit');
+    
+    Route::resource('location-types', 'LocationType\LocationTypeController')->except('create', 'edit');
 
 });
 

@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             PaymentMethodSeeder::class,
             UomSeeder::class,
             SocioeconomicLevelSeeder::class,
+            LocationTypeSeeder::class,
         ]);
     }
 }
