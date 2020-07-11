@@ -25,6 +25,7 @@ class DatabaseSeeder extends Seeder
             UomSeeder::class,
             SocioeconomicLevelSeeder::class,
             LocationTypeSeeder::class,
+            StoreTypeSeeder::class,
         ]);
     }
 }
