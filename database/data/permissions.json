@@ -139,5 +139,16 @@
 			{ "name": "Almacenar Niveles Socioeconómicos",  "route_name": "socioeconomic-levels.store" },
 			{ "name": "Eliminar Niveles Socioeconómicos",   "route_name": "socioeconomic-levels.destroy" }
 		]
+	},
+	{
+		"group": "Tipos de Ubicación",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Tipos de Ubicación",     "route_name": "location-types.index" },
+			{ "name": "Actualizar Tipos de Ubicación", "route_name": "location-types.update" },
+			{ "name": "Mostrar Tipos de Ubicación",    "route_name": "location-types.show" },
+			{ "name": "Almacenar Tipos de Ubicación",  "route_name": "location-types.store" },
+			{ "name": "Eliminar Tipos de Ubicación",   "route_name": "location-types.destroy" }
+		]
 	}
 ]
