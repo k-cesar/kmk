@@ -46,6 +46,8 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     Route::resource('socioeconomic-levels', 'SocioeconomicLevel\SocioeconomicLevelController')->except('create', 'edit');
     
     Route::resource('location-types', 'LocationType\LocationTypeController')->except('create', 'edit');
+    
+    Route::resource('store-types', 'StoreType\StoreTypeController')->except('create', 'edit');
 
 });
 
@@ -60,6 +62,10 @@ Route::group(['middleware' => ['auth']], function () {
 /***********************************************************************************************************************
  *                                              Rutas Públicas                                                         *
  ***********************************************************************************************************************/
+
+Route::get('version', function () {
+    return response()->json(['version' => '0.1']);
+});
 
  /***********************************************************************************************************************
  *                                              Auth Routes                                                            *

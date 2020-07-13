@@ -150,5 +150,16 @@
 			{ "name": "Almacenar Tipos de Ubicación",  "route_name": "location-types.store" },
 			{ "name": "Eliminar Tipos de Ubicación",   "route_name": "location-types.destroy" }
 		]
+	},
+	{
+		"group": "Tipos de Tienda",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Tipos de Tienda",     "route_name": "store-types.index" },
+			{ "name": "Actualizar Tipos de Tienda", "route_name": "store-types.update" },
+			{ "name": "Mostrar Tipos de Tienda",    "route_name": "store-types.show" },
+			{ "name": "Almacenar Tipos de Tienda",  "route_name": "store-types.store" },
+			{ "name": "Eliminar Tipos de Tienda",   "route_name": "store-types.destroy" }
+		]
 	}
 ]
