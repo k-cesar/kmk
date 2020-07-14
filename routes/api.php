@@ -48,6 +48,8 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     Route::resource('location-types', 'LocationType\LocationTypeController')->except('create', 'edit');
     
     Route::resource('store-types', 'StoreType\StoreTypeController')->except('create', 'edit');
+    
+    Route::resource('product-departments', 'ProductDepartment\ProductDepartmentController')->except('create', 'edit');
 
 });
 
