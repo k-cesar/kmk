@@ -14,6 +14,7 @@ $factory->define(Company::class, function (Faker $faker) {
         'reason'                => $faker->paragraph,
         'nit'                   => $faker->unique()->randomNumber(8),
         'phone'                 => rand(100000,9999999),
+        'address'               => $faker->address,
         'country_id'            => factory(Country::class),
         'currency_id'           => factory(Currency::class)->create(),
         'allow_add_products'    => rand(0, 1),

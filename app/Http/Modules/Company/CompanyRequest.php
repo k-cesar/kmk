@@ -28,6 +28,7 @@ class CompanyRequest extends FormRequest
       'name'                  => 'required|string|max:255',
       'reason'                => 'required|string|max:1000',
       'phone'                 => 'required|digits_between:1,50|unique:companies',
+      'address'               => 'required|string|max:255',
       'currency_id'           => 'required|exists:currencies,id',
       'country_id'            => 'required|exists:countries,id',
       'allow_add_products'    => 'required|boolean',

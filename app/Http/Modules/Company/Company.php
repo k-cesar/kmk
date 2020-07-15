@@ -24,6 +24,7 @@ class Company extends Model
         'reason',
         'nit',
         'phone',
+        'address',
         'country_id',
         'currency_id',
         'allow_add_products',

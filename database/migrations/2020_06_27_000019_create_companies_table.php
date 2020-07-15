@@ -26,6 +26,7 @@ class CreateCompaniesTable extends Migration
             $table->text('reason');
             $table->string('nit', 15);
             $table->string('phone', 50);
+            $table->string('address');
             $table->unsignedBigInteger('country_id');
             $table->unsignedBigInteger('currency_id');
             $table->tinyInteger('allow_add_products')->default(0);
