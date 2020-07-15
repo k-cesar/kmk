@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             StoreTypeSeeder::class,
             StoreFormatSeeder::class,
             StoreChainSeeder::class,
+            StoreFlagSeeder::class,
         ]);
     }
 }

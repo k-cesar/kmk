@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Modules\StoreChain;
+namespace App\Http\Modules\StoreFlag;
 
-use App\Http\Modules\StoreFlag\StoreFlag;
+use App\Http\Modules\StoreChain\StoreChain;
 use App\Traits\SecureDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class StoreChain extends Model
+class StoreFlag extends Model
 {
     use SoftDeletes, SecureDeletes;
 
@@ -18,16 +18,17 @@ class StoreChain extends Model
      */
     protected $fillable = [
         'name',
+        'store_chain_id',
     ];
 
     /**
-     * Get the storeFlags for the storeChain.
+     * Get the storeChain that owns the storeFlag.
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function storeFlags()
+    public function storeChain()
     {
-        return $this->hasMany(StoreFlag::class);
+        return $this->belongsTo(StoreChain::class);
     }
 
 }

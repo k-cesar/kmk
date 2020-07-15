@@ -183,5 +183,16 @@
 			{ "name": "Almacenar Cadenas de Tienda",  "route_name": "store-chains.store" },
 			{ "name": "Eliminar Cadenas de Tienda",   "route_name": "store-chains.destroy" }
 		]
+	},
+	{
+		"group": "Banderas de Tienda",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Banderas de Tienda",     "route_name": "store-flags.index" },
+			{ "name": "Actualizar Banderas de Tienda", "route_name": "store-flags.update" },
+			{ "name": "Mostrar Banderas de Tienda",    "route_name": "store-flags.show" },
+			{ "name": "Almacenar Banderas de Tienda",  "route_name": "store-flags.store" },
+			{ "name": "Eliminar Banderas de Tienda",   "route_name": "store-flags.destroy" }
+		]
 	}
 ]

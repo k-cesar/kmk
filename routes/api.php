@@ -52,6 +52,8 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     Route::resource('store-formats', 'StoreFormat\StoreFormatController')->except('create', 'edit');
     
     Route::resource('store-chains', 'StoreChain\StoreChainController')->except('create', 'edit');
+    
+    Route::resource('store-flags', 'StoreFlag\StoreFlagController')->except('create', 'edit');
 
 });
 
