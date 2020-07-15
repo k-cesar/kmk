@@ -172,5 +172,16 @@
 			{ "name": "Almacenar Formatos de Tienda",  "route_name": "store-formats.store" },
 			{ "name": "Eliminar Formatos de Tienda",   "route_name": "store-formats.destroy" }
 		]
+	},
+	{
+		"group": "Cadenas de Tienda",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Cadenas de Tienda",     "route_name": "store-chains.index" },
+			{ "name": "Actualizar Cadenas de Tienda", "route_name": "store-chains.update" },
+			{ "name": "Mostrar Cadenas de Tienda",    "route_name": "store-chains.show" },
+			{ "name": "Almacenar Cadenas de Tienda",  "route_name": "store-chains.store" },
+			{ "name": "Eliminar Cadenas de Tienda",   "route_name": "store-chains.destroy" }
+		]
 	}
 ]
