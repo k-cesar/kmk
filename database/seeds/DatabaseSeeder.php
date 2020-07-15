@@ -29,6 +29,7 @@ class DatabaseSeeder extends Seeder
             StoreFormatSeeder::class,
             StoreChainSeeder::class,
             StoreFlagSeeder::class,
+            RegionSeeder::class,
         ]);
     }
 }
