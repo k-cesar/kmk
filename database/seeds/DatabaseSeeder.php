@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             LocationTypeSeeder::class,
             StoreTypeSeeder::class,
             StoreFormatSeeder::class,
+            StoreChainSeeder::class,
         ]);
     }
 }
