@@ -33,6 +33,13 @@ class Company extends Model
     ];
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['country', 'currency'];
+
+    /**
      * Get the currency that owns the company.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
