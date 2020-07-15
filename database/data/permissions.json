@@ -161,5 +161,16 @@
 			{ "name": "Almacenar Tipos de Tienda",  "route_name": "store-types.store" },
 			{ "name": "Eliminar Tipos de Tienda",   "route_name": "store-types.destroy" }
 		]
+	},
+	{
+		"group": "Formatos de Tienda",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Formatos de Tienda",     "route_name": "store-formats.index" },
+			{ "name": "Actualizar Formatos de Tienda", "route_name": "store-formats.update" },
+			{ "name": "Mostrar Formatos de Tienda",    "route_name": "store-formats.show" },
+			{ "name": "Almacenar Formatos de Tienda",  "route_name": "store-formats.store" },
+			{ "name": "Eliminar Formatos de Tienda",   "route_name": "store-formats.destroy" }
+		]
 	}
 ]
