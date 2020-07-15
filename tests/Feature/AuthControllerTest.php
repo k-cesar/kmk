@@ -69,12 +69,12 @@ class AuthControllerTest extends ApiTestCase
   {
     $this->signIn();
 
-    $response = $this->postJson(route('api.refresh'))
+    $response = $this->getJson(route('api.refresh'))
       ->assertOk()
       ->assertJsonStructure(['access_token', 'token_type', 'expires_in'])
       ->decodeResponseJson();
     
-    $this->postJson(route('api.refresh'))
+    $this->getJson(route('api.refresh'))
       ->assertJson(['message' => "The token has been blacklisted"]);
 
     $this->withHeaders(['Authorization' => "Bearer ".$response['access_token']]);
