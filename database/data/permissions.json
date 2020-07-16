@@ -194,5 +194,16 @@
 			{ "name": "Almacenar Banderas de Tienda",  "route_name": "store-flags.store" },
 			{ "name": "Eliminar Banderas de Tienda",   "route_name": "store-flags.destroy" }
 		]
+	},
+	{
+		"group": "Regiones",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Regiones",     "route_name": "regions.index" },
+			{ "name": "Actualizar Regiones", "route_name": "regions.update" },
+			{ "name": "Mostrar Regiones",    "route_name": "regions.show" },
+			{ "name": "Almacenar Regiones",  "route_name": "regions.store" },
+			{ "name": "Eliminar Regiones",   "route_name": "regions.destroy" }
+		]
 	}
 ]
