@@ -205,5 +205,16 @@
 			{ "name": "Almacenar Regiones",  "route_name": "regions.store" },
 			{ "name": "Eliminar Regiones",   "route_name": "regions.destroy" }
 		]
+	},
+	{
+		"group": "Estados",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Estados",     "route_name": "states.index" },
+			{ "name": "Actualizar Estados", "route_name": "states.update" },
+			{ "name": "Mostrar Estados",    "route_name": "states.show" },
+			{ "name": "Almacenar Estados",  "route_name": "states.store" },
+			{ "name": "Eliminar Estados",   "route_name": "states.destroy" }
+		]
 	}
 ]
