@@ -4,6 +4,7 @@ namespace App\Http\Modules\Region;
 
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Country\Country;
+use App\Http\Modules\State\State;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -29,6 +30,16 @@ class Region extends Model
     public function country()
     {
         return $this->belongsTo(Country::class);
+    }
+
+    /**
+     * Get the states for the region.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function states()
+    {
+        return $this->hasMany(State::class);
     }
 
 }
