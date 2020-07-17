@@ -227,5 +227,16 @@
 			{ "name": "Almacenar Municipios",  "route_name": "municipalities.store" },
 			{ "name": "Eliminar Municipios",   "route_name": "municipalities.destroy" }
 		]
+	},
+	{
+		"group": "Zonas",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Zonas",     "route_name": "zones.index" },
+			{ "name": "Actualizar Zonas", "route_name": "zones.update" },
+			{ "name": "Mostrar Zonas",    "route_name": "zones.show" },
+			{ "name": "Almacenar Zonas",  "route_name": "zones.store" },
+			{ "name": "Eliminar Zonas",   "route_name": "zones.destroy" }
+		]
 	}
 ]
