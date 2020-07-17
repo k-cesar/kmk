@@ -216,5 +216,16 @@
 			{ "name": "Almacenar Estados",  "route_name": "states.store" },
 			{ "name": "Eliminar Estados",   "route_name": "states.destroy" }
 		]
+	},
+	{
+		"group": "Municipios",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Municipios",     "route_name": "municipalities.index" },
+			{ "name": "Actualizar Municipios", "route_name": "municipalities.update" },
+			{ "name": "Mostrar Municipios",    "route_name": "municipalities.show" },
+			{ "name": "Almacenar Municipios",  "route_name": "municipalities.store" },
+			{ "name": "Eliminar Municipios",   "route_name": "municipalities.destroy" }
+		]
 	}
 ]

@@ -6,6 +6,7 @@ use App\Traits\SecureDeletes;
 use App\Http\Modules\Company\Company;
 use App\Http\Modules\Currency\Currency;
 use App\Http\Modules\Provider\Provider;
+use App\Http\Modules\Region\Region;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -51,6 +52,16 @@ class Country extends Model
     public function providers()
     {
         return $this->hasMany(Provider::class);
+    }
+
+    /**
+     * Get the regions for the country.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function regions()
+    {
+        return $this->hasMany(Region::class);
     }
 
 }

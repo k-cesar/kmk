@@ -58,6 +58,8 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     Route::resource('regions', 'Region\RegionController')->except('create', 'edit');
     
     Route::resource('states', 'State\StateController')->except('create', 'edit');
+    
+    Route::resource('municipalities', 'Municipality\MunicipalityController')->except('create', 'edit');
 
 });
 

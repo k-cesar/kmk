@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             StoreFlagSeeder::class,
             RegionSeeder::class,
             StateSeeder::class,
+            MunicipalitySeeder::class,
         ]);
     }
 }

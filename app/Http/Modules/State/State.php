@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\State;
 
+use App\Http\Modules\Municipality\Municipality;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Region\Region;
 use Illuminate\Database\Eloquent\Model;
@@ -29,6 +30,16 @@ class State extends Model
     public function region()
     {
         return $this->belongsTo(Region::class);
+    }
+
+    /**
+     * Get the municipalities for the state.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function municipalities()
+    {
+        return $this->hasMany(Municipality::class);
     }
 
 }
