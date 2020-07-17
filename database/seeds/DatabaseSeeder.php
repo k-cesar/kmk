@@ -26,7 +26,14 @@ class DatabaseSeeder extends Seeder
             SocioeconomicLevelSeeder::class,
             LocationTypeSeeder::class,
             StoreTypeSeeder::class,
-            ProductDepartmentSeeder::class
+            ProductDepartmentSeeder::class,
+            StoreFormatSeeder::class,
+            StoreChainSeeder::class,
+            StoreFlagSeeder::class,
+            RegionSeeder::class,
+            StateSeeder::class,
+            MunicipalitySeeder::class,
+            ZoneSeeder::class,
         ]);
     }
 }

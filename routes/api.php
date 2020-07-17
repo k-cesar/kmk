@@ -50,6 +50,20 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     Route::resource('store-types', 'StoreType\StoreTypeController')->except('create', 'edit');
     
     Route::resource('product-departments', 'ProductDepartment\ProductDepartmentController')->except('create', 'edit');
+    
+    Route::resource('store-formats', 'StoreFormat\StoreFormatController')->except('create', 'edit');
+    
+    Route::resource('store-chains', 'StoreChain\StoreChainController')->except('create', 'edit');
+    
+    Route::resource('store-flags', 'StoreFlag\StoreFlagController')->except('create', 'edit');
+    
+    Route::resource('regions', 'Region\RegionController')->except('create', 'edit');
+    
+    Route::resource('states', 'State\StateController')->except('create', 'edit');
+    
+    Route::resource('municipalities', 'Municipality\MunicipalityController')->except('create', 'edit');
+    
+    Route::resource('zones', 'Zone\ZoneController')->except('create', 'edit');
 
 });
 
@@ -78,6 +92,6 @@ Route::group(['middleware' => 'api','prefix' => 'auth' ], function ($router) {
     Route::post('register', 'User\AuthController@register')->name('api.register');
     Route::post('login', 'User\AuthController@login')->name('api.login');
     Route::post('logout', 'User\AuthController@logout')->name('api.logout');
-    Route::post('refresh', 'User\AuthController@refresh')->name('api.refresh');
+    Route::get('refresh', 'User\AuthController@refresh')->name('api.refresh');
     Route::get('me', 'User\AuthController@me')->name('api.me');
 });

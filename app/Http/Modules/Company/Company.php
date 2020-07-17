@@ -24,6 +24,7 @@ class Company extends Model
         'reason',
         'nit',
         'phone',
+        'address',
         'country_id',
         'currency_id',
         'allow_add_products',
@@ -31,6 +32,13 @@ class Company extends Model
         'is_electronic_invoice',
         'uses_fel',
     ];
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['country', 'currency'];
 
     /**
      * Get the currency that owns the company.
