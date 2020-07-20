@@ -20,7 +20,6 @@ class UserSeeder extends Seeder
       'password'  => Hash::make(env('USER_SUPER_ADMIN_PASSWORD')),
     ])->assignRole(config('app.role_super_admin_name'));
     
-
     factory(User::class)->create([
       'name'      => 'Stalin Sánchez',
       'username'  => 'stalin',
@@ -31,6 +30,18 @@ class UserSeeder extends Seeder
       'name'      => 'Nelson Torres',
       'username'  => 'nelson',
       'email'     => 'ntorres144@gmail.com',
+    ])->assignRole(config('app.role_super_admin_name'));
+
+    factory(User::class)->create([
+      'name'      => 'Diego Leal',
+      'username'  => 'diego',
+      'email'     => 'diego@kemok.io',
+    ])->assignRole(config('app.role_super_admin_name'));
+
+    factory(User::class)->create([
+      'name'      => 'Cesar Salazar',
+      'username'  => 'cesar',
+      'email'     => 'cesar@kemok.io',
     ])->assignRole(config('app.role_super_admin_name'));
 
     factory(User::class, 2);
