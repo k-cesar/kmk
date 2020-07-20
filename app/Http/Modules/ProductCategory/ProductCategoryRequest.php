@@ -32,6 +32,11 @@ class ProductCategoryRequest extends FormRequest
       $rules['name'] = "required|string|max:255|unique:product_categories,name,\"{$this->product_category->name}\",name";
     }
 
+    if ($this->is('*product-categories*') && $this->isMethod('GET')) {     
+      $rules = [
+        'name' => 'string|max:255',       
+      ];
+    }
     return $rules;
   }
   

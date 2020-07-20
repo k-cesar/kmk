@@ -12,11 +12,20 @@ class ProductCategoryController extends Controller
    *
    * @return \Illuminate\Http\JsonResponse
    */
-  public function index()
-  {
-    $currencies = ProductCategory::paginate();
+  public function index(ProductCategoryRequest $request)
+  {    
+    $where = [];
+    if ($request->get('name')) {
+      array_push($where, ['name', 'ilike', '%'.$request->get('name').'%']);
+    } 
+    if ($request->get('product_department_id')) {
+      array_push($where, ['product_department_id', '=', $request->get('product_department_id')]);
+    }
 
-    return $this->showAll($currencies);
+    $productCategory = ProductCategory::where($where)->paginate();
+    
+   
+    return $this->showAll($productCategory);
   }
 
   /**
