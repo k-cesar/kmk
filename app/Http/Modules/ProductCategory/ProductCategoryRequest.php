@@ -33,7 +33,7 @@ class ProductCategoryRequest extends FormRequest
       $rules['product_department_id'] = "exists:product_departments,id";
     }
 
-    if ($this->is('*product-categories*') && $this->isMethod('GET')) {     
+    if ($this->isMethod('GET')) {     
       $rules = [
         'name' => 'string|max:255',       
       ];
