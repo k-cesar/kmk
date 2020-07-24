@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             StoreTypeSeeder::class,
             ProductDepartmentSeeder::class,
             ProductCategorySeeder::class,
+            ProductSubCategoriesSeeder::class,
             StoreFormatSeeder::class,
             StoreChainSeeder::class,
             StoreFlagSeeder::class,
