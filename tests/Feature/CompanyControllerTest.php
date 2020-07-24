@@ -140,9 +140,13 @@ class CompanyControllerTest extends ApiTestCase
     $response = $this->getJson(route('companies.options'))
       ->assertOk();
     
-    foreach (Company::limit(10)->get() as $company) {
-      $response->assertSee($company->id)
-        ->assertSee(e($company->name));
+    $companies = Company::select(['id', 'name'])
+      ->withOut('country', 'currency')
+      ->limit(10)
+      ->get();
+
+    foreach ($companies as $company) {
+      $response->assertJsonFragment($company->toArray());
     }
   }
 

@@ -140,9 +140,12 @@ class CurrencyControllerTest extends ApiTestCase
     $response = $this->getJson(route('currencies.options'))
       ->assertOk();
     
-    foreach (Currency::limit(10)->get() as $currency) {
-      $response->assertSee($currency->id)
-        ->assertSee(e($currency->name));
+    $currencies = Currency::select(['id', 'name'])
+      ->limit(10)
+      ->get();
+
+    foreach ($currencies as $currency) {
+      $response->assertJsonFragment($currency->toArray());
     }
   }
 

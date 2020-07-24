@@ -142,9 +142,12 @@ class CountryControllerTest extends ApiTestCase
     $response = $this->getJson(route('countries.options'))
       ->assertOk();
     
-    foreach (Country::limit(10)->get() as $country) {
-      $response->assertSee($country->id)
-        ->assertSee(e($country->name));
+    $countries = Country::select(['id', 'name'])
+      ->limit(10)
+      ->get();
+
+    foreach ($countries as $country) {
+      $response->assertJsonFragment($country->toArray());
     }
   }
 

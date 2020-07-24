@@ -212,7 +212,7 @@ class RoleControllerTest extends ApiTestCase
         
         foreach (Role::where('level', '>=', $user->getMinimunRoleLevel())->limit(10)->get() as $role) {
             $response->assertSee($role->id)
-                ->assertSee(e($role->name));
+                ->assertSee($role->name);
         }
     }
 
