@@ -3,6 +3,7 @@
 namespace App\Http\Modules\Currency;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Schema;
 use App\Http\Modules\Currency\Currency;
 
 class CurrencyController extends Controller
@@ -14,9 +15,9 @@ class CurrencyController extends Controller
    */
   public function index()
   {
-    $currencies = Currency::paginate();
+    $currencies = Currency::query();
 
-    return $this->showAll($currencies);
+    return $this->showAll($currencies, Schema::getColumnListing((new Currency)->getTable()));
   }
 
   /**
@@ -68,5 +69,17 @@ class CurrencyController extends Controller
     $currency->secureDelete();
 
     return $this->showOne($currency);
+  }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $currencies = Currency::select('id', 'name');
+
+    return $this->showAll($currencies, Schema::getColumnListing((new Currency)->getTable()));
   }
 }

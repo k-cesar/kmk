@@ -3,6 +3,7 @@
 namespace App\Http\Modules\StoreChain;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Schema;
 use App\Http\Modules\StoreChain\StoreChain;
 
 class StoreChainController extends Controller
@@ -14,9 +15,9 @@ class StoreChainController extends Controller
    */
   public function index()
   {
-    $storeChains = StoreChain::paginate();
+    $storeChains = StoreChain::query();
 
-    return $this->showAll($storeChains);
+    return $this->showAll($storeChains, Schema::getColumnListing((new StoreChain)->getTable()));
   }
 
   /**

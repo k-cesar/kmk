@@ -3,6 +3,7 @@
 namespace App\Http\Modules\ProductCategory;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Schema;
 use App\Http\Modules\ProductCategory\ProductCategory;
 
 class ProductCategoryController extends Controller
@@ -15,17 +16,18 @@ class ProductCategoryController extends Controller
   public function index(ProductCategoryRequest $request)
   {    
     $where = [];
+    
     if ($request->get('name')) {
       array_push($where, ['name', 'ilike', '%'.$request->get('name').'%']);
-    } 
+    }
+
     if ($request->get('product_department_id')) {
       array_push($where, ['product_department_id', '=', $request->get('product_department_id')]);
     }
 
-    $productCategory = ProductCategory::where($where)->paginate();
+    $productCategories = ProductCategory::where($where);
     
-   
-    return $this->showAll($productCategory);
+    return $this->showAll($productCategories, Schema::getColumnListing((new ProductCategory)->getTable()));
   }
 
   /**

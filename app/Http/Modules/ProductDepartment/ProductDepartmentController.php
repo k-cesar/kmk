@@ -3,6 +3,7 @@
 namespace App\Http\Modules\ProductDepartment;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Schema;
 use App\Http\Modules\ProductDepartment\ProductDepartment;
 
 class ProductDepartmentController extends Controller
@@ -14,9 +15,9 @@ class ProductDepartmentController extends Controller
    */
   public function index()
   {
-    $currencies = ProductDepartment::paginate();
+    $productDepartments = ProductDepartment::query();
 
-    return $this->showAll($currencies);
+    return $this->showAll($productDepartments, Schema::getColumnListing((new ProductDepartment)->getTable()));
   }
 
   /**

@@ -3,6 +3,7 @@
 namespace App\Http\Modules\SocioeconomicLevel;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Schema;
 use App\Http\Modules\SocioeconomicLevel\SocioeconomicLevel;
 
 class SocioeconomicLevelController extends Controller
@@ -14,9 +15,9 @@ class SocioeconomicLevelController extends Controller
    */
   public function index()
   {
-    $socioeconomicLevels = SocioeconomicLevel::paginate();
+    $socioeconomicLevels = SocioeconomicLevel::query();
 
-    return $this->showAll($socioeconomicLevels);
+    return $this->showAll($socioeconomicLevels, Schema::getColumnListing((new SocioEconomicLevel)->getTable()));
   }
 
   /**

@@ -2,8 +2,9 @@
 
 namespace App\Http\Modules\Zone;
 
-use App\Http\Controllers\Controller;
 use App\Http\Modules\Zone\Zone;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Schema;
 
 class ZoneController extends Controller
 {
@@ -14,9 +15,9 @@ class ZoneController extends Controller
    */
   public function index()
   {
-    $zones = Zone::paginate();
+    $zones = Zone::query();
 
-    return $this->showAll($zones);
+    return $this->showAll($zones, Schema::getColumnListing((new Zone)->getTable()));
   }
 
   /**

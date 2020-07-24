@@ -3,6 +3,7 @@
 namespace App\Http\Modules\LocationType;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Schema;
 use App\Http\Modules\LocationType\LocationType;
 
 class LocationTypeController extends Controller
@@ -14,9 +15,9 @@ class LocationTypeController extends Controller
    */
   public function index()
   {
-    $locationTypes = LocationType::paginate();
+    $locationTypes = LocationType::query();
 
-    return $this->showAll($locationTypes);
+    return $this->showAll($locationTypes, Schema::getColumnListing((new LocationType)->getTable()));
   }
 
   /**

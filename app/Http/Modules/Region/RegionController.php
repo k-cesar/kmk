@@ -2,8 +2,9 @@
 
 namespace App\Http\Modules\Region;
 
-use App\Http\Controllers\Controller;
 use App\Http\Modules\Region\Region;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Schema;
 
 class RegionController extends Controller
 {
@@ -14,9 +15,9 @@ class RegionController extends Controller
    */
   public function index()
   {
-    $regions = Region::paginate();
+    $regions = Region::query();
 
-    return $this->showAll($regions);
+    return $this->showAll($regions, Schema::getColumnListing((new Region)->getTable()));
   }
 
   /**

@@ -130,4 +130,24 @@ class CompanyControllerTest extends ApiTestCase
     $this->assertDatabaseMissing('companies', $company->toArray());
   }
 
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_companies_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('companies.options'))
+      ->assertOk();
+    
+    $companies = Company::select(['id', 'name'])
+      ->withOut('country', 'currency')
+      ->limit(10)
+      ->get();
+
+    foreach ($companies as $company) {
+      $response->assertJsonFragment($company->toArray());
+    }
+  }
+
 }

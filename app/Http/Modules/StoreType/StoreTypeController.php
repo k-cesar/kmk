@@ -3,6 +3,7 @@
 namespace App\Http\Modules\StoreType;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Schema;
 use App\Http\Modules\StoreType\StoreType;
 
 class StoreTypeController extends Controller
@@ -14,9 +15,9 @@ class StoreTypeController extends Controller
    */
   public function index()
   {
-    $storeTypes = StoreType::paginate();
+    $storeTypes = StoreType::query();
 
-    return $this->showAll($storeTypes);
+    return $this->showAll($storeTypes, Schema::getColumnListing((new StoreType)->getTable()));
   }
 
   /**

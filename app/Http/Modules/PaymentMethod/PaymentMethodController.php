@@ -3,6 +3,7 @@
 namespace App\Http\Modules\PaymentMethod;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Schema;
 use App\Http\Modules\PaymentMethod\PaymentMethod;
 
 class PaymentMethodController extends Controller
@@ -14,9 +15,9 @@ class PaymentMethodController extends Controller
    */
   public function index()
   {
-    $paymentMethods = PaymentMethod::paginate();
+    $paymentMethods = PaymentMethod::query();
 
-    return $this->showAll($paymentMethods);
+    return $this->showAll($paymentMethods, Schema::getColumnListing((new PaymentMethod)->getTable()));
   }
 
   /**

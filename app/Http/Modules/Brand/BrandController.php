@@ -2,8 +2,9 @@
 
 namespace App\Http\Modules\Brand;
 
-use App\Http\Controllers\Controller;
 use App\Http\Modules\Brand\Brand;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Schema;
 
 class BrandController extends Controller
 {
@@ -14,9 +15,9 @@ class BrandController extends Controller
    */
   public function index()
   {
-    $brands = Brand::paginate();
+    $brands = Brand::query();
 
-    return $this->showAll($brands);
+    return $this->showAll($brands, Schema::getColumnListing((new Brand)->getTable()));
   }
 
   /**
