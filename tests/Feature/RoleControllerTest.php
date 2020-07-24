@@ -200,4 +200,20 @@ class RoleControllerTest extends ApiTestCase
         $this->assertDatabaseMissing('roles', $role->toArray());
     }
 
+    /**
+     * @test
+     */
+    public function an_user_can_see_all_roles_options()
+    {
+        $user = $this->signInWithRole(factory(Role::class)->create(['level' => 0]));
+
+        $response = $this->getJson(route('roles.options'))
+            ->assertSuccessful();
+        
+        foreach (Role::where('level', '>=', $user->getMinimunRoleLevel())->limit(10)->get() as $role) {
+            $response->assertSee($role->id)
+                ->assertSee(e($role->name));
+        }
+    }
+
 }

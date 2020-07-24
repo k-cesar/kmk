@@ -3,6 +3,7 @@
 namespace App\Http\Modules\Company;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Schema;
 
 class CompanyController extends Controller
 {
@@ -13,9 +14,9 @@ class CompanyController extends Controller
    */
   public function index()
   {
-    $companies = Company::paginate();
+    $companies = Company::query();
 
-    return $this->showAll($companies);
+    return $this->showAll($companies, Schema::getColumnListing((new Company)->getTable()));
   }
 
   /**
@@ -67,5 +68,18 @@ class CompanyController extends Controller
     $company->secureDelete();
 
     return $this->showOne($company);
+  }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $companies = Company::select('id', 'name')
+      ->withOut('country', 'currency');
+
+    return $this->showAll($companies, Schema::getColumnListing((new Company)->getTable()));
   }
 }

@@ -2,8 +2,9 @@
 
 namespace App\Http\Modules\Maker;
 
-use App\Http\Controllers\Controller;
 use App\Http\Modules\Maker\Maker;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Schema;
 
 class MakerController extends Controller
 {
@@ -14,9 +15,9 @@ class MakerController extends Controller
    */
   public function index()
   {
-    $makers = Maker::paginate();
+    $makers = Maker::query();
 
-    return $this->showAll($makers);
+    return $this->showAll($makers, Schema::getColumnListing((new Maker)->getTable()));
   }
 
   /**

@@ -130,4 +130,20 @@ class CompanyControllerTest extends ApiTestCase
     $this->assertDatabaseMissing('companies', $company->toArray());
   }
 
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_companies_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('companies.options'))
+      ->assertOk();
+    
+    foreach (Company::limit(10)->get() as $company) {
+      $response->assertSee($company->id)
+        ->assertSee(e($company->name));
+    }
+  }
+
 }

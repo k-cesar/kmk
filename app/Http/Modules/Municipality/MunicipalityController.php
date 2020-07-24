@@ -3,6 +3,7 @@
 namespace App\Http\Modules\Municipality;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Schema;
 use App\Http\Modules\Municipality\Municipality;
 
 class MunicipalityController extends Controller
@@ -14,9 +15,9 @@ class MunicipalityController extends Controller
    */
   public function index()
   {
-    $municipalities = Municipality::paginate();
+    $municipalities = Municipality::query();
 
-    return $this->showAll($municipalities);
+    return $this->showAll($municipalities, Schema::getColumnListing((new Municipality)->getTable()));
   }
 
   /**

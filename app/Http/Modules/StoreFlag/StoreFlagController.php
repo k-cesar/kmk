@@ -3,6 +3,7 @@
 namespace App\Http\Modules\StoreFlag;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Schema;
 use App\Http\Modules\StoreFlag\StoreFlag;
 
 class StoreFlagController extends Controller
@@ -14,9 +15,9 @@ class StoreFlagController extends Controller
    */
   public function index()
   {
-    $storeFlags = StoreFlag::paginate();
+    $storeFlags = StoreFlag::query();
 
-    return $this->showAll($storeFlags);
+    return $this->showAll($storeFlags, Schema::getColumnListing((new StoreFlag)->getTable()));
   }
 
   /**

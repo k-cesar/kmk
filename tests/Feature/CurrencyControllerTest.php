@@ -130,4 +130,20 @@ class CurrencyControllerTest extends ApiTestCase
     $this->assertDatabaseMissing('currencies', $currency->toArray());
   }
 
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_currencies_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('currencies.options'))
+      ->assertOk();
+    
+    foreach (Currency::limit(10)->get() as $currency) {
+      $response->assertSee($currency->id)
+        ->assertSee(e($currency->name));
+    }
+  }
+
 }

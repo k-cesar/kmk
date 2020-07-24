@@ -2,8 +2,9 @@
 
 namespace App\Http\Modules\State;
 
-use App\Http\Controllers\Controller;
 use App\Http\Modules\State\State;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Schema;
 
 class StateController extends Controller
 {
@@ -14,9 +15,9 @@ class StateController extends Controller
    */
   public function index()
   {
-    $states = State::paginate();
+    $states = State::query();
 
-    return $this->showAll($states);
+    return $this->showAll($states, Schema::getColumnListing((new State)->getTable()));
   }
 
   /**

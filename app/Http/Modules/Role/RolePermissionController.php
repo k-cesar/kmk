@@ -7,6 +7,7 @@ use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Schema;
 use App\Http\Middleware\RoleMiddleware;
 use Spatie\Permission\Models\Permission;
 
@@ -34,7 +35,7 @@ class RolePermissionController extends Controller
     {
         $permissions = $role->getAllPermissions();
 
-        return $this->showAll($this->paginate($permissions));
+        return $this->showAll($permissions, Schema::getColumnListing((new Permission)->getTable()));
     }
 
     /**
@@ -67,6 +68,6 @@ class RolePermissionController extends Controller
         
         $permissions = $role->getAllPermissions();
 
-        return $this->showAll($this->paginate($permissions));
+        return $this->showAll($permissions, Schema::getColumnListing((new Permission)->getTable()));
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Modules\Provider;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Schema;
 use App\Http\Modules\Provider\Provider;
 
 class ProviderController extends Controller
@@ -14,9 +15,9 @@ class ProviderController extends Controller
    */
   public function index()
   {
-    $providers = Provider::paginate();
+    $providers = Provider::query();
 
-    return $this->showAll($providers);
+    return $this->showAll($providers, Schema::getColumnListing((new Provider)->getTable()));
   }
 
   /**

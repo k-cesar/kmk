@@ -3,6 +3,7 @@
 namespace App\Http\Modules\StoreFormat;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Schema;
 use App\Http\Modules\StoreFormat\StoreFormat;
 
 class StoreFormatController extends Controller
@@ -14,9 +15,9 @@ class StoreFormatController extends Controller
    */
   public function index()
   {
-    $storeFormats = StoreFormat::paginate();
+    $storeFormats = StoreFormat::query();
 
-    return $this->showAll($storeFormats);
+    return $this->showAll($storeFormats, Schema::getColumnListing((new StoreFormat)->getTable()));
   }
 
   /**

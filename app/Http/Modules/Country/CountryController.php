@@ -2,8 +2,10 @@
 
 namespace App\Http\Modules\Country;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Modules\Country\Country;
+use Illuminate\Support\Facades\Schema;
 
 class CountryController extends Controller
 {
@@ -14,9 +16,9 @@ class CountryController extends Controller
    */
   public function index()
   {
-    $countries = Country::paginate();
+    $countries = Country::query();
 
-    return $this->showAll($countries);
+    return $this->showAll($countries, Schema::getColumnListing((new Country)->getTable()));
   }
 
   /**
@@ -68,5 +70,17 @@ class CountryController extends Controller
     $country->secureDelete();
 
     return $this->showOne($country);
+  }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $countries = Country::select('id', 'name');
+
+    return $this->showAll($countries, Schema::getColumnListing((new Country)->getTable()));
   }
 }

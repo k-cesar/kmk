@@ -2,8 +2,9 @@
 
 namespace App\Http\Modules\Uom;
 
-use App\Http\Controllers\Controller;
 use App\Http\Modules\Uom\Uom;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Schema;
 
 class UomController extends Controller
 {
@@ -14,9 +15,9 @@ class UomController extends Controller
    */
   public function index()
   {
-    $uoms = Uom::paginate();
+    $uoms = Uom::query();
 
-    return $this->showAll($uoms);
+    return $this->showAll($uoms, Schema::getColumnListing((new Uom)->getTable()));
   }
 
   /**

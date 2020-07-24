@@ -132,4 +132,20 @@ class CountryControllerTest extends ApiTestCase
     $this->assertDatabaseMissing('countries', $country->toArray());
   }
 
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_countries_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('countries.options'))
+      ->assertOk();
+    
+    foreach (Country::limit(10)->get() as $country) {
+      $response->assertSee($country->id)
+        ->assertSee(e($country->name));
+    }
+  }
+
 }
