@@ -3,6 +3,7 @@
 namespace App\Http\Modules\SocioeconomicLevel;
 
 use App\Traits\SecureDeletes;
+use App\Http\Modules\Store\Store;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -19,5 +20,15 @@ class SocioeconomicLevel extends Model
         'name',
         'is_all_countries',
     ];
+
+    /**
+     * Get the stores for the SocioeconomicLevel.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function stores()
+    {
+        return $this->hasMany(Store::class);
+    }
 
 }

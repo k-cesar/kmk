@@ -3,9 +3,10 @@
 namespace App\Http\Modules\Zone;
 
 use App\Traits\SecureDeletes;
-use App\Http\Modules\Municipality\Municipality;
+use App\Http\Modules\Store\Store;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Modules\Municipality\Municipality;
 
 class Zone extends Model
 {
@@ -29,6 +30,16 @@ class Zone extends Model
     public function municipality()
     {
         return $this->belongsTo(Municipality::class);
+    }
+
+    /**
+     * Get the stores for the Zones.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function stores()
+    {
+        return $this->hasMany(Store::class);
     }
 
 }
