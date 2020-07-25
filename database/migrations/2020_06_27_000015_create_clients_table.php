@@ -23,6 +23,7 @@ class CreateClientsTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
+            $table->enum('type', ['ADMIN', 'TENDERO']);
             $table->unsignedBigInteger('country_id');
             $table->string('uuid', 50)->unique();
             $table->text('address')->nullable();

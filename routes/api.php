@@ -69,6 +69,8 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     
     Route::resource('stores', 'Store\StoreController')->except('create', 'edit');
 
+    Route::resource('clients', 'Client\ClientController')->except('create', 'edit');
+
 });
 
 /***********************************************************************************************************************

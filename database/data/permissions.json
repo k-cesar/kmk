@@ -282,5 +282,16 @@
 			{ "name": "Almacenar Tiendas",  "route_name": "stores.store" },
 			{ "name": "Eliminar Tiendas",   "route_name": "stores.destroy" }
 		]
+	},
+	{
+		"group": "Clientes",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Clientes",     "route_name": "clients.index" },
+			{ "name": "Actualizar Clientes", "route_name": "clients.update" },
+			{ "name": "Mostrar Clientes",    "route_name": "clients.show" },
+			{ "name": "Almacenar Clientes",  "route_name": "clients.store" },
+			{ "name": "Eliminar Clientes",   "route_name": "clients.destroy" }
+		]
 	}
 ]
