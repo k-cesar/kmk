@@ -2,11 +2,12 @@
 
 namespace App\Http\Modules\State;
 
-use App\Http\Modules\Municipality\Municipality;
 use App\Traits\SecureDeletes;
+use App\Http\Modules\Store\Store;
 use App\Http\Modules\Region\Region;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Modules\Municipality\Municipality;
 
 class State extends Model
 {
@@ -40,6 +41,16 @@ class State extends Model
     public function municipalities()
     {
         return $this->hasMany(Municipality::class);
+    }
+
+    /**
+     * Get the stores for the State.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function stores()
+    {
+        return $this->hasMany(Store::class);
     }
 
 }

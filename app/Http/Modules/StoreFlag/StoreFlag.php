@@ -2,9 +2,10 @@
 
 namespace App\Http\Modules\StoreFlag;
 
-use App\Http\Modules\StoreChain\StoreChain;
 use App\Traits\SecureDeletes;
+use App\Http\Modules\Store\Store;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Modules\StoreChain\StoreChain;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class StoreFlag extends Model
@@ -29,6 +30,16 @@ class StoreFlag extends Model
     public function storeChain()
     {
         return $this->belongsTo(StoreChain::class);
+    }
+
+    /**
+     * Get the stores for the StoreFlag.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function stores()
+    {
+        return $this->hasMany(Store::class);
     }
 
 }

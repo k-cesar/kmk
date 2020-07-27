@@ -271,5 +271,16 @@
 			{ "name": "Almacenar Zonas",  "route_name": "zones.store" },
 			{ "name": "Eliminar Zonas",   "route_name": "zones.destroy" }
 		]
+	},
+	{
+		"group": "Tiendas",
+		"level": 1,
+		"labels": [
+			{ "name": "Listar Tiendas",     "route_name": "stores.index" },
+			{ "name": "Actualizar Tiendas", "route_name": "stores.update" },
+			{ "name": "Mostrar Tiendas",    "route_name": "stores.show" },
+			{ "name": "Almacenar Tiendas",  "route_name": "stores.store" },
+			{ "name": "Eliminar Tiendas",   "route_name": "stores.destroy" }
+		]
 	}
 ]
