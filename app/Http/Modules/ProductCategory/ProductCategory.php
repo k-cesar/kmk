@@ -22,7 +22,7 @@ class ProductCategory extends Model
      */
     protected $fillable = [
         'name',
-        'product_department_id'
+        'product_department_id',
     ];
    
     /**

@@ -52,6 +52,10 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     Route::resource('product-departments', 'ProductDepartment\ProductDepartmentController')->except('create', 'edit');
     
     Route::resource('product-categories', 'ProductCategory\ProductCategoryController')->except('create', 'edit');
+
+    //Route::resource('product-sub-categories', 'ProductSubCategories\ProductSubCategoriesController')->except('create', 'edit');
+
+    Route::resource('product-countries', 'ProductCountries\ProductCountriesController')->except('create', 'edit');
     
     Route::resource('store-formats', 'StoreFormat\StoreFormatController')->except('create', 'edit');
     
@@ -74,13 +78,7 @@ Route::group(['middleware' => ['auth', 'access']], function () {
  ***********************************************************************************************************************/
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('roles-options', 'Role\RoleController@options')->name('roles.options');
     
-    Route::get('currencies-options', 'Currency\CurrencyController@options')->name('currencies.options');
-
-    Route::get('countries-options', 'Country\CountryController@options')->name('countries.options');
-    
-    Route::get('companies-options', 'Company\CompanyController@options')->name('companies.options');
 });
 
 /***********************************************************************************************************************
