@@ -85,6 +85,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('countries-options', 'Country\CountryController@options')->name('countries.options');
     
     Route::get('companies-options', 'Company\CompanyController@options')->name('companies.options');
+
 });
 
 /***********************************************************************************************************************
