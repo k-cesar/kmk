@@ -37,6 +37,8 @@ class DatabaseSeeder extends Seeder
             StateSeeder::class,
             MunicipalitySeeder::class,
             ZoneSeeder::class,
+            StoreSeeder::class,
+            ClientSeeder::class,
         ]);
     }
 }

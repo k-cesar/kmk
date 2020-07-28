@@ -70,6 +70,10 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     Route::resource('municipalities', 'Municipality\MunicipalityController')->except('create', 'edit');
     
     Route::resource('zones', 'Zone\ZoneController')->except('create', 'edit');
+    
+    Route::resource('stores', 'Store\StoreController')->except('create', 'edit');
+
+    Route::resource('clients', 'Client\ClientController')->except('create', 'edit');
 
 });
 
@@ -78,7 +82,7 @@ Route::group(['middleware' => ['auth', 'access']], function () {
  ***********************************************************************************************************************/
 
 Route::group(['middleware' => ['auth']], function () {
-    
+    Route::get('companies-options', 'Company\CompanyController@options')->name('companies.options');
 });
 
 /***********************************************************************************************************************
