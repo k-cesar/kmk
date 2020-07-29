@@ -24,6 +24,13 @@ class State extends Model
     ];
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['region'];
+
+    /**
      * Get the region that owns the state.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

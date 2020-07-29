@@ -23,6 +23,13 @@ class Region extends Model
     ];
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['country'];
+
+    /**
      * Get the country that owns the region.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

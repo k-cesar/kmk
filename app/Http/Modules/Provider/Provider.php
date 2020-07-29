@@ -19,6 +19,7 @@ class Provider extends Model
      */
     protected $fillable = [
         'name',
+        'nit',
         'country_id',
     ];
 
@@ -30,6 +31,13 @@ class Provider extends Model
             $provider->uuid = Str::uuid()->toString();
         });
     }
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['country'];
 
     /**
      * Get the country that owns the brand.

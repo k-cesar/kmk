@@ -24,6 +24,13 @@ class Municipality extends Model
     ];
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['state'];
+
+    /**
      * Get the state that owns the brand.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

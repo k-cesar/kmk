@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\SocioeconomicLevel;
 
+use App\Http\Modules\Country\Country;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Store\Store;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +23,13 @@ class SocioeconomicLevel extends Model
     ];
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['countries'];
+
+    /**
      * Get the stores for the SocioeconomicLevel.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -29,6 +37,16 @@ class SocioeconomicLevel extends Model
     public function stores()
     {
         return $this->hasMany(Store::class);
+    }
+
+    /**
+     * The countries that belong to the SocioeconomicLevel.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function countries()
+    {
+        return $this->belongsToMany(Country::class, 'countries_socioeconomic');
     }
 
 }

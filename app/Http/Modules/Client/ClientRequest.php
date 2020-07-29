@@ -33,7 +33,27 @@ class ClientRequest extends FormRequest
       'sex'          => 'required|in:'.implode(',', Client::getOptionsSex()),
       'biometric_id' => 'sometimes|nullable|string|max:1000',
       'birthdate'    => 'required|date|date_format:Y-m-d|before:today|after:1900-01-01',
+      'nit'          => [
+        'required', 
+        'digits_between:1,15',
+        Rule::unique('clients', 'nit')
+          ->where(function ($query) {
+            return $query->where('country_id', $this->get('country_id'));
+          }),
+      ],
     ];
+
+    if ($this->isMethod('PUT')) {
+      $rules['nit'] = [
+        'required', 
+        'digits_between:1,15',
+        Rule::unique('clients', 'nit')
+          ->where(function ($query) {
+            return $query->where('country_id', $this->get('country_id'))
+              ->where('id', '!=', $this->client->id);
+          })
+      ];
+    }
 
     return $rules;
   }

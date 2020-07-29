@@ -13,6 +13,7 @@ $factory->define(Client::class, function (Faker $faker) {
         'name'         => $faker->name,
         'type'         => $faker->randomElement(Client::getOptionsTypes()),
         'country_id'   => factory(Country::class)->create(),
+        'nit'          => $faker->unique()->randomNumber(8),
         'address'      => $faker->address,
         'sex'          => $faker->randomElement(Client::getOptionsSex()),
         'biometric_id' => Str::random(50),

@@ -25,6 +25,7 @@ class CreateClientsTable extends Migration
             $table->string('name');
             $table->enum('type', ['ADMIN', 'TENDERO']);
             $table->unsignedBigInteger('country_id');
+            $table->string('nit', 15);
             $table->string('uuid', 50)->unique();
             $table->text('address')->nullable();
             $table->enum('sex', ['MALE', 'FEMALE']);
@@ -32,6 +33,8 @@ class CreateClientsTable extends Migration
             $table->date('birthdate');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(['country_id', 'nit']);
 
             $table->foreign('country_id')->references('id')->on('countries');
         });

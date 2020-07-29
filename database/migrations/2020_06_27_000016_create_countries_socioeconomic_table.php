@@ -21,16 +21,16 @@ class CreateCountriesSocioeconomicTable extends Migration
     public function up()
     {
         Schema::create($this->tableName, function (Blueprint $table) {
-            $table->unsignedBigInteger('socioeconomic_id');
+            $table->unsignedBigInteger('socioeconomic_level_id');
             $table->unsignedBigInteger('country_id');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->primary(['socioeconomic_id', 'country_id']);
+            $table->primary(['socioeconomic_level_id', 'country_id']);
 
             $table->foreign('country_id')->references('id')->on('countries');
 
-            $table->foreign('socioeconomic_id')->references('id')->on('socioeconomic_levels');
+            $table->foreign('socioeconomic_level_id')->references('id')->on('socioeconomic_levels');
         });
     }
 

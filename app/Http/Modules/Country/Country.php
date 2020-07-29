@@ -7,6 +7,7 @@ use App\Http\Modules\Company\Company;
 use App\Http\Modules\Currency\Currency;
 use App\Http\Modules\Provider\Provider;
 use App\Http\Modules\Region\Region;
+use App\Http\Modules\SocioeconomicLevel\SocioeconomicLevel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -23,6 +24,13 @@ class Country extends Model
         'name',
         'currency_id',
     ];
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['currency'];
 
     /**
      * Get the currency that owns the country.
@@ -62,6 +70,16 @@ class Country extends Model
     public function regions()
     {
         return $this->hasMany(Region::class);
+    }
+
+    /**
+     * The socioeconomicLevel that belong to the country.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function socioeconomicLevel()
+    {
+        return $this->belongsToMany(SocioeconomicLevel::class, 'countries_socioeconomic');
     }
 
 }
