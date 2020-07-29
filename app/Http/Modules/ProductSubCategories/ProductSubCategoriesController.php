@@ -5,6 +5,8 @@ namespace App\Http\Modules\ProductSubCategories;
 use App\Http\Controllers\Controller;
 use App\Http\Modules\ProductSubCategories\ProductSubCategories;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
+
 
 class ProductSubCategoriesController extends Controller
 {
@@ -13,15 +15,15 @@ class ProductSubCategoriesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(ProductSubCategoriesRequest $request)
     {
         $where = [];
         if ($request->get('name')) {
             array_push($where, ['name', 'ilike', '%'.$request->get('name').'%']);
         } 
 
-        $productSubCategories = ProductSubCategories::where($where)->paginate();
-        return $this->showAll($productSubCategories);
+        $productSubCategories = ProductSubCategories::where($where);
+        return $this->showAll($productSubCategories, Schema::getColumnListing((new ProductSubCategories)->getTable()));
     }
      
     /**
