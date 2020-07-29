@@ -9,7 +9,8 @@ use App\Http\Modules\Country\Country;
 $factory->define(Provider::class, function (Faker $faker) {
 
     return [
-        'name'     => $faker->unique()->company,
+        'name'       => $faker->unique()->company,
+        'nit'        => $faker->unique()->randomNumber(8),
         'country_id' => factory(Country::class)->create(),
     ];
 });

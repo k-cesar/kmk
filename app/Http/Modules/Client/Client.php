@@ -27,6 +27,7 @@ class Client extends Model
         'name',
         'type',
         'country_id',
+        'nit',
         'uuid',
         'address',
         'sex',
@@ -42,6 +43,14 @@ class Client extends Model
             $client->uuid = Str::uuid()->toString();
         });
     }
+
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['country'];
 
 
     /**

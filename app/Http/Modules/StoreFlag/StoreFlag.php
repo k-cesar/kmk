@@ -23,6 +23,13 @@ class StoreFlag extends Model
     ];
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['storeChain'];
+
+    /**
      * Get the storeChain that owns the storeFlag.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

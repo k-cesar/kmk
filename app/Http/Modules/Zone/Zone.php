@@ -23,6 +23,13 @@ class Zone extends Model
     ];
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['municipality'];
+
+    /**
      * Get the municipality that owns the Zone.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

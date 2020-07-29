@@ -22,6 +22,13 @@ class Brand extends Model
     ];
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['maker'];
+
+    /**
      * Get the maker that owns the brand.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

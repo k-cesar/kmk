@@ -26,11 +26,19 @@ class ProviderRequest extends FormRequest
   {
     $rules = [
       'country_id' => 'required|exists:countries,id',
-      'name'     => [
+      'name'       => [
         'required', 
         'string',
         'max:150',
         Rule::unique('providers', 'name')
+          ->where(function ($query) {
+            return $query->where('country_id', $this->get('country_id'));
+          }),
+      ],
+      'nit'       => [
+        'required', 
+        'digits_between:1,15',
+        Rule::unique('providers', 'nit')
           ->where(function ($query) {
             return $query->where('country_id', $this->get('country_id'));
           }),
@@ -47,6 +55,16 @@ class ProviderRequest extends FormRequest
             return $query->where('country_id', $this->get('country_id'))
               ->where('id', '!=', $this->provider->id);
           }),
+      ];
+
+      $rules['nit'] = [
+        'required', 
+        'digits_between:1,15',
+        Rule::unique('providers', 'nit')
+          ->where(function ($query) {
+            return $query->where('country_id', $this->get('country_id'))
+              ->where('id', '!=', $this->provider->id);
+          })
       ];
     }
 
