@@ -3,16 +3,17 @@
 namespace App\Http\Modules\Store;
 
 use App\Traits\SecureDeletes;
+use App\Http\Modules\Zone\Zone;
+use App\Http\Modules\State\State;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Modules\StoreFlag\StoreFlag;
 use App\Http\Modules\StoreType\StoreType;
 use App\Http\Modules\StoreChain\StoreChain;
+use App\Http\Modules\StoreFormat\StoreFormat;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Modules\LocationType\LocationType;
 use App\Http\Modules\Municipality\Municipality;
 use App\Http\Modules\SocioeconomicLevel\SocioeconomicLevel;
-use App\Http\Modules\State\State;
-use App\Http\Modules\Zone\Zone;
 
 class Store extends Model
 {
@@ -40,6 +41,13 @@ class Store extends Model
         'latitute',
         'longitude',
     ];
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['storeType', 'storeChain', 'storeFlag', 'locationType', 'storeFormat', 'socioeconomicLevel', 'state', 'municipality', 'zone'];
 
     /**
      * Get the storeType that owns the store.

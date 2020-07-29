@@ -21,12 +21,13 @@ class CreateProductCountriesTable extends Migration
     public function up()
     {
         Schema::create($this->tableName, function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('country_id');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->primary(['product_id', 'country_id']);
+            $table->unique(['product_id', 'country_id']);
 
             $table->foreign('country_id')->references('id')->on('countries');
 
