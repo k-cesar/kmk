@@ -29,6 +29,7 @@ class SocioeconomicLevelController extends Controller
   public function store(SocioeconomicLevelRequest $request)
   {
     $socioeconomicLevel = SocioeconomicLevel::create($request->validated());
+    $socioeconomicLevel->countries()->sync($request->countries);
 
     return $this->showOne($socioeconomicLevel, 201);
   }
@@ -54,6 +55,7 @@ class SocioeconomicLevelController extends Controller
   public function update(SocioeconomicLevelRequest $request, SocioeconomicLevel $socioeconomicLevel)
   {
     $socioeconomicLevel->update($request->validated());
+    $socioeconomicLevel->countries()->sync($request->countries);
 
     return $this->showOne($socioeconomicLevel);
   }

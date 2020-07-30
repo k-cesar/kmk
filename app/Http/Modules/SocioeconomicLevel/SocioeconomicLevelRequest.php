@@ -26,6 +26,8 @@ class SocioeconomicLevelRequest extends FormRequest
     $rules = [
       'name'             => 'required|string|max:150|unique:socioeconomic_levels',
       'is_all_countries' => 'required|boolean',
+      'countries'        => 'sometimes|array',
+      'countries.*'      => 'exists:countries,id',
     ];
 
     if ($this->isMethod('PUT')) {

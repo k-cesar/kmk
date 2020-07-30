@@ -3,6 +3,7 @@
 namespace App\Http\Modules\User;
 
 use App\Traits\SecureDeletes;
+use App\Http\Modules\Store\Store;
 use Spatie\Permission\Models\Role;
 use App\Http\Modules\Company\Company;
 use Spatie\Permission\Traits\HasRoles;
@@ -50,7 +51,7 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var array
      */
-    protected $with = ['company'];
+    protected $with = ['company', 'stores'];
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -95,6 +96,16 @@ class User extends Authenticatable implements JWTSubject
     public function company()
     {
         return $this->belongsTo(Company::class);
+    }
+
+    /**
+     * The stores that belong to the User.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function stores()
+    {
+        return $this->belongsToMany(Store::class, 'store_users');
     }
 
     /**
