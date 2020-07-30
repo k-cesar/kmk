@@ -1,297 +1,308 @@
 [
-	{
-		"group": "Permissions",
-		"level": 0,
-		"labels": [
-			{ "name": "Index Permissions",   "route_name": "permissions.index" },
-			{ "name": "Update Permissions",  "route_name": "permissions.update" },
-			{ "name": "Show Permissions",    "route_name": "permissions.show" },
-			{ "name": "Store Permissions",   "route_name": "permissions.store" },
-			{ "name": "Destroy Permissions", "route_name": "permissions.destroy" },
-			{ "name": "Clean Permissions",   "route_name": "permissions.clean" }
-		]
-	},
-	{
-		"group": "Roles",
-		"level": 1,
-		"labels": [
-			{ "name": "Index Roles",   "route_name": "roles.index" },
-			{ "name": "Update Roles",  "route_name": "roles.update" },
-			{ "name": "Show Roles",    "route_name": "roles.show" },
-			{ "name": "Store Roles",   "route_name": "roles.store" },
-			{ "name": "Destroy Roles", "route_name": "roles.destroy" }
-		]
-	},
-	{
-		"group": "Role Permissions",
-		"level": 1,
-		"labels": [
-			{ "name": "Index Role Permissions", "route_name": "roles.permissions.index" },
-			{ "name": "Store Role Permissions", "route_name": "roles.permissions.store" }
-		]
-	},
-	{
-		"group": "Monedas",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Monedas",     "route_name": "currencies.index" },
-			{ "name": "Actualizar Monedas", "route_name": "currencies.update" },
-			{ "name": "Mostrar Monedas",    "route_name": "currencies.show" },
-			{ "name": "Almacenar Monedas",  "route_name": "currencies.store" },
-			{ "name": "Eliminar Monedas",   "route_name": "currencies.destroy" }
-		]
-	},
-	{
-		"group": "Países",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Países",     "route_name": "countries.index" },
-			{ "name": "Actualizar Países", "route_name": "countries.update" },
-			{ "name": "Mostrar Países",    "route_name": "countries.show" },
-			{ "name": "Almacenar Países",  "route_name": "countries.store" },
-			{ "name": "Eliminar Países",   "route_name": "countries.destroy" }
-		]
-	},
-	{
-		"group": "Empresas",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Empresas",     "route_name": "companies.index" },
-			{ "name": "Actualizar Empresas", "route_name": "companies.update" },
-			{ "name": "Mostrar Empresas",    "route_name": "companies.show" },
-			{ "name": "Almacenar Empresas",  "route_name": "companies.store" },
-			{ "name": "Eliminar Empresas",   "route_name": "companies.destroy" }
-		]
-	},
-	{
-		"group": "Usuarios",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Usuarios",     "route_name": "users.index" },
-			{ "name": "Actualizar Usuarios", "route_name": "users.update" },
-			{ "name": "Mostrar Usuarios",    "route_name": "users.show" },
-			{ "name": "Almacenar Usuarios",  "route_name": "users.store" },
-			{ "name": "Eliminar Usuarios",   "route_name": "users.destroy" }
-		]
-	},
-	{
-		"group": "Fabricantes",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Fabricantes",     "route_name": "makers.index" },
-			{ "name": "Actualizar Fabricantes", "route_name": "makers.update" },
-			{ "name": "Mostrar Fabricantes",    "route_name": "makers.show" },
-			{ "name": "Almacenar Fabricantes",  "route_name": "makers.store" },
-			{ "name": "Eliminar Fabricantes",   "route_name": "makers.destroy" }
-		]
-	},
-	{
-		"group": "Marcas",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Marcas",     "route_name": "brands.index" },
-			{ "name": "Actualizar Marcas", "route_name": "brands.update" },
-			{ "name": "Mostrar Marcas",    "route_name": "brands.show" },
-			{ "name": "Almacenar Marcas",  "route_name": "brands.store" },
-			{ "name": "Eliminar Marcas",   "route_name": "brands.destroy" }
-		]
-	},
-	{
-		"group": "Proveedores",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Proveedores",     "route_name": "providers.index" },
-			{ "name": "Actualizar Proveedores", "route_name": "providers.update" },
-			{ "name": "Mostrar Proveedores",    "route_name": "providers.show" },
-			{ "name": "Almacenar Proveedores",  "route_name": "providers.store" },
-			{ "name": "Eliminar Proveedores",   "route_name": "providers.destroy" }
-		]
-	},
-	{
-		"group": "Métodos de Pago",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Métodos de Pago",     "route_name": "payment-methods.index" },
-			{ "name": "Actualizar Métodos de Pago", "route_name": "payment-methods.update" },
-			{ "name": "Mostrar Métodos de Pago",    "route_name": "payment-methods.show" },
-			{ "name": "Almacenar Métodos de Pago",  "route_name": "payment-methods.store" },
-			{ "name": "Eliminar Métodos de Pago",   "route_name": "payment-methods.destroy" }
-		]
-	},
-	{
-		"group": "Unidades de Medida",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Unidades de Medida",     "route_name": "uoms.index" },
-			{ "name": "Actualizar Unidades de Medida", "route_name": "uoms.update" },
-			{ "name": "Mostrar Unidades de Medida",    "route_name": "uoms.show" },
-			{ "name": "Almacenar Unidades de Medida",  "route_name": "uoms.store" },
-			{ "name": "Eliminar Unidades de Medida",   "route_name": "uoms.destroy" }
-		]
-	},
-	{
-		"group": "Niveles Socioeconómicos",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Niveles Socioeconómicos",     "route_name": "socioeconomic-levels.index" },
-			{ "name": "Actualizar Niveles Socioeconómicos", "route_name": "socioeconomic-levels.update" },
-			{ "name": "Mostrar Niveles Socioeconómicos",    "route_name": "socioeconomic-levels.show" },
-			{ "name": "Almacenar Niveles Socioeconómicos",  "route_name": "socioeconomic-levels.store" },
-			{ "name": "Eliminar Niveles Socioeconómicos",   "route_name": "socioeconomic-levels.destroy" }
-		]
-	},
-	{
-		"group": "Tipos de Ubicación",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Tipos de Ubicación",     "route_name": "location-types.index" },
-			{ "name": "Actualizar Tipos de Ubicación", "route_name": "location-types.update" },
-			{ "name": "Mostrar Tipos de Ubicación",    "route_name": "location-types.show" },
-			{ "name": "Almacenar Tipos de Ubicación",  "route_name": "location-types.store" },
-			{ "name": "Eliminar Tipos de Ubicación",   "route_name": "location-types.destroy" }
-		]
-	},
-	{
-		"group": "Tipos de Tienda",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Tipos de Tienda",     "route_name": "store-types.index" },
-			{ "name": "Actualizar Tipos de Tienda", "route_name": "store-types.update" },
-			{ "name": "Mostrar Tipos de Tienda",    "route_name": "store-types.show" },
-			{ "name": "Almacenar Tipos de Tienda",  "route_name": "store-types.store" },
-			{ "name": "Eliminar Tipos de Tienda",   "route_name": "store-types.destroy" }
-		]
-	},
-	{
-		"group": "Categorías de Producto",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Categorías de Producto",     "route_name": "product-categories.index" },
-			{ "name": "Actualizar Categorías de Producto", "route_name": "product-categories.update" },
-			{ "name": "Mostrar Categorías de Producto",    "route_name": "product-categories.show" },
-			{ "name": "Almacenar Categorías de Producto",  "route_name": "product-categories.store" },
-			{ "name": "Eliminar Categorías de Producto",   "route_name": "product-categories.destroy" }
-		]
-	},
-	{
-		"group": "Departamentos de Producto",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Departamentos de Producto",     "route_name": "product-departments.index" },
-			{ "name": "Actualizar Departamentos de Producto", "route_name": "product-departments.update" },
-			{ "name": "Mostrar Departamentos de Producto",    "route_name": "product-departments.show" },
-			{ "name": "Almacenar Departamentos de Producto",  "route_name": "product-departments.store" },
-			{ "name": "Eliminar Departamentos de Producto",   "route_name": "product-departments.destroy" }
-		]
-	},
-	{
-		"group": "Productos",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Productos",     "route_name": "product.index" },
-			{ "name": "Actualizar Productos", "route_name": "product.update" },
-			{ "name": "Mostrar Productos",    "route_name": "product.show" },
-			{ "name": "Almacenar Productos",  "route_name": "product.store" },
-			{ "name": "Eliminar Productos",   "route_name": "product.destroy" }
-		]
-	},
-	{
-		"group": "Formatos de Tienda",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Formatos de Tienda",     "route_name": "store-formats.index" },
-			{ "name": "Actualizar Formatos de Tienda", "route_name": "store-formats.update" },
-			{ "name": "Mostrar Formatos de Tienda",    "route_name": "store-formats.show" },
-			{ "name": "Almacenar Formatos de Tienda",  "route_name": "store-formats.store" },
-			{ "name": "Eliminar Formatos de Tienda",   "route_name": "store-formats.destroy" }
-		]
-	},
-	{
-		"group": "Cadenas de Tienda",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Cadenas de Tienda",     "route_name": "store-chains.index" },
-			{ "name": "Actualizar Cadenas de Tienda", "route_name": "store-chains.update" },
-			{ "name": "Mostrar Cadenas de Tienda",    "route_name": "store-chains.show" },
-			{ "name": "Almacenar Cadenas de Tienda",  "route_name": "store-chains.store" },
-			{ "name": "Eliminar Cadenas de Tienda",   "route_name": "store-chains.destroy" }
-		]
-	},
-	{
-		"group": "Banderas de Tienda",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Banderas de Tienda",     "route_name": "store-flags.index" },
-			{ "name": "Actualizar Banderas de Tienda", "route_name": "store-flags.update" },
-			{ "name": "Mostrar Banderas de Tienda",    "route_name": "store-flags.show" },
-			{ "name": "Almacenar Banderas de Tienda",  "route_name": "store-flags.store" },
-			{ "name": "Eliminar Banderas de Tienda",   "route_name": "store-flags.destroy" }
-		]
-	},
-	{
-		"group": "Regiones",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Regiones",     "route_name": "regions.index" },
-			{ "name": "Actualizar Regiones", "route_name": "regions.update" },
-			{ "name": "Mostrar Regiones",    "route_name": "regions.show" },
-			{ "name": "Almacenar Regiones",  "route_name": "regions.store" },
-			{ "name": "Eliminar Regiones",   "route_name": "regions.destroy" }
-		]
-	},
-	{
-		"group": "Estados",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Estados",     "route_name": "states.index" },
-			{ "name": "Actualizar Estados", "route_name": "states.update" },
-			{ "name": "Mostrar Estados",    "route_name": "states.show" },
-			{ "name": "Almacenar Estados",  "route_name": "states.store" },
-			{ "name": "Eliminar Estados",   "route_name": "states.destroy" }
-		]
-	},
-	{
-		"group": "Municipios",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Municipios",     "route_name": "municipalities.index" },
-			{ "name": "Actualizar Municipios", "route_name": "municipalities.update" },
-			{ "name": "Mostrar Municipios",    "route_name": "municipalities.show" },
-			{ "name": "Almacenar Municipios",  "route_name": "municipalities.store" },
-			{ "name": "Eliminar Municipios",   "route_name": "municipalities.destroy" }
-		]
-	},
-	{
-		"group": "Zonas",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Zonas",     "route_name": "zones.index" },
-			{ "name": "Actualizar Zonas", "route_name": "zones.update" },
-			{ "name": "Mostrar Zonas",    "route_name": "zones.show" },
-			{ "name": "Almacenar Zonas",  "route_name": "zones.store" },
-			{ "name": "Eliminar Zonas",   "route_name": "zones.destroy" }
-		]
-	},
-	{
-		"group": "Tiendas",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Tiendas",     "route_name": "stores.index" },
-			{ "name": "Actualizar Tiendas", "route_name": "stores.update" },
-			{ "name": "Mostrar Tiendas",    "route_name": "stores.show" },
-			{ "name": "Almacenar Tiendas",  "route_name": "stores.store" },
-			{ "name": "Eliminar Tiendas",   "route_name": "stores.destroy" }
-		]
-	},
-	{
-		"group": "Clientes",
-		"level": 1,
-		"labels": [
-			{ "name": "Listar Clientes",     "route_name": "clients.index" },
-			{ "name": "Actualizar Clientes", "route_name": "clients.update" },
-			{ "name": "Mostrar Clientes",    "route_name": "clients.show" },
-			{ "name": "Almacenar Clientes",  "route_name": "clients.store" },
-			{ "name": "Eliminar Clientes",   "route_name": "clients.destroy" }
-		]
-	}
+  {
+    "group": "Permissions",
+    "level": 0,
+    "labels": [
+      { "name": "Index Permissions", "route_name": "permissions.index" },
+      { "name": "Update Permissions", "route_name": "permissions.update" },
+      { "name": "Show Permissions", "route_name": "permissions.show" },
+      { "name": "Store Permissions", "route_name": "permissions.store" },
+      { "name": "Destroy Permissions", "route_name": "permissions.destroy" },
+      { "name": "Clean Permissions", "route_name": "permissions.clean" }
+    ]
+  },
+  {
+    "group": "Roles",
+    "level": 1,
+    "labels": [
+      { "name": "Index Roles", "route_name": "roles.index" },
+      { "name": "Update Roles", "route_name": "roles.update" },
+      { "name": "Show Roles", "route_name": "roles.show" },
+      { "name": "Store Roles", "route_name": "roles.store" },
+      { "name": "Destroy Roles", "route_name": "roles.destroy" }
+    ]
+  },
+  {
+    "group": "Role Permissions",
+    "level": 1,
+    "labels": [
+      { "name": "Index Role Permissions", "route_name": "roles.permissions.index" },
+      { "name": "Store Role Permissions", "route_name": "roles.permissions.store" }
+    ]
+  },
+  {
+    "group": "Monedas",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Monedas", "route_name": "currencies.index" },
+      { "name": "Actualizar Monedas", "route_name": "currencies.update" },
+      { "name": "Mostrar Monedas", "route_name": "currencies.show" },
+      { "name": "Almacenar Monedas", "route_name": "currencies.store" },
+      { "name": "Eliminar Monedas", "route_name": "currencies.destroy" }
+    ]
+  },
+  {
+    "group": "Países",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Países", "route_name": "countries.index" },
+      { "name": "Actualizar Países", "route_name": "countries.update" },
+      { "name": "Mostrar Países", "route_name": "countries.show" },
+      { "name": "Almacenar Países", "route_name": "countries.store" },
+      { "name": "Eliminar Países", "route_name": "countries.destroy" }
+    ]
+  },
+  {
+    "group": "Empresas",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Empresas", "route_name": "companies.index" },
+      { "name": "Actualizar Empresas", "route_name": "companies.update" },
+      { "name": "Mostrar Empresas", "route_name": "companies.show" },
+      { "name": "Almacenar Empresas", "route_name": "companies.store" },
+      { "name": "Eliminar Empresas", "route_name": "companies.destroy" }
+    ]
+  },
+  {
+    "group": "Usuarios",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Usuarios", "route_name": "users.index" },
+      { "name": "Actualizar Usuarios", "route_name": "users.update" },
+      { "name": "Mostrar Usuarios", "route_name": "users.show" },
+      { "name": "Almacenar Usuarios", "route_name": "users.store" },
+      { "name": "Eliminar Usuarios", "route_name": "users.destroy" }
+    ]
+  },
+  {
+    "group": "Fabricantes",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Fabricantes", "route_name": "makers.index" },
+      { "name": "Actualizar Fabricantes", "route_name": "makers.update" },
+      { "name": "Mostrar Fabricantes", "route_name": "makers.show" },
+      { "name": "Almacenar Fabricantes", "route_name": "makers.store" },
+      { "name": "Eliminar Fabricantes", "route_name": "makers.destroy" }
+    ]
+  },
+  {
+    "group": "Marcas",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Marcas", "route_name": "brands.index" },
+      { "name": "Actualizar Marcas", "route_name": "brands.update" },
+      { "name": "Mostrar Marcas", "route_name": "brands.show" },
+      { "name": "Almacenar Marcas", "route_name": "brands.store" },
+      { "name": "Eliminar Marcas", "route_name": "brands.destroy" }
+    ]
+  },
+  {
+    "group": "Proveedores",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Proveedores", "route_name": "providers.index" },
+      { "name": "Actualizar Proveedores", "route_name": "providers.update" },
+      { "name": "Mostrar Proveedores", "route_name": "providers.show" },
+      { "name": "Almacenar Proveedores", "route_name": "providers.store" },
+      { "name": "Eliminar Proveedores", "route_name": "providers.destroy" }
+    ]
+  },
+  {
+    "group": "Métodos de Pago",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Métodos de Pago", "route_name": "payment-methods.index" },
+      { "name": "Actualizar Métodos de Pago", "route_name": "payment-methods.update" },
+      { "name": "Mostrar Métodos de Pago", "route_name": "payment-methods.show" },
+      { "name": "Almacenar Métodos de Pago", "route_name": "payment-methods.store" },
+      { "name": "Eliminar Métodos de Pago", "route_name": "payment-methods.destroy" }
+    ]
+  },
+  {
+    "group": "Unidades de Medida",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Unidades de Medida", "route_name": "uoms.index" },
+      { "name": "Actualizar Unidades de Medida", "route_name": "uoms.update" },
+      { "name": "Mostrar Unidades de Medida", "route_name": "uoms.show" },
+      { "name": "Almacenar Unidades de Medida", "route_name": "uoms.store" },
+      { "name": "Eliminar Unidades de Medida", "route_name": "uoms.destroy" }
+    ]
+  },
+  {
+    "group": "Niveles Socioeconómicos",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Niveles Socioeconómicos", "route_name": "socioeconomic-levels.index" },
+      { "name": "Actualizar Niveles Socioeconómicos", "route_name": "socioeconomic-levels.update" },
+      { "name": "Mostrar Niveles Socioeconómicos", "route_name": "socioeconomic-levels.show" },
+      { "name": "Almacenar Niveles Socioeconómicos", "route_name": "socioeconomic-levels.store" },
+      { "name": "Eliminar Niveles Socioeconómicos", "route_name": "socioeconomic-levels.destroy" }
+    ]
+  },
+  {
+    "group": "Tipos de Ubicación",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Tipos de Ubicación", "route_name": "location-types.index" },
+      { "name": "Actualizar Tipos de Ubicación", "route_name": "location-types.update" },
+      { "name": "Mostrar Tipos de Ubicación", "route_name": "location-types.show" },
+      { "name": "Almacenar Tipos de Ubicación", "route_name": "location-types.store" },
+      { "name": "Eliminar Tipos de Ubicación", "route_name": "location-types.destroy" }
+    ]
+  },
+  {
+    "group": "Tipos de Tienda",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Tipos de Tienda", "route_name": "store-types.index" },
+      { "name": "Actualizar Tipos de Tienda", "route_name": "store-types.update" },
+      { "name": "Mostrar Tipos de Tienda", "route_name": "store-types.show" },
+      { "name": "Almacenar Tipos de Tienda", "route_name": "store-types.store" },
+      { "name": "Eliminar Tipos de Tienda", "route_name": "store-types.destroy" }
+    ]
+  },
+  {
+    "group": "Categorías de Producto",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Categorías de Producto", "route_name": "product-categories.index" },
+      { "name": "Actualizar Categorías de Producto", "route_name": "product-categories.update" },
+      { "name": "Mostrar Categorías de Producto", "route_name": "product-categories.show" },
+      { "name": "Almacenar Categorías de Producto", "route_name": "product-categories.store" },
+      { "name": "Eliminar Categorías de Producto", "route_name": "product-categories.destroy" }
+    ]
+  },
+  {
+    "group": "Departamentos de Producto",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Departamentos de Producto", "route_name": "product-departments.index" },
+      { "name": "Actualizar Departamentos de Producto", "route_name": "product-departments.update" },
+      { "name": "Mostrar Departamentos de Producto", "route_name": "product-departments.show" },
+      { "name": "Almacenar Departamentos de Producto", "route_name": "product-departments.store" },
+      { "name": "Eliminar Departamentos de Producto", "route_name": "product-departments.destroy" }
+    ]
+  },
+  {
+    "group": "Productos",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Productos", "route_name": "product.index" },
+      { "name": "Actualizar Productos", "route_name": "product.update" },
+      { "name": "Mostrar Productos", "route_name": "product.show" },
+      { "name": "Almacenar Productos", "route_name": "product.store" },
+      { "name": "Eliminar Productos", "route_name": "product.destroy" }
+    ]
+  },
+  {
+    "group": "Presentaciones",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Presentaciones", "route_name": "product-presentations.index" },
+      { "name": "Actualizar Presentaciones", "route_name": "product-presentations.update" },
+      { "name": "Mostrar Presentaciones", "route_name": "product-presentations.show" },
+      { "name": "Almacenar Presentaciones", "route_name": "product-presentations.store" },
+      { "name": "Eliminar Presentaciones", "route_name": "product-presentations.destroy" }
+    ]
+  },
+  {
+    "group": "Formatos de Tienda",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Formatos de Tienda", "route_name": "store-formats.index" },
+      { "name": "Actualizar Formatos de Tienda", "route_name": "store-formats.update" },
+      { "name": "Mostrar Formatos de Tienda", "route_name": "store-formats.show" },
+      { "name": "Almacenar Formatos de Tienda", "route_name": "store-formats.store" },
+      { "name": "Eliminar Formatos de Tienda", "route_name": "store-formats.destroy" }
+    ]
+  },
+  {
+    "group": "Cadenas de Tienda",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Cadenas de Tienda", "route_name": "store-chains.index" },
+      { "name": "Actualizar Cadenas de Tienda", "route_name": "store-chains.update" },
+      { "name": "Mostrar Cadenas de Tienda", "route_name": "store-chains.show" },
+      { "name": "Almacenar Cadenas de Tienda", "route_name": "store-chains.store" },
+      { "name": "Eliminar Cadenas de Tienda", "route_name": "store-chains.destroy" }
+    ]
+  },
+  {
+    "group": "Banderas de Tienda",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Banderas de Tienda", "route_name": "store-flags.index" },
+      { "name": "Actualizar Banderas de Tienda", "route_name": "store-flags.update" },
+      { "name": "Mostrar Banderas de Tienda", "route_name": "store-flags.show" },
+      { "name": "Almacenar Banderas de Tienda", "route_name": "store-flags.store" },
+      { "name": "Eliminar Banderas de Tienda", "route_name": "store-flags.destroy" }
+    ]
+  },
+  {
+    "group": "Regiones",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Regiones", "route_name": "regions.index" },
+      { "name": "Actualizar Regiones", "route_name": "regions.update" },
+      { "name": "Mostrar Regiones", "route_name": "regions.show" },
+      { "name": "Almacenar Regiones", "route_name": "regions.store" },
+      { "name": "Eliminar Regiones", "route_name": "regions.destroy" }
+    ]
+  },
+  {
+    "group": "Estados",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Estados", "route_name": "states.index" },
+      { "name": "Actualizar Estados", "route_name": "states.update" },
+      { "name": "Mostrar Estados", "route_name": "states.show" },
+      { "name": "Almacenar Estados", "route_name": "states.store" },
+      { "name": "Eliminar Estados", "route_name": "states.destroy" }
+    ]
+  },
+  {
+    "group": "Municipios",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Municipios", "route_name": "municipalities.index" },
+      { "name": "Actualizar Municipios", "route_name": "municipalities.update" },
+      { "name": "Mostrar Municipios", "route_name": "municipalities.show" },
+      { "name": "Almacenar Municipios", "route_name": "municipalities.store" },
+      { "name": "Eliminar Municipios", "route_name": "municipalities.destroy" }
+    ]
+  },
+  {
+    "group": "Zonas",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Zonas", "route_name": "zones.index" },
+      { "name": "Actualizar Zonas", "route_name": "zones.update" },
+      { "name": "Mostrar Zonas", "route_name": "zones.show" },
+      { "name": "Almacenar Zonas", "route_name": "zones.store" },
+      { "name": "Eliminar Zonas", "route_name": "zones.destroy" }
+    ]
+  },
+  {
+    "group": "Tiendas",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Tiendas", "route_name": "stores.index" },
+      { "name": "Actualizar Tiendas", "route_name": "stores.update" },
+      { "name": "Mostrar Tiendas", "route_name": "stores.show" },
+      { "name": "Almacenar Tiendas", "route_name": "stores.store" },
+      { "name": "Eliminar Tiendas", "route_name": "stores.destroy" }
+    ]
+  },
+  {
+    "group": "Clientes",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Clientes", "route_name": "clients.index" },
+      { "name": "Actualizar Clientes", "route_name": "clients.update" },
+      { "name": "Mostrar Clientes", "route_name": "clients.show" },
+      { "name": "Almacenar Clientes", "route_name": "clients.store" },
+      { "name": "Eliminar Clientes", "route_name": "clients.destroy" }
+    ]
+  }
 ]
