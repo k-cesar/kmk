@@ -315,5 +315,16 @@
       { "name": "Almacenar Turnos", "route_name": "turns.store" },
       { "name": "Eliminar Turnos", "route_name": "turns.destroy" }
     ]
+  },
+  {
+    "group": "Presentation Skus",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Presentation Skus", "route_name": "presentation-skus.index" },
+      { "name": "Actualizar Presentation Skus", "route_name": "presentation-skus.update" },
+      { "name": "Mostrar Presentation Skus", "route_name": "presentation-skus.show" },
+      { "name": "Almacenar Presentation Skus", "route_name": "presentation-skus.store" },
+      { "name": "Eliminar Presentation Skus", "route_name": "presentation-skus.destroy" }
+    ]
   }
 ]

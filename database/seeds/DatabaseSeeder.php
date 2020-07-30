@@ -41,6 +41,7 @@ class DatabaseSeeder extends Seeder
             StoreSeeder::class,
             ClientSeeder::class,
             TurnSeeder::class,
+            PresentationSkuSeeder::class,
         ]);
     }
 }
