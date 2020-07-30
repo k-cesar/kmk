@@ -26,7 +26,7 @@ class ProductsRequest extends FormRequest
         $rules = [];
         if($this->isMethod('GET')) {
             $rules = [
-                'description' => 'required|string|max:255|exist:description', 
+                'description' => 'string|max:255|exist:description', 
             ];
         }
         return $rules;

@@ -13,14 +13,6 @@ class ProductsController extends Controller
     {
         $where = [];
 
-        if($request->get('id')) {
-            array_push($where, ['id', $request->get('id')]);
-        }
-
-        if($request->put('id')) {
-            array_push($where, ['id', $request->get('id')]);
-        }
-
         $products = Products::where($where);
         return $this->showAll($products, Schema::getColumnListing((new Products)->getTable()));
     }
@@ -30,8 +22,8 @@ class ProductsController extends Controller
         return $this->showOne($products, 201);
     }
 
-    public function show(Products $request) {
-        return $this->showOne($request);
+    public function show(Products $products) {
+        return $this->showOne($products);
     }
 
     public function update(ProductsRequest $request, Products $products) {

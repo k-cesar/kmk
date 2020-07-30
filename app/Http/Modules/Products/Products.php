@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Products extends Model
 {
     use SecureDeletes;
-    
+
     /** 
      * Table Associated with the model
      */ 
@@ -21,6 +21,7 @@ class Products extends Model
      */
     protected $fillable = [
         'description',
+        'is_all_countries',
         'brand_id',
         'product_category_id',
         'product_subcategory_id',
