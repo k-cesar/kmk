@@ -59,7 +59,7 @@ class SocioeconomicLevelControllerTest extends ApiTestCase
     $response = $this->getJson(route('socioeconomic-levels.index'))
       ->assertOk();
     
-    foreach (SocioeconomicLevel::limit(10)->withOut('countries')->get() as $socioeconomicLevel) {
+    foreach (SocioeconomicLevel::limit(10)->get() as $socioeconomicLevel) {
       $response->assertJsonFragment($socioeconomicLevel->toArray());
     }
   }

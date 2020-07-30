@@ -15,7 +15,7 @@ class SocioeconomicLevelController extends Controller
    */
   public function index()
   {
-    $socioeconomicLevels = SocioeconomicLevel::withOut('countries');
+    $socioeconomicLevels = SocioeconomicLevel::query();
 
     return $this->showAll($socioeconomicLevels, Schema::getColumnListing((new SocioEconomicLevel)->getTable()));
   }
