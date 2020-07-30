@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Modules\LocationType\LocationType;
 use App\Http\Modules\Municipality\Municipality;
 use App\Http\Modules\SocioeconomicLevel\SocioeconomicLevel;
+use App\Http\Modules\Turn\Turn;
 use App\Http\Modules\User\User;
 
 class Store extends Model
@@ -48,7 +49,7 @@ class Store extends Model
      *
      * @var array
      */
-    protected $with = ['storeType', 'storeChain', 'storeFlag', 'locationType', 'storeFormat', 'socioeconomicLevel', 'state', 'municipality', 'zone'];
+    protected $with = ['storeType', 'storeChain', 'storeFlag', 'locationType', 'storeFormat', 'socioeconomicLevel', 'state', 'municipality', 'zone', 'turns'];
 
     /**
      * Get the storeType that owns the store.
@@ -150,4 +151,23 @@ class Store extends Model
         return $this->belongsToMany(User::class, 'store_users');
     }
 
+    /**
+     * Get the turns for the store.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function turns()
+    {
+        return $this->hasMany(Turn::class);
+    }
+
+    /**
+     * The history/detail of turns that belong to the store.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function turnsHistory()
+    {
+        return $this->belongsToMany(Turn::class, 'store_turns');
+    }
 }
