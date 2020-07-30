@@ -61,7 +61,7 @@ class ProductSubCategoriesControllerTest extends ApiTestCase
 
         $productSubCategories = factory(ProductSubCategories::class)->create();
 
-        $this->getJson(route('product-categories.show', $productSubCategories->id))
+        $this->getJson(route('product-sub-categories.show', $productSubCategories->id))
         ->assertOk()
         ->assertJson($productSubCategories->toArray());
     }

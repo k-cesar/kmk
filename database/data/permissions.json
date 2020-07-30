@@ -188,14 +188,15 @@
     "group": "Productos",
     "level": 1,
     "labels": [
-      { "name": "Listar Productos", "route_name": "product.index" },
-      { "name": "Actualizar Productos", "route_name": "product.update" },
-      { "name": "Mostrar Productos", "route_name": "product.show" },
-      { "name": "Almacenar Productos", "route_name": "product.store" },
-      { "name": "Eliminar Productos", "route_name": "product.destroy" }
+      { "name": "Listar Productos", "route_name": "products.index" },
+      { "name": "Actualizar Productos", "route_name": "products.update" },
+      { "name": "Mostrar Productos", "route_name": "products.show" },
+      { "name": "Almacenar Productos", "route_name": "products.store" },
+      { "name": "Eliminar Productos", "route_name": "products.destroy" }
     ]
   },
   {
+    {
     "group": "Presentaciones",
     "level": 1,
     "labels": [
@@ -204,6 +205,16 @@
       { "name": "Mostrar Presentaciones", "route_name": "product-presentations.show" },
       { "name": "Almacenar Presentaciones", "route_name": "product-presentations.store" },
       { "name": "Eliminar Presentaciones", "route_name": "product-presentations.destroy" }
+  },
+  {
+    "group": "Sub Categorias de productos",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Sub Categorias de productos", "route_name": "product-sub-categories.index" },
+      { "name": "Actualizar Sub Categorias de productos", "route_name": "product-sub-categories.update" },
+      { "name": "Mostrar Sub Categorias de productos", "route_name": "product-sub-categories.show" },
+      { "name": "Almacenar Sub Categorias de productos", "route_name": "product-sub-categories.store" },
+      { "name": "Eliminar Sub Categorias de productos", "route_name": "product-sub-categories.destroy" }
     ]
   },
   {
@@ -303,6 +314,17 @@
       { "name": "Mostrar Clientes", "route_name": "clients.show" },
       { "name": "Almacenar Clientes", "route_name": "clients.store" },
       { "name": "Eliminar Clientes", "route_name": "clients.destroy" }
+    ]
+  },
+  {
+    "group": "Turnos",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Turnos", "route_name": "turns.index" },
+      { "name": "Actualizar Turnos", "route_name": "turns.update" },
+      { "name": "Mostrar Turnos", "route_name": "turns.show" },
+      { "name": "Almacenar Turnos", "route_name": "turns.store" },
+      { "name": "Eliminar Turnos", "route_name": "turns.destroy" }
     ]
   }
 ]
