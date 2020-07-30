@@ -23,7 +23,6 @@ class CreateStoreUsersTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->unsignedBigInteger('store_id');
             $table->unsignedBigInteger('user_id');
-            $table->enum('status', ['ACTIVE', 'INACTIVE']);
             $table->timestamps();
             $table->softDeletes();
 

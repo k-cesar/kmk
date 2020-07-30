@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Modules\Store\Store;
 use Tests\ApiTestCase;
 use App\Http\Modules\User\User;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -59,7 +60,7 @@ class UserControllerTest extends ApiTestCase
     $response = $this->getJson(route('users.index'))
         ->assertOk();
     
-    foreach (User::limit(10)->get() as $user) {
+    foreach (User::limit(10)->withOut('stores')->get() as $user) {
       $response->assertJsonFragment($user->toArray());
     }
   }
@@ -89,9 +90,12 @@ class UserControllerTest extends ApiTestCase
     $role = $this->getRoleWithPermissionsTo(['users.store']);
     $user = $this->signInWithRole($role);
 
+    $stores = factory(Store::class, 2)->create();
+
     $attributes = factory(User::class)->raw();
     $attributes['password'] = 'password';
     $attributes['password_confirmation'] = $attributes['password'];
+    $attributes['stores'] = $stores->pluck('id');
 
     $this->postJson(route('users.store'), $attributes)
       ->assertCreated();
@@ -99,8 +103,13 @@ class UserControllerTest extends ApiTestCase
     unset($attributes['password']);
     unset($attributes['password_confirmation']);
     unset($attributes['remember_token']);
+    unset($attributes['stores']);
 
     $this->assertDatabaseHas('users', $attributes);
+
+    foreach ($stores as $store) {
+      $this->assertDatabaseHas('store_users', ['store_id' => $store->id, 'user_id' => User::all()->last()->id]);
+    }
   }
 
 
@@ -112,8 +121,11 @@ class UserControllerTest extends ApiTestCase
     $role = $this->getRoleWithPermissionsTo(['users.update']);
     $user = $this->signInWithRole($role);
 
+    $stores = factory(Store::class, 2)->create();
+
     $attributes = factory(User::class)->raw();
     $attributes['update_password'] = false;
+    $attributes['stores'] = $stores->pluck('id');
 
     $this->putJson(route('users.update', $user->id), $attributes)
       ->assertOk();
@@ -121,8 +133,12 @@ class UserControllerTest extends ApiTestCase
     unset($attributes['password']);
     unset($attributes['update_password']);
     unset($attributes['remember_token']);
+    unset($attributes['stores']);
 
     $this->assertDatabaseHas('users', $attributes);
+    foreach ($stores as $store) {
+      $this->assertDatabaseHas('store_users', ['store_id' => $store->id, 'user_id' => $user->id]);
+    }
   }
 
   /**

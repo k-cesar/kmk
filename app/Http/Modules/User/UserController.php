@@ -14,7 +14,7 @@ class UserController extends Controller
    */
   public function index()
   {
-    $users = User::query();
+    $users = User::withOut('stores');
 
     return $this->showAll($users, Schema::getColumnListing((new User)->getTable()));
   }
@@ -28,6 +28,7 @@ class UserController extends Controller
   public function store(UserRequest $request)
   {
     $user = User::create($request->validated());
+    $user->stores()->sync($request->stores);
 
     return $this->showOne($user, 201);
   }
@@ -53,6 +54,7 @@ class UserController extends Controller
   public function update(UserRequest $request, User $user)
   {
     $user->update($request->validated());
+    $user->stores()->sync($request->stores);
 
     return $this->showOne($user);
   }

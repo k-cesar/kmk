@@ -34,6 +34,8 @@ class UserRequest extends FormRequest
       'username'        => 'required|string|max:100|alpha_dash|unique:users',
       'password'        => 'required|string|min:8|max:25|confirmed',
       'update_password' => 'sometimes|nullable|boolean',
+      'stores'          => 'sometimes|array',
+      'stores.*'        => 'exists:stores,id',
       'phone'           => [
         'required', 
         'digits_between:1,50',

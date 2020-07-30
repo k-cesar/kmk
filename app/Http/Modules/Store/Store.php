@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Modules\LocationType\LocationType;
 use App\Http\Modules\Municipality\Municipality;
 use App\Http\Modules\SocioeconomicLevel\SocioeconomicLevel;
+use App\Http\Modules\User\User;
 
 class Store extends Model
 {
@@ -137,6 +138,16 @@ class Store extends Model
     public function zone()
     {
         return $this->belongsTo(Zone::class);
+    }
+
+    /**
+     * The users that belong to the store.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'store_users');
     }
 
 }
