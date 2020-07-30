@@ -9,32 +9,24 @@ use App\Http\Modules\Products\Products;
 
 class ProductsController extends Controller
 {
-    public function index(ProducsRequest $request)
+    public function index(ProductsRequest $request)
     {
         $where = [];
-
-        if($request->get('id')) {
-            array_push($where, ['id', $request->get('id')]);
-        }
-
-        if($request->put('id')) {
-            array_push($where, ['id', $request->get('id')]);
-        }
 
         $products = Products::where($where);
         return $this->showAll($products, Schema::getColumnListing((new Products)->getTable()));
     }
 
-    public function store(ProducsRequest $request) {
+    public function store(ProductsRequest $request) {
         $products = Products::create($request->validated());
         return $this->showOne($products, 201);
     }
 
-    public function show(Products $request) {
-        return $this->showOne($request);
+    public function show(Products $products) {
+        return $this->showOne($products);
     }
 
-    public function update(ProducsRequest $request, Products $products) {
+    public function update(ProductsRequest $request, Products $products) {
         $products->update($request->validated());
         return $this->showOne($products);
     }
