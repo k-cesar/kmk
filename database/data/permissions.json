@@ -304,5 +304,16 @@
       { "name": "Almacenar Clientes", "route_name": "clients.store" },
       { "name": "Eliminar Clientes", "route_name": "clients.destroy" }
     ]
+  },
+  {
+    "group": "Turnos",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Turnos", "route_name": "turns.index" },
+      { "name": "Actualizar Turnos", "route_name": "turns.update" },
+      { "name": "Mostrar Turnos", "route_name": "turns.show" },
+      { "name": "Almacenar Turnos", "route_name": "turns.store" },
+      { "name": "Eliminar Turnos", "route_name": "turns.destroy" }
+    ]
   }
 ]

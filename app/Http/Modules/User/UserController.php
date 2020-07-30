@@ -14,7 +14,7 @@ class UserController extends Controller
    */
   public function index()
   {
-    $users = User::withOut('stores');
+    $users = User::query();
 
     return $this->showAll($users, Schema::getColumnListing((new User)->getTable()));
   }

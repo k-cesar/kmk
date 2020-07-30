@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\Country;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Modules\Country\Country;
 use Illuminate\Support\Facades\Schema;
