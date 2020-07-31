@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Modules\Company\Company;
 use App\Http\Modules\PaymentMethod\PaymentMethod;
 use Illuminate\Database\Seeder;
 
@@ -12,6 +13,13 @@ class PaymentMethodSeeder extends Seeder
      */
     public function run()
     {
-        factory(PaymentMethod::class, 2)->create();
+        $paymentMethods = ['Crédito', 'Débito', 'Efectivo'];
+
+        foreach ($paymentMethods as $paymentMethod) {
+            factory(PaymentMethod::class)->create([
+                'name'       => $paymentMethod,
+                'company_id' => 0,
+            ]);
+        }
     }
 }

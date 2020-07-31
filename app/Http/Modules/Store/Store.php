@@ -3,6 +3,8 @@
 namespace App\Http\Modules\Store;
 
 use App\Traits\SecureDeletes;
+use App\Http\Modules\Turn\Turn;
+use App\Http\Modules\User\User;
 use App\Http\Modules\Zone\Zone;
 use App\Http\Modules\State\State;
 use Illuminate\Database\Eloquent\Model;
@@ -13,9 +15,8 @@ use App\Http\Modules\StoreFormat\StoreFormat;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Modules\LocationType\LocationType;
 use App\Http\Modules\Municipality\Municipality;
+use App\Http\Modules\PresentationCombo\PresentationCombo;
 use App\Http\Modules\SocioeconomicLevel\SocioeconomicLevel;
-use App\Http\Modules\Turn\Turn;
-use App\Http\Modules\User\User;
 
 class Store extends Model
 {
@@ -169,5 +170,15 @@ class Store extends Model
     public function turnsHistory()
     {
         return $this->belongsToMany(Turn::class, 'store_turns');
+    }
+
+    /**
+     * The presentationCombos that belong to the store.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function presentationCombos()
+    {
+        return $this->belongsToMany(PresentationCombo::class, 'presentation_combos_stores_turns');
     }
 }
