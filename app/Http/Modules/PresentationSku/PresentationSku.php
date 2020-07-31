@@ -5,6 +5,7 @@ namespace App\Http\Modules\PresentationSku;
 use App\Traits\SecureDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Modules\ProductPresentation\ProductPresentation;
 
 class PresentationSku extends Model
 {
@@ -27,7 +28,7 @@ class PresentationSku extends Model
      *
      * @var array
      */
-    // protected $with = ['product_presentation'];
+    protected $with = ['product_presentation'];
 
     /**
      * Get the product_presentation that owns the brand.

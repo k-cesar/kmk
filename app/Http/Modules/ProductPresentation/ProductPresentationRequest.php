@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Modules\Presentations;
+namespace App\Http\Modules\ProductPresentation;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PresentationsRequest extends FormRequest
+class ProductPresentationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
