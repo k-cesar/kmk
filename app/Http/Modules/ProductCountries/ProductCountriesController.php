@@ -9,15 +9,9 @@ use Illuminate\Support\Facades\Schema;
 
 class ProductCountriesController extends Controller
 {
-    public function index(ProductCountriesRequest $request)
+    public function index()
     {
-        $where = [];
-
-        if($request->get('product_id')) {
-            array_push($where, ['product_id', $request->get('product_id')]);
-        }
-
-        $productCountries = ProductCountries::where($where);
+        $productCountries = ProductCountries::query();
         return $this->showAll($productCountries, Schema::getColumnListing((new ProductCountries)->getTable()));
     }
 
@@ -26,17 +20,22 @@ class ProductCountriesController extends Controller
         return $this->showOne($productCountry, 201);
     }
 
-    public function show(ProductCountries $request) {
-        return $this->showOne($request);
+    public function show(ProductCountries $productCountry) {
+        return $this->showOne($productCountry);
     }
 
-    public function update(ProductCountriesRequest $request, ProductCountries $productCountries) {
-        $productCountries->update($request->validated());
-        return $this->showOne($productCountries);
+    public function update(ProductCountriesRequest $request, ProductCountries $productCountry) {
+        $productCountry->update($request->validated());
+        return $this->showOne($productCountry);
     }
 
-    public function destroy(ProductCountries $productCountries) {
-        $productCountries->secureDelete();
-        return $this->showOne($productCountries);
+    public function destroy(ProductCountries $productCountry) {
+        $productCountry->secureDelete();
+        return $this->showOne($productCountry);
+    }
+
+    public function options(){
+        $productCountries = ProductCountries::select('id');
+        return $this->showAll($productCountries, Schema::getColumnListing((new ProductCountries)->getTable()));
     }
 }

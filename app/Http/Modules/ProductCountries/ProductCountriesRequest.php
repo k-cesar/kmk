@@ -23,8 +23,16 @@ class ProductCountriesRequest extends FormRequest
      */
     public function rules()
     {
-        return $rules = [
-            'product_id' => 'integer|min:1|max:100',       
+        $rules = [
+            'product_id' => 'required|integer|exists:products,id',
+            'country_id' => 'required|integer|exists:countries,id'
         ];
+
+        if ($this->isMethod('PUT')) {
+            $rules['product_id'] = "required|integer|exists:products,id";
+            $rules['country_id'] = "required|integer|exists:countries,id";
+        }
+
+        return $rules;
     }
 }
