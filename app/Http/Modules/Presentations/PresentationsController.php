@@ -3,27 +3,21 @@
 namespace App\Http\Modules\Presentations;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Modules\Presentations\Presentations;
 use Illuminate\Support\Facades\Schema;
 
 class PresentationsController extends Controller
 {
-    public function index(PresentationsRequest $request)
+    public function index()
     {
-        $where = [];
-
-        if ($request->get('description')) {
-            array_push($where, ['description', 'ilike', '%'.$request->get('description').'%']);
-        }
-
-        $presentations = Presentations::where($where);
+        $presentations = Presentations::query();
         return $this->showAll($presentations, Schema::getColumnListing((new Presentations)->getTable()));
     }
 
     public function store(PresentationsRequest $request)
     {
-        $productsPresentation = Presentations::create($request->validated());
-        return $this->showOne($productsPresentation, 201);
+        $presentation = Presentations::create($request->validated());
+        return $this->showOne($presentation, 201);
     }
     
     public function show(Presentations $presentation)
@@ -31,15 +25,21 @@ class PresentationsController extends Controller
         return $this->showOne($presentation);
     }
 
-    public function update(PresentationsRequest $request, Presentations $productPresentations)
+    public function update(PresentationsRequest $request, Presentations $presentation)
     {
-        $productPresentations->update($request->validated());
-        return $this->showOne($productPresentations);
+        $presentation->update($request->validated());
+        return $this->showOne($presentation);
     }
 
     public function destroy(Presentations $presentation)
     {
         $presentation->secureDelete();
         return $this->showOne($presentation);
+    }
+
+    public function options()
+    {
+        $presentation = Presentations::select('id');
+        return $this->showAll($presentation, Schema::getColumnListing((new Presentations)->getTable()));
     }
 }
