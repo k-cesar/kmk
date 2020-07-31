@@ -10,17 +10,10 @@ class ProductSubCategories extends Model
 {
     use SecureDeletes;
 
-    protected $table = 'product_subcategories';
-
     protected $fillable = [
         'name',
         'product_category_id'
     ];
 
-    protected $with = ['productCategory'];
-
-    public function productCategory()
-    {
-        return $this->belongsTo(ProductCategory::class);
-    }
+    protected $table = 'product_subcategories';
 }

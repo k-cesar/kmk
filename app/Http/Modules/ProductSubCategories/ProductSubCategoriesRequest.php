@@ -24,20 +24,15 @@ class ProductSubCategoriesRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'name' => 'required|string|max:255',
-            'product_category_id'           => 'required|exists:product_categories,id'
+            'name' => 'required|string|max:255|unique:product_subcategories',
+            'product_category_id' => 'required|exists:product_categories,id'
         ];
 
         if ($this->isMethod('PUT')) {
-            $rules['name'] = "required|string|max:255";
+            $rules['name'] = "required|string|max:255|unique:product_subcategories,name,\"{$this->product_subcategories->name}\",name";
             $rules['product_category_id'] = "exists:product_categories,id";
         }
 
-        if ($this->isMethod('GET')) {     
-            $rules = [
-              'name' => 'string|max:255',       
-            ];
-        }
         return $rules;
     }
 }
