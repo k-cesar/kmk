@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Modules\ProductCountries;
+namespace App\Http\Modules\Presentations;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductCountriesRequest extends FormRequest
+class PresentationsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,13 +24,12 @@ class ProductCountriesRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'product_id' => 'required|integer|exists:products,id',
-            'country_id' => 'required|integer|exists:countries,id'
+            'description' => 'required|string|max:150|unique:product_presentations',
+            'price' => 'required|integer|min:2',
         ];
 
-        if ($this->isMethod('PUT')) {
-            $rules['product_id'] = "required|integer|exists:products,id";
-            $rules['country_id'] = "required|integer|exists:countries,id";
+        if($this->isMethod('PUT')) {
+            $rules['description'] = "required|string|max:150|unique:product_presentations,description,\"{$this->presentation->description}\",description";
         }
 
         return $rules;

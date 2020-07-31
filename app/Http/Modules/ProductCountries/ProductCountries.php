@@ -9,10 +9,10 @@ class ProductCountries extends Model
 {
     use SecureDeletes;
 
-    protected $table = 'product_countries';
-
     protected $fillable = [
         'product_id',
         'country_id'
     ];
+
+    protected $table = 'product_countries';
 }
