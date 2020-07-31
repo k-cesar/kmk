@@ -196,7 +196,6 @@
     ]
   },
   {
-    {
     "group": "Presentaciones",
     "level": 1,
     "labels": [
@@ -205,6 +204,7 @@
       { "name": "Mostrar Presentaciones", "route_name": "product-presentations.show" },
       { "name": "Almacenar Presentaciones", "route_name": "product-presentations.store" },
       { "name": "Eliminar Presentaciones", "route_name": "product-presentations.destroy" }
+    ]
   },
   {
     "group": "Sub Categorias de productos",
@@ -325,6 +325,17 @@
       { "name": "Mostrar Turnos", "route_name": "turns.show" },
       { "name": "Almacenar Turnos", "route_name": "turns.store" },
       { "name": "Eliminar Turnos", "route_name": "turns.destroy" }
+    ]
+  },
+  {
+    "group": "Presentation Skus",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Presentation Skus", "route_name": "presentation-skus.index" },
+      { "name": "Actualizar Presentation Skus", "route_name": "presentation-skus.update" },
+      { "name": "Mostrar Presentation Skus", "route_name": "presentation-skus.show" },
+      { "name": "Almacenar Presentation Skus", "route_name": "presentation-skus.store" },
+      { "name": "Eliminar Presentation Skus", "route_name": "presentation-skus.destroy" }
     ]
   }
 ]

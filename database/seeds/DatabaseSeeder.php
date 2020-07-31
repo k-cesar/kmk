@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             ProductSubCategoriesSeeder::class,
             ProductsSeeder::class,
             ProductCountriesSeeder::class,
-            PresentationsSeeder::class,
+            ProductPresentationSeeder::class,
             StoreFormatSeeder::class,
             StoreChainSeeder::class,
             StoreFlagSeeder::class,
@@ -42,6 +42,7 @@ class DatabaseSeeder extends Seeder
             StoreSeeder::class,
             ClientSeeder::class,
             TurnSeeder::class,
+            PresentationSkuSeeder::class,
         ]);
     }
 }

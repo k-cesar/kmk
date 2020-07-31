@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Modules\Presentations\Presentations;
+use App\Http\Modules\PresentationSku\PresentationSku;
 use Illuminate\Database\Seeder;
 
-class PresentationsSeeder extends Seeder
+class PresentationSkuSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +12,6 @@ class PresentationsSeeder extends Seeder
      */
     public function run()
     {
-        factory(Presentations::class, 5)->create();
+        factory(PresentationSku::class, 2)->create();
     }
 }

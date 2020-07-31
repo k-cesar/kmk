@@ -57,7 +57,7 @@ Route::group(['middleware' => ['auth', 'access']], function () {
 
     Route::resource('product-sub-categories', 'ProductSubCategories\ProductSubCategoriesController')->except('create', 'edit');
 
-    Route::resource('product-presentations', 'Presentations\PresentationsController')->except('create', 'edit');
+    Route::resource('product-presentations', 'ProductPresentation\ProductPresentationController')->except('create', 'edit');
 
     Route::resource('products', 'Products\ProductsController')->except('create', 'edit');
     
@@ -80,6 +80,8 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     Route::resource('clients', 'Client\ClientController')->except('create', 'edit');
     
     Route::resource('turns', 'Turn\TurnController')->except('create', 'edit');
+
+    Route::resource('presentation-skus', 'PresentationSku\PresentationSkuController')->except('create', 'edit');
 
 });
 
