@@ -337,5 +337,16 @@
       { "name": "Almacenar Presentation Skus", "route_name": "presentation-skus.store" },
       { "name": "Eliminar Presentation Skus", "route_name": "presentation-skus.destroy" }
     ]
+  },
+  {
+    "group": "Presentation Combos",
+    "level": 1,
+    "labels": [
+      { "name": "Listar Presentation Combos", "route_name": "presentation-combos.index" },
+      { "name": "Actualizar Presentation Combos", "route_name": "presentation-combos.update" },
+      { "name": "Mostrar Presentation Combos", "route_name": "presentation-combos.show" },
+      { "name": "Almacenar Presentation Combos", "route_name": "presentation-combos.store" },
+      { "name": "Eliminar Presentation Combos", "route_name": "presentation-combos.destroy" }
+    ]
   }
 ]

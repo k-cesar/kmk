@@ -82,6 +82,8 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     Route::resource('turns', 'Turn\TurnController')->except('create', 'edit');
 
     Route::resource('presentation-skus', 'PresentationSku\PresentationSkuController')->except('create', 'edit');
+    
+    Route::resource('presentation-combos', 'PresentationCombo\PresentationComboController')->except('create', 'edit');
 
 });
 

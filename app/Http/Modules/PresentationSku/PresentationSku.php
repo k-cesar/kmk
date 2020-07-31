@@ -31,7 +31,7 @@ class PresentationSku extends Model
     protected $with = ['product_presentation'];
 
     /**
-     * Get the product_presentation that owns the brand.
+     * Get the product_presentation that owns the presentation_sku.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
