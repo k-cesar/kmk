@@ -10,8 +10,8 @@ class PresentationsController extends Controller
 {
     public function index()
     {
-        $presentations = Presentations::query();
-        return $this->showAll($presentations, Schema::getColumnListing((new Presentations)->getTable()));
+        $presentation = Presentations::query();
+        return $this->showAll($presentation, Schema::getColumnListing((new Presentations)->getTable()));
     }
 
     public function store(PresentationsRequest $request)
@@ -39,7 +39,7 @@ class PresentationsController extends Controller
 
     public function options()
     {
-        $presentation = Presentations::select('id');
+        $presentation = Presentations::select('id', 'description');
         return $this->showAll($presentation, Schema::getColumnListing((new Presentations)->getTable()));
     }
 }
