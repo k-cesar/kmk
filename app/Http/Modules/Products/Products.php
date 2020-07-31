@@ -9,11 +9,6 @@ class Products extends Model
 {
     use SecureDeletes;
 
-    /** 
-     * Table Associated with the model
-     */ 
-    protected $table = 'products';
-
     /**
      * The attributes that are mass assignable.
      *
@@ -31,4 +26,9 @@ class Products extends Model
         'minimal_expresion',
         'suggested_price',
     ];
+
+    /** 
+     * Table Associated with the model
+     */ 
+    protected $table = 'products';
 }
