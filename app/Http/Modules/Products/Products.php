@@ -40,7 +40,7 @@ class Products extends Model
         'product_category',
         'product_subcategory',
         'brand',
-        'id'
+        'all_countries'
     ];
 
     public function product_category()
@@ -58,8 +58,8 @@ class Products extends Model
         return $this->belongsTo(Brand::class);
     }
 
-    public function id()
+    public function all_countries()
     {
-        return $this->belongsTo(ProductCountries::class);
+        return $this->hasMany(ProductCountries::class, 'product_id');
     }
 }

@@ -11,11 +11,7 @@ class ProductCountriesController extends Controller
 {
     public function index()
     {
-        $where = [];
-        if ($request->get('id')) {
-            array_push($where, ['product_id', '=', "{$request->get('id')}"]);
-        }
-        $productCountries = ProductCountries::where($where);
+        $productCountries = ProductCountries::query();
         return $this->showAll($productCountries, Schema::getColumnListing((new ProductCountries)->getTable()));
     }
 
