@@ -41,9 +41,9 @@ class DatabaseSeeder extends Seeder
             ZoneSeeder::class,
             StoreSeeder::class,
             ClientSeeder::class,
-            TurnSeeder::class,
-            PresentationSkuSeeder::class,
-            PresentationComboSeeder::class,
+            //TurnSeeder::class,
+            //PresentationSkuSeeder::class,
+            //PresentationComboSeeder::class,
         ]);
     }
 }

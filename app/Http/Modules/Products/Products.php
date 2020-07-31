@@ -5,6 +5,8 @@ namespace App\Http\Modules\Products;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\ProductCategory\ProductCategory;
 use App\Http\Modules\ProductSubCategories\ProductSubCategories;
+use App\Http\Modules\ProductCountries\ProductCountries;
+use App\Http\Modules\Brand\Brand;
 use Illuminate\Database\Eloquent\Model;
 
 class Products extends Model
@@ -36,7 +38,9 @@ class Products extends Model
 
     protected $with = [
         'product_category',
-        'product_subcategory'
+        'product_subcategory',
+        'brand',
+        'all_countries'
     ];
 
     public function product_category()
@@ -47,5 +51,15 @@ class Products extends Model
     public function product_subcategory()
     {
         return $this->belongsTo(ProductSubCategories::class);
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function all_countries()
+    {
+        return $this->hasMany(ProductCountries::class, 'product_id');
     }
 }
