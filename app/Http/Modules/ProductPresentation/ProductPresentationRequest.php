@@ -24,8 +24,14 @@ class ProductPresentationRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'name' => 'string|max:255|unique:product_presentations', 
+            'description' => 'required|string|max:150|unique:product_presentations',
+            'price'       => 'required|integer|min:0',
         ];
+
+        if ($this->isMethod('PUT')) {
+            $rules['description'] = "required|string|max:150|unique:product_presentations,description,\"{$this->product_presentation->description}\",description";
+        }
+
         return $rules;
     }
 }

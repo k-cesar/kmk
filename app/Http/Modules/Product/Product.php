@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Modules\Products;
+namespace App\Http\Modules\Product;
 
 use App\Traits\SecureDeletes;
 use App\Http\Modules\ProductCategory\ProductCategory;
-use App\Http\Modules\ProductSubCategories\ProductSubCategories;
+use App\Http\Modules\ProductSubcategory\ProductSubcategory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Products extends Model
+class Product extends Model
 {
-    use SecureDeletes;
+    use SoftDeletes, SecureDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -29,23 +30,19 @@ class Products extends Model
         'suggested_price',
     ];
 
-    /** 
-     * Table Associated with the model
-     */ 
-    protected $table = 'products';
 
     protected $with = [
-        'product_category',
-        'product_subcategory'
+        'productCategory',
+        'productSubcategory'
     ];
 
-    public function product_category()
+    public function productCategory()
     {
         return $this->belongsTo(ProductCategory::class);
     }
 
-    public function product_subcategory()
+    public function productSubcategory()
     {
-        return $this->belongsTo(ProductSubCategories::class);
+        return $this->belongsTo(ProductSubcategory::class);
     }
 }

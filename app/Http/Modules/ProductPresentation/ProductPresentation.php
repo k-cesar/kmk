@@ -18,7 +18,7 @@ class ProductPresentation extends Model
      *
      * @var array
      */
-    protected $filable = [
+    protected $fillable = [
         'description',
         'price'
     ];

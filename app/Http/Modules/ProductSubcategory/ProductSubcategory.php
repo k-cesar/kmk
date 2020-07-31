@@ -1,19 +1,19 @@
 <?php
 
-namespace App\Http\Modules\ProductDepartment;
+namespace App\Http\Modules\ProductSubcategory;
 
 use App\Traits\SecureDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class ProductDepartment extends Model
+class ProductSubcategory extends Model
 {
     use SoftDeletes, SecureDeletes;
-    
+
     /** 
      * Table Associated with the model
      */ 
-    protected $table = 'product_departments';
+    protected $table = 'product_subcategories';
 
     /**
      * The attributes that are mass assignable.
@@ -21,8 +21,7 @@ class ProductDepartment extends Model
      * @var array
      */
     protected $fillable = [
-        'name'        
+        'name',
+        'product_category_id'
     ];
-   
-
 }
