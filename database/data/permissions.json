@@ -207,14 +207,14 @@
     ]
   },
   {
-    "group": "Sub Categorias de productos",
+    "group": "Subcategorías de productos",
     "level": 1,
     "labels": [
-      { "name": "Listar Sub Categorias de productos", "route_name": "product-sub-categories.index" },
-      { "name": "Actualizar Sub Categorias de productos", "route_name": "product-sub-categories.update" },
-      { "name": "Mostrar Sub Categorias de productos", "route_name": "product-sub-categories.show" },
-      { "name": "Almacenar Sub Categorias de productos", "route_name": "product-sub-categories.store" },
-      { "name": "Eliminar Sub Categorias de productos", "route_name": "product-sub-categories.destroy" }
+      { "name": "Listar Subcategorías de productos", "route_name": "product-subcategories.index" },
+      { "name": "Actualizar Subcategorías de productos", "route_name": "product-subcategories.update" },
+      { "name": "Mostrar Subcategorías de productos", "route_name": "product-subcategories.show" },
+      { "name": "Almacenar Subcategorías de productos", "route_name": "product-subcategories.store" },
+      { "name": "Eliminar Subcategorías de productos", "route_name": "product-subcategories.destroy" }
     ]
   },
   {

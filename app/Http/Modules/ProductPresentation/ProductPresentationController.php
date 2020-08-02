@@ -7,38 +7,36 @@ use Illuminate\Support\Facades\Schema;
 
 class ProductPresentationController extends Controller
 {
-    public function index(ProductPresentationRequest $request)
+    public function index()
     {
-        $where = [];
+        $productPresentations = ProductPresentation::query();
 
-        if ($request->get('description')) {
-            array_push($where, ['description', 'ilike', '%'.$request->get('description').'%']);
-        }
-
-        $presentations = ProductPresentation::where($where);
-        return $this->showAll($presentations, Schema::getColumnListing((new ProductPresentation)->getTable()));
+        return $this->showAll($productPresentations, Schema::getColumnListing((new ProductPresentation)->getTable()));
     }
 
     public function store(ProductPresentationRequest $request)
     {
-        $productsPresentation = ProductPresentation::create($request->validated());
-        return $this->showOne($productsPresentation, 201);
+        $productPresentation = ProductPresentation::create($request->validated());
+
+        return $this->showOne($productPresentation, 201);
     }
     
-    public function show(ProductPresentation $presentation)
+    public function show(ProductPresentation $productPresentation)
     {
-        return $this->showOne($presentation);
+        return $this->showOne($productPresentation);
     }
 
-    public function update(ProductPresentationRequest $request, ProductPresentation $productProductPresentation)
+    public function update(ProductPresentationRequest $request, ProductPresentation $productPresentation)
     {
-        $productProductPresentation->update($request->validated());
-        return $this->showOne($productProductPresentation);
+        $productPresentation->update($request->validated());
+
+        return $this->showOne($productPresentation);
     }
 
-    public function destroy(ProductPresentation $presentation)
+    public function destroy(ProductPresentation $productPresentation)
     {
-        $presentation->secureDelete();
-        return $this->showOne($presentation);
+        $productPresentation->secureDelete();
+
+        return $this->showOne($productPresentation);
     }
 }

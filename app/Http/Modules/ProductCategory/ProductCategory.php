@@ -5,10 +5,11 @@ namespace App\Http\Modules\ProductCategory;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\ProductDepartment\ProductDepartment;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductCategory extends Model
 {
-    use SecureDeletes;
+    use SoftDeletes, SecureDeletes;
     
     /** 
      * Table Associated with the model
