@@ -2,6 +2,9 @@
 
 namespace App\Http\Modules\Product;
 
+use Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Schema;
 use App\Http\Modules\Product\Product;
@@ -16,9 +19,21 @@ class ProductController extends Controller
     }
 
     public function store(ProductRequest $request) {
-        $product = Product::create($request->validated());
+        try {
+            DB::beginTransaction();
 
-        return $this->showOne($product, 201);
+            $product = Product::create($request->validated());
+            $product->productCountries()->sync($request->country);
+
+            DB::commit();
+            return $this->showOne($product, 201);
+        } catch(Exception $exception) {
+            DB::rollback();
+            Log::error($exception);
+
+            throw $exception;
+            return $this->errorResponse(500, "Ha ocurrido un error interno");
+        }
     }
 
     public function show(Product $product) {
@@ -26,9 +41,18 @@ class ProductController extends Controller
     }
 
     public function update(ProductRequest $request, Product $product) {
-        $product->update($request->validated());
+        try {
+            DB::beginTransaction();
+            $product->update($request->validated());
+            $product->productCountries()->sync($request->country);
 
-        return $this->showOne($product);
+            DB::commit();
+            return $this->showOne($product);
+        } catch (Exception $exception) {
+            DB::rollback();
+            Log::error($exception);
+            return $this->errorResponse(500, "Ha ocurrido un error interno");
+        }
     }
 
     public function destroy(Product $product) {

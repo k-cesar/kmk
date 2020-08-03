@@ -88,8 +88,9 @@ class ProductControllerTest extends ApiTestCase
     $user = $this->signInWithRole($role);
 
     $attributes = factory(Product::class)->raw();
+    $extraAttributes['country'] = factory(Product::class, 2)->create()->pluck('id')->toArray();
 
-    $this->postJson(route('products.store'), $attributes)
+    $this->postJson(route('products.store'), $attributes, $extraAttributes)
       ->assertCreated();
     
     $this->assertDatabaseHas('products', $attributes);
@@ -109,8 +110,10 @@ class ProductControllerTest extends ApiTestCase
     $product = factory(Product::class)->create();
 
     $attributes = factory(Product::class)->raw();
+    $extraAttributes['country'] = factory(Product::class, 2)->create()->pluck('id')->toArray();
 
-    $this->putJson(route('products.update', $product->id), $attributes)
+
+    $this->putJson(route('products.update', $product->id), $attributes, $extraAttributes)
       ->assertOk();
 
     $this->assertDatabaseHas('products', $attributes);
