@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\ApiTestCase;
 use Illuminate\Support\Arr;
 use App\Http\Modules\User\User;
+use App\Support\Helper;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -35,8 +36,8 @@ class AuthControllerTest extends ApiTestCase
     $user = factory(User::class)->create();
 
     $attributes = [
-      'username' => $user->username,
-      'password' => 'password'
+      'username' => Helper::encrypt($user->username, env('PASSPHRASE')),
+      'password' => Helper::encrypt('password', env('PASSPHRASE')),
     ];
 
     $this->post(route('api.login'), $attributes)

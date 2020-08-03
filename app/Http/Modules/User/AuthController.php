@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
+use App\Support\Helper;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -72,16 +73,19 @@ class AuthController extends Controller
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
-        
+
         if ($validator->fails()) {
             return $this->errorResponse(422, 'Datos inválidos', $validator->errors());
         }
 
+        $username = Helper::decrypt($validator->validated()['username'], env('PASSPHRASE'));
+        $password = Helper::decrypt($validator->validated()['password'], env('PASSPHRASE'));
+
         $user = User::query()
-            ->where('username', $validator->validated()['username'])
+            ->where('username', $username)
             ->first();
 
-        if (!$user || !Hash::check($validator->validated()['password'], $user->password)) {
+        if (!$user || !Hash::check($password, $user->password)) {
             return $this->errorResponse(401, 'No Autorizado');
         }
 
@@ -93,7 +97,7 @@ class AuthController extends Controller
         $user->save();
 
         $permissionsByModules = $user->getPermissionsByModules();
-    
+
         return $this->respondWithTokenAndPermissionsByModules($user->token, $permissionsByModules);
         
     }
