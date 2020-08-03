@@ -6,6 +6,7 @@ use App\Traits\SecureDeletes;
 use App\Http\Modules\ProductCategory\ProductCategory;
 use App\Http\Modules\ProductSubcategory\ProductSubcategory;
 use App\Http\Modules\ProductCountries\ProductCountries;
+use App\Http\Modules\Country\Country;
 use App\Http\Modules\Brand\Brand;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -58,5 +59,10 @@ class Product extends Model
     public function all_countries()
     {
         return $this->hasMany(ProductCountries::class, 'product_id');
+    }
+
+    public function productCountries()
+    {
+        return $this->belongsToMany(Country::class, 'product_countries');
     }
 }
