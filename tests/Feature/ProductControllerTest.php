@@ -90,7 +90,7 @@ class ProductControllerTest extends ApiTestCase
     $attributes = factory(Product::class)->raw();
     $extraAttributes['country'] = factory(Product::class, 2)->create()->pluck('id')->toArray();
 
-    $this->postJson(route('products.store'), $attributes, $extraAttributes)
+    $this->postJson(route('products.store'), array_merge($attributes, $extraAttributes))
       ->assertCreated();
     
     $this->assertDatabaseHas('products', $attributes);
@@ -113,7 +113,7 @@ class ProductControllerTest extends ApiTestCase
     $extraAttributes['country'] = factory(Product::class, 2)->create()->pluck('id')->toArray();
 
 
-    $this->putJson(route('products.update', $product->id), $attributes, $extraAttributes)
+    $this->putJson(route('products.update', $product->id), array_merge($attributes, $extraAttributes))
       ->assertOk();
 
     $this->assertDatabaseHas('products', $attributes);
