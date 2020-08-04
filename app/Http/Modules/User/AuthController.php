@@ -93,12 +93,16 @@ class AuthController extends Controller
             return $this->errorResponse(409, 'Sesión Activa');
         }
 
-        $user->token = auth()->attempt($validator->validated());
+        $user->token = auth()->attempt([
+            'username' => $username,
+            'password' => $password
+        ]);
+
         $user->save();
 
         $permissionsByModules = $user->getPermissionsByModules();
 
-        return $this->respondWithTokenAndPermissionsByModules($user->token, $permissionsByModules);
+         return $this->respondWithTokenAndPermissionsByModules($user->token, $permissionsByModules);
         
     }
 
