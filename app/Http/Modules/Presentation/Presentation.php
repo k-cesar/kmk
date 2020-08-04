@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Modules\PresentationSku;
+namespace App\Http\Modules\Presentation;
 
+use App\Http\Modules\Product\Product;
 use App\Traits\SecureDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Http\Modules\Presentation\Presentation;
 
-class PresentationSku extends Model
+class Presentation extends Model
 {
     use SoftDeletes, SecureDeletes;
 
@@ -17,27 +17,30 @@ class PresentationSku extends Model
      * @var array
      */
     protected $fillable = [
-        'code',
+        'product_id',
         'description',
-        'presentation_id',
-        'seasonal_product',
+        'price',
+        'is_minimal_expression',
+        'units',
     ];
 
-    /**
+     /**
      * The relations to eager load on every query.
      *
      * @var array
      */
-    protected $with = ['presentation'];
+    protected $with = ['product'];
 
     /**
-     * Get the presentation that owns the presentation_sku.
+     * Get the product that owns the presentation.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function presentation()
+    public function product()
     {
-        return $this->belongsTo(Presentation::class);
+        return $this->belongsTo(Product::class);
     }
 
+
+    
 }

@@ -199,11 +199,11 @@
     "group": "Presentaciones",
     "level": 1,
     "labels": [
-      { "name": "Listar Presentaciones", "route_name": "product-presentations.index" },
-      { "name": "Actualizar Presentaciones", "route_name": "product-presentations.update" },
-      { "name": "Mostrar Presentaciones", "route_name": "product-presentations.show" },
-      { "name": "Almacenar Presentaciones", "route_name": "product-presentations.store" },
-      { "name": "Eliminar Presentaciones", "route_name": "product-presentations.destroy" }
+      { "name": "Listar Presentaciones", "route_name": "presentations.index" },
+      { "name": "Actualizar Presentaciones", "route_name": "presentations.update" },
+      { "name": "Mostrar Presentaciones", "route_name": "presentations.show" },
+      { "name": "Almacenar Presentaciones", "route_name": "presentations.store" },
+      { "name": "Eliminar Presentaciones", "route_name": "presentations.destroy" }
     ]
   },
   {

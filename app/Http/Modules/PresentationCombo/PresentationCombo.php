@@ -2,7 +2,7 @@
 
 namespace App\Http\Modules\PresentationCombo;
 
-use App\Http\Modules\ProductPresentation\ProductPresentation;
+use App\Http\Modules\Presentation\Presentation;
 use App\Traits\SecureDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -31,7 +31,7 @@ class PresentationCombo extends Model
      *
      * @var array
      */
-    protected $with = ['uom', 'productPresentations', 'presentationCombosStoresTurns.store', 'presentationCombosStoresTurns.turn'];
+    protected $with = ['uom', 'presentations', 'presentationCombosStoresTurns.store', 'presentationCombosStoresTurns.turn'];
 
     /**
      * Get the uom that owns the presentation_combo.
@@ -44,13 +44,13 @@ class PresentationCombo extends Model
     }
 
     /**
-     * The productPresentations that belong to the presentation_combo.
+     * The presentations that belong to the presentation_combo.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function productPresentations()
+    public function presentations()
     {
-        return $this->belongsToMany(ProductPresentation::class, 'presentation_combos_detail');
+        return $this->belongsToMany(Presentation::class, 'presentation_combos_detail');
     }
 
     /**

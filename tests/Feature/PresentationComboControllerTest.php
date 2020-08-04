@@ -4,7 +4,7 @@ namespace Tests\Feature;
 
 use Tests\ApiTestCase;
 use App\Http\Modules\PresentationCombo\PresentationCombo;
-use App\Http\Modules\ProductPresentation\ProductPresentation;
+use App\Http\Modules\Presentation\Presentation;
 use App\Http\Modules\Store\Store;
 use App\Http\Modules\Turn\Turn;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -91,7 +91,7 @@ class PresentationComboControllerTest extends ApiTestCase
     $user = $this->signInWithRole($role);
 
     $attributes = factory(PresentationCombo::class)->raw();
-    $extraAttributes['product_presentations'] = factory(ProductPresentation::class, 2)->create()->pluck('id')->toArray();
+    $extraAttributes['presentations'] = factory(Presentation::class, 2)->create()->pluck('id')->toArray();
     $extraAttributes['prices'] = [
       [
         'suggested_price' => 50,
@@ -125,7 +125,7 @@ class PresentationComboControllerTest extends ApiTestCase
     $presentationCombo = factory(PresentationCombo::class)->create();
 
     $attributes = factory(PresentationCombo::class)->raw();
-    $extraAttributes['product_presentations'] = factory(ProductPresentation::class, 2)->create()->pluck('id')->toArray();
+    $extraAttributes['presentations'] = factory(Presentation::class, 2)->create()->pluck('id')->toArray();
     $extraAttributes['prices'] = [
       [
         'suggested_price' => 50,

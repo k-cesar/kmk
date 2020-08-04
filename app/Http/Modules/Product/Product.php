@@ -8,6 +8,7 @@ use App\Http\Modules\ProductSubcategory\ProductSubcategory;
 use App\Http\Modules\ProductCountries\ProductCountries;
 use App\Http\Modules\Country\Country;
 use App\Http\Modules\Brand\Brand;
+use App\Http\Modules\Presentation\Presentation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -64,5 +65,15 @@ class Product extends Model
     public function productCountries()
     {
         return $this->belongsToMany(Country::class, 'product_countries');
+    }
+
+    /**
+     * Get the presentations for the product.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function presentations()
+    {
+        return $this->hasMany(Presentation::class);
     }
 }

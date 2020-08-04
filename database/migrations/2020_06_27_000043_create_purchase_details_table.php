@@ -31,7 +31,7 @@ class CreatePurchaseDetailsTable extends Migration
 
             $table->primary(['purchase_id', 'presentation_id']);
 
-            $table->foreign('presentation_id')->references('id')->on('product_presentations');
+            $table->foreign('presentation_id')->references('id')->on('presentations');
 
             $table->foreign('purchase_id')->references('id')->on('purchases');
         });

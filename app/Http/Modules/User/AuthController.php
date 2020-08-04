@@ -102,7 +102,7 @@ class AuthController extends Controller
 
         $permissionsByModules = $user->getPermissionsByModules();
 
-         return $this->respondWithTokenAndPermissionsByModules($user->token, $permissionsByModules);
+        return $this->respondWithTokenAndPermissionsByModules($user->token, $permissionsByModules);
         
     }
 

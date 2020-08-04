@@ -4,17 +4,17 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProductPresentationsTable extends Migration
+class CreatePresentationSkusTable extends Migration
 {
     /**
      * Schema table name to migrate
      * @var string
      */
-    public $tableName = 'product_presentations';
+    public $tableName = 'presentation_skus';
 
     /**
      * Run the migrations.
-     * @table product_presentations
+     * @table presentation_skus
      *
      * @return void
      */
@@ -22,10 +22,14 @@ class CreateProductPresentationsTable extends Migration
     {
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('description')->unique();
-            $table->double('price');
+            $table->string('code', 100)->unique();
+            $table->string('description');
+            $table->unsignedBigInteger('presentation_id');
+            $table->tinyInteger('seasonal_product');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('presentation_id')->references('id')->on('presentations');
         });
     }
 

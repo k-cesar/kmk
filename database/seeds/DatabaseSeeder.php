@@ -31,7 +31,7 @@ class DatabaseSeeder extends Seeder
             ProductSubcategorySeeder::class,
             ProductSeeder::class,
             ProductCountriesSeeder::class,
-            ProductPresentationSeeder::class,
+            PresentationSeeder::class,
             StoreFormatSeeder::class,
             StoreChainSeeder::class,
             StoreFlagSeeder::class,

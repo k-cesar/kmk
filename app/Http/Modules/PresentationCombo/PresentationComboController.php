@@ -36,7 +36,7 @@ class PresentationComboController extends Controller
 
       $presentationCombo = PresentationCombo::create($request->validated());
     
-      $presentationCombo->productPresentations()->sync($request->product_presentations);
+      $presentationCombo->presentations()->sync($request->presentations);
 
       $presentationCombo->syncPricesOfStoresAndTurns($request->prices);
 
@@ -80,7 +80,7 @@ class PresentationComboController extends Controller
 
       $presentationCombo->update($request->validated());
     
-      $presentationCombo->productPresentations()->sync($request->product_presentations);
+      $presentationCombo->presentations()->sync($request->presentations);
 
       $presentationCombo->syncPricesOfStoresAndTurns($request->prices);
 

@@ -25,10 +25,10 @@ class PresentationSkuRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'code'                    => 'required|alpha_num|max:150|unique:presentation_skus',
-      'description'             => 'required|string|max:255',
-      'product_presentation_id' => 'required|exists:product_presentations,id',
-      'seasonal_product'        => 'required|integer|in:0,1',
+      'code'             => 'required|alpha_num|max:150|unique:presentation_skus',
+      'description'      => 'required|string|max:255',
+      'presentation_id'  => 'required|exists:presentations,id',
+      'seasonal_product' => 'required|boolean',
     ];
 
     if ($this->isMethod('PUT')) {
