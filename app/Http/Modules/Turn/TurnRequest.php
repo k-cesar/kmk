@@ -28,8 +28,8 @@ class TurnRequest extends FormRequest
       'store_id'   => 'required|exists:stores,id',
       'start_time' => 'required|date_format:H:i:s',
       'end_time'   => 'required|date_format:H:i:s|after:start_time',
-      'is_active' =>  'required|integer|between:0,1',
-      'is_default' => 'required|integer|between:0,1',
+      'is_active' =>  'required|boolean',
+      'is_default' => 'required|boolean',
       'name'       => [
         'required', 
         'string',

@@ -22,14 +22,15 @@ class CreateTurnsProductsTable extends Migration
     {
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->unsignedBigInteger('turn_id');
-            $table->unsignedBigInteger('product_presentation_id');
+            $table->unsignedBigInteger('presentation_id');
             $table->double('price');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->primary(['turn_id', 'product_presentation_id']);
+            $table->primary(['turn_id', 'presentation_id']);
 
             $table->foreign('turn_id')->references('id')->on('turns');
+            $table->foreign('presentation_id')->references('id')->on('presentations');
         });
     }
 

@@ -34,7 +34,7 @@ class CreateSellDetailsTable extends Migration
 
             $table->foreign('sell_id')->references('id')->on('sells');
 
-            $table->foreign('presentation_id')->references('id')->on('product_presentations');
+            $table->foreign('presentation_id')->references('id')->on('presentations');
         });
     }
 
