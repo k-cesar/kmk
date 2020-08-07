@@ -49,11 +49,9 @@ class ProductSubcategoryControllerTest extends ApiTestCase
     /**
     * @test
     */
-    public function an_user_with_role_with_permission_can_see_all_product_subcategories()
+    public function an_user_with_permission_can_see_all_product_subcategories()
     {
-
-        $role = $this->getRoleWithPermissionsTo(['product-subcategories.index']);
-        $user = $this->signInWithRole($role);
+        $this->signInWithPermissionsTo(['product-subcategories.index']);
 
         $response = $this->getJson(route('product-subcategories.index'))
         ->assertOk();
@@ -66,10 +64,9 @@ class ProductSubcategoryControllerTest extends ApiTestCase
     /**
     * @test
     */
-    public function an_user_with_role_with_permission_can_see_a_product_subcategory()
+    public function an_user_with_permission_can_see_a_product_subcategory()
     {
-        $role = $this->getRoleWithPermissionsTo(['product-subcategories.show']);
-        $user = $this->signInWithRole($role);
+        $this->signInWithPermissionsTo(['product-subcategories.show']);
 
         $productSubcategory = factory(ProductSubcategory::class)->create();
 
@@ -81,10 +78,9 @@ class ProductSubcategoryControllerTest extends ApiTestCase
     /**
     * @test
     */
-    public function an_user_with_role_with_permission_can_store_a_product_sub_categories()
+    public function an_user_with_permission_can_store_a_product_sub_categories()
     {
-        $role = $this->getRoleWithPermissionsTo(['product-subcategories.store']);
-        $user = $this->signInWithRole($role);
+        $this->signInWithPermissionsTo(['product-subcategories.store']);
 
         $attributes = factory(ProductSubcategory::class)->raw();
 
@@ -97,12 +93,9 @@ class ProductSubcategoryControllerTest extends ApiTestCase
     /**
     * @test
     */
-    public function an_user_with_role_with_permission_can_update_a_product_sub_categories()
+    public function an_user_with_permission_can_update_a_product_sub_categories()
     {
-        $this->withExceptionHandling();
-
-        $role = $this->getRoleWithPermissionsTo(['product-subcategories.update']);
-        $user = $this->signInWithRole($role);
+        $this->signInWithPermissionsTo(['product-subcategories.update']);
 
         $productSubcategory = factory(ProductSubcategory::class)->create();
 
@@ -117,10 +110,9 @@ class ProductSubcategoryControllerTest extends ApiTestCase
     /**
     * @test
     */
-    public function an_user_with_role_with_permission_can_destroy_a_product_sub_categories()
+    public function an_user_with_permission_can_destroy_a_product_sub_categories()
     {
-        $role = $this->getRoleWithPermissionsTo(['product-subcategories.destroy']);
-        $user = $this->signInWithRole($role);
+        $this->signInWithPermissionsTo(['product-subcategories.destroy']);
 
         $productSubcategory = factory(ProductSubcategory::class)->create();
 

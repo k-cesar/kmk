@@ -50,11 +50,9 @@ class CurrencyControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_currencies()
+  public function an_user_with_permission_can_see_all_currencies()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['currencies.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['currencies.index']);
 
     $response = $this->getJson(route('currencies.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class CurrencyControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_currency()
+  public function an_user_with_permission_can_see_a_currency()
   {
-    $role = $this->getRoleWithPermissionsTo(['currencies.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['currencies.show']);
 
     $currency = factory(Currency::class)->create();
 
@@ -82,10 +79,9 @@ class CurrencyControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_currency()
+  public function an_user_with_permission_can_store_a_currency()
   {
-    $role = $this->getRoleWithPermissionsTo(['currencies.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['currencies.store']);
 
     $attributes = factory(Currency::class)->raw();
 
@@ -99,10 +95,9 @@ class CurrencyControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_currency()
+  public function an_user_with_permission_can_update_a_currency()
   {
-    $role = $this->getRoleWithPermissionsTo(['currencies.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['currencies.update']);
 
     $currency = factory(Currency::class)->create();
 
@@ -117,10 +112,9 @@ class CurrencyControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_currency()
+  public function an_user_with_permission_can_destroy_a_currency()
   {
-    $role = $this->getRoleWithPermissionsTo(['currencies.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['currencies.destroy']);
 
     $currency = factory(Currency::class)->create();
 

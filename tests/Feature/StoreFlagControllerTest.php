@@ -50,11 +50,9 @@ class StoreFlagControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_store_flags()
+  public function an_user_with_permission_can_see_all_store_flags()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['store-flags.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['store-flags.index']);
 
     $response = $this->getJson(route('store-flags.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class StoreFlagControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_store_flag()
+  public function an_user_with_permission_can_see_a_store_flag()
   {
-    $role = $this->getRoleWithPermissionsTo(['store-flags.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['store-flags.show']);
 
     $storeFlag = factory(StoreFlag::class)->create();
 
@@ -82,10 +79,9 @@ class StoreFlagControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_store_flag()
+  public function an_user_with_permission_can_store_a_store_flag()
   {
-    $role = $this->getRoleWithPermissionsTo(['store-flags.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['store-flags.store']);
 
     $attributes = factory(StoreFlag::class)->raw();
 
@@ -99,12 +95,9 @@ class StoreFlagControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_store_flag()
+  public function an_user_with_permission_can_update_a_store_flag()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['store-flags.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['store-flags.update']);
 
     $storeFlag = factory(StoreFlag::class)->create();
 
@@ -119,10 +112,9 @@ class StoreFlagControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_store_flag()
+  public function an_user_with_permission_can_destroy_a_store_flag()
   {
-    $role = $this->getRoleWithPermissionsTo(['store-flags.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['store-flags.destroy']);
 
     $storeFlag = factory(StoreFlag::class)->create();
 

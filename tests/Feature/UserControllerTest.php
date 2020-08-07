@@ -51,11 +51,9 @@ class UserControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_users()
+  public function an_user_with_permission_can_see_all_users()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['users.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['users.index']);
 
     $response = $this->getJson(route('users.index'))
         ->assertOk();
@@ -68,10 +66,9 @@ class UserControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_user()
+  public function an_user_with_permission_can_see_a_user()
   {
-    $role = $this->getRoleWithPermissionsTo(['users.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['users.show']);
 
     $newUser = factory(User::class)->create();
 
@@ -83,12 +80,9 @@ class UserControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_user()
+  public function an_user_with_permission_can_store_a_user()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['users.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['users.store']);
 
     $stores = factory(Store::class, 2)->create();
 
@@ -116,10 +110,9 @@ class UserControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_user()
+  public function an_user_with_permission_can_update_a_user()
   {
-    $role = $this->getRoleWithPermissionsTo(['users.update']);
-    $user = $this->signInWithRole($role);
+    $user = $this->signInWithPermissionsTo(['users.update']);
 
     $stores = factory(Store::class, 2)->create();
 
@@ -144,10 +137,9 @@ class UserControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_user()
+  public function an_user_with_permission_can_destroy_a_user()
   {
-    $role = $this->getRoleWithPermissionsTo(['users.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['users.destroy']);
 
     $newUser = factory(User::class)->create();
 

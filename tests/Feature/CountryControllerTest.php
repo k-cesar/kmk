@@ -50,11 +50,9 @@ class CountryControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_countries()
+  public function an_user_with_permission_can_see_all_countries()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['countries.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['countries.index']);
 
     $response = $this->getJson(route('countries.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class CountryControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_country()
+  public function an_user_with_permission_can_see_a_country()
   {
-    $role = $this->getRoleWithPermissionsTo(['countries.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['countries.show']);
 
     $country = factory(Country::class)->create();
 
@@ -82,10 +79,9 @@ class CountryControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_country()
+  public function an_user_with_permission_can_store_a_country()
   {
-    $role = $this->getRoleWithPermissionsTo(['countries.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['countries.store']);
 
     $attributes = factory(Country::class)->raw();
 
@@ -99,12 +95,9 @@ class CountryControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_country()
+  public function an_user_with_permission_can_update_a_country()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['countries.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['countries.update']);
 
     $country = factory(Country::class)->create();
 
@@ -119,10 +112,9 @@ class CountryControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_country()
+  public function an_user_with_permission_can_destroy_a_country()
   {
-    $role = $this->getRoleWithPermissionsTo(['countries.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['countries.destroy']);
 
     $country = factory(Country::class)->create();
 

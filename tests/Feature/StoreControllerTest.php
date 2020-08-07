@@ -50,11 +50,9 @@ class StoreControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_stores()
+  public function an_user_with_permission_can_see_all_stores()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['stores.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['stores.index']);
 
     $response = $this->getJson(route('stores.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class StoreControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_store()
+  public function an_user_with_permission_can_see_a_store()
   {
-    $role = $this->getRoleWithPermissionsTo(['stores.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['stores.show']);
 
     $store = factory(Store::class)->create();
 
@@ -82,10 +79,9 @@ class StoreControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_store()
+  public function an_user_with_permission_can_store_a_store()
   {
-    $role = $this->getRoleWithPermissionsTo(['stores.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['stores.store']);
 
     $attributes = factory(Store::class)->raw();
 
@@ -99,12 +95,9 @@ class StoreControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_store()
+  public function an_user_with_permission_can_update_a_store()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['stores.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['stores.update']);
 
     $store = factory(Store::class)->create();
 
@@ -119,10 +112,9 @@ class StoreControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_store()
+  public function an_user_with_permission_can_destroy_a_store()
   {
-    $role = $this->getRoleWithPermissionsTo(['stores.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['stores.destroy']);
 
     $store = factory(Store::class)->create();
 
@@ -131,5 +123,4 @@ class StoreControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('stores', $store->toArray());
   }
-
 }

@@ -50,11 +50,9 @@ class CompanyControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_companies()
+  public function an_user_with_permission_can_see_all_companies()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['companies.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['companies.index']);
 
     $response = $this->getJson(route('companies.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class CompanyControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_company()
+  public function an_user_with_permission_can_see_a_company()
   {
-    $role = $this->getRoleWithPermissionsTo(['companies.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['companies.show']);
 
     $company = factory(Company::class)->create();
 
@@ -82,10 +79,9 @@ class CompanyControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_company()
+  public function an_user_with_permission_can_store_a_company()
   {
-    $role = $this->getRoleWithPermissionsTo(['companies.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['companies.store']);
 
     $attributes = factory(Company::class)->raw();
 
@@ -99,10 +95,9 @@ class CompanyControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_company()
+  public function an_user_with_permission_can_update_a_company()
   {
-    $role = $this->getRoleWithPermissionsTo(['companies.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['companies.update']);
 
     $company = factory(Company::class)->create();
 
@@ -117,10 +112,9 @@ class CompanyControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_company()
+  public function an_user_with_permission_can_destroy_a_company()
   {
-    $role = $this->getRoleWithPermissionsTo(['companies.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['companies.destroy']);
 
     $company = factory(Company::class)->create();
 

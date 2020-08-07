@@ -109,113 +109,31 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * Returns all user permissions grouped by modules
+     * Returns all user actions grouped by permissions
      *
      * @return void
      */
-    public function getPermissionsByModules()
+    public function getActionsByPermissions()
     {
         $permissionsGrouped = $this->getAllPermissions()
             ->groupBy('group');
 
-        $modules = [];
+        $actionsGroups = [];
 
         foreach ($permissionsGrouped as $group => $permissionGrouped) {
-            $module = [
-                'name'        => $group,
-                'permissions' => []
+            $actionsGroup = [
+                'name'    => $group,
+                'actions' => []
             ];
 
-            foreach ($permissionGrouped as $permissions) {
-                $module['permissions'][] = $permissions->name;
+            foreach ($permissionGrouped as $permission) {
+                $actionsGroup['actions'][] = explode(' ', $permission->name)[0];
             }
 
-            $modules[] = $module;
+            $actionsGroups[] = $actionsGroup;
         }
 
-        return $modules;
-    }
-    
-    /**
-     * Return only permissions that the user can alter based on 
-     * permission level and the minimum level role of user
-     *
-     * @param \Illuminate\Support\Collection $permissions
-     * @return \Illuminate\Support\Collection
-     */
-    public function filterPermissionsCanAlter($permissions)
-    {
-        $permissions = $permissions
-            ->filter(function ($permission) {
-                return $permission->level >= $this->getMinimunRoleLevel();
-            });
-
-        return $permissions;
+        return $actionsGroups;
     }
 
-    /**
-     * Returns role permissions that the user cannot alter based on 
-     * permission level and the minimum level role of user
-     * 
-     * @param \Spatie\Permission\Models\Role $role
-     * @param \Illuminate\Support\Collection
-     */
-    public function getRolePermissionsCannotAlter(Role $role)
-    {
-        $permissions = $role->getAllPermissions()
-            ->filter(function ($permission) {
-                return $permission->level < $this->getMinimunRoleLevel();
-            });
-
-        return $permissions;
-    }
-
-    /**
-     * Validate permissions level to be altered with the minimum level role of user
-     *
-     * @param \Spatie\Permission\Models\Role $role
-     * @param \Illuminate\Support\Collection  $newPermissions
-     * @param \Illuminate\Support\Collection  $oldPermissions
-     * @return bool
-     */
-    public function isValidPermissionsLevel(Role $role, $newPermissions, $oldPermissions)
-    {
-
-        // check if trying to add a permission with lower level than minimum level role of user
-        foreach ($newPermissions as $permission) {
-            if ($permission->level < $this->getMinimunRoleLevel()) {
-                if (!$role->hasPermissionTo($permission)) {
-                    return false;
-                }
-            }
-        }
-
-        // check if trying to remove a permission with lower level than minimum level role of user
-        foreach ($oldPermissions as $permission) {
-            if ($permission->level < $this->getMinimunRoleLevel()) {
-                if (!$newPermissions->contains('name', $permission->name)) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Returns the minimum level role of the user
-     *
-     * @return int
-     */
-    public function getMinimunRoleLevel()
-    {
-        $roles = $this->roles;
-
-        if ($roles->isEmpty()) {
-            return PHP_INT_MAX;
-        }
-
-        return $roles->min('level');
-    }
-    
 }

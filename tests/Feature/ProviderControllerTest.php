@@ -50,11 +50,9 @@ class ProviderControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_providers()
+  public function an_user_with_permission_can_see_all_providers()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['providers.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['providers.index']);
 
     $response = $this->getJson(route('providers.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class ProviderControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_provider()
+  public function an_user_with_permission_can_see_a_provider()
   {
-    $role = $this->getRoleWithPermissionsTo(['providers.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['providers.show']);
 
     $provider = factory(Provider::class)->create();
 
@@ -82,10 +79,9 @@ class ProviderControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_provider()
+  public function an_user_with_permission_can_store_a_provider()
   {
-    $role = $this->getRoleWithPermissionsTo(['providers.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['providers.store']);
 
     $attributes = factory(Provider::class)->raw();
 
@@ -99,12 +95,9 @@ class ProviderControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_provider()
+  public function an_user_with_permission_can_update_a_provider()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['providers.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['providers.update']);
 
     $provider = factory(Provider::class)->create();
 
@@ -119,10 +112,9 @@ class ProviderControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_provider()
+  public function an_user_with_permission_can_destroy_a_provider()
   {
-    $role = $this->getRoleWithPermissionsTo(['providers.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['providers.destroy']);
 
     $provider = factory(Provider::class)->create();
 
@@ -131,5 +123,4 @@ class ProviderControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('providers', $provider->toArray());
   }
-
 }

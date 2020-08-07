@@ -44,7 +44,7 @@ class AuthControllerTest extends ApiTestCase
       ->assertOk()
       ->assertJsonStructure([
         'token' => ['access_token', 'token_type', 'expires_in'],
-        'modules'
+        'permissions'
       ]);
   }
 

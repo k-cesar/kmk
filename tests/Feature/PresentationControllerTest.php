@@ -50,11 +50,9 @@ class PresentationControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_presentations()
+  public function an_user_with_permission_can_see_all_presentations()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['presentations.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['presentations.index']);
 
     $response = $this->getJson(route('presentations.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class PresentationControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_presentation()
+  public function an_user_with_permission_can_see_a_presentation()
   {
-    $role = $this->getRoleWithPermissionsTo(['presentations.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['presentations.show']);
 
     $Presentation = factory(Presentation::class)->create();
 
@@ -82,10 +79,9 @@ class PresentationControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_presentation()
+  public function an_user_with_permission_can_store_a_presentation()
   {
-    $role = $this->getRoleWithPermissionsTo(['presentations.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['presentations.store']);
 
     $attributes = factory(Presentation::class)->raw();
 
@@ -99,12 +95,9 @@ class PresentationControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_presentation()
+  public function an_user_with_permission_can_update_a_presentation()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['presentations.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['presentations.update']);
 
     $Presentation = factory(Presentation::class)->create();
 
@@ -119,10 +112,9 @@ class PresentationControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_presentation()
+  public function an_user_with_permission_can_destroy_a_presentation()
   {
-    $role = $this->getRoleWithPermissionsTo(['presentations.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['presentations.destroy']);
 
     $Presentation = factory(Presentation::class)->create();
 

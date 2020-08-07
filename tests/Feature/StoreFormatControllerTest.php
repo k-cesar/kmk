@@ -50,11 +50,9 @@ class StoreFormatControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_store_formats()
+  public function an_user_with_permission_can_see_all_store_formats()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['store-formats.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['store-formats.index']);
 
     $response = $this->getJson(route('store-formats.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class StoreFormatControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_store_format()
+  public function an_user_with_permission_can_see_a_store_format()
   {
-    $role = $this->getRoleWithPermissionsTo(['store-formats.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['store-formats.show']);
 
     $storeFormat = factory(StoreFormat::class)->create();
 
@@ -82,10 +79,9 @@ class StoreFormatControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_store_format()
+  public function an_user_with_permission_can_store_a_store_format()
   {
-    $role = $this->getRoleWithPermissionsTo(['store-formats.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['store-formats.store']);
 
     $attributes = factory(StoreFormat::class)->raw();
 
@@ -99,12 +95,9 @@ class StoreFormatControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_store_format()
+  public function an_user_with_permission_can_update_a_store_format()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['store-formats.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['store-formats.update']);
 
     $storeFormat = factory(StoreFormat::class)->create();
 
@@ -119,10 +112,9 @@ class StoreFormatControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_store_format()
+  public function an_user_with_permission_can_destroy_a_store_format()
   {
-    $role = $this->getRoleWithPermissionsTo(['store-formats.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['store-formats.destroy']);
 
     $storeFormat = factory(StoreFormat::class)->create();
 

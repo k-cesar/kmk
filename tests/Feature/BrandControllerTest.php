@@ -50,11 +50,9 @@ class BrandControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_brands()
+  public function an_user_with_permission_can_see_all_brands()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['brands.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['brands.index']);
 
     $response = $this->getJson(route('brands.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class BrandControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_brand()
+  public function an_user_with_permission_can_see_a_brand()
   {
-    $role = $this->getRoleWithPermissionsTo(['brands.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['brands.show']);
 
     $brand = factory(Brand::class)->create();
 
@@ -82,10 +79,9 @@ class BrandControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_brand()
+  public function an_user_with_permission_can_store_a_brand()
   {
-    $role = $this->getRoleWithPermissionsTo(['brands.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['brands.store']);
 
     $attributes = factory(Brand::class)->raw();
 
@@ -99,12 +95,9 @@ class BrandControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_brand()
+  public function an_user_with_permission_can_update_a_brand()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['brands.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['brands.update']);
 
     $brand = factory(Brand::class)->create();
 
@@ -119,10 +112,9 @@ class BrandControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_brand()
+  public function an_user_with_permission_can_destroy_a_brand()
   {
-    $role = $this->getRoleWithPermissionsTo(['brands.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['brands.destroy']);
 
     $brand = factory(Brand::class)->create();
 

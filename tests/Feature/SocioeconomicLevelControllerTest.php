@@ -50,11 +50,9 @@ class SocioeconomicLevelControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_socioeconomic_levels()
+  public function an_user_with_permission_can_see_all_socioeconomic_levels()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['socioeconomic-levels.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['socioeconomic-levels.index']);
 
     $response = $this->getJson(route('socioeconomic-levels.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class SocioeconomicLevelControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_socioeconomic_level()
+  public function an_user_with_permission_can_see_a_socioeconomic_level()
   {
-    $role = $this->getRoleWithPermissionsTo(['socioeconomic-levels.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['socioeconomic-levels.show']);
 
     $socioeconomicLevel = factory(SocioeconomicLevel::class)->create();
 
@@ -82,10 +79,9 @@ class SocioeconomicLevelControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_socioeconomic_level()
+  public function an_user_with_permission_can_store_a_socioeconomic_level()
   {
-    $role = $this->getRoleWithPermissionsTo(['socioeconomic-levels.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['socioeconomic-levels.store']);
 
     $attributes = factory(SocioeconomicLevel::class)->raw();
 
@@ -99,12 +95,9 @@ class SocioeconomicLevelControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_socioeconomic_level()
+  public function an_user_with_permission_can_update_a_socioeconomic_level()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['socioeconomic-levels.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['socioeconomic-levels.update']);
 
     $socioeconomicLevel = factory(SocioeconomicLevel::class)->create();
 
@@ -119,10 +112,9 @@ class SocioeconomicLevelControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_socioeconomic_level()
+  public function an_user_with_permission_can_destroy_a_socioeconomic_level()
   {
-    $role = $this->getRoleWithPermissionsTo(['socioeconomic-levels.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['socioeconomic-levels.destroy']);
 
     $socioeconomicLevel = factory(SocioeconomicLevel::class)->create();
 

@@ -18,9 +18,12 @@ class AccessMiddleware
     {
         $user = $request->user();
         $routeName = $request->route()->getName();
-        $permission = Permission::where('route_name', $routeName)->first();
+        $permissions = Permission::select('permissions.*')
+            ->join('permission_route', 'permissions.id', '=', 'permission_route.permission_id')
+            ->where('permission_route.route', $routeName)
+            ->get();
 
-        if ($user->hasRole(config('app.role_super_admin_name')) || ($permission && $user->can($permission->name))) {
+        if ($user->hasRole(config('app.role_super_admin_name')) || ($permissions->count() && $user->hasAnyPermission($permissions))) {
             return $next($request);
         } else{
             abort(403);

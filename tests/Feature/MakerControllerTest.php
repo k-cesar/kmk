@@ -50,11 +50,9 @@ class MakerControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_makers()
+  public function an_user_with_permission_can_see_all_makers()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['makers.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['makers.index']);
 
     $response = $this->getJson(route('makers.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class MakerControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_maker()
+  public function an_user_with_permission_can_see_a_maker()
   {
-    $role = $this->getRoleWithPermissionsTo(['makers.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['makers.show']);
 
     $maker = factory(Maker::class)->create();
 
@@ -82,10 +79,9 @@ class MakerControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_maker()
+  public function an_user_with_permission_can_store_a_maker()
   {
-    $role = $this->getRoleWithPermissionsTo(['makers.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['makers.store']);
 
     $attributes = factory(Maker::class)->raw();
 
@@ -99,12 +95,9 @@ class MakerControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_maker()
+  public function an_user_with_permission_can_update_a_maker()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['makers.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['makers.update']);
 
     $maker = factory(Maker::class)->create();
 
@@ -119,10 +112,9 @@ class MakerControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_maker()
+  public function an_user_with_permission_can_destroy_a_maker()
   {
-    $role = $this->getRoleWithPermissionsTo(['makers.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['makers.destroy']);
 
     $maker = factory(Maker::class)->create();
 

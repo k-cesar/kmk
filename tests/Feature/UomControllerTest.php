@@ -50,11 +50,9 @@ class UomControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_uoms()
+  public function an_user_with_permission_can_see_all_uoms()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['uoms.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['uoms.index']);
 
     $response = $this->getJson(route('uoms.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class UomControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_uom()
+  public function an_user_with_permission_can_see_a_uom()
   {
-    $role = $this->getRoleWithPermissionsTo(['uoms.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['uoms.show']);
 
     $uom = factory(Uom::class)->create();
 
@@ -82,10 +79,9 @@ class UomControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_uom()
+  public function an_user_with_permission_can_store_a_uom()
   {
-    $role = $this->getRoleWithPermissionsTo(['uoms.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['uoms.store']);
 
     $attributes = factory(Uom::class)->raw();
 
@@ -99,12 +95,9 @@ class UomControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_uom()
+  public function an_user_with_permission_can_update_a_uom()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['uoms.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['uoms.update']);
 
     $uom = factory(Uom::class)->create();
 
@@ -119,10 +112,9 @@ class UomControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_uom()
+  public function an_user_with_permission_can_destroy_a_uom()
   {
-    $role = $this->getRoleWithPermissionsTo(['uoms.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['uoms.destroy']);
 
     $uom = factory(Uom::class)->create();
 
@@ -131,5 +123,4 @@ class UomControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('uoms', $uom->toArray());
   }
-
 }

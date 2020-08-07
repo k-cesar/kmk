@@ -50,11 +50,9 @@ class PaymentMethodControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_payment_methods()
+  public function an_user_with_permission_can_see_all_payment_methods()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['payment-methods.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['payment-methods.index']);
 
     $response = $this->getJson(route('payment-methods.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class PaymentMethodControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_payment_method()
+  public function an_user_with_permission_can_see_a_payment_method()
   {
-    $role = $this->getRoleWithPermissionsTo(['payment-methods.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['payment-methods.show']);
 
     $paymentMethod = factory(PaymentMethod::class)->create();
 
@@ -82,10 +79,9 @@ class PaymentMethodControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_payment_method()
+  public function an_user_with_permission_can_store_a_payment_method()
   {
-    $role = $this->getRoleWithPermissionsTo(['payment-methods.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['payment-methods.store']);
 
     $attributes = factory(PaymentMethod::class)->raw();
 
@@ -99,12 +95,9 @@ class PaymentMethodControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_payment_method()
+  public function an_user_with_permission_can_update_a_payment_method()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['payment-methods.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['payment-methods.update']);
 
     $paymentMethod = factory(PaymentMethod::class)->create();
 
@@ -119,10 +112,9 @@ class PaymentMethodControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_payment_method()
+  public function an_user_with_permission_can_destroy_a_payment_method()
   {
-    $role = $this->getRoleWithPermissionsTo(['payment-methods.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['payment-methods.destroy']);
 
     $paymentMethod = factory(PaymentMethod::class)->create();
 

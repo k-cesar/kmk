@@ -50,11 +50,9 @@ class ZoneControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_zones()
+  public function an_user_with_permission_can_see_all_zones()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['zones.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['zones.index']);
 
     $response = $this->getJson(route('zones.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class ZoneControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_zone()
+  public function an_user_with_permission_can_see_a_zone()
   {
-    $role = $this->getRoleWithPermissionsTo(['zones.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['zones.show']);
 
     $zone = factory(Zone::class)->create();
 
@@ -82,10 +79,9 @@ class ZoneControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_zone()
+  public function an_user_with_permission_can_store_a_zone()
   {
-    $role = $this->getRoleWithPermissionsTo(['zones.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['zones.store']);
 
     $attributes = factory(Zone::class)->raw();
 
@@ -99,12 +95,9 @@ class ZoneControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_zone()
+  public function an_user_with_permission_can_update_a_zone()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['zones.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['zones.update']);
 
     $zone = factory(Zone::class)->create();
 
@@ -119,10 +112,9 @@ class ZoneControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_zone()
+  public function an_user_with_permission_can_destroy_a_zone()
   {
-    $role = $this->getRoleWithPermissionsTo(['zones.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['zones.destroy']);
 
     $zone = factory(Zone::class)->create();
 

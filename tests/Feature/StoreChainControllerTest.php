@@ -50,11 +50,10 @@ class StoreChainControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_store_chains()
+  public function an_user_with_permission_can_see_all_store_chains()
   {
 
-    $role = $this->getRoleWithPermissionsTo(['store-chains.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['store-chains.index']);
 
     $response = $this->getJson(route('store-chains.index'))
       ->assertOk();
@@ -67,10 +66,9 @@ class StoreChainControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_store_chain()
+  public function an_user_with_permission_can_see_a_store_chain()
   {
-    $role = $this->getRoleWithPermissionsTo(['store-chains.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['store-chains.show']);
 
     $storeChain = factory(StoreChain::class)->create();
 
@@ -82,10 +80,9 @@ class StoreChainControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_store_chain()
+  public function an_user_with_permission_can_store_a_store_chain()
   {
-    $role = $this->getRoleWithPermissionsTo(['store-chains.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['store-chains.store']);
 
     $attributes = factory(StoreChain::class)->raw();
 
@@ -99,12 +96,9 @@ class StoreChainControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_store_chain()
+  public function an_user_with_permission_can_update_a_store_chain()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['store-chains.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['store-chains.update']);
 
     $storeChain = factory(StoreChain::class)->create();
 
@@ -119,10 +113,9 @@ class StoreChainControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_store_chain()
+  public function an_user_with_permission_can_destroy_a_store_chain()
   {
-    $role = $this->getRoleWithPermissionsTo(['store-chains.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['store-chains.destroy']);
 
     $storeChain = factory(StoreChain::class)->create();
 

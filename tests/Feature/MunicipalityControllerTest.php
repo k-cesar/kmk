@@ -50,11 +50,9 @@ class MunicipalityControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_municipalities()
+  public function an_user_with_permission_can_see_all_municipalities()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['municipalities.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['municipalities.index']);
 
     $response = $this->getJson(route('municipalities.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class MunicipalityControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_municipality()
+  public function an_user_with_permission_can_see_a_municipality()
   {
-    $role = $this->getRoleWithPermissionsTo(['municipalities.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['municipalities.show']);
 
     $municipality = factory(Municipality::class)->create();
 
@@ -82,10 +79,9 @@ class MunicipalityControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_municipality()
+  public function an_user_with_permission_can_store_a_municipality()
   {
-    $role = $this->getRoleWithPermissionsTo(['municipalities.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['municipalities.store']);
 
     $attributes = factory(Municipality::class)->raw();
 
@@ -99,12 +95,9 @@ class MunicipalityControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_municipality()
+  public function an_user_with_permission_can_update_a_municipality()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['municipalities.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['municipalities.update']);
 
     $municipality = factory(Municipality::class)->create();
 
@@ -119,10 +112,9 @@ class MunicipalityControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_municipality()
+  public function an_user_with_permission_can_destroy_a_municipality()
   {
-    $role = $this->getRoleWithPermissionsTo(['municipalities.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['municipalities.destroy']);
 
     $municipality = factory(Municipality::class)->create();
 

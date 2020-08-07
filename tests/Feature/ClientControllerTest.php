@@ -16,7 +16,7 @@ class ClientControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'ClientSeeder']);
+    $this->seed(['PermissionSeeder', 'ClientSeeder']);
   }
 
   /**
@@ -50,11 +50,9 @@ class ClientControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_clients()
+  public function an_user_with_permission_can_see_all_clients()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['clients.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['clients.index']);
 
     $response = $this->getJson(route('clients.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class ClientControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_client()
+  public function an_user_with_permission_can_see_a_client()
   {
-    $role = $this->getRoleWithPermissionsTo(['clients.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['clients.show']);
 
     $client = factory(Client::class)->create();
 
@@ -82,10 +79,9 @@ class ClientControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_client()
+  public function an_user_with_permission_can_store_a_client()
   {
-    $role = $this->getRoleWithPermissionsTo(['clients.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['clients.store']);
 
     $attributes = factory(Client::class)->raw();
 
@@ -99,12 +95,9 @@ class ClientControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_client()
+  public function an_user_with_permission_can_update_a_client()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['clients.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['clients.update']);
 
     $client = factory(Client::class)->create();
 
@@ -119,10 +112,9 @@ class ClientControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_client()
+  public function an_user_with_permission_can_destroy_a_client()
   {
-    $role = $this->getRoleWithPermissionsTo(['clients.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['clients.destroy']);
 
     $client = factory(Client::class)->create();
 
@@ -131,5 +123,4 @@ class ClientControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('clients', $client->toArray());
   }
-
 }

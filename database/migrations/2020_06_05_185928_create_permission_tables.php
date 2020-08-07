@@ -24,16 +24,28 @@ class CreatePermissionTables extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('group');
-            $table->string('route_name')->unique();
-            $table->unsignedBigInteger('level');
+            $table->unsignedTinyInteger('level');
             $table->string('guard_name');
             $table->timestamps();
+        });
+
+        Schema::create('permission_route', function (Blueprint $table) use ($tableNames) {
+            $table->bigIncrements('id');
+            $table->unsignedBigInteger('permission_id');
+            $table->string('route');
+            $table->timestamps();
+
+            $table->foreign('permission_id')
+                ->references('id')
+                ->on($tableNames['permissions'])
+                ->onDelete('cascade');
+
         });
 
         Schema::create($tableNames['roles'], function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->unsignedBigInteger('level');
+            $table->unsignedTinyInteger('level')->unique();
             $table->string('guard_name');
             $table->timestamps();
         });
