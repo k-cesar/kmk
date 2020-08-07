@@ -50,11 +50,9 @@ class TurnControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_turns()
+  public function an_user_with_permission_can_see_all_turns()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['turns.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['turns.index']);
 
     $response = $this->getJson(route('turns.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class TurnControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_turn()
+  public function an_user_with_permission_can_see_a_turn()
   {
-    $role = $this->getRoleWithPermissionsTo(['turns.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['turns.show']);
 
     $turn = factory(Turn::class)->create();
 
@@ -82,10 +79,9 @@ class TurnControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_turn()
+  public function an_user_with_permission_can_store_a_turn()
   {
-    $role = $this->getRoleWithPermissionsTo(['turns.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['turns.store']);
 
     $attributes = factory(Turn::class)->raw();
 
@@ -99,12 +95,9 @@ class TurnControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_turn()
+  public function an_user_with_permission_can_update_a_turn()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['turns.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['turns.update']);
 
     $turn = factory(Turn::class)->create();
 
@@ -119,10 +112,9 @@ class TurnControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_turn()
+  public function an_user_with_permission_can_destroy_a_turn()
   {
-    $role = $this->getRoleWithPermissionsTo(['turns.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['turns.destroy']);
 
     $turn = factory(Turn::class)->create();
 
@@ -131,5 +123,4 @@ class TurnControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('turns', $turn->toArray());
   }
-
 }

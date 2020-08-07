@@ -50,11 +50,9 @@ class StateControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_states()
+  public function an_user_with_permission_can_see_all_states()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['states.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['states.index']);
 
     $response = $this->getJson(route('states.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class StateControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_state()
+  public function an_user_with_permission_can_see_a_state()
   {
-    $role = $this->getRoleWithPermissionsTo(['states.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['states.show']);
 
     $state = factory(State::class)->create();
 
@@ -82,10 +79,9 @@ class StateControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_state()
+  public function an_user_with_permission_can_store_a_state()
   {
-    $role = $this->getRoleWithPermissionsTo(['states.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['states.store']);
 
     $attributes = factory(State::class)->raw();
 
@@ -99,12 +95,9 @@ class StateControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_state()
+  public function an_user_with_permission_can_update_a_state()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['states.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['states.update']);
 
     $state = factory(State::class)->create();
 
@@ -119,10 +112,9 @@ class StateControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_state()
+  public function an_user_with_permission_can_destroy_a_state()
   {
-    $role = $this->getRoleWithPermissionsTo(['states.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['states.destroy']);
 
     $state = factory(State::class)->create();
 
@@ -131,5 +123,4 @@ class StateControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('states', $state->toArray());
   }
-
 }

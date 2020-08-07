@@ -50,11 +50,9 @@ class ProductDepartmentControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_product_departments()
+  public function an_user_with_permission_can_see_all_product_departments()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['product-departments.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['product-departments.index']);
 
     $response = $this->getJson(route('product-departments.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class ProductDepartmentControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_product_department()
+  public function an_user_with_permission_can_see_a_product_department()
   {
-    $role = $this->getRoleWithPermissionsTo(['product-departments.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['product-departments.show']);
 
     $productDepartment = factory(ProductDepartment::class)->create();
 
@@ -82,10 +79,9 @@ class ProductDepartmentControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_product_department()
+  public function an_user_with_permission_can_store_a_product_department()
   {
-    $role = $this->getRoleWithPermissionsTo(['product-departments.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['product-departments.store']);
 
     $attributes = factory(ProductDepartment::class)->raw();
 
@@ -99,12 +95,9 @@ class ProductDepartmentControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_product_department()
+  public function an_user_with_permission_can_update_a_product_department()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['product-departments.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['product-departments.update']);
 
     $productDepartment = factory(ProductDepartment::class)->create();
 
@@ -119,10 +112,9 @@ class ProductDepartmentControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_product_department()
+  public function an_user_with_permission_can_destroy_a_product_department()
   {
-    $role = $this->getRoleWithPermissionsTo(['product-departments.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['product-departments.destroy']);
 
     $productDepartment = factory(ProductDepartment::class)->create();
 
@@ -131,5 +123,4 @@ class ProductDepartmentControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('product_departments', $productDepartment->toArray());
   }
-
 }

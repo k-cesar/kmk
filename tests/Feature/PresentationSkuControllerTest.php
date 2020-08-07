@@ -50,11 +50,9 @@ class PresentationSkuControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_presentation_skus()
+  public function an_user_with_permission_can_see_all_presentation_skus()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['presentation-skus.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['presentation-skus.index']);
 
     $response = $this->getJson(route('presentation-skus.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class PresentationSkuControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_presentation_sku()
+  public function an_user_with_permission_can_see_a_presentation_sku()
   {
-    $role = $this->getRoleWithPermissionsTo(['presentation-skus.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['presentation-skus.show']);
 
     $presentationSku = factory(PresentationSku::class)->create();
 
@@ -82,10 +79,9 @@ class PresentationSkuControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_presentation_sku()
+  public function an_user_with_permission_can_store_a_presentation_sku()
   {
-    $role = $this->getRoleWithPermissionsTo(['presentation-skus.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['presentation-skus.store']);
 
     $attributes = factory(PresentationSku::class)->raw();
 
@@ -99,12 +95,9 @@ class PresentationSkuControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_presentation_sku()
+  public function an_user_with_permission_can_update_a_presentation_sku()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['presentation-skus.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['presentation-skus.update']);
 
     $presentationSku = factory(PresentationSku::class)->create();
 
@@ -119,10 +112,9 @@ class PresentationSkuControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_presentation_sku()
+  public function an_user_with_permission_can_destroy_a_presentation_sku()
   {
-    $role = $this->getRoleWithPermissionsTo(['presentation-skus.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['presentation-skus.destroy']);
 
     $presentationSku = factory(PresentationSku::class)->create();
 

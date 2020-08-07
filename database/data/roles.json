@@ -1,0 +1,18 @@
+[
+  {
+    "name": "Admin Tendero",
+    "level": 1
+  },
+  {
+    "name": "Admin Empresa",
+    "level": 2
+  },
+  {
+    "name": "Supervisor de Tienda",
+    "level": 3
+  },
+  {
+    "name": "Vendedor",
+    "level": 4
+  }
+]

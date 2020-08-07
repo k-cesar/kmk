@@ -18,13 +18,6 @@ use Illuminate\Support\Facades\Route;
  ***********************************************************************************************************************/
 
 Route::group(['middleware' => ['auth', 'access']], function () {
-    Route::resource('roles', 'Role\RoleController')->except('create', 'edit');
-
-    Route::resource('permissions', 'Permission\PermissionController')->except('create', 'edit');;
-    Route::delete('permissions', 'Permission\PermissionController@clean')->name('permissions.clean');
-
-    Route::resource('roles.permissions', 'Role\RolePermissionController')->only('index', 'store');
-    
     Route::resource('currencies', 'Currency\CurrencyController')->except('create', 'edit');
     
     Route::resource('countries', 'Country\CountryController')->except('create', 'edit');
@@ -32,6 +25,8 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     Route::resource('companies', 'Company\CompanyController')->except('create', 'edit');
 
     Route::resource('users', 'User\UserController')->except('create', 'edit');
+
+    Route::resource('users.permissions', 'User\UserPermissionController')->only('index', 'store');
 
     Route::resource('makers', 'Maker\MakerController')->except('create', 'edit');
 

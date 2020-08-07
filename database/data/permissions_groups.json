@@ -1,0 +1,427 @@
+[
+  {
+    "name": "Configurar Información de Nuestra Empresa",
+    "permissions": [
+      {
+        "name": "Ver Configurar Información de Nuestra Empresa",
+        "level": 2,
+        "routes": ["companies.index",	"companies.show"]
+      },
+      {
+        "name": "Crear Configurar Información de Nuestra Empresa",
+        "level": 1,
+        "routes": ["companies.store"]
+      },
+      {
+        "name": "Editar Configurar Información de Nuestra Empresa",
+        "level": 2,
+        "routes": ["companies.update"]
+      },
+      {
+        "name": "Eliminar Configurar Información de Nuestra Empresa",
+        "level": 1,
+        "routes": ["companies.destroy"]
+      }
+    ]
+  },
+  {
+    "name": "Manejo de Usuarios",
+    "permissions": [
+      {
+        "name": "Ver Manejo de Usuarios",
+        "level": 2,
+        "routes": ["users.index",	"users.show",	"users.permissions.index"]
+      },
+      {
+        "name": "Crear Manejo de Usuarios",
+        "level": 2,
+        "routes": ["users.store"]
+      },
+      {
+        "name": "Editar Manejo de Usuarios",
+        "level": 2,
+        "routes": ["users.update", "users.permissions.store"]
+      },
+      {
+        "name": "Eliminar Manejo de Usuarios",
+        "level": 2,
+        "routes": ["users.destroy"]
+      }
+    ]
+  },
+  {
+    "name": "Manejo de Tiendas",
+    "permissions": [
+      {
+        "name": "Ver Manejo de Tiendas",
+        "level": 2,
+        "routes": ["stores.index", "stores.show", "turns.index", "turns.show"]
+      },
+      {
+        "name": "Crear Manejo de Tiendas",
+        "level": 2,
+        "routes": ["stores.store", "turns.store"]
+      },
+      {
+        "name": "Editar Manejo de Tiendas",
+        "level": 2,
+        "routes": ["stores.update", "turns.update"]
+      },
+      {
+        "name": "Eliminar Manejo de Tiendas",
+        "level": 2,
+        "routes": ["stores.destroy", "turns.destroy"]
+      }
+    ]
+  },
+  {
+    "name": "Manejo de Métodos de Pago",
+    "permissions": [
+      {
+        "name": "Ver Manejo de Métodos de Pago",
+        "level": 2,
+        "routes": ["payment-methods.index",	"payment-methods.show"]
+      },
+      {
+        "name": "Crear Manejo de Métodos de Pago",
+        "level": 2,
+        "routes": ["payment-methods.store"]
+      },
+      {
+        "name": "Editar Manejo de Métodos de Pago",
+        "level": 2,
+        "routes": ["payment-methods.update"]
+      },
+      {
+        "name": "Eliminar Manejo de Métodos de Pago",
+        "level": 2,
+        "routes": ["payment-methods.destroy"]
+      }
+    ]
+  },
+  {
+    "name": "Manejo de Facturación Electrónica",
+    "permissions": [
+      {
+        "name": "Ver Manejo de Facturación Electrónica",
+        "level": 2,
+        "routes": []
+      },
+      {
+        "name": "Crear Manejo de Facturación Electrónica",
+        "level": 2,
+        "routes": []
+      },
+      {
+        "name": "Editar Manejo de Facturación Electrónica",
+        "level": 2,
+        "routes": []
+      },
+      {
+        "name": "Eliminar Manejo de Facturación Electrónica",
+        "level": 2,
+        "routes": []
+      }
+    ]
+  },
+  {
+    "name": "Manejo de Catálogo de Productos",
+    "permissions": [
+      {
+        "name": "Ver Manejo de Catálogo de Productos",
+        "level": 2,
+        "routes": ["products.index", "products.show", "makers.index", "makers.show", "presentations.index", "presentations.show", "brands.index", "brands.show", "presentation-skus.index", "presentation-skus.show", "providers.index", "providers.show", "presentation-combos.index", "presentation-combos.show"]
+      },
+      {
+        "name": "Crear Manejo de Catálogo de Productos",
+        "level": 2,
+        "routes": ["products.store", "makers.store", "presentations.store", "brands.store", "presentation-skus.store", "providers.store", "presentation-combos.store"]
+      },
+      {
+        "name": "Editar Manejo de Catálogo de Productos",
+        "level": 2,
+        "routes": ["products.update", "makers.update", "presentations.update", "brands.update", "presentation-skus.update", "providers.update", "presentation-combos.update"]
+      },
+      {
+        "name": "Eliminar Manejo de Catálogo de Productos",
+        "level": 2,
+        "routes": ["products.destroy", "makers.destroy", "presentations.destroy", "brands.destroy", "presentation-skus.destroy", "providers.destroy", "presentation-combos.destroy"]
+      }
+    ]
+  },
+  {
+    "name": "Entradas de Inventario",
+    "permissions": [
+      {
+        "name": "Ver Entradas de Inventario",
+        "level": 3,
+        "routes": []
+      },
+      {
+        "name": "Crear Entradas de Inventario",
+        "level": 3,
+        "routes": []
+      },
+      {
+        "name": "Editar Entradas de Inventario",
+        "level": 3,
+        "routes": []
+      },
+      {
+        "name": "Eliminar Entradas de Inventario",
+        "level": 3,
+        "routes": []
+      }
+    ]
+  },
+  {
+    "name": "Ajustes de Inventario",
+    "permissions": [
+      {
+        "name": "Ver Ajustes de Inventario",
+        "level": 3,
+        "routes": []
+      },
+      {
+        "name": "Crear Ajustes de Inventario",
+        "level": 3,
+        "routes": []
+      },
+      {
+        "name": "Editar Ajustes de Inventario",
+        "level": 3,
+        "routes": []
+      },
+      {
+        "name": "Eliminar Ajustes de Inventario",
+        "level": 3,
+        "routes": []
+      }
+    ]
+  },
+  {
+    "name": "Traslados de Inventario",
+    "permissions": [
+      {
+        "name": "Ver Traslados de Inventario",
+        "level": 3,
+        "routes": []
+      },
+      {
+        "name": "Crear Traslados de Inventario",
+        "level": 3,
+        "routes": []
+      },
+      {
+        "name": "Editar Traslados de Inventario",
+        "level": 3,
+        "routes": []
+      },
+      {
+        "name": "Eliminar Traslados de Inventario",
+        "level": 3,
+        "routes": []
+      }
+    ]
+  },
+  {
+    "name": "Conteos de Inventario",
+    "permissions": [
+      {
+        "name": "Ver Conteos de Inventario",
+        "level": 3,
+        "routes": []
+      },
+      {
+        "name": "Crear Conteos de Inventario",
+        "level": 3,
+        "routes": []
+      },
+      {
+        "name": "Editar Conteos de Inventario",
+        "level": 3,
+        "routes": []
+      },
+      {
+        "name": "Eliminar Conteos de Inventario",
+        "level": 3,
+        "routes": []
+      }
+    ]
+  },
+  {
+    "name": "Depósitos Bancarios",
+    "permissions": [
+      {
+        "name": "Ver Depósitos Bancarios",
+        "level": 4,
+        "routes": []
+      },
+      {
+        "name": "Crear Depósitos Bancarios",
+        "level": 4,
+        "routes": []
+      },
+      {
+        "name": "Editar Depósitos Bancarios",
+        "level": 3,
+        "routes": []
+      },
+      {
+        "name": "Eliminar Depósitos Bancarios",
+        "level": 3,
+        "routes": []
+      }
+    ]
+  },
+  {
+    "name": "Registro de Ventas",
+    "permissions": [
+      {
+        "name": "Ver Registro de Ventas",
+        "level": 4,
+        "routes": []
+      },
+      {
+        "name": "Crear Registro de Ventas",
+        "level": 4,
+        "routes": []
+      },
+      {
+        "name": "Editar Registro de Ventas",
+        "level": 3,
+        "routes": []
+      },
+      {
+        "name": "Eliminar Registro de Ventas",
+        "level": 3,
+        "routes": []
+      }
+    ]
+  },
+  {
+    "name": "Editar Precios Durante la Venta",
+    "permissions": [
+      {
+        "name": "Ver Editar Precios Durante la Venta",
+        "level": 3,
+        "routes": []
+      },
+      {
+        "name": "Crear Editar Precios Durante la Venta",
+        "level": 3,
+        "routes": []
+      },
+      {
+        "name": "Editar Editar Precios Durante la Venta",
+        "level": 3,
+        "routes": []
+      },
+      {
+        "name": "Eliminar Editar Precios Durante la Venta",
+        "level": 3,
+        "routes": []
+      }
+    ]
+  },
+  {
+    "name": "Cierre de Caja",
+    "permissions": [
+      {
+        "name": "Ver Cierre de Caja",
+        "level": 4,
+        "routes": []
+      },
+      {
+        "name": "Crear Cierre de Caja",
+        "level": 4,
+        "routes": []
+      },
+      {
+        "name": "Editar Cierre de Caja",
+        "level": 3,
+        "routes": []
+      },
+      {
+        "name": "Eliminar Cierre de Caja",
+        "level": 3,
+        "routes": []
+      }
+    ]
+  },
+  {
+    "name": "Manejo de Cuentas por Cobrar",
+    "permissions": [
+      {
+        "name": "Ver Manejo de Cuentas por Cobrar",
+        "level": 4,
+        "routes": []
+      },
+      {
+        "name": "Crear Manejo de Cuentas por Cobrar",
+        "level": 4,
+        "routes": []
+      },
+      {
+        "name": "Editar Manejo de Cuentas por Cobrar",
+        "level": 4,
+        "routes": []
+      },
+      {
+        "name": "Eliminar Manejo de Cuentas por Cobrar",
+        "level": 1,
+        "routes": []
+      }
+    ]
+  },
+  {
+    "name": "Manejo de Datos de Clientes",
+    "permissions": [
+      {
+        "name": "Ver Manejo de Datos de Clientes",
+        "level": 3,
+        "routes": ["clients.index", "clients.show"]
+      },
+      {
+        "name": "Crear Manejo de Datos de Clientes",
+        "level": 3,
+        "routes": ["clients.store"]
+      },
+      {
+        "name": "Editar Manejo de Datos de Clientes",
+        "level": 3,
+        "routes": ["clients.update"]
+      },
+      {
+        "name": "Eliminar Manejo de Datos de Clientes",
+        "level": 3,
+        "routes": ["clients.destroy"]
+      }
+    ]
+  },
+  {
+    "name": "Información Básica del Sistema",
+    "permissions": [
+      {
+        "name": "Ver Información Básica del Sistema",
+        "level": 1,
+        "routes": ["currencies.index", "currencies.show", "countries.index", "countries.show", "uoms.index", "uoms.show", "socioeconomic-levels.index", "socioeconomic-levels.show", "location-types.index", "location-types.show", "store-types.index", "store-types.show", "product-categories.index", "product-categories.show", "product-departments.index", "product-departments.show", "product-subcategories.index", "product-subcategories.show", "store-formats.index", "store-formats.show", "store-chains.index", "store-chains.show", "store-flags.index", "store-flags.show", "regions.index", "regions.show", "states.index", "states.show", "municipalities.index", "municipalities.show", "zones.index", "zones.show"]
+      },
+      {
+        "name": "Crear Información Básica del Sistema",
+        "level": 1,
+        "routes": ["currencies.store", "countries.store", "uoms.store", "socioeconomic-levels.store", "location-types.store", "store-types.store", "product-categories.store", "product-departments.store", "product-subcategories.store", "store-formats.store", "store-chains.store", "store-flags.store", "regions.store", "states.store", "municipalities.store", "zones.store"]
+      },
+      {
+        "name": "Editar Información Básica del Sistema",
+        "level": 1,
+        "routes": ["currencies.update", "countries.update", "uoms.update", "socioeconomic-levels.update", "location-types.update", "store-types.update", "product-categories.update", "product-departments.update", "product-subcategories.update", "store-formats.update", "store-chains.update", "store-flags.update", "regions.update", "states.update", "municipalities.update", "zones.update"]
+      },
+      {
+        "name": "Eliminar Información Básica del Sistema",
+        "level": 1,
+        "routes": ["currencies.destroy", "countries.destroy", "uoms.destroy", "socioeconomic-levels.destroy", "location-types.destroy", "store-types.destroy", "product-categories.destroy", "product-departments.destroy", "product-subcategories.destroy", "store-formats.destroy", "store-chains.destroy", "store-flags.destroy", "regions.destroy", "states.destroy", "municipalities.destroy", "zones.destroy"]
+      }
+    ]
+  }
+]

@@ -50,11 +50,9 @@ class StoreTypeControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_store_types()
+  public function an_user_with_permission_can_see_all_store_types()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['store-types.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['store-types.index']);
 
     $response = $this->getJson(route('store-types.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class StoreTypeControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_store_type()
+  public function an_user_with_permission_can_see_a_store_type()
   {
-    $role = $this->getRoleWithPermissionsTo(['store-types.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['store-types.show']);
 
     $storeType = factory(StoreType::class)->create();
 
@@ -82,10 +79,9 @@ class StoreTypeControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_store_type()
+  public function an_user_with_permission_can_store_a_store_type()
   {
-    $role = $this->getRoleWithPermissionsTo(['store-types.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['store-types.store']);
 
     $attributes = factory(StoreType::class)->raw();
 
@@ -99,12 +95,9 @@ class StoreTypeControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_store_type()
+  public function an_user_with_permission_can_update_a_store_type()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['store-types.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['store-types.update']);
 
     $storeType = factory(StoreType::class)->create();
 
@@ -119,10 +112,9 @@ class StoreTypeControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_store_type()
+  public function an_user_with_permission_can_destroy_a_store_type()
   {
-    $role = $this->getRoleWithPermissionsTo(['store-types.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['store-types.destroy']);
 
     $storeType = factory(StoreType::class)->create();
 
@@ -131,5 +123,4 @@ class StoreTypeControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('store_types', $storeType->toArray());
   }
-
 }

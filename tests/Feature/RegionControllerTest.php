@@ -50,11 +50,9 @@ class RegionControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_regions()
+  public function an_user_with_permission_can_see_all_regions()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['regions.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['regions.index']);
 
     $response = $this->getJson(route('regions.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class RegionControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_region()
+  public function an_user_with_permission_can_see_a_region()
   {
-    $role = $this->getRoleWithPermissionsTo(['regions.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['regions.show']);
 
     $region = factory(Region::class)->create();
 
@@ -82,10 +79,9 @@ class RegionControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_region()
+  public function an_user_with_permission_can_store_a_region()
   {
-    $role = $this->getRoleWithPermissionsTo(['regions.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['regions.store']);
 
     $attributes = factory(Region::class)->raw();
 
@@ -99,12 +95,9 @@ class RegionControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_region()
+  public function an_user_with_permission_can_update_a_region()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['regions.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['regions.update']);
 
     $region = factory(Region::class)->create();
 
@@ -119,10 +112,9 @@ class RegionControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_region()
+  public function an_user_with_permission_can_destroy_a_region()
   {
-    $role = $this->getRoleWithPermissionsTo(['regions.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['regions.destroy']);
 
     $region = factory(Region::class)->create();
 
@@ -131,5 +123,4 @@ class RegionControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('regions', $region->toArray());
   }
-
 }

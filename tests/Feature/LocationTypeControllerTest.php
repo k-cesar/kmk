@@ -50,11 +50,9 @@ class LocationTypeControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_location_types()
+  public function an_user_with_permission_can_see_all_location_types()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['location-types.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['location-types.index']);
 
     $response = $this->getJson(route('location-types.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class LocationTypeControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_location_type()
+  public function an_user_with_permission_can_see_a_location_type()
   {
-    $role = $this->getRoleWithPermissionsTo(['location-types.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['location-types.show']);
 
     $locationType = factory(LocationType::class)->create();
 
@@ -82,10 +79,9 @@ class LocationTypeControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_location_type()
+  public function an_user_with_permission_can_store_a_location_type()
   {
-    $role = $this->getRoleWithPermissionsTo(['location-types.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['location-types.store']);
 
     $attributes = factory(LocationType::class)->raw();
 
@@ -99,12 +95,9 @@ class LocationTypeControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_location_type()
+  public function an_user_with_permission_can_update_a_location_type()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['location-types.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['location-types.update']);
 
     $locationType = factory(LocationType::class)->create();
 
@@ -119,10 +112,9 @@ class LocationTypeControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_location_type()
+  public function an_user_with_permission_can_destroy_a_location_type()
   {
-    $role = $this->getRoleWithPermissionsTo(['location-types.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['location-types.destroy']);
 
     $locationType = factory(LocationType::class)->create();
 

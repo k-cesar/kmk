@@ -53,11 +53,9 @@ class PresentationComboControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_presentation_combos()
+  public function an_user_with_permission_can_see_all_presentation_combos()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['presentation-combos.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['presentation-combos.index']);
 
     $response = $this->getJson(route('presentation-combos.index'))
       ->assertOk();
@@ -70,10 +68,9 @@ class PresentationComboControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_presentation_combo()
+  public function an_user_with_permission_can_see_a_presentation_combo()
   {
-    $role = $this->getRoleWithPermissionsTo(['presentation-combos.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['presentation-combos.show']);
 
     $presentationCombo = factory(PresentationCombo::class)->create();
 
@@ -85,10 +82,9 @@ class PresentationComboControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_presentation_combo()
+  public function an_user_with_permission_can_store_a_presentation_combo()
   {
-    $role = $this->getRoleWithPermissionsTo(['presentation-combos.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['presentation-combos.store']);
 
     $attributes = factory(PresentationCombo::class)->raw();
     $extraAttributes['presentations'] = factory(Presentation::class, 2)->create()->pluck('id')->toArray();
@@ -115,12 +111,9 @@ class PresentationComboControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_presentation_combo()
+  public function an_user_with_permission_can_update_a_presentation_combo()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['presentation-combos.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['presentation-combos.update']);
 
     $presentationCombo = factory(PresentationCombo::class)->create();
 
@@ -148,10 +141,9 @@ class PresentationComboControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_presentation_combo()
+  public function an_user_with_permission_can_destroy_a_presentation_combo()
   {
-    $role = $this->getRoleWithPermissionsTo(['presentation-combos.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['presentation-combos.destroy']);
 
     $presentationCombo = factory(PresentationCombo::class)->create();
 

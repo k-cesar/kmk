@@ -50,11 +50,9 @@ class ProductControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_products()
+  public function an_user_with_permission_can_see_all_products()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['products.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['products.index']);
 
     $response = $this->getJson(route('products.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class ProductControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_product()
+  public function an_user_with_permission_can_see_a_product()
   {
-    $role = $this->getRoleWithPermissionsTo(['products.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['products.show']);
 
     $product = factory(Product::class)->create();
 
@@ -82,10 +79,9 @@ class ProductControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_product()
+  public function an_user_with_permission_can_store_a_product()
   {
-    $role = $this->getRoleWithPermissionsTo(['products.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['products.store']);
 
     $attributes = factory(Product::class)->raw();
     $extraAttributes['country'] = factory(Product::class, 2)->create()->pluck('id')->toArray();
@@ -100,18 +96,14 @@ class ProductControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_product()
+  public function an_user_with_permission_can_update_a_product()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['products.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['products.update']);
 
     $product = factory(Product::class)->create();
 
     $attributes = factory(Product::class)->raw();
     $extraAttributes['country'] = factory(Product::class, 2)->create()->pluck('id')->toArray();
-
 
     $this->putJson(route('products.update', $product->id), array_merge($attributes, $extraAttributes))
       ->assertOk();
@@ -122,10 +114,9 @@ class ProductControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_product()
+  public function an_user_with_permission_can_destroy_a_product()
   {
-    $role = $this->getRoleWithPermissionsTo(['products.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['products.destroy']);
 
     $product = factory(Product::class)->create();
 
@@ -134,5 +125,4 @@ class ProductControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('products', $product->toArray());
   }
-
 }

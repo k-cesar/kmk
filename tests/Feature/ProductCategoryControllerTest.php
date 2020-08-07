@@ -50,11 +50,9 @@ class ProductCategoryControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_all_product_categories()
+  public function an_user_with_permission_can_see_all_product_categories()
   {
-
-    $role = $this->getRoleWithPermissionsTo(['product-categories.index']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['product-categories.index']);
 
     $response = $this->getJson(route('product-categories.index'))
       ->assertOk();
@@ -67,10 +65,9 @@ class ProductCategoryControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_see_a_product_category()
+  public function an_user_with_permission_can_see_a_product_category()
   {
-    $role = $this->getRoleWithPermissionsTo(['product-categories.show']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['product-categories.show']);
 
     $productCategory = factory(ProductCategory::class)->create();
 
@@ -82,10 +79,9 @@ class ProductCategoryControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_store_a_product_category()
+  public function an_user_with_permission_can_store_a_product_category()
   {
-    $role = $this->getRoleWithPermissionsTo(['product-categories.store']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['product-categories.store']);
 
     $attributes = factory(ProductCategory::class)->raw();
 
@@ -99,12 +95,9 @@ class ProductCategoryControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_update_a_product_category()
+  public function an_user_with_permission_can_update_a_product_category()
   {
-    $this->withExceptionHandling();
-
-    $role = $this->getRoleWithPermissionsTo(['product-categories.update']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['product-categories.update']);
 
     $productCategory = factory(ProductCategory::class)->create();
 
@@ -119,10 +112,9 @@ class ProductCategoryControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function an_user_with_role_with_permission_can_destroy_a_product_category()
+  public function an_user_with_permission_can_destroy_a_product_category()
   {
-    $role = $this->getRoleWithPermissionsTo(['product-categories.destroy']);
-    $user = $this->signInWithRole($role);
+    $this->signInWithPermissionsTo(['product-categories.destroy']);
 
     $productCategory = factory(ProductCategory::class)->create();
 
@@ -131,5 +123,4 @@ class ProductCategoryControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('product_categories', $productCategory->toArray());
   }
-
 }

@@ -8,9 +8,8 @@ use Spatie\Permission\Models\Permission;
 
 $factory->define(Permission::class, function (Faker $faker) {
     return [
-        'name'       => $faker->unique()->words(2, true),
-        'route_name' => Str::slug($faker->unique()->words(2, true), '.'),
-        'group'      => $faker->domainWord,
-        'level'      => PHP_INT_MAX,
+        'name'  => $faker->unique()->words(2, true),
+        'group' => $faker->domainWord,
+        'level' => PHP_INT_MAX,
     ];
 });
