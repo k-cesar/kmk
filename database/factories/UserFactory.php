@@ -2,10 +2,11 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Http\Modules\Company\Company;
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 use App\Http\Modules\User\User;
+use Spatie\Permission\Models\Role;
+use App\Http\Modules\Company\Company;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,7 @@ $factory->define(User::class, function (Faker $faker) {
         'email'             => $faker->unique()->safeEmail,
         'phone'             => rand(1000000, 9999999),
         'company_id'        => factory(Company::class),
-        'type'              => $faker->randomElement(User::getOptionsTypes()),
+        'role_id'           => factory(Role::class),
         'password'          => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',   // password
         'remember_token'    => Str::random(10),
     ];

@@ -8,6 +8,6 @@ use Spatie\Permission\Models\Role;
 $factory->define(Role::class, function (Faker $faker) {
     return [
         'name'  => $faker->unique()->domainWord,
-        'level' => PHP_INT_MAX,
+        'level' => rand(1, 4),
     ];
 });
