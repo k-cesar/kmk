@@ -4,6 +4,7 @@ namespace App\Http\Modules\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Schema;
+use Spatie\Permission\Models\Permission;
 
 class UserController extends Controller
 {
@@ -28,6 +29,7 @@ class UserController extends Controller
   public function store(UserRequest $request)
   {
     $user = User::create($request->validated());
+    $user->syncPermissions(Permission::where('level', '>=', $user->role->level)->get());
     $user->stores()->sync($request->stores);
 
     return $this->showOne($user, 201);

@@ -28,7 +28,7 @@ class UserRequest extends FormRequest
   {
     $rules = [
       'name'            => 'required|string|max:100',
-      'type'            => 'required|in:'.implode(',', User::getOptionsTypes()),
+      'role_id'         => 'required|exists:roles,id',
       'email'           => 'sometimes|nullable|string|email|max:255|unique:users',
       'company_id'      => 'required|exists:companies,id',
       'username'        => 'required|string|max:100|alpha_dash|unique:users',
