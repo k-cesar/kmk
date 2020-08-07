@@ -38,7 +38,6 @@ class AuthController extends Controller
             'username'        => 'required|string|max:100|alpha_dash|unique:users',
             'company_id'      => 'required|exists:companies,id',
             'password'        => 'required|string|min:8|max:25|confirmed',
-            'update_password' => 'sometimes|nullable|boolean',
             'phone'           => [
               'required', 
               'digits_between:1,50',
@@ -104,6 +103,35 @@ class AuthController extends Controller
 
         return $this->respondWithTokenAndPermissionsByModules($user->token, $permissionsByModules);
         
+    }
+
+    /**
+     * Change the password of a authenticated user.
+     * 
+     * @param \Illuminate\Http\Request $request
+     * 
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function reset(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'actual_password' => 'required|string',
+            'password'        => 'required|string|min:8|max:25|confirmed',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->errorResponse(422, 'Datos inválidos', $validator->errors());
+        }
+
+        if (!Hash::check($request->actual_password,  auth()->user()->password)) {
+            return $this->errorResponse(401, 'No Autorizado');
+        }
+
+        auth()->user()->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return $this->showMessage('Cambio de Password Exitoso');
     }
 
     /**

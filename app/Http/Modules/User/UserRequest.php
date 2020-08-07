@@ -50,7 +50,7 @@ class UserRequest extends FormRequest
     if ($this->isMethod('PUT')) {
       $rules['username'] = "required|string|max:50|alpha_dash|unique:users,username,{$this->user->username},username";
       $rules['email']    = "sometimes|nullable|string|email|max:255|unique:users,email,{$this->user->email},email";
-      $rules['password'] = 'exclude_unless:update_password,1|required|string|min:8|max:25|confirmed';
+      $rules['password'] = 'sometimes|required|string|min:8|max:25|confirmed';
 
       $rules['phone'] = [
         'required', 

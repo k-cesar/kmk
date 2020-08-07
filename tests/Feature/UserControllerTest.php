@@ -124,13 +124,14 @@ class UserControllerTest extends ApiTestCase
     $stores = factory(Store::class, 2)->create();
 
     $attributes = factory(User::class)->raw();
-    $attributes['update_password'] = false;
     $attributes['stores'] = $stores->pluck('id');
+
+    unset($attributes['password']);
 
     $this->putJson(route('users.update', $user->id), $attributes)
       ->assertOk();
 
-    unset($attributes['password']);
+    
     unset($attributes['update_password']);
     unset($attributes['remember_token']);
     unset($attributes['stores']);
