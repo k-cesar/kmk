@@ -40,7 +40,7 @@
       {
         "name": "Editar Manejo de Usuarios",
         "level": 2,
-        "routes": ["users.update", "users.permissions.store"]
+        "routes": ["users.update", "users.permissions.store", "permissions.index"]
       },
       {
         "name": "Eliminar Manejo de Usuarios",
