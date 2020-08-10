@@ -19,7 +19,12 @@ class PermissionController extends Controller
    */
   public function index()
   {
-    $permissions = Permission::query();
+    $permissions = Permission::all()
+      ->map(function (Permission $permission) {
+        $permission->name = explode(' ', $permission->name)[0];
+
+        return $permission;
+      });
 
     return $this->showAll($permissions, Schema::getColumnListing((new Permission)->getTable()));
   }

@@ -51,7 +51,9 @@ class PermissionControllerTest extends ApiTestCase
       ->assertSuccessful();
 
     foreach (Permission::limit(10)->get() as $permission) {
-      $response->assertSee(utf8_decode($permission->name))
+      $response->assertSee($permission->id)
+        ->assertSee(explode(' ', $permission->name)[0])
+        ->assertSee(utf8_decode($permission->group))
         ->assertSee($permission->level);
     }
   }
