@@ -105,7 +105,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getActionsByPermissions()
     {
-        $permissionsGrouped = $this->getAllPermissions()
+        $permissionsGrouped = $this->getDirectPermissions()
             ->groupBy('group');
 
         $actionsGroups = [];
@@ -117,7 +117,12 @@ class User extends Authenticatable implements JWTSubject
             ];
 
             foreach ($permissionGrouped as $permission) {
-                $actionsGroup['actions'][] = explode(' ', $permission->name)[0];
+                $action = [];
+
+                $action['id'] = $permission->id;
+                $action['name'] = explode(' ', $permission->name)[0];
+
+                $actionsGroup['actions'][] = $action;
             }
 
             $actionsGroups[] = $actionsGroup;
