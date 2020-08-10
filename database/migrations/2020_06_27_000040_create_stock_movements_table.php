@@ -24,14 +24,14 @@ class CreateStockMovementsTable extends Migration
             $table->bigIncrements('id');
             $table->timestamp('date');
             $table->string('decription');
-            $table->enum('origin_type', ['PURCHASE', 'SELL', 'MANUAL ADJUSTMENT'])->default('SELL');
+            $table->string('origin_type')->default('App\Http\Modules\Sell\Sell');
             $table->unsignedBigInteger('origin_id');
             $table->enum('movement_type', ['INPUT', 'OUTPUT', 'ADJUSTMENT'])->default('ADJUSTMENT');
-            $table->unsignedBigInteger('stock_store_id');
+            $table->unsignedBigInteger('store_id');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('stock_store_id')->references('id')->on('stock_stores');
+            $table->foreign('store_id')->references('id')->on('stores');
         });
     }
 

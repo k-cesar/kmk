@@ -22,8 +22,8 @@ class CreatePurchaseDetailsTable extends Migration
     {
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->unsignedBigInteger('purchase_id');
-            $table->integer('item_line');
             $table->unsignedBigInteger('presentation_id');
+            $table->integer('item_line');
             $table->float('quantity');
             $table->double('unit_price');
             $table->timestamps();
