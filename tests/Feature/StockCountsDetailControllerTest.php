@@ -12,6 +12,9 @@ class StockCountsDetailControllerTest extends ApiTestCase
 {
     use DatabaseMigrations, RefreshDatabase;
 
+    /**
+   * @test
+   */
     public function setUp(): void
     {
         parent::setUp();
@@ -19,6 +22,9 @@ class StockCountsDetailControllerTest extends ApiTestCase
         $this->seed(['UserSeeder', 'ProductSeeder', 'StockCountsSeeder', 'StockCountsDetail']);
     }
 
+    /**
+   * @test
+   */
     public function a_guest_cannot_access_to_stock_counts_detail_resources()
     {
         $this->getJson(route('stock-counts-detail.index'))->assertUnauthorized();
@@ -28,7 +34,9 @@ class StockCountsDetailControllerTest extends ApiTestCase
         $this->deleteJson(route('stock-counts-detail.destroy', rand()))->assertUnauthorized();
     }
 
-
+    /**
+   * @test
+   */
     public function an_user_without_permission_cannot_access_to_stock_counts_detail_resources()
     {
         $this->signIn();
@@ -42,7 +50,9 @@ class StockCountsDetailControllerTest extends ApiTestCase
         $this->deleteJson(route('stock-counts-detail.destroy', $randomStockCountsDetailID))->assertForbidden();
     }
 
- 
+    /**
+   * @test
+   */
     public function an_user_with_permission_can_see_all_stock_counts_detail()
     {
         $this->signInWithPermissionsTo(['stock-counts-detail.index']);
@@ -55,7 +65,9 @@ class StockCountsDetailControllerTest extends ApiTestCase
         }
     }
 
-
+    /**
+   * @test
+   */
     public function an_user_with_permission_can_see_a_stock_counts_detail()
     {
         $this->signInWithPermissionsTo(['stock-counts-detail.show']);
@@ -67,6 +79,9 @@ class StockCountsDetailControllerTest extends ApiTestCase
         ->assertJson($stockCountDetail->toArray());
     }
 
+    /**
+   * @test
+   */
     public function an_user_with_permission_can_store_a_stock_counts_detail()
     {
         $this->signInWithPermissionsTo(['stock-counts-detail.store']);
@@ -79,7 +94,9 @@ class StockCountsDetailControllerTest extends ApiTestCase
         $this->assertDatabaseHas('stock_counts', $attributes);
     }
 
-
+    /**
+   * @test
+   */
     public function an_user_with_permission_can_update_a_stock_counts_detail()
     {
         $this->signInWithPermissionsTo(['stock-counts-detail.update']);
@@ -94,7 +111,9 @@ class StockCountsDetailControllerTest extends ApiTestCase
         $this->assertDatabaseHas('stock_counts', $attributes);
     }
 
-
+    /**
+   * @test
+   */
     public function an_user_with_permission_can_destroy_a_stock_counts_detail()
     {
         $this->signInWithPermissionsTo(['stock-counts-detail.destroy']);

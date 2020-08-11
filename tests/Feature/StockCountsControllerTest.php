@@ -19,6 +19,9 @@ class StockCountsControllerTest extends ApiTestCase
         $this->seed(['UserSeeder', 'ProductSeeder', 'StockCountsSeeder']);
     }
 
+    /**
+   * @test
+   */
     public function a_guest_cannot_access_to_stock_counts_resources()
     {
         $this->getJson(route('stock-counts.index'))->assertUnauthorized();
@@ -28,7 +31,9 @@ class StockCountsControllerTest extends ApiTestCase
         $this->deleteJson(route('stock-counts.destroy', rand()))->assertUnauthorized();
     }
 
-
+    /**
+   * @test
+   */
     public function an_user_without_permission_cannot_access_to_stock_counts_resources()
     {
         $this->signIn();
@@ -42,7 +47,9 @@ class StockCountsControllerTest extends ApiTestCase
         $this->deleteJson(route('stock-counts.destroy', $randomStockCountsID))->assertForbidden();
     }
 
- 
+    /**
+   * @test
+   */
     public function an_user_with_permission_can_see_all_stock_counts()
     {
         $this->signInWithPermissionsTo(['stock-counts.index']);
@@ -55,7 +62,9 @@ class StockCountsControllerTest extends ApiTestCase
         }
     }
 
-
+    /**
+   * @test
+   */
     public function an_user_with_permission_can_see_a_stock_counts()
     {
         $this->signInWithPermissionsTo(['stock-counts.show']);
@@ -67,6 +76,9 @@ class StockCountsControllerTest extends ApiTestCase
         ->assertJson($stockCount->toArray());
     }
 
+    /**
+   * @test
+   */
     public function an_user_with_permission_can_store_a_stock_counts()
     {
         $this->signInWithPermissionsTo(['stock-counts.store']);
@@ -82,7 +94,9 @@ class StockCountsControllerTest extends ApiTestCase
     }
 
 
-
+    /**
+   * @test
+   */
     public function an_user_with_permission_can_update_a_stock_counts()
     {
         $this->signInWithPermissionsTo(['stock-counts.update']);
@@ -99,7 +113,9 @@ class StockCountsControllerTest extends ApiTestCase
         $this->assertDatabaseHas('stock_counts', $attributes);
     }
 
-
+    /**
+   * @test
+   */
     public function an_user_with_permission_can_destroy_a_stock_counts()
     {
         $this->signInWithPermissionsTo(['stock-counts.destroy']);
