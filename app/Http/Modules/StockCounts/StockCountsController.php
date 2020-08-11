@@ -13,9 +13,6 @@ use App\Http\Modules\StockCountsDetail\StockCountsDetail;
 
 class StockCountsController extends Controller
 {
-    protected $arrStatusUpdate = [
-        'OPEN'
-    ];
 
     public function index(){
         $stockCounts = StockCounts::query();
@@ -49,13 +46,8 @@ class StockCountsController extends Controller
             return $this->showOne($stockCount, 201);
         } catch (Exception $exception) {
             DB::rollback();
-            Log::error($exception);
-
-            throw $exception;
             return $this->errorResponse(500, "Ha ocurrido un error interno al guardar stock");
         }
-        //$stockCount = StockCounts::create($request->validated());
-        //return $this->showOne($stockCount, 201);
     }
 
     public function show(StockCounts $stockCount) {
@@ -63,55 +55,39 @@ class StockCountsController extends Controller
     }
 
     public function update(StockCountsRequest $request, StockCounts $stockCount, StockCountsDetail $stockCountsDetail) {
-        if(in_array($request->stock_count->status, $this->arrStatusUpdate)) {
-            try {
-                DB::beginTransaction();
-    
-                $stockCount->update($request->validated());
-                
-                $stockCountDetailProduct = $request->stock_counts_detail_product;
-                $stockCountDetailQuantity = $request->stock_counts_detail_quantity;
+        try {
+            DB::beginTransaction();
 
-                $arrDetail = array();
+            $stockCount->update($request->validated());
+            
+            $stockCountDetailProduct = $request->stock_counts_detail_product;
+            $stockCountDetailQuantity = $request->stock_counts_detail_quantity;
 
-                for($int = 0; $int < count($stockCountDetailProduct); $int++) {
-                    $countsDetail = array(
-                        'stock_count_id' => $stockCount->id,
-                        'product_id' => $stockCountDetailProduct[$int],
-                        'quantity' => $stockCountDetailQuantity[$int],
-                    );
-                    $arrDetail[] = $countsDetail;
-                }
+            $arrDetail = array();
 
-
-
-                StockCountsDetail::where('stock_count_id', '=', $stockCount->id)->delete();
-                
-                foreach($arrDetail AS $key => $value) {
-                    StockCountsDetail::create($value);
-                }
-                
-
-    
-                DB::commit();
-                return $this->showOne($stockCount);
-            } catch (Exception $exception) {
-                DB::rollback();
-                Log::error($exception);
-    
-                throw $exception;
-                return $this->errorResponse(500, "Ha ocurrido un error interno al guardar stock");
+            for($int = 0; $int < count($stockCountDetailProduct); $int++) {
+                $countsDetail = array(
+                    'stock_count_id' => $stockCount->id,
+                    'product_id' => $stockCountDetailProduct[$int],
+                    'quantity' => $stockCountDetailQuantity[$int],
+                );
+                $arrDetail[] = $countsDetail;
             }
 
-            //$stockCount->update($request->validated());
-            //return $this->showOne($stockCount);
+            StockCountsDetail::where('stock_count_id', '=', $stockCount->id)->delete();
+            
+            foreach($arrDetail AS $key => $value) {
+                //StockCountsDetail::update($value);
+                StockCountsDetail::create($value);
+            }
+            
+
+            DB::commit();
+            return $this->showOne($stockCount);
+        } catch (Exception $exception) {
+            DB::rollback();
+            return $this->errorResponse(500, "Ha ocurrido un error interno al guardar stock");
         }
-        else{
-            return $this->errorResponse(500, "El estado no permite actualizar la informacion");
-        }
-        die;
-        /**/
-        
     }
 
     public function destroy(StockCounts $stockCount) {

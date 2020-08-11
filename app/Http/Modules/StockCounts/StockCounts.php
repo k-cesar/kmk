@@ -44,4 +44,10 @@ class StockCounts extends Model
             self::OPTION_STATUS_CANCELLED,
         ];
     }
+
+    public static function getOptionStatusForUpdate() {
+        return [
+            self::OPTION_STATUS_OPEN,
+        ];
+    }
 }

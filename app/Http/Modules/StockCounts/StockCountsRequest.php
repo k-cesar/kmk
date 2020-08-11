@@ -33,6 +33,7 @@ class StockCountsRequest extends FormRequest
         if($this->method('PUT')) {
             $rules['store_id'] = "required|exists:stores,id";
             $rules['created_by'] = "required|exists:users,id";
+            $rules['status'] = 'required|in:'.implode(',', StockCounts::getOptionStatusForUpdate());
         }
 
         return $rules;
