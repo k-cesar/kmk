@@ -117,12 +117,7 @@ class User extends Authenticatable implements JWTSubject
             ];
 
             foreach ($permissionGrouped as $permission) {
-                $action = [];
-
-                $action['id'] = $permission->id;
-                $action['name'] = explode(' ', $permission->name)[0];
-
-                $actionsGroup['actions'][] = $action;
+                $actionsGroup['actions'][] = $permission->id;
             }
 
             $actionsGroups[] = $actionsGroup;
