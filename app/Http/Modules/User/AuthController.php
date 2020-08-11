@@ -99,10 +99,9 @@ class AuthController extends Controller
 
         $user->save();
 
-        $actionsByPermissions = $user->getActionsByPermissions();
+        $permissions = $user->getDirectPermissions()->pluck('id');
 
-        return $this->respondWithTokenAndActionsByPermissions($user->token, $actionsByPermissions);
-        
+        return $this->respondWithTokenAndPermissions($user->token, $permissions);
     }
 
     /**
@@ -194,11 +193,11 @@ class AuthController extends Controller
      * Get the token and permissions by module array structure.
      *
      * @param  string $token
-     * @param array $actionsByPermissions
+     * @param array $permissions
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithTokenAndActionsByPermissions($token, $actionsByPermissions)
+    protected function respondWithTokenAndPermissions($token, $permissions)
     {
         return response()->json([
             'token' => [
@@ -206,7 +205,7 @@ class AuthController extends Controller
                 'token_type'   => 'bearer',
                 'expires_in'   => auth()->factory()->getTTL() * 60
             ],
-            'permissions' => $actionsByPermissions
+            'permissions' => $permissions
         ]);
     }
 }
