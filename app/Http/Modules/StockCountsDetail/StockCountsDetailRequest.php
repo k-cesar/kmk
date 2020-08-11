@@ -26,7 +26,7 @@ class StockCountsDetailRequest extends FormRequest
         $rules = [
             'stock_count_id' => 'required|min:0|exists:stock_count,id',
             'product_id' => 'required|min:0|exists:products,id',
-            'quantity' => 'required|min:0s',
+            'quantity' => 'required|min:0',
         ];
 
         if($this->method('PUT')){
