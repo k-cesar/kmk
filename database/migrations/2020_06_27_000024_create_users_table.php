@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 100);
-            $table->enum('type', ['ADMIN_MASTER', 'ADMIN_ENTERPRISE', 'ADMIN_STORES', 'SELLER'])->default('SELLER');
+            $table->unsignedBigInteger('role_id');
             $table->string('email', 100)->nullable();
             $table->string('phone', 50);
             $table->unsignedBigInteger('company_id');
@@ -36,6 +36,7 @@ class CreateUsersTable extends Migration
 
             $table->unique(['company_id', 'phone']);
 
+            $table->foreign('role_id')->references('id')->on('roles');
             $table->foreign('company_id')->references('id')->on('companies');
         });
     }

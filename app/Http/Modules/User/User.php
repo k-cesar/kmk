@@ -17,11 +17,6 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable, HasRoles, SoftDeletes, SecureDeletes;
 
-    const OPTION_TYPE_ADMIN_MASTER     = 'ADMIN_MASTER';
-    const OPTION_TYPE_ADMIN_ENTERPRISE = 'ADMIN_ENTERPRISE';
-    const OPTION_TYPE_ADMIN_STORES     = 'ADMIN_STORES';
-    const OPTION_TYPE_SELLER           = 'SELLER';
-
     /**
      * The attributes that are mass assignable.
      *
@@ -29,7 +24,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $fillable = [
         'name',
-        'type',
+        'role_id',
         'email',
         'phone',
         'company_id',
@@ -51,7 +46,7 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var array
      */
-    protected $with = ['company', 'stores'];
+    protected $with = ['role', 'company', 'stores'];
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -74,21 +69,6 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
-     * Returns all types options availables
-     *
-     * @return array
-     */
-    public static function getOptionsTypes()
-    {
-        return [
-            self::OPTION_TYPE_ADMIN_MASTER,
-            self::OPTION_TYPE_ADMIN_ENTERPRISE,
-            self::OPTION_TYPE_ADMIN_STORES,
-            self::OPTION_TYPE_SELLER,
-        ];
-    }
-
-    /**
      * Get the company that owns the user.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -96,6 +76,16 @@ class User extends Authenticatable implements JWTSubject
     public function company()
     {
         return $this->belongsTo(Company::class);
+    }
+
+    /**
+     * Get the role that owns the user.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 
     /**
@@ -115,7 +105,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function getActionsByPermissions()
     {
-        $permissionsGrouped = $this->getAllPermissions()
+        $permissionsGrouped = $this->getDirectPermissions()
             ->groupBy('group');
 
         $actionsGroups = [];
@@ -127,7 +117,7 @@ class User extends Authenticatable implements JWTSubject
             ];
 
             foreach ($permissionGrouped as $permission) {
-                $actionsGroup['actions'][] = explode(' ', $permission->name)[0];
+                $actionsGroup['actions'][] = $permission->id;
             }
 
             $actionsGroups[] = $actionsGroup;

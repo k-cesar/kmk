@@ -17,7 +17,7 @@ class RoleSeeder extends Seeder
     {
       app()['cache']->forget('spatie.permission.cache');
       
-      Role::create(['name' => config('app.role_super_admin_name'), 'level' => 0])->givePermissionTo(Permission::all());
+      Role::create(['id' => 0, 'name' => config('app.role_super_admin_name'), 'level' => 0])->givePermissionTo(Permission::all());
       
       $json = File::get("database/data/roles.json");
       $roles = json_decode($json);
