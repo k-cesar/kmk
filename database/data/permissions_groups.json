@@ -205,12 +205,12 @@
       {
         "name": "Ver Traslados de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["transfers.index"]
       },
       {
         "name": "Crear Traslados de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["transfers.store"]
       },
       {
         "name": "Editar Traslados de Inventario",

@@ -24,7 +24,7 @@ class CreateStockMovementsDetailTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('stock_movement_id');
             $table->unsignedBigInteger('stock_store_id');
-            $table->unsignedBigInteger('producto_id');
+            $table->unsignedBigInteger('product_id');
             $table->float('quantity');
             $table->timestamps();
             $table->softDeletes();

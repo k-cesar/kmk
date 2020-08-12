@@ -23,15 +23,18 @@ class CreateStockMovementsTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->timestamp('date');
-            $table->string('decription');
-            $table->string('origin_type')->default('App\Http\Modules\Sell\Sell');
+            $table->string('decription')->nullable();
+            $table->enum('origin_type', ['PURCHASE', 'SELL', 'TRANSFER','MANUAL_ADJUSTMENT'])->default('SELL');
             $table->unsignedBigInteger('origin_id');
             $table->enum('movement_type', ['INPUT', 'OUTPUT', 'ADJUSTMENT'])->default('ADJUSTMENT');
             $table->unsignedBigInteger('store_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('store_id')->references('id')->on('stores');
+
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

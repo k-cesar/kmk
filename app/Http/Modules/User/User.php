@@ -11,6 +11,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Http\Modules\StockMovement\StockMovement;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements JWTSubject
@@ -96,6 +97,16 @@ class User extends Authenticatable implements JWTSubject
     public function stores()
     {
         return $this->belongsToMany(Store::class, 'store_users');
+    }
+
+    /**
+     * Get the stockMovements for the user.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function stockMovements()
+    {
+        return $this->hasMany(StockMovement::class);
     }
 
     /**

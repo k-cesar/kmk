@@ -114,11 +114,11 @@ trait ApiResponser
     Validator::validate(request()->all(), [
       'strict_search' => 'sometimes|integer|in:0,1',
     ]);
-
+      
     $strict_search = request()->get('strict_search', 0);
-    
+      
     $operator = $strict_search ? '=' : 'ilike';
-
+    
     foreach (request()->query() as $field => $value) {
       if (in_array($field, $allowedFieldsToSearchAndSort)) {
         if ($data instanceof Builder || $data instanceof QueryBuilder) {

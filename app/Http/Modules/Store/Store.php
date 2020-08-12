@@ -16,7 +16,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Modules\LocationType\LocationType;
 use App\Http\Modules\Municipality\Municipality;
 use App\Http\Modules\PresentationCombo\PresentationCombo;
+use App\Http\Modules\Product\Product;
 use App\Http\Modules\SocioeconomicLevel\SocioeconomicLevel;
+use App\Http\Modules\StockMovement\StockMovement;
 
 class Store extends Model
 {
@@ -180,5 +182,25 @@ class Store extends Model
     public function presentationCombos()
     {
         return $this->belongsToMany(PresentationCombo::class, 'presentation_combos_stores_turns');
+    }
+
+    /**
+     * The products that belong to the store.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function products()
+    {
+        return $this->belongsToMany(Product::class, 'stock_stores')->withPivot('id', 'quantity')->withTimestamps();
+    }
+
+    /**
+     * Get the stockMovements for the store.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function stockMovements()
+    {
+        return $this->hasMany(StockMovement::class);
     }
 }
