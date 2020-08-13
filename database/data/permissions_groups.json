@@ -155,17 +155,17 @@
       {
         "name": "Ver Entradas de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["purchases.index"]
       },
       {
         "name": "Crear Entradas de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["purchases.store"]
       },
       {
         "name": "Editar Entradas de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["purchases.update"]
       },
       {
         "name": "Eliminar Entradas de Inventario",

@@ -84,6 +84,8 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     
     Route::resource('transfers', 'Transfer\TransferController')->only('index', 'store');
 
+    Route::resource('purchases', 'Purchase\PurchaseController')->only('index', 'store', 'update');
+
 });
 
 /***********************************************************************************************************************

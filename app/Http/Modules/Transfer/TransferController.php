@@ -6,8 +6,10 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use App\Http\Modules\Stock\StockStore;
+use App\Http\Modules\Stock\StockMovement;
+use App\Http\Modules\Stock\StockMovementDetail;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Modules\StockMovement\StockMovement;
 
 class TransferController extends Controller
 {
@@ -85,47 +87,29 @@ class TransferController extends Controller
         $stockStoreOutput->save();
 
         // Creando el detalle del movimiento de salida
-        DB::table('stock_movements_detail')->insert([
+        StockMovementDetail::create([
           'stock_movement_id' => $stockMovementOutput->id,
           'stock_store_id'    => $stockStoreOutput->id,
           'product_id'        => $product['id'],
           'quantity'          => -1 * $product['quantity'],
-          'created_at'        => now(),
-          'updated_at'        => now(),
         ]);
 
-        // Obteniendo el inventario de entrada
-        $productInput = $stockMovementInput->store
-          ->products()
-          ->wherePivot('product_id', $product['id'])
-          ->first();
+        // Obteniendo o creando el inventario de entrada
+        $stockStoreInput = StockStore::firstOrCreate([
+          'store_id'   => $stockMovementInput->store->id,
+          'product_id' => $product['id'],
+        ]);
 
-        if ($productInput) {
-          // Actualizando el inventario de salida
-          $stockStoreInput = $productInput->pivot;
-          $stockStoreInput->quantity += $product['quantity'];
-          $stockStoreInput->save();
-          $stockStoreInputId = $stockStoreInput->id;
+        // Actualizando el inventario de entrada
+        $stockStoreInput->quantity += $product['quantity'];
+        $stockStoreInput->save();
 
-        } else {
-          // Creando el inventario de salida
-          $stockStoreInputId = DB::table('stock_stores')->insertGetId([
-            'store_id'   => $stockMovementInput->store->id,
-            'product_id' => $product['id'],
-            'quantity'   => $product['quantity'],
-            'created_at'        => now(),
-            'updated_at'        => now(),
-          ]);
-        }
-        
-        // Creando el detalle del movimiento de salida
-        DB::table('stock_movements_detail')->insert([
+        // Creando el detalle del movimiento de entrada
+        StockMovementDetail::create([
           'stock_movement_id' => $stockMovementInput->id,
-          'stock_store_id'    => $stockStoreInputId,
+          'stock_store_id'    => $stockStoreInput->id,
           'product_id'        => $product['id'],
           'quantity'          => $product['quantity'],
-          'created_at'        => now(),
-          'updated_at'        => now(),
         ]);
       }
       

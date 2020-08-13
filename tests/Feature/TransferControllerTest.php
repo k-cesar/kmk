@@ -6,7 +6,7 @@ use Tests\ApiTestCase;
 use App\Http\Modules\Store\Store;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Testing\WithFaker;
-use App\Http\Modules\StockMovement\StockMovement;
+use App\Http\Modules\Stock\StockMovement;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -88,18 +88,31 @@ class TransferControllerTest extends ApiTestCase
     $user = $this->signInWithPermissionsTo(['transfers.store']);
 
     $storeOutput = Store::has('products')->first();
-    $storeInput = Store::has('products')->where('id', '!=', $storeOutput->id)->first();
+    $storeInput  = Store::has('products')->where('id', '!=', $storeOutput->id)->first();
+
+    $productA = $storeOutput->products->first();
+    $productB = $storeOutput->products->last();
+
+    $stockStoreOutputBeforeTransfer = [
+      $productA->id => $productA->pivot,
+      $productB->id => $productB->pivot,
+    ];
+    
+    $stockStoreIntputBeforeTransfer = [
+      $productA->id => $storeInput->products->where('id', $productA->id)->first()->pivot,
+      $productB->id => $storeInput->products->where('id', $productB->id)->first()->pivot,
+    ];
 
     $attributes = [
-      'origin_store_id'     => $storeOutput->id,
-      'destiny_store_id'    => $storeInput->id,
-      'products'            => [
+      'origin_store_id'  => $storeOutput->id,
+      'destiny_store_id' => $storeInput->id,
+      'products'         => [
         [
-          'id'       => $storeOutput->products->first()->id,
+          'id'       => $productA->id,
           'quantity' => 5,
         ],
         [
-          'id'       => $storeOutput->products->last()->id,
+          'id'       => $productB->id,
           'quantity' => 10,
         ]
       ],
@@ -122,62 +135,41 @@ class TransferControllerTest extends ApiTestCase
       'store_id'      => $storeInput->id,
     ]);
 
-    $this->assertDatabaseHas('stock_movements_detail', [
-      'stock_store_id'    => $storeOutput->products->first()->pivot->id,
-      'product_id'        => $storeOutput->products->first()->id,
-      'quantity'          => -5,
-    ]);
+    foreach ($attributes['products'] as $product) {
 
-    $this->assertDatabaseHas('stock_movements_detail', [
-      'stock_store_id'    => $storeInput->products->where('id', $storeOutput->products->first()->id)->first()->pivot->id,
-      'product_id'        => $storeOutput->products->first()->id,
-      'quantity'          => 5,
-    ]);
+      $this->assertDatabaseHas('stock_movements_detail', [
+        'stock_store_id' => $stockStoreOutputBeforeTransfer[$product['id']]->id,
+        'product_id'     => $product['id'],
+        'quantity'       => -1 * $product['quantity'],
+      ]);
 
-    $this->assertDatabaseHas('stock_movements_detail', [
-      'stock_store_id'    => $storeOutput->products->last()->pivot->id,
-      'product_id'        => $storeOutput->products->last()->id,
-      'quantity'          => -10,
-    ]);
+      $this->assertDatabaseHas('stock_movements_detail', [
+        'stock_store_id' => $stockStoreIntputBeforeTransfer[$product['id']]->id,
+        'product_id'     => $product['id'],
+        'quantity'       => $product['quantity'],
+      ]);
 
-    $this->assertDatabaseHas('stock_movements_detail', [
-      'stock_store_id'    => $storeInput->products->where('id', $storeOutput->products->last()->id)->first()->pivot->id,
-      'product_id'        => $storeOutput->products->last()->id,
-      'quantity'          => 10,
-    ]);
+      $this->assertDatabaseHas('stock_stores', [
+        'store_id'   => $storeOutput->id,
+        'product_id' => $product['id'],
+        'quantity'   => $stockStoreOutputBeforeTransfer[$product['id']]->quantity - $product['quantity'],
+      ]);
 
-    $this->assertDatabaseHas('stock_stores', [
-      'store_id'   => $storeOutput->id,
-      'product_id' => $storeOutput->products->first()->id,
-      'quantity'   => 95,
-    ]);
-
-    $this->assertDatabaseHas('stock_stores', [
-      'store_id'   => $storeInput->id,
-      'product_id' => $storeOutput->products->first()->id,
-      'quantity'   => 105,
-    ]);
-
-    $this->assertDatabaseHas('stock_stores', [
-      'store_id'   => $storeOutput->id,
-      'product_id' => $storeOutput->products->last()->id,
-      'quantity'   => 90,
-    ]);
-
-    $this->assertDatabaseHas('stock_stores', [
-      'store_id'   => $storeInput->id,
-      'product_id' => $storeOutput->products->last()->id,
-      'quantity'   => 110,
-    ]);
+      $this->assertDatabaseHas('stock_stores', [
+        'store_id'   => $storeInput->id,
+        'product_id' => $product['id'],
+        'quantity'   => $stockStoreOutputBeforeTransfer[$product['id']]->quantity + $product['quantity'],
+      ]);
+    }
 
     $storeInput = Store::whereDoesntHave('products')->first();
 
     $attributes = [
-      'origin_store_id'     => $storeOutput->id,
-      'destiny_store_id'    => $storeInput->id,
-      'products'            => [
+      'origin_store_id'  => $storeOutput->id,
+      'destiny_store_id' => $storeInput->id,
+      'products'         => [
         [
-          'id'       => $storeOutput->products->first()->id,
+          'id'       => $productA->id,
           'quantity' => 15,
         ]
       ],
@@ -186,16 +178,18 @@ class TransferControllerTest extends ApiTestCase
     $this->postJson(route('transfers.store'), $attributes)
       ->assertCreated();
 
-    $this->assertDatabaseHas('stock_stores', [
-      'store_id'   => $storeOutput->id,
-      'product_id' => $storeOutput->products->first()->id,
-      'quantity'   => 80,
+    $product = $attributes['products'][0];
+
+    $this->assertDatabaseHas('stock_movements_detail', [
+      'stock_store_id' => $storeInput->products->where('id', $product['id'])->first()->pivot->id,
+      'product_id'     => $product['id'],
+      'quantity'       => $product['quantity'],
     ]);
 
     $this->assertDatabaseHas('stock_stores', [
       'store_id'   => $storeInput->id,
-      'product_id' => $storeOutput->products->first()->id,
-      'quantity'   => 15,
+      'product_id' => $product['id'],
+      'quantity'   => $product['quantity'],
     ]);
   }
 }

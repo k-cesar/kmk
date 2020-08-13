@@ -12,6 +12,6 @@ $factory->define(Presentation::class, function (Faker $faker) {
         'price'                 => $faker->unique()->numberBetween(20,50),
         'product_id'            => factory(Product::class),
         'is_minimal_expression' => rand(0, 1),
-        'units'                 => rand(0, 10),
+        'units'                 => rand(1, 10),
     ];
 });

@@ -21,19 +21,20 @@ class CreatePurchaseDetailsTable extends Migration
     public function up()
     {
         Schema::create($this->tableName, function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('purchase_id');
-            $table->unsignedBigInteger('presentation_id');
+            $table->unsignedBigInteger('product_id');
             $table->integer('item_line');
             $table->float('quantity');
             $table->double('unit_price');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->primary(['purchase_id', 'presentation_id']);
-
-            $table->foreign('presentation_id')->references('id')->on('presentations');
+            $table->unique(['purchase_id', 'item_line']);
 
             $table->foreign('purchase_id')->references('id')->on('purchases');
+            
+            $table->foreign('product_id')->references('id')->on('products');
         });
     }
 

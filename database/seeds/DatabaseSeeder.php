@@ -45,6 +45,7 @@ class DatabaseSeeder extends Seeder
             PresentationSkuSeeder::class,
             PresentationComboSeeder::class,
             StockStoreSeeder::class,
+            PurchaseSeeder::class,
         ]);
     }
 }

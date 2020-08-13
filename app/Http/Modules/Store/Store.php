@@ -17,8 +17,9 @@ use App\Http\Modules\LocationType\LocationType;
 use App\Http\Modules\Municipality\Municipality;
 use App\Http\Modules\PresentationCombo\PresentationCombo;
 use App\Http\Modules\Product\Product;
+use App\Http\Modules\Purchase\Purchase;
 use App\Http\Modules\SocioeconomicLevel\SocioeconomicLevel;
-use App\Http\Modules\StockMovement\StockMovement;
+use App\Http\Modules\Stock\StockMovement;
 
 class Store extends Model
 {
@@ -202,5 +203,15 @@ class Store extends Model
     public function stockMovements()
     {
         return $this->hasMany(StockMovement::class);
+    }
+
+    /**
+     * Get the purchases for the store.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
     }
 }

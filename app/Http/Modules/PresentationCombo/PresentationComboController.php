@@ -46,9 +46,8 @@ class PresentationComboController extends Controller
 
     } catch (Exception $exception) {
       DB::rollback();
-      Log::error($exception);
 
-      throw $exception;
+      Log::error($exception);
 
       return $this->errorResponse(500, "Ha ocurrido un error interno");
     }
