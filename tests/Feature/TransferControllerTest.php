@@ -72,7 +72,9 @@ class TransferControllerTest extends ApiTestCase
       ->assertOk();
   
     $response->assertJsonFragment([
+      'origin_store_id'    => "{$storeOutput->id}",
       'origin_store_name'  => $storeOutput->name,
+      'destiny_store_id'   => "{$storeInput->id}",
       'destiny_store_name' => $storeInput->name,
       'user_name'          => $user->name
     ]);

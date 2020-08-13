@@ -25,8 +25,11 @@ class TransferController extends Controller
     ]);
 
     $transfers = DB::table('stock_movements as smo')
-      ->select('so.name as origin_store_name', 'sd.name as destiny_store_name', 'smo.date', 'u.name as user_name')
-      ->join('stock_movements as smd','smo.origin_id', '=', 'smd.origin_id')
+      ->select('so.id as origin_store_id', 'so.name as origin_store_name', 'sd.id as destiny_store_id', 'sd.name as destiny_store_name', 'smo.date', 'u.name as user_name')
+      ->join('stock_movements as smd', function ($join) {
+        $join->on('smo.origin_id', '=', 'smd.origin_id')
+          ->where('smd.origin_type', StockMovement::OPTION_ORIGIN_TYPE_TRANSFER);
+      })
       ->join('stores as so', 'smo.store_id', '=', 'so.id')
       ->join('stores as sd', 'smd.store_id', '=', 'sd.id')
       ->join('users as u', 'smo.user_id', '=', 'u.id')
@@ -37,8 +40,7 @@ class TransferController extends Controller
       ->where('smo.date', 'like', request()->query('date', '%'))
       ->whereRaw('LOWER(sd.name) LIKE ?', [strtolower(request()->query('destiny_store_name', '%'))])
       ->whereRaw('LOWER(u.name) LIKE ?', [strtolower(request()->query('user_name', '%'))]);
-      
-    
+
     return $this->showAll($transfers);
   }
 
