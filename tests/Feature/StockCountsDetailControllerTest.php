@@ -18,8 +18,8 @@ class StockCountsDetailControllerTest extends ApiTestCase
     public function setUp(): void
     {
         parent::setUp();
-
         $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'StockCountsDetailSeeder']);
+
     }
 
     /**
@@ -90,7 +90,6 @@ class StockCountsDetailControllerTest extends ApiTestCase
 
         $this->postJson(route('stock-counts-detail.store'), $attributes)
         ->assertCreated();
-        
         $this->assertDatabaseHas('stock_counts_detail', $attributes);
     }
 

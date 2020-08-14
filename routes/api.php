@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
  ***********************************************************************************************************************/
 
 Route::group(['middleware' => ['auth', 'access']], function () {
+    Route::resource('permissions', 'Permission\PermissionController')->only('index');
+    
     Route::resource('currencies', 'Currency\CurrencyController')->except('create', 'edit');
     
     Route::resource('countries', 'Country\CountryController')->except('create', 'edit');
