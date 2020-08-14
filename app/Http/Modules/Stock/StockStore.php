@@ -46,6 +46,6 @@ class StockStore extends Model
      */
     public function stockMovementDetails()
     {
-        return $this->hasMany(PurchaseDetail::class);
+        return $this->hasMany(StockMovementDetail::class);
     }
 }

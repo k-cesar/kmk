@@ -28,7 +28,7 @@ class StockMovement extends Model
      * @var array
      */
     protected $fillable = [
-        'decription',
+        'description',
         'user_id',
         'origin_type',
         'origin_id',
@@ -94,7 +94,7 @@ class StockMovement extends Model
      */
     public function stockMovementDetails()
     {
-        return $this->hasMany(PurchaseDetail::class);
+        return $this->hasMany(StockMovementDetail::class);
     }
 
 }

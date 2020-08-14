@@ -27,7 +27,7 @@ $factory->define(StockMovement::class, function (Faker $faker, Array $attributes
     ];
 
     return [
-        'decription'    => $faker->sentence,
+        'description'   => $faker->sentence,
         'user_id'       => factory(User::class),
         'origin_type'   => $originType,
         'origin_id'     => $originIds[$originType],

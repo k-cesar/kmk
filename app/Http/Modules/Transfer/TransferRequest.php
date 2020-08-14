@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\Transfer;
 
-use App\Http\Modules\Store\Store;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
@@ -36,25 +35,27 @@ class TransferRequest extends FormRequest
           ->where(function ($query) {
             return $query->where('store_id', $this->get('origin_store_id'));
           }),
-      ],
-      'products.*.quantity' => [
-        'required',
-        'numeric',
-        'min:0',
-        function ($attribute, $value, $fail) {
-          $stock = DB::table('stock_stores')
-            ->where('store_id', $this->get('origin_store_id'))
-            ->where('product_id', $this->get('origin_store_id'))
-            ->first();
+      ]];
 
-          $stockQuantity = $stock ? $stock->quantity : 0;
+      foreach($this->get('products') as $index => $product) {
+        $rules["products.$index.quantity"] = [
+          'required',
+          'numeric',
+          'min:0',
+          function ($attribute, $value, $fail) use ($product) {
+            $stock = DB::table('stock_stores')
+              ->where('store_id', $this->get('origin_store_id'))
+              ->where('product_id', $product['id'])
+              ->first();
 
-          if ($value > $stockQuantity) {
-            $fail("La cantidad a ingresada({$value}) supera a la cantidad en stock({$stockQuantity})");
-          }
-        },
-      ],
-    ];
+            $stockQuantity = $stock ? $stock->quantity : 0;
+
+            if ($value > $stockQuantity) {
+              $fail("La cantidad a ingresada({$value}) supera a la cantidad en stock({$stockQuantity})");
+            }
+          },
+        ];
+      }
 
     return $rules;
   }

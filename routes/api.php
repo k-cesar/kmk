@@ -82,9 +82,11 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     
     Route::resource('presentation-combos', 'PresentationCombo\PresentationComboController')->except('create', 'edit');
     
-    Route::resource('transfers', 'Transfer\TransferController')->only('index', 'store');
-
+    Route::resource('stocks', 'Stock\StockController')->only('index');
+    
     Route::resource('purchases', 'Purchase\PurchaseController')->only('index', 'store', 'update');
+    
+    Route::resource('transfers', 'Transfer\TransferController')->only('index', 'store');
 
 });
 
