@@ -88,6 +88,10 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     
     Route::resource('transfers', 'Transfer\TransferController')->only('index', 'store');
 
+    Route::resource('stock-counts', 'StockCounts\StockCountsController')->except('create', 'edit');
+
+    Route::resource('stock-counts-detail', 'StockCountsDetail\StockCountsDetailController')->except('create', 'edit');
+
 });
 
 /***********************************************************************************************************************
@@ -95,7 +99,7 @@ Route::group(['middleware' => ['auth', 'access']], function () {
  ***********************************************************************************************************************/
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('roles-options', 'Role\RoleController@options')->name('roles.options');
+    //Route::get('roles-options', 'Role\RoleController@options')->name('roles.options');
     
     Route::get('currencies-options', 'Currency\CurrencyController@options')->name('currencies.options');
 
