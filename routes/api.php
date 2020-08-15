@@ -99,7 +99,7 @@ Route::group(['middleware' => ['auth', 'access']], function () {
  ***********************************************************************************************************************/
 
 Route::group(['middleware' => ['auth']], function () {
-    //Route::get('roles-options', 'Role\RoleController@options')->name('roles.options');
+    Route::get('roles-options', 'Role\RoleController@options')->name('roles.options');
     
     Route::get('currencies-options', 'Currency\CurrencyController@options')->name('currencies.options');
 

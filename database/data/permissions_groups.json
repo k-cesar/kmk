@@ -230,22 +230,22 @@
       {
         "name": "Ver Conteos de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["stock-counts.index",	"stock-counts.show"]
       },
       {
         "name": "Crear Conteos de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["stock-counts.store"]
       },
       {
         "name": "Editar Conteos de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["stock-counts.update"]
       },
       {
         "name": "Eliminar Conteos de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["stock-counts.destroy"]
       }
     ]
   },
