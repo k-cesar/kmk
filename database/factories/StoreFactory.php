@@ -25,7 +25,7 @@ $factory->define(Store::class, function (Faker $faker) {
         'store_flag_id'          => factory(StoreFlag::class)->create(),
         'location_type_id'       => factory(LocationType::class)->create(),
         'store_format_id'        => factory(StoreFormat::class)->create(),
-        'size'                   => rand(0, 100),
+        'size'                   => rand(1, 100),
         'socioeconomic_level_id' => factory(SocioeconomicLevel::class)->create(),
         'state_id'               => factory(State::class)->create(),
         'municipality_id'        => factory(Municipality::class)->create(),

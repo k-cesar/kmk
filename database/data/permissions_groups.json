@@ -155,17 +155,17 @@
       {
         "name": "Ver Entradas de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["purchases.index", "stocks.index"]
       },
       {
         "name": "Crear Entradas de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["purchases.store"]
       },
       {
         "name": "Editar Entradas de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["purchases.update"]
       },
       {
         "name": "Eliminar Entradas de Inventario",
@@ -205,12 +205,12 @@
       {
         "name": "Ver Traslados de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["transfers.index"]
       },
       {
         "name": "Crear Traslados de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["transfers.store"]
       },
       {
         "name": "Editar Traslados de Inventario",
@@ -230,22 +230,22 @@
       {
         "name": "Ver Conteos de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["stock-counts.index",	"stock-counts.show"]
       },
       {
         "name": "Crear Conteos de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["stock-counts.store"]
       },
       {
         "name": "Editar Conteos de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["stock-counts.update"]
       },
       {
         "name": "Eliminar Conteos de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["stock-counts.destroy"]
       }
     ]
   },

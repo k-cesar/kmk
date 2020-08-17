@@ -4,17 +4,17 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStockStoresTable extends Migration
+class CreateOriginSequenceTable extends Migration
 {
     /**
      * Schema table name to migrate
      * @var string
      */
-    public $tableName = 'stock_stores';
+    public $tableName = 'origin_sequence';
 
     /**
      * Run the migrations.
-     * @table stock_stores
+     * @table origin_sequence
      *
      * @return void
      */
@@ -22,17 +22,6 @@ class CreateStockStoresTable extends Migration
     {
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('store_id');
-            $table->unsignedBigInteger('product_id');
-            $table->float('quantity')->default(0);
-            $table->timestamps();
-            $table->softDeletes();
-
-            $table->unique(['store_id', 'product_id']);
-
-            $table->foreign('store_id')->references('id')->on('stores');
-
-            $table->foreign('product_id')->references('id')->on('products');
         });
     }
 

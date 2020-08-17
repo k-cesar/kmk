@@ -3,14 +3,15 @@
 namespace App\Http\Modules\Product;
 
 use App\Traits\SecureDeletes;
-use App\Http\Modules\ProductCategory\ProductCategory;
-use App\Http\Modules\ProductSubcategory\ProductSubcategory;
-use App\Http\Modules\ProductCountries\ProductCountries;
-use App\Http\Modules\Country\Country;
 use App\Http\Modules\Brand\Brand;
-use App\Http\Modules\Presentation\Presentation;
+use App\Http\Modules\Store\Store;
+use App\Http\Modules\Country\Country;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Modules\Presentation\Presentation;
+use App\Http\Modules\ProductCategory\ProductCategory;
+use App\Http\Modules\ProductCountries\ProductCountries;
+use App\Http\Modules\ProductSubcategory\ProductSubcategory;
 
 class Product extends Model
 {
@@ -75,5 +76,15 @@ class Product extends Model
     public function presentations()
     {
         return $this->hasMany(Presentation::class);
+    }
+
+    /**
+     * The stores that belong to the Product.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function stores()
+    {
+        return $this->belongsToMany(Store::class, 'stock_stores')->withPivot('id', 'quantity')->withTimestamps();
     }
 }
