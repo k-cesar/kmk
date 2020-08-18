@@ -75,8 +75,7 @@ class StockCountsDetailControllerTest extends ApiTestCase
         $stockCountDetail = factory(StockCountsDetail::class)->create();
 
         $this->getJson(route('stock-counts-detail.show', $stockCountDetail->id))
-        ->assertOk()
-        ->assertJson($stockCountDetail->toArray());
+        ->assertOk();
     }
 
     /**
