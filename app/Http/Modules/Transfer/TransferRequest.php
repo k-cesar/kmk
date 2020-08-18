@@ -30,6 +30,7 @@ class TransferRequest extends FormRequest
       'destiny_store_id'    => 'required|exists:stores,id|different:origin_store_id',
       'products'            => 'required|array',
       'products.*.id'       => [
+        'distinct',
         'required',
         Rule::exists('stock_stores', 'product_id')
           ->where(function ($query) {

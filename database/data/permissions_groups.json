@@ -180,12 +180,12 @@
       {
         "name": "Ver Ajustes de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["adjustment.index"]
       },
       {
         "name": "Crear Ajustes de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["adjustment.store", "stock-counts-adjustment.store"]
       },
       {
         "name": "Editar Ajustes de Inventario",

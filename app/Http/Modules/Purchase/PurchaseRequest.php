@@ -34,7 +34,7 @@ class PurchaseRequest extends FormRequest
     if ($this->isMethod('POST')) {
       $rules = array_merge($rules, [
         'products'              => 'required|array',
-        'products.*.id'         => 'required|exists:products,id',
+        'products.*.id'         => 'required|distinct|exists:products,id',
         'products.*.quantity'   => 'required|numeric|min:0',
         'products.*.unit_price' => 'required|numeric|min:0',
       ]);

@@ -13,6 +13,7 @@ class StockMovement extends Model
     use SoftDeletes, SecureDeletes;
 
     const OPTION_ORIGIN_TYPE_MANUAL_ADJUSTMENT = 'MANUAL_ADJUSTMENT';
+    const OPTION_ORIGIN_TYPE_COUNT             = 'COUNT';
     const OPTION_ORIGIN_TYPE_PURCHASE          = 'PURCHASE';
     const OPTION_ORIGIN_TYPE_SELL              = 'SELL';
     const OPTION_ORIGIN_TYPE_TRANSFER          = 'TRANSFER';
@@ -46,6 +47,7 @@ class StockMovement extends Model
     {
         return [
            self::OPTION_ORIGIN_TYPE_MANUAL_ADJUSTMENT,
+           self::OPTION_ORIGIN_TYPE_COUNT,
            self::OPTION_ORIGIN_TYPE_PURCHASE,
            self::OPTION_ORIGIN_TYPE_SELL,
            self::OPTION_ORIGIN_TYPE_TRANSFER,
