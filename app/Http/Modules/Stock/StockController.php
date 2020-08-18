@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Modules\StockCounts\StockCounts;
 
 class StockController extends Controller
 {
@@ -32,13 +33,20 @@ class StockController extends Controller
       ->withTrashed()
       ->toSql();
 
+    $lastCount = StockCounts::select('sc2.count_date AS last_count')
+      ->from('stock_counts as sc2')
+      ->whereRaw("sc2.id = MAX(sc.id)")
+      ->withTrashed()
+      ->toSql();
+
     $products = DB::table('products AS p')
       ->select('p.id AS product_id', 'p.description AS product_description', 'ss.quantity')
       ->selectRaw("($lastInput)")
       ->selectRaw("($lastOutput)")
-      ->selectRaw('p.deleted_at AS last_count')
+      ->selectRaw("($lastCount)")
       ->join('stock_stores AS ss', 'ss.product_id', '=', 'p.id')
       ->leftJoin('stock_movements_detail AS smd', 'smd.product_id', '=', 'p.id')
+      ->leftJoin('stock_counts_detail AS scd', 'scd.product_id', '=', 'p.id')
       ->leftJoin('stock_movements AS smi', function (JoinClause $leftJoin) {
         $leftJoin->on('smd.stock_movement_id', '=', 'smi.id')
           ->where('smi.movement_type', StockMovement::OPTION_MOVEMENT_TYPE_INPUT)
@@ -48,6 +56,11 @@ class StockController extends Controller
         $leftJoin->on('smd.stock_movement_id', '=', 'smo.id')
           ->where('smo.movement_type', StockMovement::OPTION_MOVEMENT_TYPE_OUTPUT)
           ->where('smo.store_id', request('store_id'));
+      })
+      ->leftJoin('stock_counts AS sc', function (JoinClause $leftJoin) {
+        $leftJoin->on('scd.stock_count_id', '=', 'sc.id')
+          ->where('sc.status', StockCounts::OPTION_STATUS_CLOSED)
+          ->where('sc.store_id', request('store_id'));
       })
       ->groupBy('p.id', 'ss.quantity')
       ->orderBy('p.description')
