@@ -55,13 +55,27 @@ class UserSeeder extends Seeder
       'email'     => 'luis.deleon@userlab.co',
       'role_id'   => 1,
     ])->assignRole(config('app.role_super_admin_name'));
-
+    
     factory(User::class)->create([
       'name'      => 'Nelson Rodriguez',
       'username'  => 'estuardo',
       'email'     => 'estuardo@userlab.co',
+      'role_id'   => 1,
+      ])->assignRole(config('app.role_super_admin_name'));
+      
+    factory(User::class)->create([
+      'name'      => 'Luis Moreno',
+      'username'  => 'luis_moreno',
+      'email'     => 'luis.moreno@userlab.co',
+      'role_id'   => 1,
     ])->assignRole(config('app.role_super_admin_name'));
 
-    factory(User::class, 2);
+    factory(User::class)->create([
+      'name'      => 'Carlos Moreno',
+      'username'  => 'carlos_moreno',
+      'email'     => 'carlos.moreno@userlab.co',
+      'role_id'   => 1,
+    ])->assignRole(config('app.role_super_admin_name'));
+
   }
 }
