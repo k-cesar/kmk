@@ -5,6 +5,7 @@ namespace App\Http\Modules\Provider;
 use Illuminate\Support\Str;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Country\Country;
+use App\Http\Modules\Purchase\Purchase;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -47,6 +48,16 @@ class Provider extends Model
     public function country()
     {
         return $this->belongsTo(Country::class);
+    }
+
+    /**
+     * Get the purchases for the provider.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
     }
 
 }

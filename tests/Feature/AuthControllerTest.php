@@ -31,7 +31,7 @@ class AuthControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function a_user_can_login()
+  public function an_user_can_login()
   {
     $user = factory(User::class)->create();
 
@@ -51,7 +51,7 @@ class AuthControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function a_user_can_reset_their_password()
+  public function an_user_can_reset_their_password()
   {
     $user = $this->signIn();
 
@@ -82,7 +82,7 @@ class AuthControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function a_user_can_logout()
+  public function an_user_can_logout()
   {
     $this->signIn();
 
@@ -97,7 +97,7 @@ class AuthControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function a_user_can_refresh_their_token()
+  public function an_user_can_refresh_their_token()
   {
     $this->signIn();
 
@@ -118,7 +118,7 @@ class AuthControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function a_user_can_get_the_authenticated_user()
+  public function an_user_can_get_the_authenticated_user()
   {
     $user = factory(User::class)->create();
 

@@ -5,7 +5,7 @@
       {
         "name": "Ver Configurar Información de Nuestra Empresa",
         "level": 2,
-        "routes": ["companies.index",	"companies.show"]
+        "routes": ["companies.index", "companies.show"]
       },
       {
         "name": "Crear Configurar Información de Nuestra Empresa",
@@ -30,7 +30,7 @@
       {
         "name": "Ver Manejo de Usuarios",
         "level": 2,
-        "routes": ["users.index",	"users.show",	"users.permissions.index"]
+        "routes": ["users.index", "users.show", "users.permissions.index"]
       },
       {
         "name": "Crear Manejo de Usuarios",
@@ -80,7 +80,7 @@
       {
         "name": "Ver Manejo de Métodos de Pago",
         "level": 2,
-        "routes": ["payment-methods.index",	"payment-methods.show"]
+        "routes": ["payment-methods.index", "payment-methods.show"]
       },
       {
         "name": "Crear Manejo de Métodos de Pago",
@@ -130,22 +130,61 @@
       {
         "name": "Ver Manejo de Catálogo de Productos",
         "level": 2,
-        "routes": ["products.index", "products.show", "makers.index", "makers.show", "presentations.index", "presentations.show", "brands.index", "brands.show", "presentation-skus.index", "presentation-skus.show", "providers.index", "providers.show", "presentation-combos.index", "presentation-combos.show"]
+        "routes": [
+          "products.index",
+          "products.show",
+          "makers.index",
+          "makers.show",
+          "presentations.index",
+          "presentations.show",
+          "brands.index",
+          "brands.show",
+          "presentation-skus.index",
+          "presentation-skus.show",
+          "providers.index",
+          "providers.show",
+          "presentation-combos.index",
+          "presentation-combos.show"
+        ]
       },
       {
         "name": "Crear Manejo de Catálogo de Productos",
         "level": 2,
-        "routes": ["products.store", "makers.store", "presentations.store", "brands.store", "presentation-skus.store", "providers.store", "presentation-combos.store"]
+        "routes": [
+          "products.store",
+          "makers.store",
+          "presentations.store",
+          "brands.store",
+          "presentation-skus.store",
+          "providers.store",
+          "presentation-combos.store"
+        ]
       },
       {
         "name": "Editar Manejo de Catálogo de Productos",
         "level": 2,
-        "routes": ["products.update", "makers.update", "presentations.update", "brands.update", "presentation-skus.update", "providers.update", "presentation-combos.update"]
+        "routes": [
+          "products.update",
+          "makers.update",
+          "presentations.update",
+          "brands.update",
+          "presentation-skus.update",
+          "providers.update",
+          "presentation-combos.update"
+        ]
       },
       {
         "name": "Eliminar Manejo de Catálogo de Productos",
         "level": 2,
-        "routes": ["products.destroy", "makers.destroy", "presentations.destroy", "brands.destroy", "presentation-skus.destroy", "providers.destroy", "presentation-combos.destroy"]
+        "routes": [
+          "products.destroy",
+          "makers.destroy",
+          "presentations.destroy",
+          "brands.destroy",
+          "presentation-skus.destroy",
+          "providers.destroy",
+          "presentation-combos.destroy"
+        ]
       }
     ]
   },
@@ -155,17 +194,17 @@
       {
         "name": "Ver Entradas de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["purchases.index", "stocks.index"]
       },
       {
         "name": "Crear Entradas de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["purchases.store"]
       },
       {
         "name": "Editar Entradas de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["purchases.update"]
       },
       {
         "name": "Eliminar Entradas de Inventario",
@@ -205,12 +244,12 @@
       {
         "name": "Ver Traslados de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["transfers.index"]
       },
       {
         "name": "Crear Traslados de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["transfers.store"]
       },
       {
         "name": "Editar Traslados de Inventario",
@@ -405,22 +444,106 @@
       {
         "name": "Ver Información Básica del Sistema",
         "level": 1,
-        "routes": ["currencies.index", "currencies.show", "countries.index", "countries.show", "uoms.index", "uoms.show", "socioeconomic-levels.index", "socioeconomic-levels.show", "location-types.index", "location-types.show", "store-types.index", "store-types.show", "product-categories.index", "product-categories.show", "product-departments.index", "product-departments.show", "product-subcategories.index", "product-subcategories.show", "store-formats.index", "store-formats.show", "store-chains.index", "store-chains.show", "store-flags.index", "store-flags.show", "regions.index", "regions.show", "states.index", "states.show", "municipalities.index", "municipalities.show", "zones.index", "zones.show"]
+        "routes": [
+          "currencies.index",
+          "currencies.show",
+          "countries.index",
+          "countries.show",
+          "uoms.index",
+          "uoms.show",
+          "socioeconomic-levels.index",
+          "socioeconomic-levels.show",
+          "location-types.index",
+          "location-types.show",
+          "store-types.index",
+          "store-types.show",
+          "product-categories.index",
+          "product-categories.show",
+          "product-departments.index",
+          "product-departments.show",
+          "product-subcategories.index",
+          "product-subcategories.show",
+          "store-formats.index",
+          "store-formats.show",
+          "store-chains.index",
+          "store-chains.show",
+          "store-flags.index",
+          "store-flags.show",
+          "regions.index",
+          "regions.show",
+          "states.index",
+          "states.show",
+          "municipalities.index",
+          "municipalities.show",
+          "zones.index",
+          "zones.show"
+        ]
       },
       {
         "name": "Crear Información Básica del Sistema",
         "level": 1,
-        "routes": ["currencies.store", "countries.store", "uoms.store", "socioeconomic-levels.store", "location-types.store", "store-types.store", "product-categories.store", "product-departments.store", "product-subcategories.store", "store-formats.store", "store-chains.store", "store-flags.store", "regions.store", "states.store", "municipalities.store", "zones.store"]
+        "routes": [
+          "currencies.store",
+          "countries.store",
+          "uoms.store",
+          "socioeconomic-levels.store",
+          "location-types.store",
+          "store-types.store",
+          "product-categories.store",
+          "product-departments.store",
+          "product-subcategories.store",
+          "store-formats.store",
+          "store-chains.store",
+          "store-flags.store",
+          "regions.store",
+          "states.store",
+          "municipalities.store",
+          "zones.store"
+        ]
       },
       {
         "name": "Editar Información Básica del Sistema",
         "level": 1,
-        "routes": ["currencies.update", "countries.update", "uoms.update", "socioeconomic-levels.update", "location-types.update", "store-types.update", "product-categories.update", "product-departments.update", "product-subcategories.update", "store-formats.update", "store-chains.update", "store-flags.update", "regions.update", "states.update", "municipalities.update", "zones.update"]
+        "routes": [
+          "currencies.update",
+          "countries.update",
+          "uoms.update",
+          "socioeconomic-levels.update",
+          "location-types.update",
+          "store-types.update",
+          "product-categories.update",
+          "product-departments.update",
+          "product-subcategories.update",
+          "store-formats.update",
+          "store-chains.update",
+          "store-flags.update",
+          "regions.update",
+          "states.update",
+          "municipalities.update",
+          "zones.update"
+        ]
       },
       {
         "name": "Eliminar Información Básica del Sistema",
         "level": 1,
-        "routes": ["currencies.destroy", "countries.destroy", "uoms.destroy", "socioeconomic-levels.destroy", "location-types.destroy", "store-types.destroy", "product-categories.destroy", "product-departments.destroy", "product-subcategories.destroy", "store-formats.destroy", "store-chains.destroy", "store-flags.destroy", "regions.destroy", "states.destroy", "municipalities.destroy", "zones.destroy"]
+        "routes": [
+          "currencies.destroy",
+          "countries.destroy",
+          "uoms.destroy",
+          "socioeconomic-levels.destroy",
+          "location-types.destroy",
+          "store-types.destroy",
+          "product-categories.destroy",
+          "product-departments.destroy",
+          "product-subcategories.destroy",
+          "store-formats.destroy",
+          "store-chains.destroy",
+          "store-flags.destroy",
+          "regions.destroy",
+          "states.destroy",
+          "municipalities.destroy",
+          "zones.destroy"
+        ]
       }
     ]
   }
