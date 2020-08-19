@@ -155,7 +155,7 @@
       {
         "name": "Ver Entradas de Inventario",
         "level": 3,
-        "routes": ["purchases.index", "stocks.index"]
+        "routes": ["purchases.index", "purchases.show", "stocks.index"]
       },
       {
         "name": "Crear Entradas de Inventario",

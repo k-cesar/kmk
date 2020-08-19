@@ -70,6 +70,25 @@ class PurchaseControllerTest extends ApiTestCase
   /**
    * @test
    */
+  public function an_user_with_permission_can_see_a_purchase()
+  {
+    $this->signInWithPermissionsTo(['purchases.show']);
+
+    $purchase = Purchase::with('store:id,name', 
+      'user:id,name', 
+      'provider:id,name', 
+      'paymentMethod:id,name',
+      'purchaseDetails.product:id,description')
+      ->first();
+
+    $this->getJson(route('purchases.show', $purchase->id))
+      ->assertOk()
+      ->assertJson($purchase->toArray());
+  }
+
+  /**
+   * @test
+   */
   public function an_user_with_permission_can_store_a_purchase()
   {
     $user = $this->signInWithPermissionsTo(['purchases.store']);
