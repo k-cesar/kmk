@@ -117,6 +117,24 @@ class PurchaseController extends Controller
     
   }
 
+  /**
+   * Display the specified resource.
+   *
+   * @param  App\Http\Modules\Purchase\Purchase  $maker
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function show(Purchase $purchase)
+  {
+    $purchase->load('store:id,name', 
+      'user:id,name', 
+      'provider:id,name', 
+      'paymentMethod:id,name',
+      'purchaseDetails.product:id,description'
+    );
+
+    return $this->showOne($purchase);
+  }
+
 
   /**
    * Update the specified resource in storage.
