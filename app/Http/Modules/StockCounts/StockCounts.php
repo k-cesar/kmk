@@ -26,7 +26,7 @@ class StockCounts extends Model
 
     protected $with = [
         'store',
-        'stock_count',
+        'stock_counts',
         'user',
     ];
 
@@ -34,7 +34,7 @@ class StockCounts extends Model
         return $this->belongsTo(Store::class);
     }
 
-    public function stock_count() { 
+    public function stock_counts() { 
         return $this->hasMany(StockCountsDetail::class, 'stock_count_id');
     }
 

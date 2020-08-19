@@ -89,6 +89,7 @@ class StockCountsDetailControllerTest extends ApiTestCase
 
         $this->postJson(route('stock-counts-detail.store'), $attributes)
         ->assertCreated();
+        
         $this->assertDatabaseHas('stock_counts_detail', $attributes);
     }
 
