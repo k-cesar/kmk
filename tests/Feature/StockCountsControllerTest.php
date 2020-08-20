@@ -103,7 +103,7 @@ class StockCountsControllerTest extends ApiTestCase
         $stockCount = factory(StockCounts::class)->create();
 
         $attributes = factory(StockCounts::class)->raw();
-
+        $attributes['status'] = 'OPEN';
         $this->putJson(route('stock-counts.update', $stockCount->id), $attributes)
         ->assertOk();
 
