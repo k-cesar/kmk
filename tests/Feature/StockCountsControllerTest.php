@@ -13,9 +13,6 @@ class StockCountsControllerTest extends ApiTestCase
 {
     use DatabaseMigrations, RefreshDatabase;
 
-    /**
-   * @test
-   */
     public function setUp(): void
     {
         parent::setUp();
