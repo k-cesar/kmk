@@ -26,11 +26,16 @@ class StockCounts extends Model
 
     protected $with = [
         'store',
+        'stock_counts',
         'user',
     ];
 
     public function store() {
         return $this->belongsTo(Store::class);
+    }
+
+    public function stock_counts() { 
+        return $this->hasMany(StockCountsDetail::class, 'stock_count_id');
     }
 
     public function user() {

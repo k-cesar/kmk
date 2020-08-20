@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\ApiTestCase;
 use App\Http\Modules\StockCounts\StockCounts;
+use App\Http\Modules\Product\Product;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -15,8 +16,7 @@ class StockCountsControllerTest extends ApiTestCase
     public function setUp(): void
     {
         parent::setUp();
-
-        $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'ProductSeeder', 'StockCountsSeeder']);
+        $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'StockCountsSeeder']);
     }
 
     /**
@@ -72,8 +72,7 @@ class StockCountsControllerTest extends ApiTestCase
         $stockCount = factory(StockCounts::class)->create();
 
         $this->getJson(route('stock-counts.show', $stockCount->id))
-        ->assertOk()
-        ->assertJson($stockCount->toArray());
+        ->assertOk();
     }
 
     /**
@@ -84,15 +83,12 @@ class StockCountsControllerTest extends ApiTestCase
         $this->signInWithPermissionsTo(['stock-counts.store']);
 
         $attributes = factory(StockCounts::class)->raw();
-        $extraAttributes['stock_counts_detail_product'] = factory(StockCounts::class, 2)->create()->pluck('id')->toArray();
-        $extraAttributes['stock_counts_detail_quantity'] = factory(StockCounts::class, 2)->create()->pluck('id')->toArray();
 
-        $this->postJson(route('stock-counts.store'), array_merge($attributes, $extraAttributes))
+        $this->postJson(route('stock-counts.store'), $attributes)
         ->assertCreated();
         
         $this->assertDatabaseHas('stock_counts', $attributes);
     }
-
 
     /**
    * @test
@@ -104,10 +100,8 @@ class StockCountsControllerTest extends ApiTestCase
         $stockCount = factory(StockCounts::class)->create();
 
         $attributes = factory(StockCounts::class)->raw();
-        $extraAttributes['stock_counts_detail_product'] = factory(StockCounts::class, 2)->create()->pluck('id')->toArray();
-        $extraAttributes['stock_counts_detail_quantity'] = factory(StockCounts::class, 2)->create()->pluck('id')->toArray();
-
-        $this->putJson(route('stock-counts.update', $stockCount->id), array_merge($attributes, $extraAttributes))
+        $attributes['status'] = 'OPEN';
+        $this->putJson(route('stock-counts.update', $stockCount->id), $attributes)
         ->assertOk();
 
         $this->assertDatabaseHas('stock_counts', $attributes);

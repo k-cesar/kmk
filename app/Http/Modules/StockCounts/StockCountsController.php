@@ -26,21 +26,24 @@ class StockCountsController extends Controller
 
             $stockCount = StockCounts::create($request->validated());
 
-            $stockCountDetailProduct = $request->stock_counts_detail_product;
-            $stockCountDetailQuantity = $request->stock_counts_detail_quantity;
+            if(!empty($request->stock_counts_detail_product)) {
+                $stockCountDetailProduct = $request->stock_counts_detail_product;
+                $stockCountDetailQuantity = $request->stock_counts_detail_quantity;
 
-            $arrDetail = array();
+                $arrDetail = array();
 
-            for($int = 0; $int < count($stockCountDetailProduct); $int++) {
-                $countsDetail = array(
-                    'stock_count_id' => $stockCount->id,
-                    'product_id' => $stockCountDetailProduct[$int],
-                    'quantity' => $stockCountDetailQuantity[$int],
-                );
-                $arrDetail[] = $countsDetail;
+                for($int = 0; $int < count($stockCountDetailProduct); $int++) {
+                    $countsDetail = array(
+                        'stock_count_id' => $stockCount->id,
+                        'product_id' => $stockCountDetailProduct[$int],
+                        'quantity' => $stockCountDetailQuantity[$int],
+                    );
+                    $arrDetail[] = $countsDetail;
+                }
+    
+                StockCountsDetail::create($arrDetail);
             }
-
-            StockCountsDetail::create($arrDetail);
+            
 
             DB::commit();
             return $this->showOne($stockCount, 201);
@@ -60,27 +63,27 @@ class StockCountsController extends Controller
 
             $stockCount->update($request->validated());
             
-            $stockCountDetailProduct = $request->stock_counts_detail_product;
-            $stockCountDetailQuantity = $request->stock_counts_detail_quantity;
+            if(!empty($request->stock_counts_detail_product)) {
+                $stockCountDetailProduct = $request->stock_counts_detail_product;
+                $stockCountDetailQuantity = $request->stock_counts_detail_quantity;
 
-            $arrDetail = array();
+                $arrDetail = array();
 
-            for($int = 0; $int < count($stockCountDetailProduct); $int++) {
-                $countsDetail = array(
-                    'stock_count_id' => $stockCount->id,
-                    'product_id' => $stockCountDetailProduct[$int],
-                    'quantity' => $stockCountDetailQuantity[$int],
-                );
-                $arrDetail[] = $countsDetail;
-            }
+                for($int = 0; $int < count($stockCountDetailProduct); $int++) {
+                    $countsDetail = array(
+                        'stock_count_id' => $stockCount->id,
+                        'product_id' => $stockCountDetailProduct[$int],
+                        'quantity' => $stockCountDetailQuantity[$int],
+                    );
+                    $arrDetail[] = $countsDetail;
+                }
 
-            StockCountsDetail::where('stock_count_id', '=', $stockCount->id)->delete();
-            
-            foreach($arrDetail AS $key => $value) {
-                //StockCountsDetail::update($value);
-                StockCountsDetail::create($value);
-            }
-            
+                StockCountsDetail::where('stock_count_id', '=', $stockCount->id)->delete();
+                
+                foreach($arrDetail AS $key => $value) {
+                    StockCountsDetail::create($value);
+                }   
+            }            
 
             DB::commit();
             return $this->showOne($stockCount);

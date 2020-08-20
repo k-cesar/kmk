@@ -22,13 +22,8 @@ class StockCountsDetail extends Model
     protected $table = 'stock_counts_detail';
 
     protected $with = [
-        'stockCount',
-        'product',
+        'product'
     ];
-
-    public function stockCount() {
-        return $this->belongsTo(StockCounts::class, 'stock_count_id', 'id');
-    }
 
     public function product() {
         return $this->belongsTo(Product::class);

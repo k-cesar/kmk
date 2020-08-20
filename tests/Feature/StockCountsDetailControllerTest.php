@@ -12,14 +12,10 @@ class StockCountsDetailControllerTest extends ApiTestCase
 {
     use DatabaseMigrations, RefreshDatabase;
 
-    /**
-   * @test
-   */
     public function setUp(): void
     {
         parent::setUp();
-
-        $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'ProductSeeder', 'StockCountsSeeder', 'StockCountsDetail']);
+        $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'ProductSeeder', 'StockCountsSeeder', 'StockCountsDetailSeeder']);
     }
 
     /**
@@ -75,8 +71,7 @@ class StockCountsDetailControllerTest extends ApiTestCase
         $stockCountDetail = factory(StockCountsDetail::class)->create();
 
         $this->getJson(route('stock-counts-detail.show', $stockCountDetail->id))
-        ->assertOk()
-        ->assertJson($stockCountDetail->toArray());
+        ->assertOk();
     }
 
     /**
@@ -91,7 +86,7 @@ class StockCountsDetailControllerTest extends ApiTestCase
         $this->postJson(route('stock-counts-detail.store'), $attributes)
         ->assertCreated();
         
-        $this->assertDatabaseHas('stock_counts', $attributes);
+        $this->assertDatabaseHas('stock_counts_detail', $attributes);
     }
 
     /**
@@ -108,7 +103,7 @@ class StockCountsDetailControllerTest extends ApiTestCase
         $this->putJson(route('stock-counts-detail.update', $stockCountDetail->id), $attributes)
         ->assertOk();
 
-        $this->assertDatabaseHas('stock_counts', $attributes);
+        $this->assertDatabaseHas('stock_counts_detail', $attributes);
     }
 
     /**
