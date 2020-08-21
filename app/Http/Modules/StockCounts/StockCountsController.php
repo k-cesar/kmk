@@ -30,7 +30,6 @@ class StockCountsController extends Controller
                 $stockCountDetailProduct = $request->stock_counts_detail_product;
                 $stockCountDetailQuantity = $request->stock_counts_detail_quantity;
 
-                $arrDetail = array();
 
                 for($int = 0; $int < count($stockCountDetailProduct); $int++) {
                     $countsDetail = array(
@@ -38,10 +37,8 @@ class StockCountsController extends Controller
                         'product_id' => $stockCountDetailProduct[$int],
                         'quantity' => $stockCountDetailQuantity[$int],
                     );
-                    $arrDetail[] = $countsDetail;
+                    StockCountsDetail::create($countsDetail);
                 }
-    
-                StockCountsDetail::create($arrDetail);
             }
             
 
