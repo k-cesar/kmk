@@ -194,7 +194,7 @@
       {
         "name": "Ver Entradas de Inventario",
         "level": 3,
-        "routes": ["purchases.index", "stocks.index"]
+        "routes": ["purchases.index", "purchases.show", "stocks.index"]
       },
       {
         "name": "Crear Entradas de Inventario",
@@ -219,12 +219,12 @@
       {
         "name": "Ver Ajustes de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["adjustments.index"]
       },
       {
         "name": "Crear Ajustes de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["adjustments.store", "stock-counts-adjustments.store"]
       },
       {
         "name": "Editar Ajustes de Inventario",

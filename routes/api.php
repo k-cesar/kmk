@@ -84,9 +84,13 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     
     Route::resource('stocks', 'Stock\StockController')->only('index');
     
-    Route::resource('purchases', 'Purchase\PurchaseController')->only('index', 'store', 'update');
+    Route::resource('purchases', 'Purchase\PurchaseController')->except('create', 'edit', 'destroy');
     
     Route::resource('transfers', 'Transfer\TransferController')->only('index', 'store');
+    
+    Route::resource('adjustments', 'Adjustment\AdjustmentController')->only('index', 'store');
+
+    Route::resource('stock-counts-adjustments', 'StockCounts\StockCountAdjustmentController')->only('store');
 
     Route::resource('stock-counts', 'StockCounts\StockCountsController')->except('create', 'edit');
 

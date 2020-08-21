@@ -12,16 +12,18 @@ use Illuminate\Support\Arr;
 $factory->define(StockMovement::class, function (Faker $faker, Array $attributes = []) {
 
     
-    $originType = $attributes['origin_type'] ?? $faker->randomElement(Arr::except(StockMovement::getOptionsOriginTypes(), 3));
+    $originType = $attributes['origin_type'] ?? $faker->randomElement(Arr::except(StockMovement::getOptionsOriginTypes(), 4));
 
     $originIds = [
         StockMovement::OPTION_ORIGIN_TYPE_MANUAL_ADJUSTMENT => rand(100, 5000),
+        StockMovement::OPTION_ORIGIN_TYPE_COUNT             => rand(100, 5000),
         StockMovement::OPTION_ORIGIN_TYPE_PURCHASE          => factory(Purchase::class),
         StockMovement::OPTION_ORIGIN_TYPE_SELL              => rand(100, 5000),
     ];
 
     $movementTypes = [
         StockMovement::OPTION_ORIGIN_TYPE_MANUAL_ADJUSTMENT => StockMovement::OPTION_MOVEMENT_TYPE_ADJUSTMENT,
+        StockMovement::OPTION_ORIGIN_TYPE_COUNT             => StockMovement::OPTION_MOVEMENT_TYPE_ADJUSTMENT,
         StockMovement::OPTION_ORIGIN_TYPE_PURCHASE          => StockMovement::OPTION_MOVEMENT_TYPE_INPUT,
         StockMovement::OPTION_ORIGIN_TYPE_SELL              => StockMovement::OPTION_MOVEMENT_TYPE_OUTPUT,
     ];

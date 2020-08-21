@@ -25,6 +25,8 @@ abstract class ApiTestCase extends BaseTestCase
         $token = JWTAuth::fromUser($user);
 
         $this->withHeaders(['Authorization' => "Bearer $token"]);
+
+        $this->actingAs($user);
         
         return $user;
     }
@@ -49,6 +51,8 @@ abstract class ApiTestCase extends BaseTestCase
         $token = JWTAuth::fromUser($user);
 
         $this->withHeaders(['Authorization' => "Bearer $token"]);
+
+        $this->actingAs($user);
 
         return $user;
     }
