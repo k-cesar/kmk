@@ -20,6 +20,7 @@ use App\Http\Modules\Product\Product;
 use App\Http\Modules\Purchase\Purchase;
 use App\Http\Modules\SocioeconomicLevel\SocioeconomicLevel;
 use App\Http\Modules\Stock\StockMovement;
+use App\Http\Modules\Company\Company;
 
 class Store extends Model
 {
@@ -39,6 +40,7 @@ class Store extends Model
         'store_flag_id',
         'location_type_id',
         'store_format_id',
+        'company_id',
         'size',
         'socioeconomic_level_id',
         'state_id',
@@ -53,7 +55,7 @@ class Store extends Model
      *
      * @var array
      */
-    protected $with = ['storeType', 'storeChain', 'storeFlag', 'locationType', 'storeFormat', 'socioeconomicLevel', 'state', 'municipality', 'zone', 'turns'];
+    protected $with = ['storeType', 'storeChain', 'storeFlag', 'locationType', 'storeFormat', 'socioeconomicLevel', 'state', 'municipality', 'zone', 'turns', 'company'];
 
     /**
      * Get the storeType that owns the store.
@@ -213,5 +215,15 @@ class Store extends Model
     public function purchases()
     {
         return $this->hasMany(Purchase::class);
+    }
+
+    /**
+     * Get the company for the store.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
     }
 }

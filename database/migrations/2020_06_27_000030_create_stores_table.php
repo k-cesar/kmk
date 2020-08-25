@@ -30,6 +30,7 @@ class CreateStoresTable extends Migration
             $table->unsignedBigInteger('store_flag_id');
             $table->unsignedBigInteger('location_type_id');
             $table->unsignedBigInteger('store_format_id');
+            $table->unsignedBigInteger('company_id');
             $table->float('size');
             $table->unsignedBigInteger('socioeconomic_level_id');
             $table->unsignedBigInteger('state_id');
@@ -51,6 +52,8 @@ class CreateStoresTable extends Migration
             $table->foreign('location_type_id')->references('id')->on('location_types');
 
             $table->foreign('store_format_id')->references('id')->on('store_formats');
+
+            $table->foreign('company_id')->references('id')->on('companies');
 
             $table->foreign('socioeconomic_level_id')->references('id')->on('socioeconomic_levels');
 
