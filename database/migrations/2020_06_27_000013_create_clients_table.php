@@ -31,6 +31,7 @@ class CreateClientsTable extends Migration
             $table->enum('sex', ['MALE', 'FEMALE']);
             $table->text('biometric_id')->unique()->nullable();
             $table->date('birthdate');
+            $table->integer('phone');
             $table->timestamps();
             $table->softDeletes();
 

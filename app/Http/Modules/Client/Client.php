@@ -33,6 +33,7 @@ class Client extends Model
         'sex',
         'biometric_id',
         'birthdate',
+        'phone',
     ];
 
     protected static function boot()

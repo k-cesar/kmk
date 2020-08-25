@@ -18,5 +18,6 @@ $factory->define(Client::class, function (Faker $faker) {
         'sex'          => $faker->randomElement(Client::getOptionsSex()),
         'biometric_id' => Str::random(50),
         'birthdate'    => $faker->date(),
+        'phone'        => $faker->randomNumber(8),
     ];
 });
