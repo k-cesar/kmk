@@ -32,7 +32,7 @@ class StoreRequest extends FormRequest
       'store_flag_id'          => 'required|exists:store_flags,id',
       'location_type_id'       => 'required|exists:location_types,id',
       'store_format_id'        => 'required|exists:store_formats,id',
-      'company_id'             => 'requires|exists:companies,id',
+      'company_id'             => 'required|exists:companies,id',
       'size'                   => 'required|numeric|min:0',
       'socioeconomic_level_id' => 'required|exists:socioeconomic_levels,id',
       'state_id'               => 'required|exists:states,id',
