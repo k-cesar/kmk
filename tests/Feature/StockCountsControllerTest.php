@@ -4,14 +4,11 @@ namespace Tests\Feature;
 
 use Tests\ApiTestCase;
 use App\Http\Modules\StockCounts\StockCounts;
-use App\Http\Modules\Product\Product;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class StockCountsControllerTest extends ApiTestCase
 {
-    use DatabaseMigrations, RefreshDatabase;
+    use RefreshDatabase;
 
     public function setUp(): void
     {

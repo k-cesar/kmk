@@ -2,16 +2,14 @@
 
 namespace Tests\Feature;
 
-use App\Http\Modules\User\User;
 use Tests\ApiTestCase;
+use App\Http\Modules\User\User;
 use Spatie\Permission\Models\Role;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class RoleControllerTest extends ApiTestCase
 {
-  use DatabaseMigrations, RefreshDatabase;
+  use RefreshDatabase;
 
   public function setUp(): void
   {

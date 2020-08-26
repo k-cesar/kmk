@@ -5,14 +5,12 @@ namespace Tests\Feature;
 use Tests\ApiTestCase;
 use App\Http\Modules\Store\Store;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Foundation\Testing\WithFaker;
 use App\Http\Modules\Stock\StockMovement;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class TransferControllerTest extends ApiTestCase
 {
-  use DatabaseMigrations, RefreshDatabase;
+  use RefreshDatabase;
 
   public function setUp(): void
   {

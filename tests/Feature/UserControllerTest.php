@@ -2,16 +2,14 @@
 
 namespace Tests\Feature;
 
-use App\Http\Modules\Store\Store;
 use Tests\ApiTestCase;
 use App\Http\Modules\User\User;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Http\Modules\Store\Store;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class UserControllerTest extends ApiTestCase
 {
-  use DatabaseMigrations, RefreshDatabase;
+  use RefreshDatabase;
 
   public function setUp(): void
   {

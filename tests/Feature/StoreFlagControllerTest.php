@@ -4,13 +4,11 @@ namespace Tests\Feature;
 
 use Tests\ApiTestCase;
 use App\Http\Modules\StoreFlag\StoreFlag;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class StoreFlagControllerTest extends ApiTestCase
 {
-  use DatabaseMigrations, RefreshDatabase;
+  use RefreshDatabase;
 
   public function setUp(): void
   {

@@ -6,18 +6,13 @@ use Tests\ApiTestCase;
 use Illuminate\Support\Arr;
 use App\Http\Modules\Store\Store;
 use App\Http\Modules\Product\Product;
-use App\Http\Modules\Provider\Provider;
 use App\Http\Modules\Purchase\Purchase;
 use App\Http\Modules\Stock\StockMovement;
-use Illuminate\Foundation\Testing\WithFaker;
-use League\CommonMark\Inline\Element\Strong;
-use App\Http\Modules\PaymentMethod\PaymentMethod;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class PurchaseControllerTest extends ApiTestCase
 {
-  use DatabaseMigrations, RefreshDatabase;
+  use RefreshDatabase;
 
   public function setUp(): void
   {

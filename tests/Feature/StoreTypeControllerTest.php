@@ -4,13 +4,11 @@ namespace Tests\Feature;
 
 use Tests\ApiTestCase;
 use App\Http\Modules\StoreType\StoreType;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class StoreTypeControllerTest extends ApiTestCase
 {
-  use DatabaseMigrations, RefreshDatabase;
+  use RefreshDatabase;
 
   public function setUp(): void
   {
