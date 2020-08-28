@@ -40,7 +40,11 @@
       {
         "name": "Editar Manejo de Usuarios",
         "level": 2,
-        "routes": ["users.update", "users.permissions.store", "permissions.index"]
+        "routes": [
+          "users.update",
+          "users.permissions.store",
+          "permissions.index"
+        ]
       },
       {
         "name": "Eliminar Manejo de Usuarios",
@@ -55,22 +59,29 @@
       {
         "name": "Ver Manejo de Tiendas",
         "level": 2,
-        "routes": ["stores.index", "stores.show", "turns.index", "turns.show"]
+        "routes": [
+          "stores.index",
+          "stores.show",
+          "turns.index",
+          "turns.show",
+          "store-turns.index",
+          "store-turns.show"
+        ]
       },
       {
         "name": "Crear Manejo de Tiendas",
         "level": 2,
-        "routes": ["stores.store", "turns.store"]
+        "routes": ["stores.store", "turns.store", "store-turns.store"]
       },
       {
         "name": "Editar Manejo de Tiendas",
         "level": 2,
-        "routes": ["stores.update", "turns.update"]
+        "routes": ["stores.update", "turns.update", "store-turns.update"]
       },
       {
         "name": "Eliminar Manejo de Tiendas",
         "level": 2,
-        "routes": ["stores.destroy", "turns.destroy"]
+        "routes": ["stores.destroy", "turns.destroy", "store-turns.destroy"]
       }
     ]
   },
@@ -269,7 +280,12 @@
       {
         "name": "Ver Conteos de Inventario",
         "level": 3,
-        "routes": ["stock-counts.index", "stock-counts.show", "stock-counts-detail.index", "stock-counts-detail.show"]
+        "routes": [
+          "stock-counts.index",
+          "stock-counts.show",
+          "stock-counts-detail.index",
+          "stock-counts-detail.show"
+        ]
       },
       {
         "name": "Crear Conteos de Inventario",
