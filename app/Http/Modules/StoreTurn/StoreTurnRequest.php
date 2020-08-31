@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\StoreTurn;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTurnRequest extends FormRequest
@@ -31,6 +32,7 @@ class StoreTurnRequest extends FormRequest
             'closed_by'                 => 'required|exists:users,id',
             'closed_petty_cash_amount'  => 'required|min:0',
             'open_date'                 => 'required|date|date_format:Y-m-d',
+            'close_date'                 => 'required|date|date_format:Y-m-d',
             'is_open'                   => 'required|boolean',
         ];
 

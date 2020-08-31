@@ -2,11 +2,16 @@
 
 namespace App\Http\Modules\StoreTurn;
 
+use App\Traits\SecureDeletes;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Modules\StoreTurnModification\StoreTurnModification;
 
 class StoreTurn extends Model
 {
-    protected $filable = [
+    use SoftDeletes, SecureDeletes;
+
+    protected $fillable = [
         'store_id',
         'turn_id',
         'open_petty_cash_amount',
@@ -18,5 +23,10 @@ class StoreTurn extends Model
         'is_open',
     ];
 
-    protected $with = [];
+    protected $with = ['turn_modification'];
+
+    public function turn_modification()
+    {
+        return $this->hasMany(StoreTurnModification::class, 'store_turn_id');
+    }
 }
