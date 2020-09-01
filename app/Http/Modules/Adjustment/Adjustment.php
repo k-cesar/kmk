@@ -30,7 +30,7 @@ class Adjustment
 
     $arrTurn = Turn::select('id', 'is_active')->where('store_id', $values['store_id'])->first();
 
-    if($arrTurn->is_active) {
+    if(!empty($arrTurn) && $arrTurn->is_active) {
       try {
         DB::beginTransaction();
   
