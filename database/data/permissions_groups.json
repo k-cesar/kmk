@@ -64,8 +64,7 @@
           "stores.show",
           "turns.index",
           "turns.show",
-          "store-adjustment.index",
-          "store-adjustment.show"
+          "store-adjustment.index"
         ]
       },
       {
