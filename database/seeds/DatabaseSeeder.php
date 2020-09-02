@@ -48,6 +48,7 @@ class DatabaseSeeder extends Seeder
             PurchaseSeeder::class,
             StockCountsSeeder::class,
             StockCountsDetailSeeder::class,
+            StoreTurnSeeder::class,
         ]);
     }
 }
