@@ -65,23 +65,25 @@
           "turns.index",
           "turns.show",
           "store-adjustment.index",
-          "store-adjustment.show"
+          "store-adjustment.show",
+          "store-turns.index",
+          "store-turns.show"
         ]
       },
       {
         "name": "Crear Manejo de Tiendas",
         "level": 2,
-        "routes": ["stores.store", "turns.store"]
+        "routes": ["stores.store", "turns.store", "store-turns.store"]
       },
       {
         "name": "Editar Manejo de Tiendas",
         "level": 2,
-        "routes": ["stores.update", "turns.update"]
+        "routes": ["stores.update", "turns.update", "store-turns.update"]
       },
       {
         "name": "Eliminar Manejo de Tiendas",
         "level": 2,
-        "routes": ["stores.destroy", "turns.destroy"]
+        "routes": ["stores.destroy", "turns.destroy", "store-turns.destroy"]
       }
     ]
   },

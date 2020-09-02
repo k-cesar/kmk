@@ -98,6 +98,8 @@ Route::group(['middleware' => ['auth', 'access']], function () {
 
     Route::resource('store-adjustment', 'StoreAdjustment\StoreAdjustmentController')->only('index', 'show');
 
+    Route::resource('store-turns', 'StoreTurn\StoreTurnController')->except('create', 'edit');
+
 });
 
 /***********************************************************************************************************************

@@ -6,6 +6,7 @@ use Faker\Generator as Faker;
 use App\Http\Modules\Zone\Zone;
 use App\Http\Modules\State\State;
 use App\Http\Modules\Store\Store;
+use App\Http\Modules\Company\Company;
 use App\Http\Modules\StoreFlag\StoreFlag;
 use App\Http\Modules\StoreType\StoreType;
 use App\Http\Modules\StoreChain\StoreChain;
@@ -25,6 +26,7 @@ $factory->define(Store::class, function (Faker $faker) {
         'store_flag_id'          => factory(StoreFlag::class)->create(),
         'location_type_id'       => factory(LocationType::class)->create(),
         'store_format_id'        => factory(StoreFormat::class)->create(),
+        'company_id'             => factory(Company::class)->create(),
         'size'                   => rand(1, 100),
         'socioeconomic_level_id' => factory(SocioeconomicLevel::class)->create(),
         'state_id'               => factory(State::class)->create(),
