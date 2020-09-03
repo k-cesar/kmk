@@ -29,12 +29,15 @@ class CreateStockMovementsTable extends Migration
             $table->enum('movement_type', ['INPUT', 'OUTPUT', 'ADJUSTMENT'])->default('ADJUSTMENT');
             $table->unsignedBigInteger('store_id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('turn_id');
             $table->timestamps();
             $table->softDeletes();
 
             $table->foreign('store_id')->references('id')->on('stores');
 
             $table->foreign('user_id')->references('id')->on('users');
+
+            $table->foreign('turn_id')->references('id')->on('turns');
         });
     }
 

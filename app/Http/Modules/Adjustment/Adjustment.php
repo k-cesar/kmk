@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Modules\Stock\StockMovement;
 use App\Http\Modules\Stock\StockMovementDetail;
 use App\Http\Modules\Stock\StockStore;
+use App\Http\Modules\Turn\Turn;
 use App\Http\Modules\StockCounts\StockCounts;
 
 class Adjustment
@@ -27,48 +28,57 @@ class Adjustment
       $originId = StockCounts::find($values['stock_count_id'])->id;
     }
 
-    try {
-      DB::beginTransaction();
+    $arrTurn = Turn::select('id', 'is_active')->where('store_id', $values['store_id'])->first();
 
-      $stockMovementValues = [
-        'user_id'       => auth()->user()->id,
-        'origin_id'     => $originId,
-        'origin_type'   => $values['origin_type'],
-        'date'          => now(),
-        'movement_type' => StockMovement::OPTION_MOVEMENT_TYPE_ADJUSTMENT,
-        'store_id'      => $values['store_id'],
-        'description'   => $values['description'],
-      ];
-
-      $stockMovement = StockMovement::create($stockMovementValues);
-
-      foreach ($values['products'] as $product) {
-        $stockStore = $stockMovement->store
-          ->products()
-          ->wherePivot('product_id', $product['id'])
-          ->first()
-          ->pivot;
-          
-        StockMovementDetail::create([
-          'stock_movement_id' => $stockMovement->id,
-          'stock_store_id'    => $stockStore->id,
-          'product_id'        => $product['id'],
-          'quantity'          => $product['quantity'] - $stockStore->quantity,
-        ]);
-
-        $stockStore->quantity = $product['quantity'];
-        $stockStore->save();
+    if(!empty($arrTurn) && $arrTurn->is_active) {
+      try {
+        DB::beginTransaction();
+  
+        $stockMovementValues = [
+          'date'          => now(),
+          'description'   => $values['description'],
+          'origin_type'   => $values['origin_type'],
+          'origin_id'     => $originId,
+          'movement_type' => StockMovement::OPTION_MOVEMENT_TYPE_ADJUSTMENT,
+          'store_id'      => $values['store_id'],
+          'user_id'       => auth()->user()->id,
+          'turn_id'       => $arrTurn->id
+        ];
+  
+        $stockMovement = StockMovement::create($stockMovementValues);
+  
+        foreach ($values['products'] as $product) {
+          $stockStore = $stockMovement->store
+            ->products()
+            ->wherePivot('product_id', $product['id'])
+            ->first()
+            ->pivot;
+            
+          StockMovementDetail::create([
+            'stock_movement_id' => $stockMovement->id,
+            'stock_store_id'    => $stockStore->id,
+            'product_id'        => $product['id'],
+            'quantity'          => $product['quantity'] - $stockStore->quantity,
+          ]);
+  
+          $stockStore->quantity = $product['quantity'];
+          $stockStore->save();
+        }
+  
+        DB::commit();
+  
+        return true;
+  
+      } catch (Exception $exception) {
+        DB::rollback();
+  
+        Log::error($exception);
+  
+        return false;
       }
-
-      DB::commit();
-
-      return true;
-
-    } catch (Exception $exception) {
-      DB::rollback();
-
-      Log::error($exception);
-
+    }
+    else {
+      Log::error('No tiene un turno activo para esta tienda');
       return false;
     }
   }
