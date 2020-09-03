@@ -14,7 +14,7 @@ class MakerControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'MakerSeeder']);
+    $this->seed(['PermissionSeeder', 'MakerSeeder']);
   }
 
   /**

@@ -14,7 +14,7 @@ class ProductSubcategoryControllerTest extends ApiTestCase
     {
         parent::setUp();
 
-        $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'ProductDepartmentSeeder', 'ProductCategorySeeder', 'ProductSubcategorySeeder']);
+        $this->seed(['PermissionSeeder', 'ProductDepartmentSeeder', 'ProductCategorySeeder', 'ProductSubcategorySeeder']);
     }
 
     /**

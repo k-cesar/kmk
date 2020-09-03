@@ -14,7 +14,7 @@ class CountryControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'CountrySeeder']);
+    $this->seed(['PermissionSeeder', 'CountrySeeder']);
   }
 
   /**

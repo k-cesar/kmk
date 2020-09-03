@@ -14,7 +14,7 @@ class StoreFormatControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'StoreFormatSeeder']);
+    $this->seed(['PermissionSeeder', 'StoreFormatSeeder']);
   }
 
   /**

@@ -14,7 +14,7 @@ class MunicipalityControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'MunicipalitySeeder']);
+    $this->seed(['PermissionSeeder', 'MunicipalitySeeder']);
   }
 
   /**

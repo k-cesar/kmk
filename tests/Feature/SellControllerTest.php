@@ -22,7 +22,7 @@ class SellControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'SellSeeder']);
+    $this->seed(['PermissionSeeder', 'SellSeeder']);
   }
 
   /**

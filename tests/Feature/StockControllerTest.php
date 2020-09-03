@@ -14,7 +14,7 @@ class StockControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'StoreSeeder', 'ProductSeeder', 'StockStoreSeeder']);
+    $this->seed(['PermissionSeeder', 'StoreSeeder', 'ProductSeeder', 'StockStoreSeeder']);
   }
 
   /**

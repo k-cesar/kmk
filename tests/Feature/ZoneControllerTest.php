@@ -14,7 +14,7 @@ class ZoneControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'ZoneSeeder']);
+    $this->seed(['PermissionSeeder', 'ZoneSeeder']);
   }
 
   /**

@@ -18,7 +18,7 @@ class PurchaseControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'PurchaseSeeder']);
+    $this->seed(['PermissionSeeder', 'PurchaseSeeder']);
   }
 
   /**

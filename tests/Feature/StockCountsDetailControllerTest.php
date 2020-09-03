@@ -13,7 +13,7 @@ class StockCountsDetailControllerTest extends ApiTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'ProductSeeder', 'StockCountsSeeder', 'StockCountsDetailSeeder']);
+        $this->seed(['PermissionSeeder', 'ProductSeeder', 'StockCountsSeeder', 'StockCountsDetailSeeder']);
     }
 
     /**

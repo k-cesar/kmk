@@ -34,8 +34,8 @@ class ProductRequest extends FormRequest
             'uom_id'                 => 'required|exists:uoms,id',
             'minimal_expresion'      => 'required|string',
             'suggested_price'        => 'required|numeric|min:0',
-            'country'                => 'required|array',
-            'country.*'              => 'exists:countries,id',
+            'countries'              => 'required|array',
+            'countries.*'            => 'exists:countries,id',
         ];
 
         if ($this->isMethod('PUT')) {

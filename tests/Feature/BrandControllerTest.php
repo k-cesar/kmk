@@ -14,7 +14,7 @@ class BrandControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'BrandSeeder']);
+    $this->seed(['PermissionSeeder', 'BrandSeeder']);
   }
 
   /**

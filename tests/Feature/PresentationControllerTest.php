@@ -14,7 +14,7 @@ class PresentationControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'PresentationSeeder']);
+    $this->seed(['PermissionSeeder', 'PresentationSeeder']);
   }
 
   /**

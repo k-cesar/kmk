@@ -14,7 +14,7 @@ class SocioeconomicLevelControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'SocioeconomicLevelSeeder']);
+    $this->seed(['PermissionSeeder', 'SocioeconomicLevelSeeder']);
   }
 
   /**

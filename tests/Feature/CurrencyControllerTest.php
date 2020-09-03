@@ -14,7 +14,7 @@ class CurrencyControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'CurrencySeeder']);
+    $this->seed(['PermissionSeeder', 'CurrencySeeder']);
   }
 
   /**

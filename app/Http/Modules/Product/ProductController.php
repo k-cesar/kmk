@@ -23,7 +23,7 @@ class ProductController extends Controller
             DB::beginTransaction();
 
             $product = Product::create($request->validated());
-            $product->productCountries()->sync($request->country);
+            $product->productCountries()->sync($request->countries);
 
             DB::commit();
             return $this->showOne($product, 201);
@@ -44,7 +44,7 @@ class ProductController extends Controller
         try {
             DB::beginTransaction();
             $product->update($request->validated());
-            $product->productCountries()->sync($request->country);
+            $product->productCountries()->sync($request->countries);
 
             DB::commit();
             return $this->showOne($product);

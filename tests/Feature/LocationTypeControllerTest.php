@@ -14,7 +14,7 @@ class LocationTypeControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'LocationTypeSeeder']);
+    $this->seed(['PermissionSeeder', 'LocationTypeSeeder']);
   }
 
   /**

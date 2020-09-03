@@ -14,7 +14,7 @@ class StoreFlagControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'StoreFlagSeeder']);
+    $this->seed(['PermissionSeeder', 'StoreFlagSeeder']);
   }
 
   /**

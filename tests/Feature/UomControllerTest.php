@@ -14,7 +14,7 @@ class UomControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'UomSeeder']);
+    $this->seed(['PermissionSeeder', 'UomSeeder']);
   }
 
   /**
