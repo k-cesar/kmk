@@ -16,8 +16,8 @@ $factory->define(StoreTurn::class, function (Faker $faker) {
         'open_by'                  => factory(User::class),
         'closed_by'                => factory(User::class),
         'closed_petty_cash_amount' => rand(1, 20) * 100,
-        'open_date'                => now(),
-        'close_date'               => now(),
+        'open_date'                => $faker->date(),
+        'close_date'               => $faker->date(),
         'is_open'                  => rand(0, 1),
     ];
 });
