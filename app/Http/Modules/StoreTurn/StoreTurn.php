@@ -2,16 +2,16 @@
 
 namespace App\Http\Modules\StoreTurn;
 
+use App\Traits\SecureDeletes;
 use App\Http\Modules\Store\Store;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Modules\StoreTurnModification\StoreTurnModification;
 
 class StoreTurn extends Model
 {
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    use SoftDeletes, SecureDeletes;
+
     protected $fillable = [
         'store_id',
         'turn_id',
@@ -42,5 +42,10 @@ class StoreTurn extends Model
     public function store()
     {
         return $this->belongsTo(Store::class);
+    }
+
+    public function turn_modification()
+    {
+        return $this->hasMany(StoreTurnModification::class, 'store_turn_id');
     }
 }

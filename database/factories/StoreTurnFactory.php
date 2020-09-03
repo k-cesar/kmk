@@ -3,8 +3,8 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use Faker\Generator as Faker;
-use App\Http\Modules\User\User;
 use App\Http\Modules\Turn\Turn;
+use App\Http\Modules\User\User;
 use App\Http\Modules\Store\Store;
 use App\Http\Modules\StoreTurn\StoreTurn;
 
