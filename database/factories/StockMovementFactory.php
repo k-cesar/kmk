@@ -6,7 +6,6 @@ use App\Http\Modules\Purchase\Purchase;
 use App\Http\Modules\Stock\StockMovement;
 use App\Http\Modules\Store\Store;
 use App\Http\Modules\User\User;
-use App\Http\Modules\Turn\Turn;
 use Faker\Generator as Faker;
 use Illuminate\Support\Arr;
 
@@ -30,13 +29,12 @@ $factory->define(StockMovement::class, function (Faker $faker, Array $attributes
     ];
 
     return [
-        'date'          => now(),
         'description'   => $faker->sentence,
+        'user_id'       => factory(User::class),
         'origin_type'   => $originType,
         'origin_id'     => $originIds[$originType],
+        'date'          => now(),
         'movement_type' => $movementTypes[$originType],
         'store_id'      => factory(Store::class),
-        'user_id'       => factory(User::class),
-        'turn_id'       => factory(Turn::class),
     ];
 });
