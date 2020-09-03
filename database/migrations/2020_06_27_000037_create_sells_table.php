@@ -23,13 +23,13 @@ class CreateSellsTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('store_id');
+            $table->unsignedBigInteger('store_turn_id');
             $table->unsignedBigInteger('client_id');
-            $table->string('uuid', 50)->unique();
-            $table->string('name', 150);
+            $table->string('description')->nullable();
             $table->timestamp('date');
             $table->double('total');
             $table->unsignedBigInteger('seller_id');
-            $table->enum('status', ['OPEN', 'CANCELLED', 'CLOSED']);
+            $table->enum('status', ['PENDING', 'CANCELLED', 'PAID']);
             $table->timestamps();
             $table->softDeletes();
 
@@ -38,6 +38,8 @@ class CreateSellsTable extends Migration
             $table->foreign('seller_id')->references('id')->on('users');
 
             $table->foreign('store_id')->references('id')->on('stores');
+
+            $table->foreign('store_turn_id')->references('id')->on('store_turns');
         });
     }
 

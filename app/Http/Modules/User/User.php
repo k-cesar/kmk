@@ -3,15 +3,16 @@
 namespace App\Http\Modules\User;
 
 use App\Traits\SecureDeletes;
+use App\Http\Modules\Sell\Sell;
 use App\Http\Modules\Store\Store;
 use Spatie\Permission\Models\Role;
 use App\Http\Modules\Company\Company;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
+use App\Http\Modules\Stock\StockMovement;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Http\Modules\Stock\StockMovement;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements JWTSubject
@@ -47,7 +48,7 @@ class User extends Authenticatable implements JWTSubject
      *
      * @var array
      */
-    protected $with = ['role', 'company', 'stores'];
+    protected $with = ['role', 'company'];
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -135,6 +136,16 @@ class User extends Authenticatable implements JWTSubject
         }
 
         return $actionsGroups;
+    }
+
+    /**
+     * Get the sells for the user (seller).
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function sells()
+    {
+        return $this->hasMany(Sell::class);
     }
 
 }

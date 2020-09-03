@@ -21,20 +21,21 @@ class CreateSellDetailsTable extends Migration
     public function up()
     {
         Schema::create($this->tableName, function (Blueprint $table) {
-            $table->integer('item_line');
+            $table->bigIncrements('id');
             $table->unsignedBigInteger('sell_id');
+            $table->integer('item_line');
             $table->unsignedBigInteger('presentation_id');
-            $table->string('description');
+            $table->unsignedBigInteger('presentation_combo_id')->nullable();
             $table->double('price');
             $table->float('quantity');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->primary(['item_line', 'sell_id']);
-
             $table->foreign('sell_id')->references('id')->on('sells');
 
             $table->foreign('presentation_id')->references('id')->on('presentations');
+
+            $table->foreign('presentation_combo_id')->references('id')->on('presentation_combos');
         });
     }
 

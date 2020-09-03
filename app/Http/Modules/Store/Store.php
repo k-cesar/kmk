@@ -3,11 +3,16 @@
 namespace App\Http\Modules\Store;
 
 use App\Traits\SecureDeletes;
+use App\Http\Modules\Sell\Sell;
 use App\Http\Modules\Turn\Turn;
 use App\Http\Modules\User\User;
 use App\Http\Modules\Zone\Zone;
 use App\Http\Modules\State\State;
+use App\Http\Modules\Company\Company;
+use App\Http\Modules\Product\Product;
+use App\Http\Modules\Purchase\Purchase;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Modules\Stock\StockMovement;
 use App\Http\Modules\StoreFlag\StoreFlag;
 use App\Http\Modules\StoreType\StoreType;
 use App\Http\Modules\StoreChain\StoreChain;
@@ -16,11 +21,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Modules\LocationType\LocationType;
 use App\Http\Modules\Municipality\Municipality;
 use App\Http\Modules\PresentationCombo\PresentationCombo;
-use App\Http\Modules\Product\Product;
-use App\Http\Modules\Purchase\Purchase;
 use App\Http\Modules\SocioeconomicLevel\SocioeconomicLevel;
-use App\Http\Modules\Stock\StockMovement;
-use App\Http\Modules\Company\Company;
+use App\Http\Modules\StoreTurn\StoreTurn;
 
 class Store extends Model
 {
@@ -55,7 +57,7 @@ class Store extends Model
      *
      * @var array
      */
-    protected $with = ['storeType', 'storeChain', 'storeFlag', 'locationType', 'storeFormat', 'socioeconomicLevel', 'state', 'municipality', 'zone', 'turns', 'company'];
+    protected $with = ['storeType', 'storeChain', 'storeFlag', 'locationType', 'storeFormat', 'socioeconomicLevel', 'state', 'municipality', 'zone', 'company'];
 
     /**
      * Get the storeType that owns the store.
@@ -225,5 +227,25 @@ class Store extends Model
     public function company()
     {
         return $this->belongsTo(Company::class);
+    }
+
+    /**
+     * Get the sells for the store.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function sells()
+    {
+        return $this->hasMany(Sell::class);
+    }
+
+    /**
+     * Get the storeTurns for the sell.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function storeTurns()
+    {
+        return $this->hasMany(StoreTurn::class);
     }
 }

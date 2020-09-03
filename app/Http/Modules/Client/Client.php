@@ -2,9 +2,11 @@
 
 namespace App\Http\Modules\Client;
 
-use App\Http\Modules\Country\Country;
 use Illuminate\Support\Str;
 use App\Traits\SecureDeletes;
+use App\Http\Modules\Sell\Sell;
+use App\Http\Modules\Country\Country;
+use App\Http\Modules\Company\Company;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -88,6 +90,27 @@ class Client extends Model
     {
         return $this->belongsTo(Country::class);
     }
+
+    /**
+     * Get the sells for the client.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function sells()
+    {
+        return $this->hasMany(Sell::class);
+    }
+
+    /**
+     * The companies that belong to the client.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function companies()
+    {
+        return $this->belongsToMany(Company::class, 'company_clients')->withPivot('email', 'phone')->withTimestamps();
+    }
+
 
     
 }

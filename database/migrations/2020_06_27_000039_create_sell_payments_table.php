@@ -24,8 +24,8 @@ class CreateSellPaymentsTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('sell_id');
             $table->double('amount');
-            $table->string('card_four_digits', 4);
-            $table->string('authorization', 100);
+            $table->string('card_four_digits', 4)->nullable();
+            $table->string('authorization', 100)->nullable();
             $table->enum('status', ['VERIFIED', 'UNVERIFIED']);
             $table->unsignedBigInteger('payment_method_id');
             $table->timestamps();

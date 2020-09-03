@@ -13,7 +13,11 @@ class PaymentMethodSeeder extends Seeder
      */
     public function run()
     {
-        $paymentMethods = ['Crédito', 'Débito', 'Efectivo'];
+        $paymentMethods = [
+            PaymentMethod::OPTION_PAYMENT_CASH,
+            PaymentMethod::OPTION_PAYMENT_CARD,
+            PaymentMethod::OPTION_PAYMENT_CREDIT,
+        ];
 
         foreach ($paymentMethods as $paymentMethod) {
             factory(PaymentMethod::class)->create([
