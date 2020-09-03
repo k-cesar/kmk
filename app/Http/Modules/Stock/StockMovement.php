@@ -38,10 +38,6 @@ class StockMovement extends Model
         'store_id',
     ];
 
-    protected $with = [
-        'stockMovementDetails'
-    ];
-
     /**
      * Returns all origin types options availables
      *
@@ -100,7 +96,7 @@ class StockMovement extends Model
      */
     public function stockMovementDetails()
     {
-        return $this->hasMany(StockMovementDetail::class, 'stock_movement_id');
+        return $this->hasMany(StockMovementDetail::class);
     }
 
 }
