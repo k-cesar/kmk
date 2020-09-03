@@ -7,8 +7,8 @@ use App\Http\Modules\Sell\Sell;
 use Illuminate\Support\Facades\DB;
 use App\Http\Modules\Client\Client;
 use App\Http\Modules\Sell\SellInvoice;
-use App\Http\Modules\Sell\SellPayment;
 use App\Http\Modules\StoreTurn\StoreTurn;
+use App\Http\Modules\SellPayment\SellPayment;
 use App\Http\Modules\Presentation\Presentation;
 use App\Http\Modules\PaymentMethod\PaymentMethod;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -159,8 +159,8 @@ class SellControllerTest extends ApiTestCase
     $this->signInWithPermissionsTo(['sells.destroy']);
 
     $sell = factory(Sell::class)->create();
-    $sellInvoice =  factory(SellInvoice::class)->create(['sell_id' => $sell->id]);
-    $sellPayment =factory(SellPayment::class)->create(['sell_id' => $sell->id]);
+    $sellInvoice = factory(SellInvoice::class)->create(['sell_id' => $sell->id]);
+    $sellPayment = factory(SellPayment::class)->create(['sell_id' => $sell->id]);
 
     $this->deleteJson(route('sells.destroy', $sell->id))
       ->assertOk();

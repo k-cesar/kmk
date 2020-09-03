@@ -410,7 +410,7 @@
       {
         "name": "Ver Manejo de Cuentas por Cobrar",
         "level": 4,
-        "routes": []
+        "routes": ["sell-payments.index"]
       },
       {
         "name": "Crear Manejo de Cuentas por Cobrar",
@@ -420,7 +420,7 @@
       {
         "name": "Editar Manejo de Cuentas por Cobrar",
         "level": 4,
-        "routes": []
+        "routes": ["sell-payments.update"]
       },
       {
         "name": "Eliminar Manejo de Cuentas por Cobrar",

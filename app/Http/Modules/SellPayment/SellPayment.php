@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Modules\Sell;
+namespace App\Http\Modules\SellPayment;
 
 use App\Http\Modules\Sell\Sell;
 use Illuminate\Database\Eloquent\Model;

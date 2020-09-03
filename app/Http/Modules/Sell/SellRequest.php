@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\Sell;
 
-use App\Http\Modules\PaymentMethod\PaymentMethod;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Http\FormRequest;
@@ -50,15 +49,6 @@ class SellRequest extends FormRequest
       ]
     ];
 
-    $paymentMethodId = $this->get('payment_method_id', null);
-    if ($paymentMethodId) {
-      $paymentMethod = PaymentMethod::where('id', $paymentMethodId)->first();
-
-      if ($paymentMethod->name == PaymentMethod::OPTION_PAYMENT_CARD) {
-        $rules['card_four_digits'] = 'required|digits:4';
-      }
-    }
-
     foreach($this->get('items', []) as $index => $item) {
 
       if ($item['type'] ?? false) {
@@ -77,7 +67,7 @@ class SellRequest extends FormRequest
             ->first();
 
           if (!$exists) {
-            $fail("El producto seleccionado no existe");
+            $fail("El producto [$value] seleccionado no existe");
           }
         },
       ];

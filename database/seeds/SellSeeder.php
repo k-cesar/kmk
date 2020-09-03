@@ -1,9 +1,9 @@
 <?php
 
-use Illuminate\Database\Seeder;
 use App\Http\Modules\Sell\Sell;
+use Illuminate\Database\Seeder;
 use App\Http\Modules\Sell\SellInvoice;
-use App\Http\Modules\Sell\SellPayment;
+use App\Http\Modules\SellPayment\SellPayment;
 
 class SellSeeder extends Seeder
 {

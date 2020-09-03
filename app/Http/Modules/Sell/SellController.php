@@ -87,6 +87,9 @@ class SellController extends Controller
    */
   public function destroy(Sell $sell)
   {
+    $sell->status = Sell::OPTION_STATUS_CANCELLED;
+    $sell->save();
+    
     $sell->sellInvoice->delete();
     $sell->sellPayment->delete();
     $sell->delete();

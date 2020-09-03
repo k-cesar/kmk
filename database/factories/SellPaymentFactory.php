@@ -5,7 +5,7 @@
 use Illuminate\Support\Str;
 use Faker\Generator as Faker;
 use App\Http\Modules\Sell\Sell;
-use App\Http\Modules\Sell\SellPayment;
+use App\Http\Modules\SellPayment\SellPayment;
 use App\Http\Modules\PaymentMethod\PaymentMethod;
 
 $factory->define(SellPayment::class, function (Faker $faker) {

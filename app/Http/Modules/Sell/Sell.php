@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Http\Modules\Stock\StockMovement;
 use App\Http\Modules\StoreTurn\StoreTurn;
 use Illuminate\Database\Query\JoinClause;
+use App\Http\Modules\SellPayment\SellPayment;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Modules\Stock\StockMovementDetail;
 use App\Http\Modules\PaymentMethod\PaymentMethod;
@@ -363,20 +364,17 @@ class Sell extends Model
      * @param App\Http\Modules\Sell\Sell $sell
      * @param App\Http\Modules\PaymentMethod\PaymentMethod $paymentMethod
      * 
-     * @return App\Http\Modules\Sell\SellPayment
+     * @return App\Http\Modules\SellPayment\SellPayment
      */
     private static function saveSellPayment($sell, $paymentMethod)
     {
         $status = $paymentMethod->name == PaymentMethod::OPTION_PAYMENT_CREDIT ? 
             SellPayment::OPTION_STATUS_UNVERIFIED : SellPayment::OPTION_STATUS_VERIFIED;
         
-        $cardFourDigits = $paymentMethod->name == PaymentMethod::OPTION_PAYMENT_CARD ?
-            request('card_four_digits', null) : null; 
-
         $sellPayment = SellPayment::create([
             'sell_id'           => $sell->id,
             'amount'            => $sell->total,
-            'card_four_digits'  => $cardFourDigits,
+            'card_four_digits'  => null,
             'authorization'     => null,
             'status'            => $status,
             'payment_method_id' => $paymentMethod->id,
