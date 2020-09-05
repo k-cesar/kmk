@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Modules\Stock\StockMovement;
 use App\Http\Modules\Stock\StockMovementDetail;
 use App\Http\Modules\Stock\StockStore;
+use App\Http\Modules\StoreTurn\StoreTurn;
 use App\Http\Modules\StockCounts\StockCounts;
 
 class Adjustment
@@ -31,13 +32,13 @@ class Adjustment
       DB::beginTransaction();
 
       $stockMovementValues = [
-        'user_id'       => auth()->user()->id,
-        'origin_id'     => $originId,
-        'origin_type'   => $values['origin_type'],
         'date'          => now(),
+        'description'   => $values['description'],
+        'origin_type'   => $values['origin_type'],
+        'origin_id'     => $originId,
         'movement_type' => StockMovement::OPTION_MOVEMENT_TYPE_ADJUSTMENT,
         'store_id'      => $values['store_id'],
-        'description'   => $values['description'],
+        'user_id'       => auth()->user()->id,
       ];
 
       $stockMovement = StockMovement::create($stockMovementValues);

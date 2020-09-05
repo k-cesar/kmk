@@ -55,16 +55,62 @@ class Store extends Model
      *
      * @var array
      */
-    protected $with = ['storeType', 'storeChain', 'storeFlag', 'locationType', 'storeFormat', 'socioeconomicLevel', 'state', 'municipality', 'zone', 'turns', 'company'];
+    protected $with = [
+        'locationType',
+        'municipality',
+        'socioeconomicLevel',
+        'state',
+        'storeChain',
+        'storeFlag',
+        'storeFormat',
+        'storeType',
+        'turns',
+        'zone',
+    ];
+
+    public function adjustment()
+    {
+        return $this->hasMany(StockMovement::class);
+    }
 
     /**
-     * Get the storeType that owns the store.
+     * Get the locationType that owns the store.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function storeType()
+    public function locationType()
     {
-        return $this->belongsTo(StoreType::class);
+        return $this->belongsTo(LocationType::class);
+    }
+
+    /**
+     * Get the municipality that owns the store.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function municipality()
+    {
+        return $this->belongsTo(Municipality::class);
+    }
+
+    /**
+     * Get the socioeconomicLevel that owns the store.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function socioeconomicLevel()
+    {
+        return $this->belongsTo(SocioeconomicLevel::class);
+    }
+
+    /**
+     * Get the state that owns the store.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function state()
+    {
+        return $this->belongsTo(State::class);
     }
 
     /**
@@ -98,43 +144,23 @@ class Store extends Model
     }
 
     /**
-     * Get the locationType that owns the store.
+     * Get the storeType that owns the store.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function locationType()
+    public function storeType()
     {
-        return $this->belongsTo(LocationType::class);
+        return $this->belongsTo(StoreType::class);
     }
 
     /**
-     * Get the socioeconomicLevel that owns the store.
+     * Get the turns for the store.
      * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function socioeconomicLevel()
+    public function turns()
     {
-        return $this->belongsTo(SocioeconomicLevel::class);
-    }
-
-    /**
-     * Get the state that owns the store.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function state()
-    {
-        return $this->belongsTo(State::class);
-    }
-
-    /**
-     * Get the municipality that owns the store.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function municipality()
-    {
-        return $this->belongsTo(Municipality::class);
+        return $this->hasMany(Turn::class);
     }
 
     /**
@@ -155,16 +181,6 @@ class Store extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'store_users');
-    }
-
-    /**
-     * Get the turns for the store.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function turns()
-    {
-        return $this->hasMany(Turn::class);
     }
 
     /**
