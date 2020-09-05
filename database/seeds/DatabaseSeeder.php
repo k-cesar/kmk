@@ -51,6 +51,7 @@ class DatabaseSeeder extends Seeder
             SellSeeder::class,
             DepositSeeder::class,
             StoreTurnSeeder::class,
+            CashAdjustmentSeeder::class,
         ]);
     }
 }

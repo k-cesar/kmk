@@ -11,6 +11,6 @@ use App\Http\Modules\Country\Country;
 $factory->define(ProductCountries::class, function (Faker $faker) {
     return [
         'product_id' => factory(Product::class),
-        'country_id' => factory(Country::class),
+        'country_id' => Country::inRandomOrder()->first() ?? factory(Country::class),
     ];
 });

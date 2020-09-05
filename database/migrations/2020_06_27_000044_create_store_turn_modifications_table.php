@@ -23,6 +23,7 @@ class CreateStoreTurnModificationsTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('store_turn_id');
+            $table->unsignedBigInteger('store_id');
             $table->double('amount');
             $table->enum('modification_type', ['CASH PURCHASE', 'DEPOSIT', 'OTHER']);
             $table->text('description');
@@ -30,6 +31,8 @@ class CreateStoreTurnModificationsTable extends Migration
             $table->softDeletes();
 
             $table->foreign('store_turn_id')->references('id')->on('store_turns');
+
+            $table->foreign('store_id')->references('id')->on('stores');
         });
     }
 

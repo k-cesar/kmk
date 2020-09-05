@@ -230,12 +230,20 @@
       {
         "name": "Ver Ajustes de Inventario",
         "level": 3,
-        "routes": ["adjustments.index"]
+        "routes": [
+          "adjustments.index",
+          "cash-adjustment.index",
+          "cash-adjustment.show"
+        ]
       },
       {
         "name": "Crear Ajustes de Inventario",
         "level": 3,
-        "routes": ["adjustments.store", "stock-counts-adjustments.store"]
+        "routes": [
+          "adjustments.store",
+          "stock-counts-adjustments.store",
+          "cash-adjustment.store"
+        ]
       },
       {
         "name": "Editar Ajustes de Inventario",
