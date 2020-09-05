@@ -77,6 +77,20 @@ class UserSeeder extends Seeder
       'role_id'   => 1,
     ])->assignRole(config('app.role_super_admin_name'));
 
+    factory(User::class)->create([
+      'name'      => 'Jhonatan López',
+      'username'  => 'jhonatan_lopez',
+      'email'     => 'jhonatan.lopez@kemok.io',
+      'role_id'   => 1,
+    ])->assignRole(config('app.role_super_admin_name'));
+
+    factory(User::class)->create([
+      'name'      => 'Luis Villegas',
+      'username'  => 'luis_villegas',
+      'email'     => 'luis.villegas@kemok.io',
+      'role_id'   => 1,
+    ])->assignRole(config('app.role_super_admin_name'));
+
     factory(User::class, 2)->create();
 
   }
