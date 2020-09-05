@@ -4,19 +4,17 @@ namespace Tests\Feature;
 
 use Tests\ApiTestCase;
 use App\Http\Modules\ProductCategory\ProductCategory;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ProductCategoryControllerTest extends ApiTestCase
 {
-  use DatabaseMigrations, RefreshDatabase;
+  use RefreshDatabase;
 
   public function setUp(): void
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'ProductDepartmentSeeder', 'ProductCategorySeeder']);
+    $this->seed(['PermissionSeeder', 'ProductDepartmentSeeder', 'ProductCategorySeeder']);
   }
 
   /**

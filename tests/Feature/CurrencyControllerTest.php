@@ -4,19 +4,17 @@ namespace Tests\Feature;
 
 use Tests\ApiTestCase;
 use App\Http\Modules\Currency\Currency;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class CurrencyControllerTest extends ApiTestCase
 {
-  use DatabaseMigrations, RefreshDatabase;
+  use RefreshDatabase;
 
   public function setUp(): void
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'CurrencySeeder']);
+    $this->seed(['PermissionSeeder', 'CurrencySeeder']);
   }
 
   /**

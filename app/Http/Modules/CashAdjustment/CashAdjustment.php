@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class CashAdjustment extends Model
 {
-    const OPTION_PURCHASE   = 'CASH PURCHASE';
-    const OPTION_DEPOSIT = 'DEPOSIT';
-    const OPTION_OTHER = 'OTHER';
+    const OPTION_MODIFICATION_TYPE_PURCHASE = 'CASH PURCHASE';
+    const OPTION_MODIFICATION_TYPE_DEPOSIT  = 'DEPOSIT';
+    const OPTION_MODIFICATION_TYPE_OTHER    = 'OTHER';
 
     protected $table = 'store_turn_modifications';
 
@@ -20,12 +20,12 @@ class CashAdjustment extends Model
         'description',
     ];
 
-    public static function getModificationTypes()
+    public static function getOptionsModificationTypes()
     {
         return [
-            self::OPTION_PURCHASE,
-            self::OPTION_DEPOSIT,
-            self::OPTION_OTHER,
+            self::OPTION_MODIFICATION_TYPE_PURCHASE,
+            self::OPTION_MODIFICATION_TYPE_DEPOSIT,
+            self::OPTION_MODIFICATION_TYPE_OTHER,
         ];
     }
 }

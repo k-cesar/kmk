@@ -3,20 +3,19 @@
 namespace Tests\Feature;
 
 use Tests\ApiTestCase;
+use App\Http\Modules\Country\Country;
 use App\Http\Modules\Product\Product;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ProductControllerTest extends ApiTestCase
 {
-  use DatabaseMigrations, RefreshDatabase;
+  use RefreshDatabase;
 
   public function setUp(): void
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'ProductSeeder']);
+    $this->seed(['PermissionSeeder', 'ProductSeeder']);
   }
 
   /**
@@ -84,7 +83,7 @@ class ProductControllerTest extends ApiTestCase
     $this->signInWithPermissionsTo(['products.store']);
 
     $attributes = factory(Product::class)->raw();
-    $extraAttributes['country'] = factory(Product::class, 2)->create()->pluck('id')->toArray();
+    $extraAttributes['countries'] = factory(Country::class, 2)->create()->pluck('id')->toArray();
 
     $this->postJson(route('products.store'), array_merge($attributes, $extraAttributes))
       ->assertCreated();
@@ -103,7 +102,7 @@ class ProductControllerTest extends ApiTestCase
     $product = factory(Product::class)->create();
 
     $attributes = factory(Product::class)->raw();
-    $extraAttributes['country'] = factory(Product::class, 2)->create()->pluck('id')->toArray();
+    $extraAttributes['countries'] = factory(Country::class, 2)->create()->pluck('id')->toArray();
 
     $this->putJson(route('products.update', $product->id), array_merge($attributes, $extraAttributes))
       ->assertOk();

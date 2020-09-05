@@ -3,23 +3,21 @@
 namespace Tests\Feature;
 
 use Tests\ApiTestCase;
-use App\Http\Modules\PresentationCombo\PresentationCombo;
-use App\Http\Modules\Presentation\Presentation;
-use App\Http\Modules\Store\Store;
 use App\Http\Modules\Turn\Turn;
-use Illuminate\Foundation\Testing\WithFaker;
+use App\Http\Modules\Store\Store;
+use App\Http\Modules\Presentation\Presentation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\Http\Modules\PresentationCombo\PresentationCombo;
 
 class PresentationComboControllerTest extends ApiTestCase
 {
-  use DatabaseMigrations, RefreshDatabase;
+  use RefreshDatabase;
 
   public function setUp(): void
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'PresentationComboSeeder']);
+    $this->seed(['PermissionSeeder', 'PresentationComboSeeder']);
   }
 
   /**

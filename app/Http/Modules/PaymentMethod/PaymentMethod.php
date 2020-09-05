@@ -12,6 +12,10 @@ class PaymentMethod extends Model
 {
     use SoftDeletes, SecureDeletes;
 
+    const OPTION_PAYMENT_CASH   = 'CASH';
+    const OPTION_PAYMENT_CARD   = 'CARD';
+    const OPTION_PAYMENT_CREDIT = 'CREDIT';
+
     /**
      * The attributes that are mass assignable.
      *

@@ -96,6 +96,10 @@ Route::group(['middleware' => ['auth', 'access']], function () {
 
     Route::resource('stock-counts-detail', 'StockCountsDetail\StockCountsDetailController')->except('create', 'edit');
 
+    Route::resource('sells', 'Sell\SellController')->except('create', 'edit', 'update');
+    
+    Route::resource('sell-payments', 'SellPayment\SellPaymentController')->only('index', 'update');
+    
     Route::resource('cash-adjustment', 'CashAdjustment\CashAdjustmentController')->only('index', 'show', 'store');
 
     Route::resource('store-turns', 'StoreTurn\StoreTurnController')->except('create', 'edit');

@@ -16,7 +16,7 @@ class CashAdjustmentControllerTest extends ApiTestCase
     public function setUp(): void
     {
         parent::setUp();
-        $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'StoreSeeder', 'StoreTurnSeeder', 'CashAdjustmentSeeder']);
+        $this->seed(['PermissionSeeder', 'CashAdjustmentSeeder']);
     }
 
     /**

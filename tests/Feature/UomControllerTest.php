@@ -4,19 +4,17 @@ namespace Tests\Feature;
 
 use Tests\ApiTestCase;
 use App\Http\Modules\Uom\Uom;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class UomControllerTest extends ApiTestCase
 {
-  use DatabaseMigrations, RefreshDatabase;
+  use RefreshDatabase;
 
   public function setUp(): void
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'UomSeeder']);
+    $this->seed(['PermissionSeeder', 'UomSeeder']);
   }
 
   /**

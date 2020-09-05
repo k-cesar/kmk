@@ -4,6 +4,7 @@ namespace App\Http\Modules\Company;
 
 use App\Traits\SecureDeletes;
 use App\Http\Modules\User\User;
+use App\Http\Modules\Client\Client;
 use App\Http\Modules\Country\Country;
 use App\Http\Modules\Currency\Currency;
 use Illuminate\Database\Eloquent\Model;
@@ -78,6 +79,16 @@ class Company extends Model
     public function paymentMethods()
     {
         return $this->hasMany(PaymentMethod::class);
+    }
+
+    /**
+     * The clients that belong to the client.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function clients()
+    {
+        return $this->belongsToMany(Client::class, 'company_clients')->withPivot('email', 'phone')->withTimestamps();
     }
 
 }

@@ -4,9 +4,7 @@ namespace Tests\Feature;
 
 use Tests\ApiTestCase;
 use App\Http\Modules\Store\Store;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class StoreControllerTest extends ApiTestCase
 {
@@ -16,7 +14,7 @@ class StoreControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'StoreSeeder']);
+    $this->seed(['PermissionSeeder', 'StoreSeeder']);
   }
 
   /**

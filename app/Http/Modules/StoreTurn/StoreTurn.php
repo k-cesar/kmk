@@ -3,8 +3,9 @@
 namespace App\Http\Modules\StoreTurn;
 
 use App\Traits\SecureDeletes;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Modules\Store\Store;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Modules\StoreTurnModification\StoreTurnModification;
 
 class StoreTurn extends Model
@@ -23,7 +24,25 @@ class StoreTurn extends Model
         'is_open',
     ];
 
-    protected $with = ['turn_modification'];
+    /**
+     * Get the sells for the storeTurn.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function sells()
+    {
+        return $this->hasMany(Sell::class);
+    }
+
+    /**
+     * Get the store that owns the StoreTurn.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function store()
+    {
+        return $this->belongsTo(Store::class);
+    }
 
     public function turn_modification()
     {

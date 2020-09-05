@@ -205,7 +205,7 @@
       {
         "name": "Ver Entradas de Inventario",
         "level": 3,
-        "routes": ["purchases.index", "purchases.show", "stocks.index"]
+        "routes": ["purchases.index", "purchases.show"]
       },
       {
         "name": "Crear Entradas de Inventario",
@@ -343,12 +343,12 @@
       {
         "name": "Ver Registro de Ventas",
         "level": 4,
-        "routes": []
+        "routes": ["sells.index", "sells.show", "stocks.index"]
       },
       {
         "name": "Crear Registro de Ventas",
         "level": 4,
-        "routes": []
+        "routes": ["sells.store"]
       },
       {
         "name": "Editar Registro de Ventas",
@@ -358,7 +358,7 @@
       {
         "name": "Eliminar Registro de Ventas",
         "level": 3,
-        "routes": []
+        "routes": ["sells.destroy"]
       }
     ]
   },
@@ -418,7 +418,7 @@
       {
         "name": "Ver Manejo de Cuentas por Cobrar",
         "level": 4,
-        "routes": []
+        "routes": ["sell-payments.index"]
       },
       {
         "name": "Crear Manejo de Cuentas por Cobrar",
@@ -428,7 +428,7 @@
       {
         "name": "Editar Manejo de Cuentas por Cobrar",
         "level": 4,
-        "routes": []
+        "routes": ["sell-payments.update"]
       },
       {
         "name": "Eliminar Manejo de Cuentas por Cobrar",

@@ -2,13 +2,14 @@
 
 namespace App\Http\Modules\PresentationCombo;
 
-use App\Http\Modules\Presentation\Presentation;
+use Illuminate\Support\Arr;
+use App\Http\Modules\Uom\Uom;
 use App\Traits\SecureDeletes;
+use Illuminate\Support\Facades\DB;
+use App\Http\Modules\Sell\SellDetail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Http\Modules\Uom\Uom;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
+use App\Http\Modules\Presentation\Presentation;
 
 class PresentationCombo extends Model
 {
@@ -31,7 +32,7 @@ class PresentationCombo extends Model
      *
      * @var array
      */
-    protected $with = ['uom', 'presentations', 'presentationCombosStoresTurns.store', 'presentationCombosStoresTurns.turn'];
+    protected $with = ['uom'];
 
     /**
      * Get the uom that owns the presentation_combo.
@@ -61,6 +62,16 @@ class PresentationCombo extends Model
     public function presentationCombosStoresTurns()
     {
         return $this->hasMany(PresentationComboStoreTurn::class);
+    }
+
+    /**
+     * Get the sellDetails for the presentationCombo.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function sellDetails()
+    {
+        return $this->hasMany(SellDetail::class);
     }
 
     /**

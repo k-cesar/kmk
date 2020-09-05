@@ -2,8 +2,9 @@
 
 namespace App\Http\Modules\Presentation;
 
-use App\Http\Modules\Product\Product;
 use App\Traits\SecureDeletes;
+use App\Http\Modules\Product\Product;
+use App\Http\Modules\Sell\SellDetail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -39,6 +40,16 @@ class Presentation extends Model
     public function product()
     {
         return $this->belongsTo(Product::class);
+    }
+
+    /**
+     * Get the sellDetails for the presentation.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function sellDetails()
+    {
+        return $this->hasMany(SellDetail::class);
     }
 
 

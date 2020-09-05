@@ -3,16 +3,14 @@
 namespace Tests\Feature;
 
 use Tests\ApiTestCase;
+use App\Support\Helper;
 use Illuminate\Support\Arr;
 use App\Http\Modules\User\User;
-use App\Support\Helper;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class AuthControllerTest extends ApiTestCase
 {
-  use DatabaseMigrations, RefreshDatabase;
+  use RefreshDatabase;
 
   /**
    * @test

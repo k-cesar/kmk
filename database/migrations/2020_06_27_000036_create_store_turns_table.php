@@ -26,10 +26,10 @@ class CreateStoreTurnsTable extends Migration
             $table->unsignedBigInteger('turn_id');
             $table->double('open_petty_cash_amount');
             $table->unsignedBigInteger('open_by');
-            $table->unsignedBigInteger('closed_by');
-            $table->double('closed_petty_cash_amount');
+            $table->unsignedBigInteger('closed_by')->nullable();
+            $table->double('closed_petty_cash_amount')->nullable();
             $table->timestamp('open_date');
-            $table->timestamp('close_date');
+            $table->timestamp('close_date')->nullable();
             $table->tinyInteger('is_open');
             $table->timestamps();
             $table->softDeletes();

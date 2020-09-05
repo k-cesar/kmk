@@ -3,20 +3,18 @@
 namespace Tests\Feature;
 
 use Tests\ApiTestCase;
-use App\Http\Modules\SocioeconomicLevel\SocioeconomicLevel;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use App\Http\Modules\SocioeconomicLevel\SocioeconomicLevel;
 
 class SocioeconomicLevelControllerTest extends ApiTestCase
 {
-  use DatabaseMigrations, RefreshDatabase;
+  use RefreshDatabase;
 
   public function setUp(): void
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'SocioeconomicLevelSeeder']);
+    $this->seed(['PermissionSeeder', 'SocioeconomicLevelSeeder']);
   }
 
   /**

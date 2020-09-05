@@ -5,13 +5,11 @@ namespace Tests\Feature;
 use Tests\ApiTestCase;
 use App\Http\Modules\User\User;
 use Spatie\Permission\Models\Permission;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class UserPermissionControllerTest extends ApiTestCase
 {
-    use DatabaseMigrations, RefreshDatabase;
+    use RefreshDatabase;
 
     public function setUp(): void
     {

@@ -5,7 +5,6 @@ namespace App\Http\Modules\CashAdjustment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Modules\CashAdjustment\CashAdjustment;
 
 class CashAdjustmentController extends Controller
@@ -14,13 +13,13 @@ class CashAdjustmentController extends Controller
     {
         $store = DB::table('stores as s')
         ->select(   
-                    's.id as store_id',
-                    's.name as store_name',
-                    's.petty_cash_amount as petty_cash_amount',
-                    'stm.amount as store_turn_m_amount',
-                    'stm.modification_type as store_turn_modification_type',
-                    'stm.description as store_turn_m_description',
-                )
+            's.id as store_id',
+            's.name as store_name',
+            's.petty_cash_amount as petty_cash_amount',
+            'stm.amount as store_turn_m_amount',
+            'stm.modification_type as store_turn_modification_type',
+            'stm.description as store_turn_m_description'
+        )
         ->join('store_turn_modifications as stm', 's.id', 'stm.store_id')
         ->get();
         
@@ -46,13 +45,13 @@ class CashAdjustmentController extends Controller
     {
         $store = DB::table('stores as s')
         ->select(   
-                    's.id as store_id',
-                    's.name as store_name',
-                    's.petty_cash_amount as petty_cash_amount',
-                    'stm.amount as store_turn_m_amount',
-                    'stm.modification_type as store_turn_modification_type',
-                    'stm.description as store_turn_m_description',
-                )
+            's.id as store_id',
+            's.name as store_name',
+            's.petty_cash_amount as petty_cash_amount',
+            'stm.amount as store_turn_m_amount',
+            'stm.modification_type as store_turn_modification_type',
+            'stm.description as store_turn_m_description'
+        )
         ->join('store_turn_modifications as stm', 's.id', 'stm.store_id')
         ->where('s.id', $request);
 
