@@ -177,7 +177,7 @@ class PurchaseControllerTest extends ApiTestCase
 
     $this->assertDatabaseHas('stock_movements', [
       'user_id'       => $user->id,
-      'origin_id'     => $store->purchases->first()->id,
+      'origin_id'     => $store->purchases->last()->id,
       'origin_type'   => StockMovement::OPTION_ORIGIN_TYPE_PURCHASE,
       'movement_type' => StockMovement::OPTION_MOVEMENT_TYPE_INPUT,
       'store_id'      => $store->id,
@@ -186,7 +186,7 @@ class PurchaseControllerTest extends ApiTestCase
     $product = $productsAttributes['products'][0];
 
     $this->assertDatabaseHas('purchase_details', [
-      'purchase_id' => $store->purchases->first()->id,
+      'purchase_id' => $store->purchases->last()->id,
       'product_id'  => $product['id'],
       'quantity'    => $product['quantity'],
       'unit_price'  => $product['unit_price']

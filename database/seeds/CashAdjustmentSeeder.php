@@ -12,6 +12,6 @@ class CashAdjustmentSeeder extends Seeder
      */
     public function run()
     {
-        factory(CashAdjustment::class, 3)->create();
+        factory(CashAdjustment::class, 5)->create();
     }
 }

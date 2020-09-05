@@ -12,8 +12,8 @@ use App\Http\Modules\User\User;
 $factory->define(Purchase::class, function (Faker $faker) {
 
     return [
-        'store_id'          => factory(Store::class),
-        'user_id'           => factory(User::class),
+        'store_id'          => Store::inRandomOrder()->first() ?? factory(Store::class),
+        'user_id'           => User::inRandomOrder()->first() ?? factory(User::class),
         'comments'          => $faker->sentence,
         'invoice'           => $faker->bankAccountNumber,
         'date'              => now(),

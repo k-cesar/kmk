@@ -11,7 +11,7 @@ use App\Http\Modules\Sell\SellInvoice;
 $factory->define(SellInvoice::class, function (Faker $faker) {
 
     return [
-        'company_id'         => factory(Company::class),
+        'company_id'         => Company::inRandomOrder()->first() ?? factory(Company::class),
         'invoice'            => Str::uuid(),
         'sell_id'            => factory(Sell::class),
         'nit'                => $faker->bankAccountNumber,

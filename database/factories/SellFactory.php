@@ -12,12 +12,12 @@ use App\Http\Modules\StoreTurn\StoreTurn;
 $factory->define(Sell::class, function (Faker $faker) {
 
     return [
-        'store_id'      => factory(Store::class),
+        'store_id'      => Store::inRandomOrder()->first() ?? factory(Store::class),
         'client_id'     => factory(Client::class),
         'description'   => $faker->sentence,
         'date'          => now(),
         'total'         => rand(1, 30) * 100,
-        'seller_id'     => factory(User::class),
+        'seller_id'     => User::inRandomOrder()->first() ?? factory(User::class),
         'status'        => $faker->randomElement(Sell::getOptionsStatus()),
         'store_turn_id' => factory(StoreTurn::class),
     ];

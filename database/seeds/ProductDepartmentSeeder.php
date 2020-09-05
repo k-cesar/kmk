@@ -12,6 +12,6 @@ class ProductDepartmentSeeder extends Seeder
      */
     public function run()
     {
-        factory(ProductDepartment::class, 2)->create();
+        factory(ProductDepartment::class, 5)->create();
     }
 }

@@ -14,8 +14,8 @@ $factory->define(Deposit::class, function (Faker $faker) {
         'deposit_number' => $faker->bankAccountNumber,
         'amount'         => rand(1, 20) * 100,
         'date'           => now(),
-        'store_id'       => factory(Store::class),
+        'store_id'       => Store::inRandomOrder()->first() ?? factory(Store::class),
         'store_turn_id'  => factory(StoreTurn::class),
-        'created_by'     => factory(User::class),
+        'created_by'     => User::inRandomOrder()->first() ?? factory(User::class),
     ];
 });

@@ -16,7 +16,7 @@ $factory->define(Company::class, function (Faker $faker) {
         'phone'                 => rand(100000,9999999),
         'address'               => $faker->address,
         'country_id'            => Country::inRandomOrder()->first() ?? factory(Country::class),
-        'currency_id'           => factory(Currency::class)->create(),
+        'currency_id'           => Currency::inRandomOrder()->first() ?? factory(Currency::class),
         'allow_add_products'    => rand(0, 1),
         'allow_add_stores'      => rand(0, 1),
         'is_electronic_invoice' => rand(0, 1),

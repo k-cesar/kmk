@@ -12,6 +12,6 @@ class UomSeeder extends Seeder
      */
     public function run()
     {
-        factory(Uom::class, 2)->create();
+        factory(Uom::class, 5)->create();
     }
 }

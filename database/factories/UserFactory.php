@@ -25,8 +25,8 @@ $factory->define(User::class, function (Faker $faker) {
         'username'          => Str::slug($faker->unique()->userName),
         'email'             => $faker->unique()->safeEmail,
         'phone'             => rand(1000000, 9999999),
-        'company_id'        => factory(Company::class),
-        'role_id'           => factory(Role::class),
+        'company_id'        => Company::inRandomOrder()->first() ?? factory(Company::class),
+        'role_id'           => Role::where('id', '!=', 0)->inRandomOrder()->first() ?? factory(Role::class),
         'password'          => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',   // password
         'remember_token'    => Str::random(10),
     ];

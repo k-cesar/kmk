@@ -12,6 +12,6 @@ class PresentationComboSeeder extends Seeder
      */
     public function run()
     {
-        factory(PresentationCombo::class, 2)->create();
+        factory(PresentationCombo::class, 5)->create();
     }
 }

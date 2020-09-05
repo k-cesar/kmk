@@ -30,6 +30,6 @@ class CompanySeeder extends Seeder
             'deleted_at'            => now(),
         ]);
         
-        factory(Company::class, 2)->create();
+        factory(Company::class, 5)->create();
     }
 }

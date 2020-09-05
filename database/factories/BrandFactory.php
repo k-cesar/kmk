@@ -10,6 +10,6 @@ $factory->define(Brand::class, function (Faker $faker) {
 
     return [
         'name'     => $faker->unique()->company,
-        'maker_id' => factory(Maker::class)->create(),
+        'maker_id' => Maker::inRandomOrder()->first() ?? factory(Maker::class),
     ];
 });
