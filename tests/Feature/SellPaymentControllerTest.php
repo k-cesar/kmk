@@ -77,7 +77,8 @@ class SellPaymentControllerTest extends ApiTestCase
     $paymentMethod = PaymentMethod::where('name', '!=', PaymentMethod::OPTION_PAYMENT_CREDIT)->first();
 
     $attributes = [
-      'turn_id'           => $sell->storeTurn->turn_id,
+      'store_id'          => $sell->store_id,
+      'store_turn_id'     => $sell->storeTurn->id,
       'payment_method_id' => $paymentMethod->id,
       'description'       => $paymentMethod->name,
     ];

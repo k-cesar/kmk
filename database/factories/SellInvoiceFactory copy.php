@@ -14,7 +14,7 @@ $factory->define(SellInvoice::class, function (Faker $faker) {
         'company_id'         => factory(Company::class),
         'invoice'            => Str::uuid(),
         'sell_id'            => factory(Sell::class),
-        'nit'                => $faker->bankAccountNumber,
+        'nit'                => $faker->numerify('#########'),
         'name'               => $faker->name,
         'date'               => now(),
         'total'              => rand(1, 20) * 100,

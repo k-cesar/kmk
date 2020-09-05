@@ -116,7 +116,7 @@ class SellControllerTest extends ApiTestCase
       'nit'               => '1234456789',
       'phone'             => '88888888',
       'email'             => 'test@test.com',
-      'turn_id'           => $storeTurn->turn_id,
+      'store_turn_id'     => $storeTurn->id,
       'items'             => [
         [
           'id'         => $presentationA->id,

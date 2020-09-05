@@ -7,12 +7,12 @@ use App\Http\Modules\Sell\Sell;
 use App\Http\Modules\Store\Store;
 use Spatie\Permission\Models\Role;
 use App\Http\Modules\Company\Company;
+use App\Http\Modules\Deposit\Deposit;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
 use App\Http\Modules\Stock\StockMovement;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable implements JWTSubject
@@ -111,6 +111,26 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
+     * Get the sells for the user (seller).
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function sells()
+    {
+        return $this->hasMany(Sell::class);
+    }
+
+    /**
+     * Get the deposits for the user.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function deposits()
+    {
+        return $this->hasMany(Deposit::class);
+    }
+
+    /**
      * Returns all user actions grouped by permissions
      *
      * @return void
@@ -136,16 +156,6 @@ class User extends Authenticatable implements JWTSubject
         }
 
         return $actionsGroups;
-    }
-
-    /**
-     * Get the sells for the user (seller).
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\hasMany
-     */
-    public function sells()
-    {
-        return $this->hasMany(Sell::class);
     }
 
 }

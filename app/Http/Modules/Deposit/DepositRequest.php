@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Modules\SellPayment;
+namespace App\Http\Modules\Deposit;
 
-use App\Http\Modules\Sell\Sell;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
-use App\Http\Modules\PaymentMethod\PaymentMethod;
 
-class SellPaymentRequest extends FormRequest
+class DepositRequest extends FormRequest
 {
   /**
    * Determine if the user is authorized to make this request.
@@ -27,22 +25,24 @@ class SellPaymentRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'store_id'          => 'required|exists:stores,id',
-      'payment_method_id' => 'required|exists:payment_methods,id|not_in:'.PaymentMethod::where('name', PaymentMethod::OPTION_PAYMENT_CREDIT)->first()->id,
-      'description'       => 'sometimes|nullable|string|max:250',
-      'store_turn_id'            => [
+      'store_id'       => 'required|exists:stores,id',
+      'deposit_number' => 'required|string|max:100|unique:deposits',
+      'amount'         => 'required|numeric|min:0',
+      'images_urls'    => 'required|array',
+      'images_urls.*'  => 'required|distinct|url',
+      'store_turn_id'        => [
         'required',
         Rule::exists('store_turns', 'id')
           ->where(function ($query) {
             return $query->where('id', $this->get('store_turn_id'))
               ->where('store_id', $this->get('store_id'))
               ->where('is_open', true);
-        }),
+          }),
       ]
     ];
-    
-    if ($this->sell_payment->sell->status != Sell::OPTION_STATUS_PENDING) {
-      abort(404);
+
+    if ($this->isMethod('PUT')) {
+      $rules['deposit_number'] = "required|string|max:100|unique:deposits,deposit_number,{$this->deposit->id},id";
     }
 
     return $rules;

@@ -100,6 +100,8 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     
     Route::resource('sell-payments', 'SellPayment\SellPaymentController')->only('index', 'update');
     
+    Route::resource('deposits', 'Deposit\DepositController')->except('create', 'edit', 'destroy');
+    
     Route::resource('store-turns', 'StoreTurn\StoreTurnController')->except('create', 'edit');
 
 });
