@@ -133,14 +133,11 @@ class Sell extends Model
      */
     public static function buildAndSave(array $params)
     {
-        $storeTurn = StoreTurn::where('store_id', $params['store_id'])
-            ->where('turn_id', $params['turn_id'])
-            ->where('is_open', true)
-            ->firstOrFail();
+        $storeTurn = StoreTurn::find($params['store_turn_id']);
 
         $seller = auth()->user();
 
-        $items = self::normalizePricesTurn($params['items'], $params['turn_id'], $seller);
+        $items = self::normalizePricesTurn($params['items'], $storeTurn->turn_id, $seller);
 
         $total = self::calculateTotal($items);
 
@@ -171,7 +168,7 @@ class Sell extends Model
           'store_id'      => $storeTurn->store_id,
         ]);
 
-        $presentationsInCombos = self::getPresentationsInCombos($items->where('type', 'COMBO'), $params['turn_id']);
+        $presentationsInCombos = self::getPresentationsInCombos($items->where('type', 'COMBO'), $storeTurn->turn_id);
         
         $presentations = $items->where('type', 'PRESENTATION')
             ->merge($presentationsInCombos);

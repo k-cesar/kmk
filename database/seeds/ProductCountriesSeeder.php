@@ -11,6 +11,6 @@ class ProductCountriesSeeder extends Seeder
      */
     public function run()
     {
-        factory(ProductCountries::class, 2)->create();
+        factory(ProductCountries::class, 5)->create();
     }
 }

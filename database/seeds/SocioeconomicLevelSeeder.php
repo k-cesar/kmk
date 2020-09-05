@@ -12,6 +12,6 @@ class SocioeconomicLevelSeeder extends Seeder
      */
     public function run()
     {
-        factory(SocioeconomicLevel::class, 2)->create();
+        factory(SocioeconomicLevel::class, 5)->create();
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Modules\StoreTurn;
 
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Store\Store;
+use App\Http\Modules\Deposit\Deposit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Modules\StoreTurnModification\StoreTurnModification;
@@ -47,5 +48,15 @@ class StoreTurn extends Model
     public function turn_modification()
     {
         return $this->hasMany(StoreTurnModification::class, 'store_turn_id');
+    }
+
+    /**
+     * Get the deposits for the storeTurn.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function deposits()
+    {
+        return $this->hasMany(Deposit::class);
     }
 }

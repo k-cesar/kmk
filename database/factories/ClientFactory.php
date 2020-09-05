@@ -12,7 +12,7 @@ $factory->define(Client::class, function (Faker $faker) {
     return [
         'name'         => $faker->name,
         'type'         => $faker->randomElement(Client::getOptionsTypes()),
-        'country_id'   => factory(Country::class)->create(),
+        'country_id'   => Country::inRandomOrder()->first() ?? factory(Country::class),
         'nit'          => $faker->unique()->randomNumber(8),
         'address'      => $faker->address,
         'sex'          => $faker->randomElement(Client::getOptionsSex()),

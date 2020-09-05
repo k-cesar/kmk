@@ -10,8 +10,8 @@ use App\Http\Modules\Store\Store;
 $factory->define(StockCounts::class, function (Faker $faker) {
     return [
         'count_date' => $faker->date(),
-        'store_id' => factory(Store::class),
+        'store_id' => Store::inRandomOrder()->first() ?? factory(Store::class),
         'status' => $faker->randomElement(StockCounts::getOptionsStatus()),
-        'created_by' => factory(User::class),
+        'created_by' => User::inRandomOrder()->first() ?? factory(User::class),
     ];
 });

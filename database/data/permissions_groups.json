@@ -318,17 +318,17 @@
       {
         "name": "Ver Depósitos Bancarios",
         "level": 4,
-        "routes": []
+        "routes": ["deposits.index", "deposits.show"]
       },
       {
         "name": "Crear Depósitos Bancarios",
         "level": 4,
-        "routes": []
+        "routes": ["deposits.store"]
       },
       {
         "name": "Editar Depósitos Bancarios",
         "level": 3,
-        "routes": []
+        "routes": ["deposits.update"]
       },
       {
         "name": "Eliminar Depósitos Bancarios",

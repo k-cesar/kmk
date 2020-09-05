@@ -9,9 +9,9 @@ use App\Http\Modules\Presentation\Presentation;
 $factory->define(PresentationSku::class, function (Faker $faker) {
 
     return [
-        'code'                    => $faker->unique()->bankAccountNumber,
-        'description'             => $faker->sentence,
-        'presentation_id' => factory(Presentation::class)->create(),
-        'seasonal_product'        => rand(0, 1),
+        'code'             => $faker->unique()->bankAccountNumber,
+        'description'      => $faker->sentence,
+        'presentation_id'  => factory(Presentation::class),
+        'seasonal_product' => rand(0, 1),
     ];
 });

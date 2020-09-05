@@ -10,6 +10,6 @@ $factory->define(Region::class, function (Faker $faker) {
 
     return [
         'name'       => $faker->unique()->company,
-        'country_id' => factory(Country::class)->create(),
+        'country_id' => Country::inRandomOrder()->first() ?? factory(Country::class),
     ];
 });

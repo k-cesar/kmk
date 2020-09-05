@@ -13,7 +13,7 @@ $factory->define(Turn::class, function (Faker $faker) {
 
     return [
         'name'       => $faker->unique()->city,
-        'store_id'   => factory(Store::class)->create(),
+        'store_id'   => Store::inRandomOrder()->first() ?? factory(Store::class),
         'start_time' => $startTime->format('H:i:s'),
         'end_time'   => $startTime->addSecond()->format('H:i:s'),
         'is_active'  => rand(0, 1),

@@ -9,11 +9,13 @@ use App\Http\Modules\User\User;
 use App\Http\Modules\Zone\Zone;
 use App\Http\Modules\State\State;
 use App\Http\Modules\Company\Company;
+use App\Http\Modules\Deposit\Deposit;
 use App\Http\Modules\Product\Product;
 use App\Http\Modules\Purchase\Purchase;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Modules\Stock\StockMovement;
 use App\Http\Modules\StoreFlag\StoreFlag;
+use App\Http\Modules\StoreTurn\StoreTurn;
 use App\Http\Modules\StoreType\StoreType;
 use App\Http\Modules\StoreChain\StoreChain;
 use App\Http\Modules\StoreFormat\StoreFormat;
@@ -22,7 +24,6 @@ use App\Http\Modules\LocationType\LocationType;
 use App\Http\Modules\Municipality\Municipality;
 use App\Http\Modules\PresentationCombo\PresentationCombo;
 use App\Http\Modules\SocioeconomicLevel\SocioeconomicLevel;
-use App\Http\Modules\StoreTurn\StoreTurn;
 
 class Store extends Model
 {
@@ -247,5 +248,15 @@ class Store extends Model
     public function storeTurns()
     {
         return $this->hasMany(StoreTurn::class);
+    }
+
+    /**
+     * Get the deposits for the store.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function deposits()
+    {
+        return $this->hasMany(Deposit::class);
     }
 }

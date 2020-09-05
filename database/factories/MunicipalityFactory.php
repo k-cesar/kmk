@@ -10,6 +10,6 @@ $factory->define(Municipality::class, function (Faker $faker) {
 
     return [
         'name'     => $faker->unique()->company,
-        'state_id' => factory(State::class)->create(),
+        'state_id' => State::inRandomOrder()->first() ?? factory(State::class),
     ];
 });

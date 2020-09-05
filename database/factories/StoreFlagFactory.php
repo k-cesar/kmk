@@ -10,6 +10,6 @@ $factory->define(StoreFlag::class, function (Faker $faker) {
 
     return [
         'name'     => $faker->unique()->company,
-        'store_chain_id' => factory(StoreChain::class)->create(),
+        'store_chain_id' => StoreChain::inRandomOrder()->first() ?? factory(StoreChain::class),
     ];
 });

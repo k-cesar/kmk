@@ -10,6 +10,6 @@ $factory->define(PaymentMethod::class, function (Faker $faker) {
 
     return [
         'name'       => $faker->unique()->company,
-        'company_id' => factory(Company::class)->create(),
+        'company_id' => Company::inRandomOrder()->first() ?? factory(Company::class),
     ];
 });

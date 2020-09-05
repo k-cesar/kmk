@@ -13,12 +13,12 @@ use App\Http\Modules\Brand\Brand;
 $factory->define(Product::class, function (Faker $faker) {
     return [
         'description'            => $faker->unique()->company,
-        'brand_id'               => factory(Brand::class),
-        'product_category_id'    => factory(ProductCategory::class),
-        'product_subcategory_id' => factory(ProductSubcategory::class),
+        'brand_id'               => Brand::inRandomOrder()->first() ?? factory(Brand::class),
+        'product_category_id'    => ProductCategory::inRandomOrder()->first() ?? factory(ProductCategory::class),
+        'product_subcategory_id' => ProductSubCategory::inRandomOrder()->first() ?? factory(ProductSubCategory::class),
         'is_taxable'             => rand(0, 1),
         'is_inventoriable'       => rand(0, 1),
-        'uom_id'                 => factory(Uom::class),
+        'uom_id'                 => Uom::inRandomOrder()->first() ?? factory(Uom::class),
         'minimal_expresion'      => $faker->unique()->company,
         'suggested_price'        => rand(1, 10) * 100,
         'is_all_countries'       => rand(0, 1),
