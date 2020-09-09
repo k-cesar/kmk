@@ -3,6 +3,7 @@
 namespace App\Http\Modules\StoreTurn;
 
 use App\Traits\SecureDeletes;
+use App\Http\Modules\Turn\Turn;
 use App\Http\Modules\Store\Store;
 use App\Http\Modules\Deposit\Deposit;
 use Illuminate\Database\Eloquent\Model;
@@ -18,10 +19,7 @@ class StoreTurn extends Model
         'turn_id',
         'open_petty_cash_amount',
         'open_by',
-        'closed_by',
-        'closed_petty_cash_amount',
         'open_date',
-        'close_date',
         'is_open',
     ];
 
