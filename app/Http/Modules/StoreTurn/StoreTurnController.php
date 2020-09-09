@@ -48,9 +48,9 @@ class StoreTurnController extends Controller
         }
         
         $storeTurn = StoreTurn::create($validator->validated(), [
-            'open_by'                   => auth()->user()->id,
-            'open_date'                 => date('Y-m-d'),
-            'is_open'                   => 1,
+            'open_by'   => auth()->user()->id,
+            'open_date' => date('Y-m-d'),
+            'is_open'   => 1,
         ]);
 
         return $this->showOne($storeTurn, 201);

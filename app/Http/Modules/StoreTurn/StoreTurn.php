@@ -3,11 +3,13 @@
 namespace App\Http\Modules\StoreTurn;
 
 use App\Traits\SecureDeletes;
+use App\Http\Modules\Sell\Sell;
 use App\Http\Modules\Turn\Turn;
 use App\Http\Modules\Store\Store;
 use App\Http\Modules\Deposit\Deposit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Modules\CashAdjustment\CashAdjustment;
 use App\Http\Modules\StoreTurnModification\StoreTurnModification;
 
 class StoreTurn extends Model
@@ -21,6 +23,10 @@ class StoreTurn extends Model
         'open_by',
         'open_date',
         'is_open',
+    ];
+
+    protected $with = [
+        'turn_modification',
     ];
 
     /**
