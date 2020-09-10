@@ -29,7 +29,7 @@ class CompanySeeder extends Seeder
             'uses_fel'              => 1,
             'deleted_at'            => now(),
         ]);
-        
+
         factory(Company::class, 5)->create();
     }
 }

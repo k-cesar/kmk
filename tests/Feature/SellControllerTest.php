@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\ApiTestCase;
 use App\Http\Modules\Sell\Sell;
+use App\Http\Modules\User\User;
 use Illuminate\Support\Facades\DB;
 use App\Http\Modules\Client\Client;
 use App\Http\Modules\Sell\SellInvoice;
@@ -22,7 +23,7 @@ class SellControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'SellSeeder']);
+    $this->seed(['PermissionSeeder', 'ClientSeeder', 'SellSeeder']);
   }
 
   /**
@@ -147,6 +148,107 @@ class SellControllerTest extends ApiTestCase
       'client_id'     => $client->id,
       'total'         => 13.25,
       'seller_id'     => $user->id,
+      'store_turn_id' => $storeTurn->id,
+    ]);
+  }
+
+  /**
+   * @test
+   */
+  public function an_user_with_permission_can_store_a_offline_sell()
+  {
+    $this->signInWithPermissionsTo(['sells-offline.store']);
+
+    $presentationA = factory(Presentation::class)->create(['price' => 5]);
+
+    $presentationB = factory(Presentation::class)->create(['price' => 1]);
+
+    $combo = factory(PresentationCombo::class)->create(['suggested_price' => 5.25]);
+
+    $combo->presentations()->sync([$presentationA->id, $presentationB->id]);
+
+    $storeTurn = factory(StoreTurn::class)->create(['is_open' => false]);
+
+    $client = Client::first();
+    $seller = User::first();
+
+    DB::table('turns_products')
+      ->insert([
+        'turn_id'         => $storeTurn->turn_id,
+        'presentation_id' => $presentationA->id,
+        'price'           => 2.5,
+      ]);
+
+    $sellA = [
+      'seller_id'         => $seller->id,
+      'client_id'         => $client->id,
+      'payment_method_id' => factory(PaymentMethod::class)->create()->id,
+      'name'              => 'test',
+      'nit'               => '1234456789',
+      'phone'             => '88888888',
+      'email'             => 'test@test.com',
+      'store_turn_id'     => $storeTurn->id,
+      'items'             => [
+        [
+          'id'         => $presentationA->id,
+          'quantity'   => 2,
+          'type'       => 'PRESENTATION',
+          'unit_price' => $presentationA->price,
+        ],
+        [
+          'id'         => $presentationB->id,
+          'quantity'   => 3,
+          'type'       => 'PRESENTATION',
+          'unit_price' => $presentationB->price,
+        ],
+        [
+          'id'         => $combo->id,
+          'quantity'   => 1,
+          'type'       => 'COMBO',
+          'unit_price' => $combo->suggested_price,
+        ],
+      ]
+    ];
+
+    $presentationC = factory(Presentation::class)->create(['price' => 20]);
+
+    $sellB = [
+      'seller_id'         => $seller->id,
+      'payment_method_id' => factory(PaymentMethod::class)->create()->id,
+      'name'              => 'test2',
+      'nit'               => '12344567890',
+      'store_turn_id'     => $storeTurn->id,
+      'items'             => [
+        [
+          'id'         => $presentationC->id,
+          'quantity'   => 8,
+          'type'       => 'PRESENTATION',
+          'unit_price' => $presentationC->price,
+        ],
+      ]
+    ];
+
+    $attributes = [
+      'store_id' => $storeTurn->store_id,
+      'sells' => [$sellA, $sellB],
+    ];
+
+    $this->postJson(route('sells-offline.store'), $attributes)
+      ->assertCreated();
+
+    $this->assertDatabaseHas('sells', [
+      'store_id'      => $storeTurn->store_id,
+      'client_id'     => $client->id,
+      'total'         => 13.25,
+      'seller_id'     => $seller->id,
+      'store_turn_id' => $storeTurn->id,
+    ]);
+
+    $this->assertDatabaseHas('sells', [
+      'store_id'      => $storeTurn->store_id,
+      'client_id'     => 0,
+      'total'         => 160,
+      'seller_id'     => $seller->id,
       'store_turn_id' => $storeTurn->id,
     ]);
   }

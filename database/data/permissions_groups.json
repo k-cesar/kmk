@@ -348,7 +348,7 @@
       {
         "name": "Crear Registro de Ventas",
         "level": 4,
-        "routes": ["sells.store"]
+        "routes": ["sells.store", "sells-offline.store"]
       },
       {
         "name": "Editar Registro de Ventas",

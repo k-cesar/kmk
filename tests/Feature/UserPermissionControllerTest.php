@@ -15,7 +15,7 @@ class UserPermissionControllerTest extends ApiTestCase
     {
         parent::setUp();
 
-        $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder']);
+        $this->seed(['PermissionSeeder', 'RoleSeeder', 'CompanySeeder', 'UserSeeder']);
     }
 
     /**

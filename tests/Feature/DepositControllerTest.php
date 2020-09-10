@@ -94,7 +94,7 @@ class DepositControllerTest extends ApiTestCase
     $this->postJson(route('deposits.store'), array_merge($attributes, ['images_urls' => $imagesUrls]))
       ->assertCreated();
     
-    $this->assertDatabaseHas('deposits', $attributes);
+    $this->assertDatabaseHas('deposits', Arr::except($attributes, ['date']));
 
     foreach ($imagesUrls as $imageUrl) {
       $this->assertDatabaseHas('deposit_images', ['url' => $imageUrl]);

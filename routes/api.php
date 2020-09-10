@@ -97,6 +97,7 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     Route::resource('stock-counts-detail', 'StockCountsDetail\StockCountsDetailController')->except('create', 'edit');
 
     Route::resource('sells', 'Sell\SellController')->except('create', 'edit', 'update');
+    Route::post('sells-offline', 'Sell\SellController@storeOffline')->name('sells-offline.store');
     
     Route::resource('sell-payments', 'SellPayment\SellPaymentController')->only('index', 'update');
     

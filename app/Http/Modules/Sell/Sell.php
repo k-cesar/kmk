@@ -133,9 +133,12 @@ class Sell extends Model
      */
     public static function buildAndSave(array $params)
     {
-        $storeTurn = StoreTurn::find($params['store_turn_id']);
+        // For offline purpose
+        $seller   = isset($params['seller_id']) ? User::find($params['seller_id']) : auth()->user();
+        $clientId = $params['client_id'] ?? 0;  // 0 => Offline Client Id
+        $date     = $params['date']      ?? now();
 
-        $seller = auth()->user();
+        $storeTurn = StoreTurn::find($params['store_turn_id']);
 
         $items = self::normalizePricesTurn($params['items'], $storeTurn->turn_id, $seller);
 
@@ -146,11 +149,9 @@ class Sell extends Model
         $sellStatus = $paymentMethod->name == PaymentMethod::OPTION_PAYMENT_CREDIT ? 
             self::OPTION_STATUS_PENDING : self::OPTION_STATUS_PAID;
 
-        $date = now();
-
         $sell = self::create([
             'store_id'      => $params['store_id'],
-            'client_id'     => $params['client_id'],
+            'client_id'     => $clientId,
             'description'   => $params['description'] ?? null,
             'date'          => $date,
             'total'         => $total,
@@ -177,12 +178,15 @@ class Sell extends Model
 
         self::saveSellPayment($sell, $paymentMethod);
         
-        $storeTurn->store->company->clients()->syncWithoutDetaching([
-            $params['client_id'] => [
-                'email' => $params['email'],
-                'phone' => $params['phone'],
-            ]
-        ]);
+        // If is not a offline client
+        if ($clientId) {
+            $storeTurn->store->company->clients()->syncWithoutDetaching([
+                $params['client_id'] => [
+                    'email' => $params['email'],
+                    'phone' => $params['phone'],
+                ]
+            ]);
+        }
 
         $invoiceNumber = SellInvoice::getNextInvoiceNumber($storeTurn->store->company);
 

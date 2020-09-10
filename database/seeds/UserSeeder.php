@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Str;
 use App\Http\Modules\User\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -14,13 +15,14 @@ class UserSeeder extends Seeder
   public function run()
   {
     factory(User::class)->create([
-      'name'      => env('USER_SUPER_ADMIN_NAME'),
-      'email'     => env('USER_SUPER_ADMIN_EMAIL'),
-      'username'  => env('USER_SUPER_ADMIN_EMAIL'),
-      'password'  => Hash::make(env('USER_SUPER_ADMIN_PASSWORD')),
-      'role_id'   => 0,
+      'name'       => env('USER_SUPER_ADMIN_NAME'),
+      'email'      => env('USER_SUPER_ADMIN_EMAIL'),
+      'username'   => env('USER_SUPER_ADMIN_EMAIL'),
+      'password'   => Hash::make(env('USER_SUPER_ADMIN_PASSWORD')),
+      'company_id' => 0,
+      'role_id'    => 0,
     ])->assignRole(config('app.role_super_admin_name'));
-    
+
     factory(User::class)->create([
       'name'      => 'Stalin Sánchez',
       'username'  => 'stalin',
