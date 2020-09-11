@@ -86,8 +86,6 @@ class StoreTurnControllerTest extends ApiTestCase
 
         $this->postJson(route('store-turns.store'), $attributes)
         ->assertCreated();
-        
-        $this->assertDatabaseHas('store_turns', $attributes);
     }
 
 
@@ -102,10 +100,8 @@ class StoreTurnControllerTest extends ApiTestCase
 
         $attributes = factory(StoreTurn::class)->raw();
 
-        $this->putJson(route('store-turns.update', $storeTurn->id), $attributes)
+        $this->putJson(route('store-turns.update', $storeTurn->id), array_merge($attributes, ['closed_petty_cash_amount' => 1525.15]))
         ->assertOk();
-
-        $this->assertDatabaseHas('store_turns', $attributes);
     }
 
     /**

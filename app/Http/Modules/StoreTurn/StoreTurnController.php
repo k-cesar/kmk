@@ -108,7 +108,7 @@ class StoreTurnController extends Controller
             'close_date'                => date('Y-m-d'),
         ]);
 
-        return $this->showOne($storeTurn, 201);
+        return $this->showOne($storeTurn, 200);
     }
 
     /**
