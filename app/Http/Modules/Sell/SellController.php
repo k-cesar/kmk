@@ -62,6 +62,43 @@ class SellController extends Controller
   }
 
   /**
+   * Store a offline created resource in storage.
+   *
+   * @param  App\Http\Modules\Sell\SellOfflineRequest  $request
+   * 
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function storeOffline(SellOfflineRequest $request)
+  {
+    try {
+      DB::beginTransaction();
+
+      $params      = $request->validated();
+      $sellsParams = $params['sells'];
+      $sells       = collect([]);
+
+      foreach ($sellsParams as $sellParams) {
+        $sellParams['store_id'] = $params['store_id'];
+
+        $sell = Sell::buildAndSave($sellParams);
+
+        $sells->add($sell);
+      }
+
+      DB::commit();
+
+      return $this->showAll($sells, [], 201);
+
+    } catch (Exception $exception) {
+      DB::rollback();
+
+      Log::error($exception);
+
+      return $this->errorResponse(500, 'Ha ocurrido un error interno');
+    }
+  }
+
+  /**
    * Display the specified resource.
    *
    * @param  App\Http\Modules\Sell\Sell  $sell
