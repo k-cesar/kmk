@@ -107,6 +107,8 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     
     Route::resource('store-turns', 'StoreTurn\StoreTurnController')->except('create', 'edit');
 
+    Route::resource('stores.turns.items', 'Sell\StoreTurnItemController')->only('index');
+
 });
 
 /***********************************************************************************************************************
