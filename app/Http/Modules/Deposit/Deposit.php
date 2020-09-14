@@ -32,7 +32,7 @@ class Deposit extends Model
      *
      * @var array
      */
-    protected $with = ['depositImages:id,deposit_id,url'];
+    protected $with = ['depositImages:id,deposit_id,base64_image'];
 
     /**
      * Get the store that owns the deposit.
@@ -73,40 +73,4 @@ class Deposit extends Model
     {
         return $this->hasMany(DepositImage::class);
     }
-
-    /**
-     * Sync the deposit's images
-     *
-     * @param array $urlImages
-     * 
-     * @return array
-     */
-    public function syncDepositImages($imagesUrls)
-    {
-        $imagesUrls = collect($imagesUrls);
-
-        $detached = $this->depositImages
-            ->filter(function ($depositImage) use ($imagesUrls) {
-                return !$imagesUrls->contains($depositImage->url);
-            })->map(function ($depositImage) {
-                $id = $depositImage->id;
-                $depositImage->secureDelete();
-                return $id;
-            });
-        
-        $attached = $imagesUrls
-            ->filter(function ($imageUrl) {
-                return !$this->depositImages->contains(function ($depositImage) use ($imageUrl) {
-                    return $imageUrl==$depositImage->url;
-                });
-            })->map(function ($imageUrl){
-                return $this->depositImages()->save(new DepositImage(['url' => $imageUrl]))->id;
-            });
-
-        return [
-            'attached' => $attached->toArray(),
-            'detached' => $detached->toArray(),
-        ];
-    }
-
 }
