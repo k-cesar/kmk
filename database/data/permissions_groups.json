@@ -343,7 +343,7 @@
       {
         "name": "Ver Registro de Ventas",
         "level": 4,
-        "routes": ["sells.index", "sells.show", "stocks.index"]
+        "routes": ["sells.index", "sells.show", "stocks.index", "stores.turns.items.index"]
       },
       {
         "name": "Crear Registro de Ventas",
