@@ -2,6 +2,9 @@
 
 namespace App\Http\Modules\Deposit;
 
+use Exception;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Modules\Deposit\Deposit;
 use Illuminate\Support\Facades\Schema;
@@ -28,14 +31,32 @@ class DepositController extends Controller
    */
   public function store(DepositRequest $request)
   {
-    $deposit = Deposit::create(array_merge($request->validated(), [
-      'date'          => now(),
-      'created_by'    => auth()->user()->id,
-    ]));
+    try {
+      DB::beginTransaction();
 
-    $deposit->syncDepositImages($request->images_urls);
+      $deposit = Deposit::create(array_merge($request->validated(), [
+        'date'          => now(),
+        'created_by'    => auth()->user()->id,
+      ]));
 
-    return $this->showOne($deposit, 201);
+      $base64Images = collect($request->base64_images)
+        ->map(function ($base64Image) {
+          return ['base64_image' => $base64Image];  
+        });
+
+      $deposit->depositImages()->createMany($base64Images);
+
+      DB::commit();
+
+      return $this->showOne($deposit, 201);
+
+    } catch (Exception $exception) {
+      DB::rollback();
+
+      Log::error($exception);
+
+      return $this->errorResponse(500, 'Ha ocurrido un error interno');
+    }
   }
 
   /**
@@ -63,9 +84,28 @@ class DepositController extends Controller
    */
   public function update(DepositRequest $request, Deposit $deposit)
   {
-    $deposit->syncDepositImages($request->images_urls);
-    $deposit->update($request->only('deposit_number', 'amount'));
+    try {
+      DB::beginTransaction();
 
-    return $this->showOne($deposit);
+      $base64Images = collect($request->base64_images)
+        ->map(function ($base64Image) {
+          return ['base64_image' => $base64Image];  
+        });
+
+      $deposit->depositImages()->delete();
+      $deposit->depositImages()->createMany($base64Images);
+      $deposit->update($request->only('deposit_number', 'amount'));
+
+      DB::commit();
+
+      return $this->showOne($deposit);
+
+    } catch (Exception $exception) {
+      DB::rollback();
+
+      Log::error($exception);
+
+      return $this->errorResponse(500, 'Ha ocurrido un error interno');
+    }
   }
 }

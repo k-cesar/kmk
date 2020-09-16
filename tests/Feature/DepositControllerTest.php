@@ -89,15 +89,18 @@ class DepositControllerTest extends ApiTestCase
       'created_by'    => $user->id,
     ]);
 
-    $imagesUrls = ['http://test.com', 'https://example.com'];
+    $base64Images = [
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=', 
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFBQIAX8jx0gAAAABJRU5ErkJggg=='
+    ];
 
-    $this->postJson(route('deposits.store'), array_merge($attributes, ['images_urls' => $imagesUrls]))
+    $this->postJson(route('deposits.store'), array_merge($attributes, ['base64_images' => $base64Images]))
       ->assertCreated();
     
     $this->assertDatabaseHas('deposits', Arr::except($attributes, ['date']));
 
-    foreach ($imagesUrls as $imageUrl) {
-      $this->assertDatabaseHas('deposit_images', ['url' => $imageUrl]);
+    foreach ($base64Images as $base64Image) {
+      $this->assertDatabaseHas('deposit_images', ['base64_image' => $base64Image]);
     }
 
   }
@@ -120,17 +123,20 @@ class DepositControllerTest extends ApiTestCase
 
     $deposit = factory(Deposit::class)->create();
 
-    $imagesUrls = ['http://test.com', 'https://example.com'];
+    $base64Images = [
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=', 
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFBQIAX8jx0gAAAABJRU5ErkJggg=='
+    ];
     
-    $this->putJson(route('deposits.update', $deposit->id), array_merge($attributes, ['images_urls' => $imagesUrls]))
+    $this->putJson(route('deposits.update', $deposit->id), array_merge($attributes, ['base64_images' => $base64Images]))
       ->assertOk();
 
     $this->assertDatabaseHas('deposits', Arr::only($attributes, ['deposit_number', 'amount']));
 
-    foreach ($imagesUrls as $imageUrl) {
+    foreach ($base64Images as $base64Image) {
       $this->assertDatabaseHas('deposit_images', [
-        'deposit_id' => $deposit->id,
-        'url'        => $imageUrl
+        'deposit_id'   => $deposit->id,
+        'base64_image' => $base64Image
       ]);
     }
   }

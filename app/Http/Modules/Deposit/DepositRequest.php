@@ -25,12 +25,12 @@ class DepositRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'store_id'       => 'required|exists:stores,id',
-      'deposit_number' => 'required|string|max:100|unique:deposits',
-      'amount'         => 'required|numeric|min:0',
-      'images_urls'    => 'required|array',
-      'images_urls.*'  => 'required|distinct|url',
-      'store_turn_id'        => [
+      'store_id'        => 'required|exists:stores,id',
+      'deposit_number'  => 'required|string|max:100|unique:deposits',
+      'amount'          => 'required|numeric|min:0',
+      'base64_images'   => 'required|array',
+      'base64_images.*' => 'required|distinct',
+      'store_turn_id'   => [
         'required',
         Rule::exists('store_turns', 'id')
           ->where(function ($query) {

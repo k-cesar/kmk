@@ -23,11 +23,8 @@ class CreateDepositImagesTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('deposit_id');
-            $table->string('url');
+            $table->binary('base64_image');
             $table->timestamps();
-            $table->softDeletes();
-
-            $table->unique(['deposit_id', 'url']);
 
             $table->foreign('deposit_id')->references('id')->on('deposits');
         });
