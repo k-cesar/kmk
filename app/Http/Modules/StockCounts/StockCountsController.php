@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Validator;
 use App\Http\Modules\StockCounts\StockCounts;
 use App\Http\Modules\StockCountsDetail\StockCountsDetail;
 
@@ -14,10 +15,21 @@ use App\Http\Modules\StockCountsDetail\StockCountsDetail;
 class StockCountsController extends Controller
 {
 
-    public function index(){
-        $stockCounts = StockCounts::query();
-
-        return $this->showAll($stockCounts, Schema::getColumnListing((new StockCounts)->getTable()));
+    public function index(StockCounts $request) {
+        if (request('store_id') && request('name_user')){
+            $sells = StockCounts::where('id', '=', request('store_id'))
+            ->with('store')
+            ->with('stock_counts')
+            ->with('user')
+            ->whereHas('user', function ($query) {
+                return $query->where('name', 'like', '%'.request('name_user').'%');
+            });   
+            return $this->showAll($sells);
+        }
+        else {
+            $stockCounts = StockCounts::query();
+            return $this->showAll($stockCounts, Schema::getColumnListing((new StockCounts)->getTable()));
+        }
     }
 
     public function store(StockCountsRequest $request) {
@@ -51,6 +63,7 @@ class StockCountsController extends Controller
     }
 
     public function show(StockCounts $stockCount) {
+        $stockCount->load('stock_counts');
         return $this->showOne($stockCount);
     }
 
