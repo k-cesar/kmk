@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\ApiTestCase;
 use Illuminate\Support\Arr;
 use App\Http\Modules\Deposit\Deposit;
+use App\Http\Modules\Deposit\DepositImage;
 use App\Http\Modules\StoreTurn\StoreTurn;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -89,18 +90,15 @@ class DepositControllerTest extends ApiTestCase
       'created_by'    => $user->id,
     ]);
 
-    $base64Images = [
-      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=', 
-      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFBQIAX8jx0gAAAABJRU5ErkJggg=='
-    ];
+    $images = factory(DepositImage::class, 2)->raw();
 
-    $this->postJson(route('deposits.store'), array_merge($attributes, ['base64_images' => $base64Images]))
+    $this->postJson(route('deposits.store'), array_merge($attributes, ['images' => $images]))
       ->assertCreated();
     
     $this->assertDatabaseHas('deposits', Arr::except($attributes, ['date']));
 
-    foreach ($base64Images as $base64Image) {
-      $this->assertDatabaseHas('deposit_images', ['base64_image' => $base64Image]);
+    foreach ($images as $image) {
+      $this->assertDatabaseHas('deposit_images', Arr::except($image, 'deposit_id'));
     }
 
   }
@@ -123,21 +121,15 @@ class DepositControllerTest extends ApiTestCase
 
     $deposit = factory(Deposit::class)->create();
 
-    $base64Images = [
-      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=', 
-      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8DwHwAFBQIAX8jx0gAAAABJRU5ErkJggg=='
-    ];
+    $images = factory(DepositImage::class, 2)->raw(['deposit_id' => $deposit->id]);
     
-    $this->putJson(route('deposits.update', $deposit->id), array_merge($attributes, ['base64_images' => $base64Images]))
+    $this->putJson(route('deposits.update', $deposit->id), array_merge($attributes, ['images' => $images]))
       ->assertOk();
 
     $this->assertDatabaseHas('deposits', Arr::only($attributes, ['deposit_number', 'amount']));
 
-    foreach ($base64Images as $base64Image) {
-      $this->assertDatabaseHas('deposit_images', [
-        'deposit_id'   => $deposit->id,
-        'base64_image' => $base64Image
-      ]);
+    foreach ($images as $image) {
+      $this->assertDatabaseHas('deposit_images', $image);
     }
   }
 }

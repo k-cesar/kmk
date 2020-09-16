@@ -12,7 +12,8 @@ class DepositImage extends Model
      * @var array
      */
     protected $fillable = [
-        'base64_image',
+        'title',
+        'base64',
         'deposit_id',
     ];
 
@@ -22,7 +23,7 @@ class DepositImage extends Model
      * @param  string  $value
      * @return string
      */
-    public function getBase64ImageAttribute($value)
+    public function getBase64Attribute($value)
     {
         return is_resource($value) ? stream_get_contents($value) : $value;
     }
