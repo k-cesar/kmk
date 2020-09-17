@@ -18,7 +18,8 @@ class DepositController extends Controller
    */
   public function index()
   {
-    $deposits = Deposit::query();
+    $deposits = Deposit::query()
+      ->with('depositImages');
 
     return $this->showAll($deposits, Schema::getColumnListing((new Deposit)->getTable()));
   }
@@ -39,12 +40,7 @@ class DepositController extends Controller
         'created_by'    => auth()->user()->id,
       ]));
 
-      $base64Images = collect($request->base64_images)
-        ->map(function ($base64Image) {
-          return ['base64_image' => $base64Image];  
-        });
-
-      $deposit->depositImages()->createMany($base64Images);
+      $deposit->depositImages()->createMany($request->validated()['images']);
 
       DB::commit();
 
@@ -70,6 +66,7 @@ class DepositController extends Controller
     $deposit->load([
       'store:id,name',
       'creator:id,name',
+      'depositImages',
     ]);
 
     return $this->showOne($deposit);
@@ -87,13 +84,8 @@ class DepositController extends Controller
     try {
       DB::beginTransaction();
 
-      $base64Images = collect($request->base64_images)
-        ->map(function ($base64Image) {
-          return ['base64_image' => $base64Image];  
-        });
-
       $deposit->depositImages()->delete();
-      $deposit->depositImages()->createMany($base64Images);
+      $deposit->depositImages()->createMany($request->validated()['images']);
       $deposit->update($request->only('deposit_number', 'amount'));
 
       DB::commit();

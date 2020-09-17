@@ -28,13 +28,6 @@ class Deposit extends Model
     ];
 
     /**
-     * The relations to eager load on every query.
-     *
-     * @var array
-     */
-    protected $with = ['depositImages:id,deposit_id,base64_image'];
-
-    /**
      * Get the store that owns the deposit.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
