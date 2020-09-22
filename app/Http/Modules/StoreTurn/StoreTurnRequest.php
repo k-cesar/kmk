@@ -30,6 +30,12 @@ class StoreTurnRequest extends FormRequest
             'open_petty_cash_amount'    => 'required|min:0',
         ];
 
+
+
+        if ($this->isMethod('PUT')) {
+            unset($rules['open_petty_cash_amount']);
+        }
+
         return $rules;
     }
 }
