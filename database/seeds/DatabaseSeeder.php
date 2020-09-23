@@ -14,18 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PermissionSeeder::class,
             RoleSeeder::class,
-            CurrencySeeder::class,
-            CountrySeeder::class,
             UserSeeder::class,
-            MakerSeeder::class,
-            ProviderSeeder::class,
-            SocioeconomicLevelSeeder::class,
-            LocationTypeSeeder::class,
-            RegionSeeder::class,
-            StateSeeder::class,
-            MunicipalitySeeder::class,
-            ZoneSeeder::class,
-            ClientSeeder::class,
         ]);
     }
 }
