@@ -61,7 +61,7 @@ class CashAdjustmentControllerTest extends ApiTestCase
     {
         $this->signInWithPermissionsTo(['cash-adjustment.show']);
 
-        $store = factory(Store::class)->create();
+        $store = factory(CashAdjustment::class)->create();
 
         $this->getJson(route('cash-adjustment.show', $store->id))
         ->assertOk();
