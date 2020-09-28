@@ -28,7 +28,6 @@ class CashAdjustmentRequest extends FormRequest
         $rules = [
             'store_id'          => 'required|integer|min:0|exists:stores,id',
             'amount'            => 'required|numeric',
-            'modification_type' => 'required|in:'.implode(',', CashAdjustment::getOptionsModificationTypes()),
             'description'       => 'required|string|max:255',
             'store_turn_id'     => [
                 'required',

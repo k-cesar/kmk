@@ -60,7 +60,10 @@ class CashAdjustmentController extends Controller
 
     public function store(CashAdjustmentRequest $request)
     {
-        $cashAdjustment = CashAdjustment::create($request->validated());
+        $cashAdjustment = CashAdjustment::create(array_merge($request->validated(), [
+            'modification_type'  => 'CASH PURCHASE',
+        ]));
+        
         return $this->showOne($cashAdjustment, 201);
     }
 }

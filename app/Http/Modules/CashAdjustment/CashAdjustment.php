@@ -20,6 +20,11 @@ class CashAdjustment extends Model
         'description',
     ];
 
+    public static function getOptionCash()
+    {
+        return self::OPTION_MODIFICATION_TYPE_PURCHASE;
+    }
+
     public static function getOptionsModificationTypes()
     {
         return [
