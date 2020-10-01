@@ -2,12 +2,13 @@
 
 namespace App\Http\Modules\User;
 
+use App\Support\Helper;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
-use App\Support\Helper;
 use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -140,7 +141,23 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return $this->showOne(auth()->user());
+        $user = auth()->user();
+
+        $user->getDirectPermissions()
+            ->map(function (Permission $permission) {
+                $permission->name = explode(' ', $permission->name)[0];
+
+                $permission->makeHidden([
+                    'guard_name',
+                    'created_at',
+                    'updated_at',
+                    'pivot',
+                ]);
+
+                return $permission;
+            });
+
+        return $this->showOne($user);
     }
 
     /**
