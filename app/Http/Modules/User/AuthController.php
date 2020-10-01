@@ -141,21 +141,9 @@ class AuthController extends Controller
      */
     public function me()
     {
-        $user = auth()->user();
+        $user = clone(auth()->user());
 
-        $user->getDirectPermissions()
-            ->map(function (Permission $permission) {
-                $permission->name = explode(' ', $permission->name)[0];
-
-                $permission->makeHidden([
-                    'guard_name',
-                    'created_at',
-                    'updated_at',
-                    'pivot',
-                ]);
-
-                return $permission;
-            });
+        $user->permissions = auth()->user()->getDirectPermissions()->pluck('id');
 
         return $this->showOne($user);
     }
