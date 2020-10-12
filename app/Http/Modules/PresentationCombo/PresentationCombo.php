@@ -32,7 +32,7 @@ class PresentationCombo extends Model
      *
      * @var array
      */
-    protected $with = ['uom'];
+    protected $with = ['uom', 'presentations'];
 
     /**
      * Get the uom that owns the presentation_combo.
