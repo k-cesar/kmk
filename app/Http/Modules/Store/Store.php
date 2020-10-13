@@ -58,7 +58,7 @@ class Store extends Model
      *
      * @var array
      */
-    protected $with = ['storeType', 'storeChain', 'storeFlag', 'locationType', 'storeFormat', 'socioeconomicLevel', 'state', 'municipality', 'zone', 'company'];
+    protected $with = ['storeType', 'storeChain', 'storeFlag', 'locationType', 'storeFormat', 'socioeconomicLevel', 'state', 'municipality', 'zone', 'company', 'turns'];
 
     /**
      * Get the locationType that owns the store.
