@@ -17,7 +17,7 @@ class SellPaymentControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'CompanySeeder', 'PaymentMethodSeeder', 'SellPaymentSeeder']);
+    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'PaymentMethodSeeder', 'SellPaymentSeeder']);
   }
 
   /**
