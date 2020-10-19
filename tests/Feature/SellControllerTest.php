@@ -23,7 +23,7 @@ class SellControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'ClientSeeder', 'SellSeeder']);
+    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'ClientSeeder', 'SellSeeder']);
   }
 
   /**
@@ -157,7 +157,7 @@ class SellControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_store_a_offline_sell()
   {
-    $this->signInWithPermissionsTo(['sells-offline.store']);
+    $seller = $this->signInWithPermissionsTo(['sells-offline.store']);
 
     $presentationA = factory(Presentation::class)->create(['price' => 5]);
 
@@ -170,7 +170,6 @@ class SellControllerTest extends ApiTestCase
     $storeTurn = factory(StoreTurn::class)->create(['is_open' => false]);
 
     $client = Client::first();
-    $seller = User::first();
 
     DB::table('turns_products')
       ->insert([
