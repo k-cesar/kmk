@@ -24,6 +24,7 @@ class Purchase extends Model
         'user_id',
         'comments',
         'invoice',
+        'serial_number',
         'date',
         'total',
         'provider_id',

@@ -28,7 +28,8 @@ class PurchaseRequest extends FormRequest
       'store_id'          => 'required|exists:stores,id',
       'payment_method_id' => 'required|exists:payment_methods,id',
       'invoice'           => 'required|string|max:100',
-      'comments'          => 'sometimes|nullable|string|max:250'
+      'serial_number'     => 'sometimes|nullable|string|max:100',
+      'comments'          => 'sometimes|nullable|string|max:250',
     ];
 
     if ($this->isMethod('POST')) {

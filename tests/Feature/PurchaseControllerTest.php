@@ -131,8 +131,8 @@ class PurchaseControllerTest extends ApiTestCase
         'purchase_id' => $store->purchases->first()->id,
         'product_id'  => $product['id'],
         'quantity'    => $product['quantity'],
-        'unit_price'  => $product['unit_price']
-
+        'unit_price'  => $product['unit_price'],
+        'total'       => $product['quantity'] * $product['unit_price'],
       ]);
 
       $this->assertDatabaseHas('stock_stores', [
@@ -189,7 +189,8 @@ class PurchaseControllerTest extends ApiTestCase
       'purchase_id' => $store->purchases->last()->id,
       'product_id'  => $product['id'],
       'quantity'    => $product['quantity'],
-      'unit_price'  => $product['unit_price']
+      'unit_price'  => $product['unit_price'],
+      'total'       => $product['quantity'] * $product['unit_price'],
 
     ]);
 
