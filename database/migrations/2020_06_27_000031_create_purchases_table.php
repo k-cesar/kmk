@@ -26,6 +26,7 @@ class CreatePurchasesTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->text('comments')->nullable();
             $table->string('invoice', 100);
+            $table->string('serial_number', 100)->nullable();
             $table->timestamp('date');
             $table->double('total');
             $table->unsignedBigInteger('provider_id');

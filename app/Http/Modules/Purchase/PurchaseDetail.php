@@ -19,6 +19,7 @@ class PurchaseDetail extends Model
         'item_line',
         'quantity',
         'unit_price',
+        'total',
     ];
 
     /**

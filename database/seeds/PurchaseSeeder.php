@@ -31,16 +31,19 @@ class PurchaseSeeder extends Seeder
 
       $products->each(function ($product, $item_line) use ($productsByPurchase, $stockMovement){
 
-        $quantity = rand(1, 10);
-
         $purchase = Purchase::find($stockMovement->origin_id);
+
+        $quantity  = rand(1, 10);
+        $unitPrice = $purchase->total/($quantity * $productsByPurchase);
+        $total     = $quantity * $unitPrice;
 
         PurchaseDetail::create([
           'item_line'   => $item_line,
           'purchase_id' => $purchase->id,
           'product_id'  => $product->id,
           'quantity'    => $quantity,
-          'unit_price'  => $purchase->total/($quantity * $productsByPurchase),
+          'unit_price'  => $unitPrice,
+          'total'       => $total,
         ]);
 
         $stockStore = StockStore::create([

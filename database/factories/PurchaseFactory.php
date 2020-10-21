@@ -15,6 +15,7 @@ $factory->define(Purchase::class, function (Faker $faker) {
         'store_id'          => Store::inRandomOrder()->first() ?? factory(Store::class),
         'user_id'           => User::inRandomOrder()->first() ?? factory(User::class),
         'comments'          => $faker->sentence,
+        'serial_number'     => $faker->bankAccountNumber,
         'invoice'           => $faker->bankAccountNumber,
         'date'              => now(),
         'total'             => rand(1, 100) * 200,

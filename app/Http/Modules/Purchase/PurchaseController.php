@@ -55,11 +55,13 @@ class PurchaseController extends Controller
     try {
       DB::beginTransaction();
 
-      $products = collect($request->validated()['products']);
-
-      $total = $products->map(function ($product) {
-          return $product['quantity'] * $product['unit_price'];
-        })->sum();
+      $products = collect($request->validated()['products'])
+        ->map(function ($product) {
+          $product['total'] = $product['quantity'] * $product['unit_price'];
+          return $product;
+        });
+      
+      $total = $products->pluck('total')->sum();
 
       $date = now();
 
@@ -81,6 +83,7 @@ class PurchaseController extends Controller
       $products->each(function ($product, $item_line) use ($purchase, $stockMovement) {
 
         PurchaseDetail::create(array_merge($product, [
+          'total'       => $product['quantity'] * $product['unit_price'],
           'item_line'   => $item_line,
           'purchase_id' => $purchase->id,
           'product_id'  => $product['id'],

@@ -27,6 +27,7 @@ class CreatePurchaseDetailsTable extends Migration
             $table->integer('item_line');
             $table->float('quantity');
             $table->double('unit_price');
+            $table->double('total');
             $table->timestamps();
             $table->softDeletes();
 
