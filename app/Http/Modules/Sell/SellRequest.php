@@ -68,10 +68,24 @@ class SellRequest extends FormRequest
             ->first();
 
           if (!$exists) {
-            $fail("El producto [$value] seleccionado no existe");
+            $fail("El producto ({$item['type']}) [$value] seleccionado no existe");
           }
         },
       ];
+
+      if ($item['type'] == 'COMBO') {
+        array_push($rules["items.$index.id"],
+          function ($attribute, $value, $fail) {
+            $exists = DB::table('presentation_combos_detail')
+              ->where('presentation_combo_id', $value)
+              ->first();
+
+            if (!$exists) {
+              $fail("El combo [$value] seleccionado no posee ninguna presentación asociada");
+            }
+          }
+        );
+      }
     }
 
     return $rules;

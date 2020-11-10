@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\Product;
 
+use App\Http\Modules\Uom\Uom;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Brand\Brand;
 use App\Http\Modules\Store\Store;
@@ -86,5 +87,15 @@ class Product extends Model
     public function stores()
     {
         return $this->belongsToMany(Store::class, 'stock_stores')->withPivot('id', 'quantity')->withTimestamps();
+    }
+
+    /**
+     * Get the uom that owns the product.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function uom()
+    {
+        return $this->belongsTo(Uom::class);
     }
 }

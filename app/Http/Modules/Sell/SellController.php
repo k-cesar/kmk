@@ -50,6 +50,12 @@ class SellController extends Controller
 
       DB::commit();
 
+      $dte = (new DTE())->fel($sell);
+
+      if ($dte->certifier_success) {
+        $sell->update(['status_dte' => Sell::OPTION_STATUS_DTE_CERTIFIED]);
+      }
+
       return $this->showOne($sell, 201);
 
     } catch (Exception $exception) {
@@ -81,6 +87,12 @@ class SellController extends Controller
         $sellParams['store_id'] = $params['store_id'];
 
         $sell = Sell::buildAndSave($sellParams);
+
+        $dte = (new DTE())->fel($sell);
+
+        if ($dte->certifier_success) {
+          $sell->update(['status_dte' => Sell::OPTION_STATUS_DTE_CERTIFIED]);
+        }
 
         $sells->add($sell);
       }
@@ -124,14 +136,35 @@ class SellController extends Controller
    */
   public function destroy(Sell $sell)
   {
-    $sell->status = Sell::OPTION_STATUS_CANCELLED;
-    $sell->save();
-    
-    $sell->sellInvoice->delete();
-    $sell->sellPayment->delete();
-    $sell->delete();
+    try {
+      DB::beginTransaction();
+      
+      $sell->sellInvoice->delete();
+      $sell->sellPayment->delete();
 
-    return $this->showOne($sell);
+      $sell->update([
+        'status'     => Sell::OPTION_STATUS_CANCELLED,
+        'status_dte' => Sell::OPTION_STATUS_DTE_PENDING_CANCELLATION,
+      ]);
+
+      $sell->delete();
+
+      $dte = (new DTE())->fel($sell, true);
+
+      if ($dte->certifier_success) {
+        $sell->update(['status_dte' => Sell::OPTION_STATUS_DTE_CANCELLED]);
+      }
+      
+      DB::commit();
+      
+      return $this->showOne($sell);
+
+    } catch (Exception $exception) {
+      DB::rollback();
+
+      Log::error($exception);
+
+      return $this->errorResponse(500, 'Ha ocurrido un error interno');
+    }
   }
-
 }
