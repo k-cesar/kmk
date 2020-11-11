@@ -24,6 +24,12 @@ class Sell extends Model
     const OPTION_STATUS_CANCELLED = 'CANCELLED';
     const OPTION_STATUS_PAID      = 'PAID';
 
+    const OPTION_STATUS_DTE_NA                    = 'NA';
+    const OPTION_STATUS_DTE_PENDING_CERTIFICATION = 'PENDING_CERTIFICATION';
+    const OPTION_STATUS_DTE_PENDING_CANCELLATION  = 'PENDING_CANCELLATION';
+    const OPTION_STATUS_DTE_CANCELLED             = 'CANCELLED';
+    const OPTION_STATUS_DTE_CERTIFIED             = 'CERTIFIED';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -38,6 +44,7 @@ class Sell extends Model
         'total',
         'seller_id',
         'status',
+        'status_dte',
     ];
 
     /**
@@ -111,6 +118,16 @@ class Sell extends Model
     }
 
     /**
+     * Get the DTE's associated with the sell.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function dtes()
+    {
+        return $this->hasMany(DTE::class);
+    }
+
+    /**
      * Returns all statuses options availables
      *
      * @return array
@@ -121,6 +138,22 @@ class Sell extends Model
            self::OPTION_STATUS_PENDING,
            self::OPTION_STATUS_CANCELLED,
            self::OPTION_STATUS_PAID,
+        ];
+    }
+
+    /**
+     * Returns all statuses DTE options availables
+     *
+     * @return array
+     */
+    public static function getOptionsStatusDTE()
+    {
+        return [
+           self::OPTION_STATUS_DTE_NA,
+           self::OPTION_STATUS_DTE_PENDING_CERTIFICATION,
+           self::OPTION_STATUS_DTE_PENDING_CANCELLATION,
+           self::OPTION_STATUS_DTE_CANCELLED,
+           self::OPTION_STATUS_DTE_CERTIFIED,
         ];
     }
 
@@ -148,6 +181,8 @@ class Sell extends Model
 
         $sellStatus = $paymentMethod->name == PaymentMethod::OPTION_PAYMENT_CREDIT ? 
             self::OPTION_STATUS_PENDING : self::OPTION_STATUS_PAID;
+        
+        $sellStatusDTE = self::OPTION_STATUS_DTE_PENDING_CERTIFICATION;
 
         $sell = self::create([
             'store_id'      => $params['store_id'],
@@ -157,6 +192,7 @@ class Sell extends Model
             'total'         => $total,
             'seller_id'     => $seller->id,
             'status'        => $sellStatus,
+            'status_dte'    => $sellStatusDTE,
             'store_turn_id' => $storeTurn->id,
         ]);
 
@@ -170,7 +206,7 @@ class Sell extends Model
         ]);
 
         $presentationsInCombos = self::getPresentationsInCombos($items->where('type', 'COMBO'), $storeTurn->turn_id);
-        
+
         $presentations = $items->where('type', 'PRESENTATION')
             ->merge($presentationsInCombos);
         
@@ -308,7 +344,7 @@ class Sell extends Model
                 return [
                     'id'         => $presentation->id,
                     'product_id' => $presentation->product_id,
-                    'quantity'   => 1,
+                    'quantity'   => $combo['quantity'],
                     'unit_price' => $percentageDiscount * $presentation->price,
                     'combo_id'   => $combo['id'],
                 ];

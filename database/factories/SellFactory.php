@@ -19,6 +19,7 @@ $factory->define(Sell::class, function (Faker $faker) {
         'total'         => rand(1, 30) * 100,
         'seller_id'     => User::inRandomOrder()->first() ?? factory(User::class),
         'status'        => $faker->randomElement(Sell::getOptionsStatus()),
+        'status_dte'    => $faker->randomElement(Sell::getOptionsStatusDTE()),
         'store_turn_id' => factory(StoreTurn::class),
     ];
 });

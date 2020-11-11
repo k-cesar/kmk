@@ -30,6 +30,7 @@ class CreateSellsTable extends Migration
             $table->double('total');
             $table->unsignedBigInteger('seller_id');
             $table->enum('status', ['PENDING', 'CANCELLED', 'PAID']);
+            $table->enum('status_dte', ['NA', 'PENDING_CERTIFICATION', 'PENDING_CANCELLATION', 'CANCELLED', 'CERTIFIED']);
             $table->timestamps();
             $table->softDeletes();
 
