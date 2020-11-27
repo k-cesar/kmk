@@ -260,7 +260,7 @@ class Sell extends Model
         }
 
         $presentationsStored = DB::table('presentations', 'p')
-            ->select('p.id', 'p.product_id')
+            ->select('p.id', 'p.product_id', 'p.units')
             ->selectRaw("COALESCE (tp.price, p.price) AS price")
             ->leftJoin("turns_products AS tp", function (JoinClause $leftJoin) use ($turnId) {
               $leftJoin->on('p.id', '=', "tp.presentation_id")
@@ -289,6 +289,7 @@ class Sell extends Model
 
             $item['unit_price'] = $keepPrice ? $item['unit_price'] : $itemStored->price;
             $item['product_id'] = $itemStored->product_id;
+            $item['units']      = $itemStored->units ?? 1;
 
             return $item;
         });
@@ -324,7 +325,7 @@ class Sell extends Model
     {
         $presentations = $combos->map(function ($combo) use ($turnId) {
             $presentations = DB::table('presentations', 'p')
-            ->select('p.id', 'p.product_id')
+            ->select('p.id', 'p.product_id', 'p.units')
             ->selectRaw("COALESCE (tp.price, p.price) AS price")
             ->join('presentation_combos_detail AS cd', 'p.id', '=', 'cd.presentation_id' )
             ->leftJoin("turns_products AS tp", function (JoinClause $leftJoin) use ($turnId) {
@@ -344,6 +345,7 @@ class Sell extends Model
                 return [
                     'id'         => $presentation->id,
                     'product_id' => $presentation->product_id,
+                    'units'      => $presentation->units,
                     'quantity'   => $combo['quantity'],
                     'unit_price' => $percentageDiscount * $presentation->price,
                     'combo_id'   => $combo['id'],
@@ -376,21 +378,20 @@ class Sell extends Model
                 'quantity'              => $presentation['quantity'],
                 'price'                 => $presentation['unit_price'],
             ]);
-            
 
             $stockStore = StockStore::firstOrCreate([
                 'store_id'   => $sell->store_id,
                 'product_id' => $presentation['product_id'],
             ]);
 
-            $stockStore->quantity -= $presentation['quantity'];
+            $stockStore->quantity -= $presentation['quantity'] * $presentation['units'];
             $stockStore->save();
 
             StockMovementDetail::create([
                 'stock_movement_id' => $stockMovement->id,
                 'stock_store_id'    => $stockStore->id,
                 'product_id'        => $presentation['product_id'],
-                'quantity'          => $presentation['quantity'],
+                'quantity'          => $presentation['quantity'] * $presentation['units'],
             ]); 
         });
     }

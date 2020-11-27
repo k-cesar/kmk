@@ -54,6 +54,7 @@ class SellController extends Controller
 
       if ($dte->certifier_success) {
         $sell->update(['status_dte' => Sell::OPTION_STATUS_DTE_CERTIFIED]);
+        $sell->invoiceLink = config('fel.invoiceBaseUrl').$dte->uuid;
       }
 
       return $this->showOne($sell, 201);
@@ -92,6 +93,7 @@ class SellController extends Controller
 
         if ($dte->certifier_success) {
           $sell->update(['status_dte' => Sell::OPTION_STATUS_DTE_CERTIFIED]);
+          $sell->invoiceLink = config('fel.invoiceBaseUrl').$dte->uuid;
         }
 
         $sells->add($sell);
@@ -153,6 +155,7 @@ class SellController extends Controller
 
       if ($dte->certifier_success) {
         $sell->update(['status_dte' => Sell::OPTION_STATUS_DTE_CANCELLED]);
+        $sell->invoiceLink = config('fel.invoiceBaseUrl').$dte->uuid;
       }
       
       DB::commit();
