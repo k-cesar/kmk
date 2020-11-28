@@ -22,6 +22,7 @@ return [
     'tokenToCertify'        => env('FEL_TOKEN_TO_CERTIFY', ''),
     'urlToCertify'          => env('FEL_URL_TO_CERTIFY', ''),
     'urlToCancel'           => env('FEL_URL_TO_CANCEL', ''),
+    'invoiceBaseUrl'        => env('FEL_INVOICE_BASE_URL'),
     'codigoMoneda'          => env('FEL_CODIGO_MONEDA', ''),
     'afiliacionIVA'         => env('FEL_AFILIACION_IVA', ''),
     'codigoEstablecimiento' => env('FEL_CODIGO_ESTABLECIMIENTO', ''),
