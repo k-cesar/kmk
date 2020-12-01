@@ -43,6 +43,8 @@ class UserController extends Controller
    */
   public function show(User $user)
   {
+    $user->load('stores:id,name');
+
     return $this->showOne($user);
   }
 
