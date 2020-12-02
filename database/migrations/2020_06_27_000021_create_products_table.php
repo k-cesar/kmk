@@ -30,7 +30,6 @@ class CreateProductsTable extends Migration
             $table->tinyInteger('is_taxable');
             $table->tinyInteger('is_inventoriable');
             $table->unsignedBigInteger('uom_id');
-            $table->string('minimal_expresion');
             $table->double('suggested_price');
             $table->timestamps();
             $table->softDeletes();

@@ -21,7 +21,7 @@ class Presentation extends Model
         'product_id',
         'description',
         'price',
-        'is_minimal_expression',
+        'is_grouping',
         'units',
     ];
 

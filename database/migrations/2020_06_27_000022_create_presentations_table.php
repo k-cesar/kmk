@@ -25,7 +25,7 @@ class CreatePresentationsTable extends Migration
             $table->unsignedBigInteger('product_id');
             $table->string('description');
             $table->double('price');
-            $table->tinyInteger('is_minimal_expression');
+            $table->tinyInteger('is_grouping');
             $table->float('units');
             $table->timestamps();
             $table->softDeletes();

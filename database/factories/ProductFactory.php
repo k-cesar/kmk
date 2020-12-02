@@ -19,7 +19,6 @@ $factory->define(Product::class, function (Faker $faker) {
         'is_taxable'             => rand(0, 1),
         'is_inventoriable'       => rand(0, 1),
         'uom_id'                 => Uom::inRandomOrder()->first() ?? factory(Uom::class),
-        'minimal_expresion'      => $faker->unique()->company,
         'suggested_price'        => rand(1, 10) * 100,
         'is_all_countries'       => rand(0, 1),
     ];
