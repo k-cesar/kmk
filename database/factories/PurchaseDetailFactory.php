@@ -2,10 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\Http\Modules\Product\Product;
-use App\Http\Modules\Purchase\Purchase;
 use Faker\Generator as Faker;
+use App\Http\Modules\Purchase\Purchase;
 use App\Http\Modules\Purchase\PurchaseDetail;
+use App\Http\Modules\Presentation\Presentation;
 
 $factory->define(PurchaseDetail::class, function (Faker $faker) {
 
@@ -14,11 +14,11 @@ $factory->define(PurchaseDetail::class, function (Faker $faker) {
     $total     = $quantity * $unitPrice;
 
     return [
-        'purchase_id' => factory(Purchase::class),
-        'product_id'  => factory(Product::class),
-        'item_line'   => $faker->randomNumber(),
-        'quantity'    => $quantity,
-        'unit_price'  => $unitPrice,
-        'total'       => $total,
+        'purchase_id'     => factory(Purchase::class),
+        'presentation_id' => factory(Presentation::class),
+        'item_line'       => $faker->randomNumber(),
+        'quantity'        => $quantity,
+        'unit_price'      => $unitPrice,
+        'total'           => $total,
     ];
 });

@@ -5,9 +5,9 @@ namespace Tests\Feature;
 use Tests\ApiTestCase;
 use Illuminate\Support\Arr;
 use App\Http\Modules\Store\Store;
-use App\Http\Modules\Product\Product;
 use App\Http\Modules\Purchase\Purchase;
 use App\Http\Modules\Stock\StockMovement;
+use App\Http\Modules\Presentation\Presentation;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class PurchaseControllerTest extends ApiTestCase
@@ -73,7 +73,7 @@ class PurchaseControllerTest extends ApiTestCase
       'user:id,name', 
       'provider:id,name', 
       'paymentMethod:id,name',
-      'purchaseDetails.product:id,description')
+      'purchaseDetails.presentation:id,description')
       ->first();
 
     $this->getJson(route('purchases.show', $purchase->id))
@@ -89,8 +89,8 @@ class PurchaseControllerTest extends ApiTestCase
     $user = $this->signInWithPermissionsTo(['purchases.store']);
 
     $store = factory(Store::class)->create();
-    $productA = factory(Product::class)->create();
-    $productB = factory(Product::class)->create();
+    $presentationA = factory(Presentation::class)->create();
+    $presentationB = factory(Presentation::class)->create();
 
     $attributes = factory(Purchase::class)->raw([
       'store_id' => $store->id,
@@ -98,22 +98,22 @@ class PurchaseControllerTest extends ApiTestCase
       'total'    => 26000,
     ]);
 
-    $productsAttributes = [
-      'products' => [
+    $presentationsAttributes = [
+      'presentations' => [
         [
-          'id'         => $productA->id,
+          'id'         => $presentationA->id,
           'quantity'   => 10,
           'unit_price' => 100
         ],
         [
-          'id'         => $productB->id,
+          'id'         => $presentationB->id,
           'quantity'   => 50,
           'unit_price' => 500
         ]
       ]
     ];
 
-    $this->postJson(route('purchases.store'), array_merge($attributes, $productsAttributes))
+    $this->postJson(route('purchases.store'), array_merge($attributes, $presentationsAttributes))
       ->assertCreated();
     
     $this->assertDatabaseHas('purchases', Arr::except($attributes, ['date',]));
@@ -126,26 +126,28 @@ class PurchaseControllerTest extends ApiTestCase
       'store_id'      => $store->id,
     ]);
 
-    foreach ($productsAttributes['products'] as $product) {
+    foreach ($presentationsAttributes['presentations'] as $presentation) {
       $this->assertDatabaseHas('purchase_details', [
-        'purchase_id' => $store->purchases->first()->id,
-        'product_id'  => $product['id'],
-        'quantity'    => $product['quantity'],
-        'unit_price'  => $product['unit_price'],
-        'total'       => $product['quantity'] * $product['unit_price'],
+        'purchase_id'     => $store->purchases->first()->id,
+        'presentation_id' => $presentation['id'],
+        'quantity'        => $presentation['quantity'],
+        'unit_price'      => $presentation['unit_price'],
+        'total'           => $presentation['quantity'] * $presentation['unit_price'],
       ]);
+
+      $presentationStored = Presentation::find($presentation['id']);
 
       $this->assertDatabaseHas('stock_stores', [
         'store_id'   => $store->id,
-        'product_id' => $product['id'],
-        'quantity'   => $product['quantity'],
+        'product_id' => $presentationStored->product_id,
+        'quantity'   => $presentation['quantity'] * $presentationStored->units,
       ]);
 
       $this->assertDatabaseHas('stock_movements_detail', [
         'stock_movement_id' => $store->stockMovements->first()->id,
-        'stock_store_id'    => $store->products()->wherePivot('product_id', $product['id'])->first()->pivot->id,
-        'product_id'        => $product['id'],
-        'quantity'          => $product['quantity'],
+        'stock_store_id'    => $store->products()->wherePivot('product_id', $presentationStored->product_id)->first()->pivot->id,
+        'product_id'        => $presentationStored->product_id,
+        'quantity'          => $presentation['quantity'] * $presentationStored->units,
       ]);
 
     }
@@ -160,17 +162,17 @@ class PurchaseControllerTest extends ApiTestCase
       'total'    => 4000,
     ]);
 
-    $productsAttributes = [
-      'products' => [
+    $presentationsAttributes = [
+      'presentations' => [
         [
-          'id'         => $product->id,
+          'id'         => $product->presentations->first()->id,
           'quantity'   => 20,
           'unit_price' => 200
         ]
       ]
     ];
 
-    $this->postJson(route('purchases.store'), array_merge($attributes, $productsAttributes))
+    $this->postJson(route('purchases.store'), array_merge($attributes, $presentationsAttributes))
       ->assertCreated();
 
     $this->assertDatabaseHas('purchases', Arr::except($attributes, ['date',]));
@@ -183,28 +185,30 @@ class PurchaseControllerTest extends ApiTestCase
       'store_id'      => $store->id,
     ]);
 
-    $product = $productsAttributes['products'][0];
+    $presentation = $presentationsAttributes['presentations'][0];
 
     $this->assertDatabaseHas('purchase_details', [
-      'purchase_id' => $store->purchases->last()->id,
-      'product_id'  => $product['id'],
-      'quantity'    => $product['quantity'],
-      'unit_price'  => $product['unit_price'],
-      'total'       => $product['quantity'] * $product['unit_price'],
+      'purchase_id'     => $store->purchases->last()->id,
+      'presentation_id' => $presentation['id'],
+      'quantity'        => $presentation['quantity'],
+      'unit_price'      => $presentation['unit_price'],
+      'total'           => $presentation['quantity'] * $presentation['unit_price'],
 
     ]);
 
+    $presentationStored = Presentation::find($presentation['id']);
+
     $this->assertDatabaseHas('stock_stores', [
       'store_id'   => $store->id,
-      'product_id' => $product['id'],
-      'quantity'   => $product['quantity'] + $quantityInStockBeforePurchase,
+      'product_id' => $product->id,
+      'quantity'   => $presentation['quantity'] * $presentationStored->units + $quantityInStockBeforePurchase,
     ]);
 
     $this->assertDatabaseHas('stock_movements_detail', [
       'stock_movement_id' => $store->stockMovements->last()->id,
       'stock_store_id'    => $store->products()->wherePivot('product_id', $product['id'])->first()->pivot->id,
-      'product_id'        => $product['id'],
-      'quantity'          => $product['quantity'],
+      'product_id'        => $presentation['id'],
+      'quantity'          => $presentation['quantity'] * $presentationStored->units,
     ]);
 
   }

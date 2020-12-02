@@ -2,9 +2,9 @@
 
 namespace App\Http\Modules\Purchase;
 
-use App\Http\Modules\Product\Product;
 use App\Http\Modules\Purchase\Purchase;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Modules\Presentation\Presentation;
 
 class PurchaseDetail extends Model
 {
@@ -15,7 +15,7 @@ class PurchaseDetail extends Model
      */
     protected $fillable = [
         'purchase_id',
-        'product_id',
+        'presentation_id',
         'item_line',
         'quantity',
         'unit_price',
@@ -33,12 +33,12 @@ class PurchaseDetail extends Model
     }
 
     /**
-     * Get the product that owns the purchase detail.
+     * Get the presentation that owns the purchase detail.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function product()
+    public function presentation()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Presentation::class);
     }
 }
