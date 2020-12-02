@@ -27,8 +27,7 @@ class PresentationRequest extends FormRequest
     $rules = [
       'product_id'            => 'required|exists:products,id',
       'price'                 => 'required|integer|min:0',
-      'is_minimal_expression' => 'required|boolean',
-      'units'                 => 'required|numeric|min:0',
+      'is_grouping'           => 'required|boolean',
       'description'           => [
         'required', 
         'string',
@@ -39,6 +38,10 @@ class PresentationRequest extends FormRequest
           }),
       ], 
     ];
+
+    if ($this->get('is_grouping')) {
+      $rules['units'] = 'required|numeric|min:2';
+    }
 
     if ($this->isMethod('PUT')) {
       $rules['description'] = [
@@ -54,5 +57,21 @@ class PresentationRequest extends FormRequest
     }
 
     return $rules;
+  }
+
+  /**
+   * Get the validated data from the request.
+   *
+   * @return array
+   */
+  public function validated()
+  {
+    $validatedData = parent::validated();
+
+    if ( ! $validatedData['is_grouping'] ) {
+      $validatedData['units'] = 1;
+    }
+
+    return $validatedData;
   }
 }

@@ -6,8 +6,9 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Schema;
 use App\Http\Modules\Product\Product;
+use Illuminate\Support\Facades\Schema;
+use App\Http\Modules\Presentation\Presentation;
 
 class ProductController extends Controller
 {
@@ -24,6 +25,14 @@ class ProductController extends Controller
 
             $product = Product::create($request->validated());
             $product->productCountries()->sync($request->countries);
+
+            Presentation::create([
+                'product_id'            => $product->id,
+                'price'                 => $product->suggested_price,
+                'is_grouping'           => false,
+                'units'                 => 1,
+                'description'           => $product->description
+            ]);
 
             DB::commit();
             return $this->showOne($product, 201);

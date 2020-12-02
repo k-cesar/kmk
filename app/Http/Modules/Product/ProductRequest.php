@@ -32,7 +32,6 @@ class ProductRequest extends FormRequest
             'is_taxable'             => 'required|boolean',
             'is_inventoriable'       => 'required|boolean',
             'uom_id'                 => 'required|exists:uoms,id',
-            'minimal_expresion'      => 'required|string',
             'suggested_price'        => 'required|numeric|min:0',
             'countries'              => 'required|array',
             'countries.*'            => 'exists:countries,id',

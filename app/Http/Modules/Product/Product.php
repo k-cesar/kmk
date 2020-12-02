@@ -32,7 +32,6 @@ class Product extends Model
         'is_taxable',
         'is_inventoriable',
         'uom_id',
-        'minimal_expresion',
         'suggested_price',
     ];
 
