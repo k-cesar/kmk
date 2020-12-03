@@ -28,7 +28,7 @@ class StoreFormatRequest extends FormRequest
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['name'] = "required|string|max:150|unique:store_formats,name,\"{$this->store_format->name}\",name";
+      $rules['name'] = "required|string|max:150|unique:store_formats,name,{$this->store_format->id}";
     }
 
     return $rules;

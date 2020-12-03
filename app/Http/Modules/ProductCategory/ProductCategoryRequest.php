@@ -29,7 +29,7 @@ class ProductCategoryRequest extends FormRequest
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['name'] = "required|string|max:255|unique:product_categories,name,\"{$this->product_category->name}\",name";
+      $rules['name'] = "required|string|max:255|unique:product_categories,name,{$this->product_category->id}";
       $rules['product_department_id'] = "exists:product_departments,id";
     }
 

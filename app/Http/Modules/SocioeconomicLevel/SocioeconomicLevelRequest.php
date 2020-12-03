@@ -31,7 +31,7 @@ class SocioeconomicLevelRequest extends FormRequest
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['name'] = "required|string|max:150|unique:socioeconomic_levels,name,\"{$this->socioeconomic_level->name}\",name";
+      $rules['name'] = "required|string|max:150|unique:socioeconomic_levels,name,{$this->socioeconomic_level->id}";
     }
 
     return $rules;

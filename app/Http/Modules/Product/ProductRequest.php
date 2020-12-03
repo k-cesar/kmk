@@ -38,7 +38,7 @@ class ProductRequest extends FormRequest
         ];
 
         if ($this->isMethod('PUT')) {
-            $rules['description'] = "string|max:255|unique:products,description,\"{$this->product->description}\",description";
+            $rules['description'] = "string|max:255|unique:products,description,{$this->product->id}";
         }
 
         return $rules;

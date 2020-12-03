@@ -28,7 +28,7 @@ class StoreChainRequest extends FormRequest
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['name'] = "required|string|max:150|unique:store_chains,name,\"{$this->store_chain->name}\",name";
+      $rules['name'] = "required|string|max:150|unique:store_chains,name,{$this->store_chain->id}";
     }
 
     return $rules;
