@@ -23,7 +23,7 @@ class CreatePurchaseDetailsTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('purchase_id');
-            $table->unsignedBigInteger('product_id');
+            $table->unsignedBigInteger('presentation_id');
             $table->integer('item_line');
             $table->float('quantity');
             $table->double('unit_price');
@@ -35,7 +35,7 @@ class CreatePurchaseDetailsTable extends Migration
 
             $table->foreign('purchase_id')->references('id')->on('purchases');
             
-            $table->foreign('product_id')->references('id')->on('products');
+            $table->foreign('presentation_id')->references('id')->on('presentations');
         });
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Modules\Purchase;
 
 use Exception;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
@@ -10,8 +11,8 @@ use App\Http\Modules\Stock\StockStore;
 use Illuminate\Support\Facades\Schema;
 use App\Http\Modules\Stock\StockMovement;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Modules\Presentation\Presentation;
 use App\Http\Modules\Stock\StockMovementDetail;
-use Illuminate\Support\Arr;
 
 class PurchaseController extends Controller
 {
@@ -55,13 +56,13 @@ class PurchaseController extends Controller
     try {
       DB::beginTransaction();
 
-      $products = collect($request->validated()['products'])
-        ->map(function ($product) {
-          $product['total'] = $product['quantity'] * $product['unit_price'];
-          return $product;
+      $presentations = collect($request->validated()['presentations'])
+        ->map(function ($presentation) {
+          $presentation['total'] = $presentation['quantity'] * $presentation['unit_price'];
+          return $presentation;
         });
       
-      $total = $products->pluck('total')->sum();
+      $total = $presentations->pluck('total')->sum();
 
       $date = now();
 
@@ -80,28 +81,30 @@ class PurchaseController extends Controller
         'store_id'      => $purchase->store_id,
       ]);
 
-      $products->each(function ($product, $item_line) use ($purchase, $stockMovement) {
+      $presentations->each(function ($presentation, $item_line) use ($purchase, $stockMovement) {
 
-        PurchaseDetail::create(array_merge($product, [
-          'total'       => $product['quantity'] * $product['unit_price'],
-          'item_line'   => $item_line,
-          'purchase_id' => $purchase->id,
-          'product_id'  => $product['id'],
+        PurchaseDetail::create(array_merge($presentation, [
+          'total'           => $presentation['quantity'] * $presentation['unit_price'],
+          'item_line'       => $item_line,
+          'purchase_id'     => $purchase->id,
+          'presentation_id' => $presentation['id'],
         ]));
+
+        $presentationStored = Presentation::find($presentation['id']);
 
         $stockStore = StockStore::firstOrCreate([
           'store_id'   => $purchase->store->id,
-          'product_id' => $product['id'],
+          'product_id' => $presentationStored->product_id,
         ]);
 
-        $stockStore->quantity += $product['quantity'];
+        $stockStore->quantity += $presentation['quantity'] * $presentationStored->units;
         $stockStore->save();
 
         StockMovementDetail::create([
           'stock_movement_id' => $stockMovement->id,
           'stock_store_id'    => $stockStore->id,
-          'product_id'        => $product['id'],
-          'quantity'          => $product['quantity'],
+          'product_id'        => $presentationStored->product_id,
+          'quantity'          => $presentation['quantity'] * $presentationStored->units,
         ]);
 
       });
@@ -132,7 +135,7 @@ class PurchaseController extends Controller
       'user:id,name', 
       'provider:id,name', 
       'paymentMethod:id,name',
-      'purchaseDetails.product:id,description'
+      'purchaseDetails.presentation:id,description'
     );
 
     return $this->showOne($purchase);
