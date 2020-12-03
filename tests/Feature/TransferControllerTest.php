@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Modules\Presentation\Presentation;
 use Tests\ApiTestCase;
 use App\Http\Modules\Store\Store;
 use Illuminate\Support\Facades\DB;
@@ -93,12 +94,15 @@ class TransferControllerTest extends ApiTestCase
     $productA = $storeOutput->products->first();
     $productB = $storeOutput->products->last();
 
+    $presentationA = factory(Presentation::class)->create(['product_id' => $productA->id, 'units' => 1 ]);
+    $presentationB = factory(Presentation::class)->create(['product_id' => $productB->id, 'units' => 6 ]);
+
     $stockStoreOutputBeforeTransfer = [
       $productA->id => $productA->pivot,
       $productB->id => $productB->pivot,
     ];
     
-    $stockStoreIntputBeforeTransfer = [
+    $stockStoreInputBeforeTransfer = [
       $productA->id => $storeInput->products->where('id', $productA->id)->first()->pivot,
       $productB->id => $storeInput->products->where('id', $productB->id)->first()->pivot,
     ];
@@ -106,13 +110,13 @@ class TransferControllerTest extends ApiTestCase
     $attributes = [
       'origin_store_id'  => $storeOutput->id,
       'destiny_store_id' => $storeInput->id,
-      'products'         => [
+      'presentations'    => [
         [
-          'id'       => $productA->id,
+          'id'       => $presentationA->id,
           'quantity' => 5,
         ],
         [
-          'id'       => $productB->id,
+          'id'       => $presentationB->id,
           'quantity' => 10,
         ]
       ],
@@ -135,30 +139,32 @@ class TransferControllerTest extends ApiTestCase
       'store_id'      => $storeInput->id,
     ]);
 
-    foreach ($attributes['products'] as $product) {
+    foreach ($attributes['presentations'] as $presentation) {
+
+      $presentationStored = Presentation::where('id', $presentation['id'])->first();
 
       $this->assertDatabaseHas('stock_movements_detail', [
-        'stock_store_id' => $stockStoreOutputBeforeTransfer[$product['id']]->id,
-        'product_id'     => $product['id'],
-        'quantity'       => -1 * $product['quantity'],
+        'stock_store_id' => $stockStoreOutputBeforeTransfer[$presentationStored->product_id]->id,
+        'product_id'     => $presentationStored->product_id,
+        'quantity'       => -1 * $presentation['quantity'] * $presentationStored->units,
       ]);
 
       $this->assertDatabaseHas('stock_movements_detail', [
-        'stock_store_id' => $stockStoreIntputBeforeTransfer[$product['id']]->id,
-        'product_id'     => $product['id'],
-        'quantity'       => $product['quantity'],
+        'stock_store_id' => $stockStoreInputBeforeTransfer[$presentationStored->product_id]->id,
+        'product_id'     => $presentationStored->product_id,
+        'quantity'       => $presentation['quantity'] * $presentationStored->units,
       ]);
 
       $this->assertDatabaseHas('stock_stores', [
         'store_id'   => $storeOutput->id,
-        'product_id' => $product['id'],
-        'quantity'   => $stockStoreOutputBeforeTransfer[$product['id']]->quantity - $product['quantity'],
+        'product_id' => $presentationStored->product_id,
+        'quantity'   => $stockStoreOutputBeforeTransfer[$presentationStored->product_id]->quantity - ($presentation['quantity'] * $presentationStored->units),
       ]);
 
       $this->assertDatabaseHas('stock_stores', [
         'store_id'   => $storeInput->id,
-        'product_id' => $product['id'],
-        'quantity'   => $stockStoreOutputBeforeTransfer[$product['id']]->quantity + $product['quantity'],
+        'product_id' => $presentationStored->product_id,
+        'quantity'   => $stockStoreInputBeforeTransfer[$presentationStored->product_id]->quantity + ($presentation['quantity'] * $presentationStored->units),
       ]);
     }
 
@@ -167,9 +173,9 @@ class TransferControllerTest extends ApiTestCase
     $attributes = [
       'origin_store_id'  => $storeOutput->id,
       'destiny_store_id' => $storeInput->id,
-      'products'         => [
+      'presentations'    => [
         [
-          'id'       => $productA->id,
+          'id'       => $presentationA->id,
           'quantity' => 15,
         ]
       ],
@@ -178,18 +184,19 @@ class TransferControllerTest extends ApiTestCase
     $this->postJson(route('transfers.store'), $attributes)
       ->assertCreated();
 
-    $product = $attributes['products'][0];
+    $presentation = $attributes['presentations'][0];
+    $presentationStored = Presentation::where('id', $presentation['id'])->first();
 
     $this->assertDatabaseHas('stock_movements_detail', [
-      'stock_store_id' => $storeInput->products->where('id', $product['id'])->first()->pivot->id,
-      'product_id'     => $product['id'],
-      'quantity'       => $product['quantity'],
+      'stock_store_id' => $storeInput->products->where('id', $presentationStored->product_id)->first()->pivot->id,
+      'product_id'     => $presentationStored->product_id,
+      'quantity'       => $presentation['quantity'] * $presentationStored->units,
     ]);
 
     $this->assertDatabaseHas('stock_stores', [
       'store_id'   => $storeInput->id,
-      'product_id' => $product['id'],
-      'quantity'   => $product['quantity'],
+      'product_id' => $presentationStored->product_id,
+      'quantity'   => $presentation['quantity'] * $presentationStored->units,
     ]);
   }
 }

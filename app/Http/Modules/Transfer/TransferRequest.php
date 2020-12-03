@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\Transfer;
 
+use App\Http\Modules\Presentation\Presentation;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
@@ -26,37 +27,42 @@ class TransferRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'origin_store_id'     => 'required|exists:stores,id',
-      'destiny_store_id'    => 'required|exists:stores,id|different:origin_store_id',
-      'products'            => 'required|array',
-      'products.*.id'       => [
-        'distinct',
+      'origin_store_id'    => 'required|exists:stores,id',
+      'destiny_store_id'   => 'required|exists:stores,id|different:origin_store_id',
+      'presentations'      => 'required|array',
+      'presentations.*.id' => 'required|distinct|exists:presentations,id',
+    ];
+
+    $presentations = Presentation::whereIn('id', collect($this->get('presentations'))->pluck('id'))
+      ->with('product')
+      ->get();
+
+    $stock = DB::table('stock_stores')
+      ->where('store_id', $this->get('origin_store_id'))
+      ->whereIn('product_id', $presentations->pluck('product_id')->unique())
+      ->get();
+
+    foreach($presentations as $index => $presentation) {
+      $rules["presentations.$index.quantity"] = [
         'required',
-        Rule::exists('stock_stores', 'product_id')
-          ->where(function ($query) {
-            return $query->where('store_id', $this->get('origin_store_id'));
-          }),
-      ]];
+        'integer',
+        'min:1',
+        function ($attribute, $value, $fail) use ($presentation, $stock) {
+          $productInStock = $stock->where('product_id', $presentation->product_id)->first();
 
-      foreach($this->get('products') as $index => $product) {
-        $rules["products.$index.quantity"] = [
-          'required',
-          'numeric',
-          'min:0',
-          function ($attribute, $value, $fail) use ($product) {
-            $stock = DB::table('stock_stores')
-              ->where('store_id', $this->get('origin_store_id'))
-              ->where('product_id', $product['id'])
-              ->first();
+          $stockQuantity = $productInStock ? $productInStock->quantity : 0;
+          $transferQuantity = $value * $presentation->units;
 
-            $stockQuantity = $stock ? $stock->quantity : 0;
+          if ($transferQuantity > $stockQuantity) {
+            $fail("La cantidad a transferir ({$transferQuantity}) supera a la cantidad restante en stock ({$stockQuantity})");
+          } else {
+            $productInStock->quantity -= $value * $presentation->units;
 
-            if ($value > $stockQuantity) {
-              $fail("La cantidad a ingresada({$value}) supera a la cantidad en stock({$stockQuantity})");
-            }
-          },
-        ];
-      }
+            $stock[$stock->search($productInStock)] = $productInStock;
+          }
+        },
+      ];
+    }
 
     return $rules;
   }
