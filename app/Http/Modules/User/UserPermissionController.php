@@ -21,6 +21,8 @@ class UserPermissionController extends Controller
      */
     public function index(User $user)
     {
+        $this->authorize('manage', $user);
+
         $permissions = $user->getDirectPermissions()
             ->map(function (Permission $permission) {
                 $permission->name = explode(' ', $permission->name)[0];
@@ -40,7 +42,14 @@ class UserPermissionController extends Controller
      */
     public function store(Request $request, User $user)
     {   
-        $user->syncPermissions($request->permissions);
+        $this->authorize('manage', $user);
+
+        $permissions = Permission::whereIn('id', $request->permissions)
+            ->where('level', '>=', auth()->user()->role->level)
+            ->get()
+            ->pluck('id');
+
+        $user->syncPermissions($permissions);
 
         $permissions = $user->getDirectPermissions()
             ->map(function (Permission $permission) {

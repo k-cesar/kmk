@@ -14,7 +14,7 @@ class CompanyController extends Controller
    */
   public function index()
   {
-    $companies = Company::query();
+    $companies = Company::visible(auth()->user());
 
     return $this->showAll($companies, Schema::getColumnListing((new Company)->getTable()));
   }
@@ -40,6 +40,8 @@ class CompanyController extends Controller
    */
   public function show(Company $company)
   {
+    $this->authorize('manage', $company);
+
     return $this->showOne($company);
   }
 
@@ -52,6 +54,8 @@ class CompanyController extends Controller
    */
   public function update(CompanyRequest $request, Company $company)
   {
+    $this->authorize('manage', $company);
+
     $company->update($request->validated());
 
     return $this->showOne($company);
@@ -65,6 +69,8 @@ class CompanyController extends Controller
    */
   public function destroy(Company $company)
   {
+    $this->authorize('manage', $company);
+    
     $company->secureDelete();
 
     return $this->showOne($company);
@@ -78,7 +84,8 @@ class CompanyController extends Controller
   public function options()
   {
     $companies = Company::select('id', 'name')
-      ->withOut('country', 'currency');
+      ->withOut('country', 'currency')
+      ->visible(auth()->user());
 
     return $this->showAll($companies, Schema::getColumnListing((new Company)->getTable()));
   }

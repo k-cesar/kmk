@@ -28,9 +28,9 @@ class UserRequest extends FormRequest
   {
     $rules = [
       'name'            => 'required|string|max:100',
-      'role_id'         => 'required|exists:roles,id',
+      'role_id'         => 'required|integer|exists:roles,id|min:'.auth()->user()->role_id,
       'email'           => 'sometimes|nullable|string|email|max:255|unique:users',
-      'company_id'      => 'required|exists:companies,id',
+      'company_id'      => 'required|integer|exists:companies,id',
       'username'        => 'required|string|max:100|alpha_dash|unique:users',
       'password'        => 'required|string|min:8|max:25|confirmed',
       'update_password' => 'sometimes|nullable|boolean',
@@ -48,8 +48,8 @@ class UserRequest extends FormRequest
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['username'] = "required|string|max:50|alpha_dash|unique:users,username,{$this->user->username},username";
-      $rules['email']    = "sometimes|nullable|string|email|max:255|unique:users,email,{$this->user->email},email";
+      $rules['username'] = "required|string|max:50|alpha_dash|unique:users,username,{$this->user->id}";
+      $rules['email']    = "sometimes|nullable|string|email|max:255|unique:users,email,{$this->user->id}";
       $rules['password'] = 'sometimes|required|string|min:8|max:25|confirmed';
 
       $rules['phone'] = [
@@ -77,6 +77,10 @@ class UserRequest extends FormRequest
 
     if (isset($validatedData['password'])) {
       $validatedData['password'] = Hash::make($validatedData['password']);
+    }
+
+    if (auth()->user()->role->level > 1) {
+      $validatedData['company_id'] = auth()->user()->company_id;
     }
 
     return $validatedData;

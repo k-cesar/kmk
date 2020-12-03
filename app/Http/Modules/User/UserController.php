@@ -15,7 +15,7 @@ class UserController extends Controller
    */
   public function index()
   {
-    $users = User::query();
+    $users = User::visible(auth()->user());
 
     return $this->showAll($users, Schema::getColumnListing((new User)->getTable()));
   }
@@ -43,6 +43,8 @@ class UserController extends Controller
    */
   public function show(User $user)
   {
+    $this->authorize('manage', $user);
+
     $user->load('stores:id,name');
 
     return $this->showOne($user);
@@ -57,6 +59,8 @@ class UserController extends Controller
    */
   public function update(UserRequest $request, User $user)
   {
+    $this->authorize('manage', $user);
+
     $user->update($request->validated());
     $user->stores()->sync($request->stores);
 
@@ -71,6 +75,8 @@ class UserController extends Controller
    */
   public function destroy(User $user)
   {
+    $this->authorize('manage', $user);
+
     $user->secureDelete();
 
     return $this->showOne($user);

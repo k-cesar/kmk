@@ -131,6 +131,25 @@ class User extends Authenticatable implements JWTSubject
     }
 
     /**
+     * Scope a query to only include users visibles by the user.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \App\Http\Modules\User\User $user
+     * 
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeVisible($query, $user)
+    {
+        $query->whereIn('role_id', Role::select('id')->where('level', '>=', $user->role->level));
+
+        if ($user->role->level > 1) {
+            return $query->where('company_id', $user->company_id);
+        }
+
+        return $query;
+    }
+
+    /**
      * Returns all user actions grouped by permissions
      *
      * @return void

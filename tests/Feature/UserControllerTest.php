@@ -51,12 +51,12 @@ class UserControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_all_users()
   {
-    $this->signInWithPermissionsTo(['users.index']);
+    $user = $this->signInWithPermissionsTo(['users.index']);
 
     $response = $this->getJson(route('users.index'))
         ->assertOk();
     
-    foreach (User::limit(10)->withOut('stores')->get() as $user) {
+    foreach (User::limit(10)->withOut('stores')->visible($user)->get() as $user) {
       $response->assertJsonFragment($user->toArray());
     }
   }
@@ -66,9 +66,12 @@ class UserControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_a_user()
   {
-    $this->signInWithPermissionsTo(['users.show']);
+    $user = $this->signInWithPermissionsTo(['users.show']);
 
-    $newUser = factory(User::class)->create();
+    $newUser = factory(User::class)->create([
+      'role_id'    => $user->role_id,
+      'company_id' => $user->company_id,
+    ]);
 
     $this->getJson(route('users.show', $newUser->id))
       ->assertOk()
@@ -80,11 +83,15 @@ class UserControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_store_a_user()
   {
-    $this->signInWithPermissionsTo(['users.store']);
+    $user = $this->signInWithPermissionsTo(['users.store']);
 
     $stores = factory(Store::class, 2)->create();
 
-    $attributes = factory(User::class)->raw();
+    $attributes = factory(User::class)->raw([
+      'role_id'    => $user->role_id,
+      'company_id' => $user->company_id,
+    ]);
+
     $attributes['password'] = 'password';
     $attributes['password_confirmation'] = $attributes['password'];
     $attributes['stores'] = $stores->pluck('id');
@@ -114,7 +121,11 @@ class UserControllerTest extends ApiTestCase
 
     $stores = factory(Store::class, 2)->create();
 
-    $attributes = factory(User::class)->raw();
+    $attributes = factory(User::class)->raw([
+      'role_id'    => $user->role_id,
+      'company_id' => $user->company_id,
+    ]);
+
     $attributes['stores'] = $stores->pluck('id');
 
     unset($attributes['password']);
@@ -138,9 +149,12 @@ class UserControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_destroy_a_user()
   {
-    $this->signInWithPermissionsTo(['users.destroy']);
+    $user = $this->signInWithPermissionsTo(['users.destroy']);
 
-    $newUser = factory(User::class)->create();
+    $newUser = factory(User::class)->create([
+      'role_id'    => $user->role_id,
+      'company_id' => $user->company_id,
+    ]);
 
     $this->deleteJson(route('users.destroy', $newUser->id))
       ->assertOk();
