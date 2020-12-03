@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Modules\Stock\StockStore;
 use App\Http\Modules\Stock\StockMovement;
-use App\Http\Modules\Stock\StockMovementDetail;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Modules\Presentation\Presentation;
+use App\Http\Modules\Stock\StockMovementDetail;
 
 class TransferController extends Controller
 {
@@ -76,42 +77,48 @@ class TransferController extends Controller
       // Creando el movimeinto de entrada
       $stockMovementInput = StockMovement::create($stockMovement);
 
-      foreach ($transfer['products'] as $product) {
+      $presentationsStored = Presentation::whereIn('id', collect($transfer['presentations'])->pluck('id'))
+        ->get();
+      
+      foreach ($transfer['presentations'] as $presentation) {
+
+        $presentationsStored = $presentationsStored->where('id', $presentation['id'])->first();
+
         // Obteniendo el inventario de salida
         $stockStoreOutput = $stockMovementOutput->store
           ->products()
-          ->wherePivot('product_id', $product['id'])
+          ->wherePivot('product_id', $presentationsStored->product_id)
           ->first()
           ->pivot;
 
         // Actualizando el inventario de salida
-        $stockStoreOutput->quantity -= $product['quantity'];
+        $stockStoreOutput->quantity -= $presentation['quantity'] * $presentationsStored->units;
         $stockStoreOutput->save();
 
         // Creando el detalle del movimiento de salida
         StockMovementDetail::create([
           'stock_movement_id' => $stockMovementOutput->id,
           'stock_store_id'    => $stockStoreOutput->id,
-          'product_id'        => $product['id'],
-          'quantity'          => -1 * $product['quantity'],
+          'product_id'        => $stockStoreOutput->product_id,
+          'quantity'          => -1 * $presentation['quantity'] * $presentationsStored->units,
         ]);
 
         // Obteniendo o creando el inventario de entrada
         $stockStoreInput = StockStore::firstOrCreate([
           'store_id'   => $stockMovementInput->store->id,
-          'product_id' => $product['id'],
+          'product_id' => $presentationsStored->product_id,
         ]);
 
         // Actualizando el inventario de entrada
-        $stockStoreInput->quantity += $product['quantity'];
+        $stockStoreInput->quantity += $presentation['quantity'] * $presentationsStored->units;
         $stockStoreInput->save();
 
         // Creando el detalle del movimiento de entrada
         StockMovementDetail::create([
           'stock_movement_id' => $stockMovementInput->id,
           'stock_store_id'    => $stockStoreInput->id,
-          'product_id'        => $product['id'],
-          'quantity'          => $product['quantity'],
+          'product_id'        => $stockStoreInput->product_id,
+          'quantity'          => $presentation['quantity'] * $presentationsStored->units,
         ]);
       }
       
