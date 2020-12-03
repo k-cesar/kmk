@@ -26,7 +26,7 @@ class PresentationRequest extends FormRequest
   {
     $rules = [
       'product_id'            => 'required|exists:products,id',
-      'price'                 => 'required|integer|min:0',
+      'price'                 => 'required|numeric|min:0',
       'is_grouping'           => 'required|boolean',
       'description'           => [
         'required', 
