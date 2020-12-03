@@ -30,8 +30,8 @@ class UomRequest extends FormRequest
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['name'] = "required|string|max:255|unique:uoms,name,\"{$this->uom->name}\",name";
-      $rules['abbreviation'] = "required|string|max:16|unique:uoms,abbreviation,\"{$this->uom->abbreviation}\",abbreviation";
+      $rules['name'] = "required|string|max:255|unique:uoms,name,{$this->uom->id}";
+      $rules['abbreviation'] = "required|string|max:16|unique:uoms,abbreviation,{$this->uom->id}";
     }
 
     return $rules;

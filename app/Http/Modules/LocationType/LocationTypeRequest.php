@@ -28,7 +28,7 @@ class LocationTypeRequest extends FormRequest
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['name'] = "required|string|max:150|unique:location_types,name,\"{$this->location_type->name}\",name";
+      $rules['name'] = "required|string|max:150|unique:location_types,name,{$this->location_type->id}";
     }
 
     return $rules;

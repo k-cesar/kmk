@@ -47,7 +47,7 @@ class CompanyRequest extends FormRequest
 
     if ($this->isMethod('PUT')) {
 
-      $rules['phone'] = "required|digits_between:1,50|unique:companies,phone,{$this->company->phone},phone";
+      $rules['phone'] = "required|digits_between:1,50|unique:companies,phone,{$this->company->id}";
 
       $rules['nit'] = [
         'required', 

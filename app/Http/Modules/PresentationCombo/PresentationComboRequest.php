@@ -39,7 +39,7 @@ class PresentationComboRequest extends FormRequest
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['description'] = "required|string|max:150|unique:presentation_combos,description,\"{$this->presentation_combo->description}\",description";
+      $rules['description'] = "required|string|max:150|unique:presentation_combos,description,{$this->presentation_combo->id}";
     }
 
     return $rules;

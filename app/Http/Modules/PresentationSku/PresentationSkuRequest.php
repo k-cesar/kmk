@@ -32,7 +32,7 @@ class PresentationSkuRequest extends FormRequest
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['code'] = "required|string|max:150|unique:presentation_skus,code,\"{$this->presentation_sku->code}\",code";
+      $rules['code'] = "required|string|max:150|unique:presentation_skus,code,{$this->presentation_sku->id}";
     }
 
     return $rules;

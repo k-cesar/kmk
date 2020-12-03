@@ -43,7 +43,7 @@ class DepositRequest extends FormRequest
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['deposit_number'] = "required|string|max:100|unique:deposits,deposit_number,{$this->deposit->id},id";
+      $rules['deposit_number'] = "required|string|max:100|unique:deposits,deposit_number,{$this->deposit->id}";
     }
 
     return $rules;
