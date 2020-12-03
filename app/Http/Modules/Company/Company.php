@@ -91,4 +91,21 @@ class Company extends Model
         return $this->belongsToMany(Client::class, 'company_clients')->withPivot('email', 'phone')->withTimestamps();
     }
 
+    /**
+     * Scope a query to only include companies visibles by the user.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \App\Http\Modules\User\User $user
+     * 
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeVisible($query, User $user)
+    {
+        if ($user->role->level > 1) {
+            return $query->where('id', $user->company_id);
+        }
+
+        return $query;
+    }
+
 }

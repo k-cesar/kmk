@@ -49,7 +49,11 @@ class UserPermissionControllerTest extends ApiTestCase
     {
         $user = $this->signInWithPermissionsTo(['users.permissions.index']);
 
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create([
+            'role_id'    => $user->role_id,
+            'company_id' => $user->company_id,
+        ]);
+
         $user->givePermissionTo(factory(Permission::class)->create());
 
         $response = $this->getJson(route('users.permissions.index', $user->id))
@@ -68,9 +72,12 @@ class UserPermissionControllerTest extends ApiTestCase
      */
     public function an_user_with_permission_can_store_a_user_permission()
     {
-        $this->signInWithPermissionsTo(['users.permissions.store']);
+        $user = $this->signInWithPermissionsTo(['users.permissions.store']);
 
-        $user = factory(User::class)->create();
+        $user = factory(User::class)->create([
+            'role_id'    => $user->role_id,
+            'company_id' => $user->company_id,
+        ]);
 
         $permission1 = factory(Permission::class)->create();
         $permission2 = factory(Permission::class)->create();

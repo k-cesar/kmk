@@ -50,12 +50,12 @@ class CompanyControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_all_companies()
   {
-    $this->signInWithPermissionsTo(['companies.index']);
+    $user = $this->signInWithPermissionsTo(['companies.index']);
 
     $response = $this->getJson(route('companies.index'))
       ->assertOk();
     
-    foreach (Company::limit(10)->get() as $company) {
+    foreach (Company::limit(10)->visible($user)->get() as $company) {
       $response->assertJsonFragment($company->toArray());
     }
   }
@@ -65,13 +65,11 @@ class CompanyControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_a_company()
   {
-    $this->signInWithPermissionsTo(['companies.show']);
+    $user = $this->signInWithPermissionsTo(['companies.show']);
 
-    $company = factory(Company::class)->create();
-
-    $this->getJson(route('companies.show', $company->id))
+    $this->getJson(route('companies.show', $user->company_id))
       ->assertOk()
-      ->assertJson($company->toArray());
+      ->assertJson($user->company->toArray());
   }
 
   /**
@@ -95,13 +93,11 @@ class CompanyControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_update_a_company()
   {
-    $this->signInWithPermissionsTo(['companies.update']);
-
-    $company = factory(Company::class)->create();
+    $user = $this->signInWithPermissionsTo(['companies.update']);
 
     $attributes = factory(Company::class)->raw();
 
-    $this->putJson(route('companies.update', $company->id), $attributes)
+    $this->putJson(route('companies.update', $user->company_id), $attributes)
       ->assertOk();
 
     $this->assertDatabaseHas('companies', $attributes);
@@ -112,7 +108,9 @@ class CompanyControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_destroy_a_company()
   {
-    $this->signInWithPermissionsTo(['companies.destroy']);
+    $user = $this->signInWithPermissionsTo(['companies.destroy']);
+
+    $user->role->update(['level' => 1]);
 
     $company = factory(Company::class)->create();
 
@@ -135,6 +133,7 @@ class CompanyControllerTest extends ApiTestCase
     $companies = Company::select(['id', 'name'])
       ->withOut('country', 'currency')
       ->limit(10)
+      ->visible($user)
       ->get();
 
     foreach ($companies as $company) {
