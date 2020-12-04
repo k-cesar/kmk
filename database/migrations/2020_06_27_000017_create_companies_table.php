@@ -24,6 +24,7 @@ class CreateCompaniesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->text('reason');
+            $table->string('regime')->nullable();
             $table->string('nit', 15);
             $table->string('phone', 50);
             $table->string('address');

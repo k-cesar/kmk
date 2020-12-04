@@ -27,6 +27,7 @@ class CompanyRequest extends FormRequest
     $rules = [
       'name'                  => 'required|string|max:255',
       'reason'                => 'required|string|max:1000',
+      'regime'                => 'sometimes|nullable|string|max:50',
       'phone'                 => 'required|digits_between:1,50|unique:companies',
       'address'               => 'required|string|max:255',
       'currency_id'           => 'required|exists:currencies,id',
