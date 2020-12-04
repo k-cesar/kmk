@@ -12,6 +12,7 @@ $factory->define(Company::class, function (Faker $faker) {
     return [
         'name'                  => $faker->company,
         'reason'                => $faker->paragraph,
+        'regime'                => $faker->sentence(2),
         'nit'                   => $faker->unique()->randomNumber(8),
         'phone'                 => rand(100000,9999999),
         'address'               => $faker->address,

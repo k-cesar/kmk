@@ -40,6 +40,7 @@ class UserSeeder extends Seeder
       'id'                    => '0',
       'name'                  => 'Empresa 0',
       'reason'                => 'Razón Social 0',
+      'regime'                => 'Régimen 0',
       'nit'                   => '00000000',
       'phone'                 => '00000000',
       'address'               => 'Dirección 0',
