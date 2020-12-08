@@ -26,6 +26,8 @@ class CreateStockMovementsDetailTable extends Migration
             $table->unsignedBigInteger('stock_store_id');
             $table->unsignedBigInteger('product_id');
             $table->float('quantity');
+            $table->double('product_unit_price')->nullable();
+            $table->double('avg_product_unit_cost')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

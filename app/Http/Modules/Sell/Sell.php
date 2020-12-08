@@ -384,15 +384,18 @@ class Sell extends Model
                 'product_id' => $presentation['product_id'],
             ]);
 
-            $stockStore->quantity -= $presentation['quantity'] * $presentation['units'];
-            $stockStore->save();
-
             StockMovementDetail::create([
-                'stock_movement_id' => $stockMovement->id,
-                'stock_store_id'    => $stockStore->id,
-                'product_id'        => $presentation['product_id'],
-                'quantity'          => $presentation['quantity'] * $presentation['units'],
-            ]); 
+                'stock_movement_id'     => $stockMovement->id,
+                'stock_store_id'        => $stockStore->id,
+                'product_id'            => $presentation['product_id'],
+                'quantity'              => -1 * $presentation['quantity'] * $presentation['units'],
+                'product_unit_price'    => $presentation['unit_price'] / $presentation['units'],
+                'avg_product_unit_cost' => $stockStore->avg_product_unit_cost ?: $presentation['unit_price'] / $presentation['units'],
+            ]);
+
+            $stockStore->quantity -= $presentation['quantity'] * $presentation['units'];
+            $stockStore->avg_product_unit_cost = $stockStore->calculateAvgProductUnitCost() ?: $presentation['unit_price'] / $presentation['units'];
+            $stockStore->save();
         });
     }
 

@@ -22,6 +22,8 @@ class StockMovementDetail extends Model
         'stock_store_id',
         'product_id',
         'quantity',
+        'product_unit_price',
+        'avg_product_unit_cost',
     ];
 
     /**

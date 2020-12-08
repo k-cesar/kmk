@@ -25,6 +25,7 @@ class CreateStockStoresTable extends Migration
             $table->unsignedBigInteger('store_id');
             $table->unsignedBigInteger('product_id');
             $table->float('quantity')->default(0);
+            $table->double('avg_product_unit_cost')->default(0);
             $table->timestamps();
             $table->softDeletes();
 

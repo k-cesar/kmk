@@ -97,15 +97,17 @@ class PurchaseController extends Controller
           'product_id' => $presentationStored->product_id,
         ]);
 
-        $stockStore->quantity += $presentation['quantity'] * $presentationStored->units;
-        $stockStore->save();
-
         StockMovementDetail::create([
-          'stock_movement_id' => $stockMovement->id,
-          'stock_store_id'    => $stockStore->id,
-          'product_id'        => $presentationStored->product_id,
-          'quantity'          => $presentation['quantity'] * $presentationStored->units,
+          'stock_movement_id'     => $stockMovement->id,
+          'stock_store_id'        => $stockStore->id,
+          'product_id'            => $presentationStored->product_id,
+          'quantity'              => $presentation['quantity'] * $presentationStored->units,
+          'product_unit_price'    => $presentation['unit_price'] / $presentationStored->units,
         ]);
+
+        $stockStore->quantity += $presentation['quantity'] * $presentationStored->units;
+        $stockStore->avg_product_unit_cost = $stockStore->calculateAvgProductUnitCost();
+        $stockStore->save();
 
       });
       

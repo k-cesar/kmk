@@ -10,8 +10,9 @@ use App\Http\Modules\Store\Store;
 $factory->define(StockStore::class, function (Faker $faker) {
 
     return [
-        'store_id'   => Store::inRandomOrder()->first() ?? factory(Store::class),
-        'product_id' => factory(Product::class),
-        'quantity'   => rand(1, 100),
+        'store_id'              => Store::inRandomOrder()->first() ?? factory(Store::class),
+        'product_id'            => factory(Product::class),
+        'quantity'              => rand(1, 100),
+        'avg_product_unit_cost' => rand(1, 100),
     ];
 });

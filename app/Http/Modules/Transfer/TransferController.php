@@ -82,46 +82,48 @@ class TransferController extends Controller
       
       foreach ($transfer['presentations'] as $presentation) {
 
-        $presentationsStored = $presentationsStored->where('id', $presentation['id'])->first();
+        $presentationStored = $presentationsStored->where('id', $presentation['id'])->first();
 
         // Obteniendo el inventario de salida
-        $stockStoreOutput = $stockMovementOutput->store
-          ->products()
-          ->wherePivot('product_id', $presentationsStored->product_id)
-          ->first()
-          ->pivot;
-
-        // Actualizando el inventario de salida
-        $stockStoreOutput->quantity -= $presentation['quantity'] * $presentationsStored->units;
-        $stockStoreOutput->save();
+        $stockStoreOutput = StockStore::where('store_id', $stockMovementOutput->store_id)
+          ->where('product_id', $presentationStored->product_id)
+          ->first();
 
         // Creando el detalle del movimiento de salida
         StockMovementDetail::create([
-          'stock_movement_id' => $stockMovementOutput->id,
-          'stock_store_id'    => $stockStoreOutput->id,
-          'product_id'        => $stockStoreOutput->product_id,
-          'quantity'          => -1 * $presentation['quantity'] * $presentationsStored->units,
+          'stock_movement_id'     => $stockMovementOutput->id,
+          'stock_store_id'        => $stockStoreOutput->id,
+          'product_id'            => $stockStoreOutput->product_id,
+          'quantity'              => -1 * $presentation['quantity'] * $presentationStored->units,
+          'avg_product_unit_cost' => $stockStoreOutput->avg_product_unit_cost,
         ]);
 
         // Obteniendo o creando el inventario de entrada
         $stockStoreInput = StockStore::firstOrCreate([
           'store_id'   => $stockMovementInput->store->id,
-          'product_id' => $presentationsStored->product_id,
+          'product_id' => $presentationStored->product_id,
         ]);
-
-        // Actualizando el inventario de entrada
-        $stockStoreInput->quantity += $presentation['quantity'] * $presentationsStored->units;
-        $stockStoreInput->save();
 
         // Creando el detalle del movimiento de entrada
         StockMovementDetail::create([
-          'stock_movement_id' => $stockMovementInput->id,
-          'stock_store_id'    => $stockStoreInput->id,
-          'product_id'        => $stockStoreInput->product_id,
-          'quantity'          => $presentation['quantity'] * $presentationsStored->units,
+          'stock_movement_id'  => $stockMovementInput->id,
+          'stock_store_id'     => $stockStoreInput->id,
+          'product_id'         => $stockStoreInput->product_id,
+          'quantity'           => $presentation['quantity'] * $presentationStored->units,
+          'product_unit_price' => $stockStoreOutput->avg_product_unit_cost, //guarda ants de calcular
         ]);
+
+        // Actualizando el inventario de salida
+        $stockStoreOutput->quantity -= $presentation['quantity'] * $presentationStored->units;
+        $stockStoreOutput->avg_product_unit_cost = $stockStoreOutput->calculateAvgProductUnitCost() ?: $stockStoreOutput->avg_product_unit_cost;
+        $stockStoreOutput->save();
+
+        // Actualizando el inventario de entrada
+        $stockStoreInput->quantity += $presentation['quantity'] * $presentationStored->units;
+        $stockStoreInput->avg_product_unit_cost = $stockStoreInput->calculateAvgProductUnitCost();
+        $stockStoreInput->save();
       }
-      
+
       DB::commit();
 
       return $this->showMessage('Transferencia exitosa', 201);
