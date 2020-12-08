@@ -33,7 +33,7 @@ class SellRequest extends FormRequest
       'nit'                => 'required|digits_between:1,15',
       'address'            => 'sometimes|nullable|string|max:50',
       'phone'              => 'required|string|max:50',
-      'email'              => 'required|string|email',
+      'email'              => 'required|string|email|max:100',
       'description'        => 'sometimes|nullable|string|max:250',
       'items'              => 'required|array',
       'items.*.quantity'   => 'required|numeric|min:0',

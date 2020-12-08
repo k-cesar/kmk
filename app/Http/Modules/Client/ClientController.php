@@ -14,7 +14,9 @@ class ClientController extends Controller
    */
   public function index()
   {
-    $clients = Client::query();
+    $clients = Client::with(['companies' => function ($query) {
+      $query->where('id', auth()->user()->company_id);
+    }]);
 
     return $this->showAll($clients, Schema::getColumnListing((new Client)->getTable()));
   }
@@ -29,6 +31,13 @@ class ClientController extends Controller
   {
     $client = Client::create($request->validated());
 
+    $client->companies()->syncWithoutDetaching([
+      auth()->user()->company_id => [
+        'email' => $request->validated()['email'],
+        'phone' => $request->validated()['phone'],
+      ]
+    ]);
+
     return $this->showOne($client, 201);
   }
 
@@ -40,6 +49,10 @@ class ClientController extends Controller
    */
   public function show(Client $client)
   {
+    $client->load(['companies' => function ($query) {
+      $query->where('id', auth()->user()->company_id);
+    }]);
+
     return $this->showOne($client);
   }
 
@@ -53,6 +66,13 @@ class ClientController extends Controller
   public function update(ClientRequest $request, Client $client)
   {
     $client->update($request->validated());
+
+    $client->companies()->syncWithoutDetaching([
+      auth()->user()->company_id => [
+        'email' => $request->validated()['email'],
+        'phone' => $request->validated()['phone'],
+      ]
+    ]);
 
     return $this->showOne($client);
   }
