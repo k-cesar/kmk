@@ -92,6 +92,10 @@ class ClientControllerTest extends ApiTestCase
       ->assertCreated();
     
     $this->assertDatabaseHas('clients', $attributes);
+
+    $this->assertDatabaseHas('company_clients', array_merge([
+      'company_id' => $user->company_id
+    ], $extraAttributes));
   }
 
 
@@ -104,6 +108,13 @@ class ClientControllerTest extends ApiTestCase
 
     $client = factory(Client::class)->create();
 
+    $client->companies()->syncWithoutDetaching([
+      $user->company_id => [
+        'email' => '',
+        'phone' => '',
+      ]
+    ]);
+
     $attributes = factory(Client::class)->raw();
 
     $extraAttributes = [
@@ -115,6 +126,11 @@ class ClientControllerTest extends ApiTestCase
       ->assertOk();
 
     $this->assertDatabaseHas('clients', $attributes);
+
+    $this->assertDatabaseHas('company_clients', array_merge([
+      'client_id' => $client->id,
+      'company_id' => $user->company_id
+    ], $extraAttributes));
   }
 
   /**
