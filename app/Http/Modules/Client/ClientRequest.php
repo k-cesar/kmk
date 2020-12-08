@@ -33,6 +33,8 @@ class ClientRequest extends FormRequest
       'sex'          => 'required|in:'.implode(',', Client::getOptionsSex()),
       'biometric_id' => 'sometimes|nullable|string|max:1000',
       'birthdate'    => 'required|date|date_format:Y-m-d|before:today|after:1900-01-01',
+      'phone'        => 'present|nullable|max:50',
+      'email'        => 'present|nullable|email|max:100',
       'nit'          => [
         'required', 
         'digits_between:1,15',

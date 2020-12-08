@@ -79,11 +79,16 @@ class ClientControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_store_a_client()
   {
-    $this->signInWithPermissionsTo(['clients.store']);
+    $user = $this->signInWithPermissionsTo(['clients.store']);
 
     $attributes = factory(Client::class)->raw();
 
-    $this->postJson(route('clients.store'), $attributes)
+    $extraAttributes = [
+      'phone' => $user->phone,
+      'email' => $user->email,
+    ];
+
+    $this->postJson(route('clients.store'), array_merge($attributes, $extraAttributes))
       ->assertCreated();
     
     $this->assertDatabaseHas('clients', $attributes);
@@ -95,13 +100,18 @@ class ClientControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_update_a_client()
   {
-    $this->signInWithPermissionsTo(['clients.update']);
+    $user = $this->signInWithPermissionsTo(['clients.update']);
 
     $client = factory(Client::class)->create();
 
     $attributes = factory(Client::class)->raw();
 
-    $this->putJson(route('clients.update', $client->id), $attributes)
+    $extraAttributes = [
+      'phone' => $user->phone,
+      'email' => $user->email,
+    ];
+
+    $this->putJson(route('clients.update', $client->id), array_merge($attributes, $extraAttributes))
       ->assertOk();
 
     $this->assertDatabaseHas('clients', $attributes);
