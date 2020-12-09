@@ -3,7 +3,7 @@
 namespace App\Http\Modules\User;
 
 use Illuminate\Validation\Rule;
-use Spatie\Permission\Models\Role;
+use App\Http\Modules\Store\Store;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -35,7 +35,19 @@ class UserRequest extends FormRequest
       'password'        => 'required|string|min:8|max:25|confirmed',
       'update_password' => 'sometimes|nullable|boolean',
       'stores'          => 'sometimes|array',
-      'stores.*'        => 'exists:stores,id',
+      'stores.*'        => [
+        'integer',
+        function ($attribute, $value, $fail) {
+          $store = Store::where('id', $value)
+            ->where('company_id', $this->get('company_id'))
+            ->visible(auth()->user())
+            ->first();
+
+          if (!$store) {
+            $fail("El campo {$attribute} es inválido.");
+          }
+        },
+      ],
       'phone'           => [
         'required', 
         'digits_between:1,50',

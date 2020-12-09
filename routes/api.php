@@ -145,6 +145,8 @@ Route::group(['middleware' => ['auth']], function () {
     
     Route::get('states-options', 'State\StateController@options')->name('states.options');
     
+    Route::get('stores-options', 'Store\StoreController@options')->name('stores.options');
+    
     Route::get('store-chains-options', 'StoreChain\StoreChainController@options')->name('store-chains.options');
     
     Route::get('store-flags-options', 'StoreFlag\StoreFlagController@options')->name('store-flags.options');

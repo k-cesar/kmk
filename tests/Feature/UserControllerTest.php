@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Modules\Company\Company;
 use Tests\ApiTestCase;
 use App\Http\Modules\User\User;
 use App\Http\Modules\Store\Store;
@@ -85,7 +86,11 @@ class UserControllerTest extends ApiTestCase
   {
     $user = $this->signInWithPermissionsTo(['users.store']);
 
-    $stores = factory(Store::class, 2)->create();
+    $stores = factory(Store::class, 2)->create(['company_id' => $user->company_id]);
+
+    if ($user->role->level > 2) {
+      $user->stores()->sync($stores->pluck('id'));
+    }
 
     $attributes = factory(User::class)->raw([
       'role_id'    => $user->role_id,
@@ -119,7 +124,11 @@ class UserControllerTest extends ApiTestCase
   {
     $user = $this->signInWithPermissionsTo(['users.update']);
 
-    $stores = factory(Store::class, 2)->create();
+    $stores = factory(Store::class, 2)->create(['company_id' => $user->company_id]);
+
+    if ($user->role->level > 2) {
+      $user->stores()->sync($stores->pluck('id'));
+    }
 
     $attributes = factory(User::class)->raw([
       'role_id'    => $user->role_id,

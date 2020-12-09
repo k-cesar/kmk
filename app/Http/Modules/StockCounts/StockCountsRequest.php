@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\StockCounts;
 
+use App\Http\Modules\Store\Store;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StockCountsRequest extends FormRequest
@@ -25,14 +26,24 @@ class StockCountsRequest extends FormRequest
     {
         $rules = [
             'count_date' => 'required|date|date_format:Y-m-d',
-            'store_id' => 'required|exists:stores,id',
-            'status' => 'required|in:'.implode(',', StockCounts::getOptionsStatus()),
+            'status'     => 'required|in:'.implode(',', StockCounts::getOptionsStatus()),
             'created_by' => 'required|exists:users,id',
+            'store_id'   => [
+                'required',
+                'integer',
+                function ($attribute, $value, $fail) {
+                    $store = Store::where('id', $value)
+                        ->visible(auth()->user())
+                        ->first();
+
+                    if (!$store) {
+                        $fail("El campo {$attribute} es inválido.");
+                    }
+                },
+            ],
         ];
 
         if($this->isMethod('PUT')) {
-            $rules['store_id'] = "required|exists:stores,id";
-            $rules['created_by'] = "required|exists:users,id";
             $rules['status'] = 'required|in:'.implode(',', StockCounts::getOptionStatusForUpdate());
         }
 

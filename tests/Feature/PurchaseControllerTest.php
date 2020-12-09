@@ -92,6 +92,14 @@ class PurchaseControllerTest extends ApiTestCase
     $presentationA = factory(Presentation::class)->create();
     $presentationB = factory(Presentation::class)->create();
 
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $store->company_id]);
+      } else {
+        $user->stores()->sync(Store::all()->pluck('id'));
+      }
+    }
+
     $attributes = factory(Purchase::class)->raw([
       'store_id' => $store->id,
       'user_id'  => $user->id,
@@ -219,11 +227,19 @@ class PurchaseControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_update_a_purchase()
   {
-    $this->signInWithPermissionsTo(['purchases.update']);
+    $user = $this->signInWithPermissionsTo(['purchases.update']);
 
     $purchase = factory(Purchase::class)->create();
 
-    $attributes = factory(Purchase::class)->raw();
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $purchase->store->company_id]);
+      } else {
+        $user->stores()->sync($purchase->store_id);
+      }
+    }
+
+    $attributes = factory(Purchase::class)->raw(['store_id' => $purchase->store_id]);
 
     $attributes = Arr::except($attributes, ['user_id', 'date', 'total']);
 

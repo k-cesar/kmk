@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use Tests\ApiTestCase;
 use App\Support\Helper;
-use Illuminate\Support\Arr;
 use App\Http\Modules\User\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

@@ -2,9 +2,10 @@
 
 namespace App\Http\Modules\Sell;
 
-use App\Http\Modules\StoreTurn\StoreTurn;
 use Illuminate\Validation\Rule;
+use App\Http\Modules\Store\Store;
 use Illuminate\Support\Facades\DB;
+use App\Http\Modules\StoreTurn\StoreTurn;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SellOfflineRequest extends FormRequest
@@ -27,7 +28,6 @@ class SellOfflineRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'store_id'                   => 'required|exists:stores,id',
       'sells'                      => 'required|array',
       'sells.*.payment_method_id'  => 'required|exists:payment_methods,id',
       'sells.*.client_id'          => 'sometimes|exists:clients,id',
@@ -41,6 +41,19 @@ class SellOfflineRequest extends FormRequest
       'sells.*.items.*.quantity'   => 'required|numeric|min:0',
       'sells.*.items.*.unit_price' => 'required|numeric|min:0',
       'sells.*.items.*.type'       => 'required|string|in:PRESENTATION,COMBO',
+      'store_id'                   => [
+        'required',
+        'integer',
+        function ($attribute, $value, $fail) {
+          $store = Store::where('id', $value)
+            ->visible(auth()->user())
+            ->first();
+
+          if (!$store) {
+            $fail("El campo {$attribute} es inválido.");
+          }
+        },
+      ],
     ];
 
     foreach ($this->get('sells', []) as $indexSell => $sell) {
@@ -67,13 +80,28 @@ class SellOfflineRequest extends FormRequest
           function ($attribute, $value, $fail) use ($item, $tableName) {
             $exists = DB::table($tableName)
               ->where('id', $value)
+              ->whereNull('deleted_at')
               ->first();
 
             if (!$exists) {
-              $fail("El producto [$value] seleccionado no existe");
+              $fail("El producto ({$item['type']}) [$value] seleccionado no existe");
             }
           },
         ];
+
+        if ($item['type'] == 'COMBO') {
+          array_push($rules["sells.$indexSell.items.$indexItem.id"],
+            function ($attribute, $value, $fail) {
+              $exists = DB::table('presentation_combos_detail')
+                ->where('presentation_combo_id', $value)
+                ->first();
+
+              if (!$exists) {
+                $fail("El combo [$value] seleccionado no posee ninguna presentación asociada");
+              }
+            }
+          );
+        }
       }
     }
 

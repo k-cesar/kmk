@@ -50,12 +50,12 @@ class StoreControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_all_stores()
   {
-    $this->signInWithPermissionsTo(['stores.index']);
+    $user = $this->signInWithPermissionsTo(['stores.index']);
 
     $response = $this->getJson(route('stores.index'))
       ->assertOk();
     
-    foreach (Store::limit(10)->get() as $store) {
+    foreach (Store::visible($user)->limit(10)->get() as $store) {
       $response->assertJsonFragment($store->toArray());
     }
   }
@@ -65,9 +65,17 @@ class StoreControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_a_store()
   {
-    $this->signInWithPermissionsTo(['stores.show']);
+    $user = $this->signInWithPermissionsTo(['stores.show']);
 
     $store = factory(Store::class)->create();
+
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $store->company_id]);
+      } else {
+        $user->stores()->sync($store->id);
+      }
+    }
 
     $this->getJson(route('stores.show', $store->id))
       ->assertOk()
@@ -89,17 +97,24 @@ class StoreControllerTest extends ApiTestCase
     $this->assertDatabaseHas('stores', $attributes);
   }
 
-
   /**
    * @test
    */
   public function an_user_with_permission_can_update_a_store()
   {
-    $this->signInWithPermissionsTo(['stores.update']);
+    $user = $this->signInWithPermissionsTo(['stores.update']);
 
     $store = factory(Store::class)->create();
 
-    $attributes = factory(Store::class)->raw();
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $store->company_id]);
+      } else {
+        $user->stores()->sync($store->id);
+      }
+    }
+
+    $attributes = factory(Store::class)->raw(['company_id' => $store->company_id]);
 
     $this->putJson(route('stores.update', $store->id), $attributes)
       ->assertOk();
@@ -112,13 +127,42 @@ class StoreControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_destroy_a_store()
   {
-    $this->signInWithPermissionsTo(['stores.destroy']);
+    $user = $this->signInWithPermissionsTo(['stores.destroy']);
 
     $store = factory(Store::class)->create();
+
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $store->company_id]);
+      } else {
+        $user->stores()->sync($store->id);
+      }
+    }
 
     $this->deleteJson(route('stores.destroy', $store->id))
       ->assertOk();
 
     $this->assertDatabaseMissing('stores', $store->toArray());
+  }
+
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_stores_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('stores.options'))
+      ->assertOk();
+
+    $stores = Store::select(['id', 'name'])
+      ->withOut('storeType', 'storeChain', 'storeFlag', 'locationType', 'storeFormat', 'socioeconomicLevel', 'state', 'municipality', 'zone', 'company', 'turns')
+      ->limit(10)
+      ->visible($user)
+      ->get();
+
+    foreach ($stores as $store) {
+      $response->assertJsonFragment($store->toArray());
+    }
   }
 }

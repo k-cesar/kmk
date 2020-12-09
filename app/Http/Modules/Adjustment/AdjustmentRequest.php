@@ -2,8 +2,9 @@
 
 namespace App\Http\Modules\Adjustment;
 
-use App\Http\Modules\Stock\StockMovement;
 use Illuminate\Validation\Rule;
+use App\Http\Modules\Store\Store;
+use App\Http\Modules\Stock\StockMovement;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AdjustmentRequest extends FormRequest
@@ -26,10 +27,22 @@ class AdjustmentRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'store_id'            => 'required|exists:stores,id',
       'description'         => 'required|string|max:255',
       'products'            => 'required|array',
       'products.*.quantity' => 'required|numeric|min:0',
+      'store_id'    => [
+        'required',
+        'integer',
+        function ($attribute, $value, $fail) {
+          $store = Store::where('id', $value)
+            ->visible(auth()->user())
+            ->first();
+
+          if (!$store) {
+            $fail("El campo {$attribute} es inválido.");
+          }
+        },
+      ],
       'products.*.id'       => [
         'distinct',
         'required',

@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use Tests\ApiTestCase;
 use App\Http\Modules\Sell\Sell;
-use App\Http\Modules\User\User;
 use Illuminate\Support\Facades\DB;
 use App\Http\Modules\Client\Client;
 use App\Http\Modules\Sell\SellInvoice;
@@ -90,6 +89,16 @@ class SellControllerTest extends ApiTestCase
   {
     $user = $this->signInWithPermissionsTo(['sells.store']);
 
+    $storeTurn = factory(StoreTurn::class)->create(['is_open' => true]);
+
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $storeTurn->store->company_id]);
+      } else {
+        $user->stores()->sync($storeTurn->store_id);
+      }
+    }
+
     $presentationA = factory(Presentation::class)->create(['price' => 5]);
 
     $presentationB = factory(Presentation::class)->create(['price' => 1]);
@@ -97,8 +106,6 @@ class SellControllerTest extends ApiTestCase
     $combo = factory(PresentationCombo::class)->create(['suggested_price' => 5.25]);
 
     $combo->presentations()->sync([$presentationA->id, $presentationB->id]);
-
-    $storeTurn = factory(StoreTurn::class)->create(['is_open' => true]);
 
     DB::table('turns_products')
       ->insert([
@@ -159,6 +166,16 @@ class SellControllerTest extends ApiTestCase
   {
     $seller = $this->signInWithPermissionsTo(['sells-offline.store']);
 
+    $storeTurn = factory(StoreTurn::class)->create(['is_open' => false]);
+
+    if ($seller->role->level > 1) {
+      if ($seller->role->level == 2) {
+        $seller->update(['company_id' => $storeTurn->store->company_id]);
+      } else {
+        $seller->stores()->sync($storeTurn->store_id);
+      }
+    }
+
     $presentationA = factory(Presentation::class)->create(['price' => 5]);
 
     $presentationB = factory(Presentation::class)->create(['price' => 1]);
@@ -166,8 +183,6 @@ class SellControllerTest extends ApiTestCase
     $combo = factory(PresentationCombo::class)->create(['suggested_price' => 5.25]);
 
     $combo->presentations()->sync([$presentationA->id, $presentationB->id]);
-
-    $storeTurn = factory(StoreTurn::class)->create(['is_open' => false]);
 
     $client = Client::first();
 

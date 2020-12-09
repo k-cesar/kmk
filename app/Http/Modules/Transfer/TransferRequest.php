@@ -2,10 +2,10 @@
 
 namespace App\Http\Modules\Transfer;
 
-use App\Http\Modules\Presentation\Presentation;
-use Illuminate\Validation\Rule;
-use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Modules\Store\Store;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Foundation\Http\FormRequest;
+use App\Http\Modules\Presentation\Presentation;
 
 class TransferRequest extends FormRequest
 {
@@ -27,10 +27,42 @@ class TransferRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'origin_store_id'    => 'required|exists:stores,id',
-      'destiny_store_id'   => 'required|exists:stores,id|different:origin_store_id',
       'presentations'      => 'required|array',
       'presentations.*.id' => 'required|distinct|exists:presentations,id',
+      'origin_store_id'    => [
+        'required',
+        'integer',
+        function ($attribute, $value, $fail) {
+          $store = Store::where('id', $value)
+            ->visible(auth()->user())
+            ->first();
+
+          if (!$store) {
+            $fail("El campo {$attribute} es inválido.");
+          }
+        },
+      ],
+      'destiny_store_id'    => [
+        'required',
+        'integer',
+        'different:origin_store_id',
+        function ($attribute, $value, $fail) {
+          $store = Store::where('id', $value)
+            ->visible(auth()->user())
+            ->first();
+
+          if (!$store) {
+            $fail("El campo {$attribute} es inválido.");
+          }
+        },
+        function ($attribute, $value, $fail) {
+          $stores = Store::whereIn('id', [$this->get('origin_store_id'), $this->get('destiny_store_id')]);
+
+          if ($stores->pluck('company_id')->unique()->count() > 1) {
+            $fail("Las transferencias entre empresas están deshabilitadas");
+          }
+        },
+      ],
     ];
 
     $presentations = Presentation::whereIn('id', collect($this->get('presentations'))->pluck('id'))

@@ -82,9 +82,17 @@ class AdjustmentControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_store_a_adjustment()
   {
-    $this->signInWithPermissionsTo(['adjustments.store']);
+    $user = $this->signInWithPermissionsTo(['adjustments.store']);
 
     $store = Store::has('products')->first();
+
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $store->company_id]);
+      } else {
+        $user->stores()->sync($store->id);
+      }
+    }
 
     $productsAttributes = [];
 
