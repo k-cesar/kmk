@@ -70,4 +70,18 @@ class BrandController extends Controller
 
     return $this->showOne($brand);
   }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $brands = Brand::select('id', 'name')
+      ->withOut('maker');
+
+    return $this->showAll($brands, Schema::getColumnListing((new Brand)->getTable()));
+  }
+
 }

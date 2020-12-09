@@ -70,4 +70,17 @@ class StoreFlagController extends Controller
 
     return $this->showOne($storeFlag);
   }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $storeFlags = StoreFlag::select('id', 'name')
+      ->withOut('storeChain');
+
+    return $this->showAll($storeFlags, Schema::getColumnListing((new StoreFlag)->getTable()));
+  }
 }

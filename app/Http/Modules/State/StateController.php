@@ -70,4 +70,18 @@ class StateController extends Controller
 
     return $this->showOne($state);
   }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $states = State::select('id', 'name')
+      ->withOut('region');
+
+    return $this->showAll($states, Schema::getColumnListing((new State)->getTable()));
+  }
+
 }

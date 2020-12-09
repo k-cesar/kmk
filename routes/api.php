@@ -116,13 +116,47 @@ Route::group(['middleware' => ['auth', 'access']], function () {
  ***********************************************************************************************************************/
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::get('roles-options', 'Role\RoleController@options')->name('roles.options');
     
-    Route::get('currencies-options', 'Currency\CurrencyController@options')->name('currencies.options');
-
-    Route::get('countries-options', 'Country\CountryController@options')->name('countries.options');
+    Route::get('brands-options', 'Brand\BrandController@options')->name('brands.options');
     
     Route::get('companies-options', 'Company\CompanyController@options')->name('companies.options');
+    
+    Route::get('countries-options', 'Country\CountryController@options')->name('countries.options');
+    
+    Route::get('currencies-options', 'Currency\CurrencyController@options')->name('currencies.options');
+    
+    Route::get('location-types-options', 'LocationType\LocationTypeController@options')->name('location-types.options');
+    
+    Route::get('makers-options', 'Maker\MakerController@options')->name('makers.options');
+    
+    Route::get('municipalities-options', 'Municipality\MunicipalityController@options')->name('municipalities.options');
+    
+    Route::get('product-categories-options', 'ProductCategory\ProductCategoryController@options')->name('product-categories.options');
+    
+    Route::get('product-departments-options', 'ProductDepartment\ProductDepartmentController@options')->name('product-departments.options');
+    
+    Route::get('product-subcategories-options', 'ProductSubcategory\ProductSubcategoryController@options')->name('product-subcategories.options');
+    
+    Route::get('regions-options', 'Region\RegionController@options')->name('regions.options');
+    
+    Route::get('roles-options', 'Role\RoleController@options')->name('roles.options');
+    
+    Route::get('socioeconomic-levels-options', 'SocioeconomicLevel\SocioeconomicLevelController@options')->name('socioeconomic-levels.options');
+    
+    Route::get('states-options', 'State\StateController@options')->name('states.options');
+    
+    Route::get('store-chains-options', 'StoreChain\StoreChainController@options')->name('store-chains.options');
+    
+    Route::get('store-flags-options', 'StoreFlag\StoreFlagController@options')->name('store-flags.options');
+    
+    Route::get('store-formats-options', 'StoreFormat\StoreFormatController@options')->name('store-formats.options');
+    
+    Route::get('store-types-options', 'StoreType\StoreTypeController@options')->name('store-types.options');
+    
+    Route::get('uoms-options', 'Uom\UomController@options')->name('uoms.options');
+    
+    Route::get('zones-options', 'Zone\ZoneController@options')->name('zones.options');
+    
 });
 
 /***********************************************************************************************************************

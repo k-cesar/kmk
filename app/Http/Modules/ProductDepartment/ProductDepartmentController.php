@@ -71,4 +71,16 @@ class ProductDepartmentController extends Controller
 
     return $this->showOne($productDepartment);
   }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $productDepartments = ProductDepartment::select('id', 'name');
+
+    return $this->showAll($productDepartments, Schema::getColumnListing((new ProductDepartment)->getTable()));
+  }
 }

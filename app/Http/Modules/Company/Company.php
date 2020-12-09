@@ -4,6 +4,7 @@ namespace App\Http\Modules\Company;
 
 use App\Traits\SecureDeletes;
 use App\Http\Modules\User\User;
+use App\Http\Modules\Store\Store;
 use App\Http\Modules\Client\Client;
 use App\Http\Modules\Country\Country;
 use App\Http\Modules\Currency\Currency;
@@ -90,6 +91,16 @@ class Company extends Model
     public function clients()
     {
         return $this->belongsToMany(Client::class, 'company_clients')->withPivot('email', 'phone')->withTimestamps();
+    }
+
+    /**
+     * Get the stores for the Company.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function stores()
+    {
+        return $this->hasMany(Store::class);
     }
 
     /**

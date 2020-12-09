@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\ApiTestCase;
 use App\Http\Modules\Turn\Turn;
+use App\Http\Modules\Store\Store;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class TurnControllerTest extends ApiTestCase
@@ -50,12 +51,12 @@ class TurnControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_all_turns()
   {
-    $this->signInWithPermissionsTo(['turns.index']);
+    $user = $this->signInWithPermissionsTo(['turns.index']);
 
     $response = $this->getJson(route('turns.index'))
       ->assertOk();
     
-    foreach (Turn::limit(10)->get() as $turn) {
+    foreach (Turn::visible($user)->limit(10)->get() as $turn) {
       $response->assertJsonFragment($turn->toArray());
     }
   }
@@ -65,9 +66,18 @@ class TurnControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_a_turn()
   {
-    $this->signInWithPermissionsTo(['turns.show']);
+    $user = $this->signInWithPermissionsTo(['turns.show']);
 
     $turn = factory(Turn::class)->create();
+
+    if ($user->role->level > 1) {
+        if ($user->role->level == 2) {
+          $user->update(['company_id' => $turn->store->company_id]);
+          unset($turn->store);
+        } else {
+          $user->stores()->sync([$turn->store_id]);
+        }
+    }
 
     $this->getJson(route('turns.show', $turn->id))
       ->assertOk()
@@ -79,9 +89,19 @@ class TurnControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_store_a_turn()
   {
-    $this->signInWithPermissionsTo(['turns.store']);
+    $user = $this->signInWithPermissionsTo(['turns.store']);
 
-    $attributes = factory(Turn::class)->raw();
+    $store = factory(Store::class)->create();
+
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $store->update(['company_id' => $user->company_id]);
+      } else {
+        $user->stores()->sync($store->id);
+      }
+    }
+
+    $attributes = factory(Turn::class)->raw(['store_id' => $store->id]);
 
     $this->postJson(route('turns.store'), $attributes)
       ->assertCreated();
@@ -95,11 +115,22 @@ class TurnControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_update_a_turn()
   {
-    $this->signInWithPermissionsTo(['turns.update']);
+    $user = $this->signInWithPermissionsTo(['turns.update']);
 
     $turn = factory(Turn::class)->create();
 
-    $attributes = factory(Turn::class)->raw();
+    $store = factory(Store::class)->create();
+
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $turn->store->update(['company_id' => $user->company_id]);
+        $store->update(['company_id' => $user->company_id]);
+      } else {
+        $user->stores()->sync([$store->id, $turn->store_id]);
+      }
+    }
+
+    $attributes = factory(Turn::class)->raw(['store_id' => $store->id]);
 
     $this->putJson(route('turns.update', $turn->id), $attributes)
       ->assertOk();
@@ -112,9 +143,20 @@ class TurnControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_destroy_a_turn()
   {
-    $this->signInWithPermissionsTo(['turns.destroy']);
+    $user = $this->signInWithPermissionsTo(['turns.destroy']);
+    
+    $user->role->update(['level' => 2]);
 
     $turn = factory(Turn::class)->create();
+
+    if ($user->role->level > 1) {
+        if ($user->role->level == 2) {
+          $user->update(['company_id' => $turn->store->company_id]);
+          unset($turn->store);
+        } else {
+          $user->stores()->sync([$turn->store_id]);
+        }
+    }
 
     $this->deleteJson(route('turns.destroy', $turn->id))
       ->assertOk();

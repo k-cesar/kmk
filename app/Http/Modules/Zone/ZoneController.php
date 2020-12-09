@@ -70,4 +70,18 @@ class ZoneController extends Controller
 
     return $this->showOne($zone);
   }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $zones = Zone::select('id', 'name')
+      ->withOut('municipality');
+
+    return $this->showAll($zones, Schema::getColumnListing((new Zone)->getTable()));
+  }
+
 }

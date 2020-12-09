@@ -121,4 +121,25 @@ class StateControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('states', $state->toArray());
   }
+
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_states_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('states.options'))
+      ->assertOk();
+
+    $states = State::select(['id', 'name'])
+      ->withOut('region')
+      ->limit(10)
+      ->get();
+
+    foreach ($states as $state) {
+      $response->assertJsonFragment($state->toArray());
+    }
+  }
+
 }

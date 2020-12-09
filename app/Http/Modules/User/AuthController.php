@@ -4,11 +4,9 @@ namespace App\Http\Modules\User;
 
 use App\Support\Helper;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
-use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -21,43 +19,6 @@ class AuthController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api', ['except' => ['login', 'register']]);
-    }
-
-    /**
-     * Register a User.
-     * 
-     * @param \Illuminate\Http\Request $request
-     * 
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function register(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'name'            => 'required|string|max:100',
-            'role_id'         => 'required|exists:roles,id',
-            'email'           => 'sometimes|nullable|string|email|max:255|unique:users',
-            'username'        => 'required|string|max:100|alpha_dash|unique:users',
-            'company_id'      => 'required|exists:companies,id',
-            'password'        => 'required|string|min:8|max:25|confirmed',
-            'phone'           => [
-              'required', 
-              'digits_between:1,50',
-              Rule::unique('users', 'phone')
-                ->where(function ($query) use ($request) {
-                  return $query->where('company_id', $request->get('company_id'));
-                }),
-            ],
-        ]);
-
-        if ($validator->fails()) {
-            return $this->errorResponse(422, 'Datos inválidos', $validator->errors());
-        }
-
-        $user = User::create(array_merge($validator->validated(), [
-            'password'  => Hash::make($request->password),
-        ]));
-
-        return $this->showOne($user, 201);
     }
 
     /**

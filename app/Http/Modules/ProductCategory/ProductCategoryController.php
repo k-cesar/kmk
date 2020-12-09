@@ -81,4 +81,18 @@ class ProductCategoryController extends Controller
 
     return $this->showOne($productCategory);
   }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $productCategories = ProductCategory::select('id', 'name')
+      ->withOut('productDepartment');
+
+    return $this->showAll($productCategories, Schema::getColumnListing((new ProductCategory)->getTable()));
+  }
+
 }

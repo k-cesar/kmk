@@ -122,4 +122,23 @@ class LocationTypeControllerTest extends ApiTestCase
     $this->assertDatabaseMissing('location_types', $locationType->toArray());
   }
 
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_location_types_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('location-types.options'))
+      ->assertOk();
+
+    $locationTypes = LocationType::select(['id', 'name'])
+      ->limit(10)
+      ->get();
+
+    foreach ($locationTypes as $locationType) {
+      $response->assertJsonFragment($locationType->toArray());
+    }
+  }
+
 }

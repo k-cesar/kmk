@@ -82,20 +82,32 @@ class PresentationComboControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_store_a_presentation_combo()
   {
-    $this->signInWithPermissionsTo(['presentation-combos.store']);
+    $user = $this->signInWithPermissionsTo(['presentation-combos.store']);
+
+    $stores = factory(Store::class, 2)->create();
+
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $stores->each(function ($store) use ($user) {
+          $store->update(['company_id' => $user->company_id]);
+        });
+      } else {
+        $user->stores()->sync($stores->pluck('id'));
+      }
+    }
 
     $attributes = factory(PresentationCombo::class)->raw();
     $extraAttributes['presentations'] = factory(Presentation::class, 2)->create()->pluck('id')->toArray();
     $extraAttributes['prices'] = [
       [
         'suggested_price' => 50,
-        'store_id' => factory(Store::class)->create()->id,
-        'turns' => factory(Turn::class, 2)->create()->pluck('id')->toArray(),
+        'store_id'        => $stores->first()->id,
+        'turns'           => factory(Turn::class, 2)->create(['store_id' => $stores->first()->id])->pluck('id')->toArray(),
       ],
       [
         'suggested_price' => 23,
-        'store_id' => factory(Store::class)->create()->id,
-        'turns' => factory(Turn::class, 2)->create()->pluck('id')->toArray(),
+        'store_id'        => $stores->last()->id,
+        'turns'           => factory(Turn::class, 2)->create(['store_id' => $stores->last()->id])->pluck('id')->toArray(),
       ],
     ];
 
@@ -111,7 +123,19 @@ class PresentationComboControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_update_a_presentation_combo()
   {
-    $this->signInWithPermissionsTo(['presentation-combos.update']);
+    $user = $this->signInWithPermissionsTo(['presentation-combos.update']);
+
+    $stores = factory(Store::class, 2)->create();
+
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $stores->each(function ($store) use ($user) {
+          $store->update(['company_id' => $user->company_id]);
+        });
+      } else {
+        $user->stores()->sync($stores->pluck('id'));
+      }
+    }
 
     $presentationCombo = factory(PresentationCombo::class)->create();
 
@@ -120,13 +144,13 @@ class PresentationComboControllerTest extends ApiTestCase
     $extraAttributes['prices'] = [
       [
         'suggested_price' => 50,
-        'store_id' => factory(Store::class)->create()->id,
-        'turns' => factory(Turn::class, 2)->create()->pluck('id')->toArray(),
+        'store_id'        => $stores->first()->id,
+        'turns'           => factory(Turn::class, 2)->create(['store_id' => $stores->first()->id])->pluck('id')->toArray(),
       ],
       [
         'suggested_price' => 23,
-        'store_id' => factory(Store::class)->create()->id,
-        'turns' => factory(Turn::class, 2)->create()->pluck('id')->toArray(),
+        'store_id'        => $stores->last()->id,
+        'turns'           => factory(Turn::class, 2)->create(['store_id' => $stores->last()->id])->pluck('id')->toArray(),
       ],
     ];
 

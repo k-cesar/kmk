@@ -70,4 +70,16 @@ class StoreTypeController extends Controller
 
     return $this->showOne($storeType);
   }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $storeTypes = StoreType::select('id', 'name');
+
+    return $this->showAll($storeTypes, Schema::getColumnListing((new StoreType)->getTable()));
+  }
 }

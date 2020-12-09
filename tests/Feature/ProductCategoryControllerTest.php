@@ -121,4 +121,25 @@ class ProductCategoryControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('product_categories', $productCategory->toArray());
   }
+
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_product_categories_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('product-categories.options'))
+      ->assertOk();
+
+    $productCategories = ProductCategory::select(['id', 'name'])
+      ->withOut('productDepartment')
+      ->limit(10)
+      ->get();
+
+    foreach ($productCategories as $productCategory) {
+      $response->assertJsonFragment($productCategory->toArray());
+    }
+  }
+
 }

@@ -121,4 +121,23 @@ class UomControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('uoms', $uom->toArray());
   }
+
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_uoms_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('uoms.options'))
+      ->assertOk();
+
+    $uoms = Uom::select(['id', 'name'])
+      ->limit(10)
+      ->get();
+
+    foreach ($uoms as $uom) {
+      $response->assertJsonFragment($uom->toArray());
+    }
+  }
 }

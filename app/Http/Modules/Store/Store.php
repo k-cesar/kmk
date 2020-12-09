@@ -259,4 +259,26 @@ class Store extends Model
     {
         return $this->hasMany(Deposit::class);
     }
+
+    /**
+     * Scope a query to only include stores visibles by the user.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \App\Http\Modules\User\User $user
+     * 
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeVisible($query, User $user)
+    {
+        if ($user->role->level > 1) {
+            if ($user->role->level == 2) {
+                return $query->whereIn('id', $user->company->stores->pluck('id'));
+            } else {
+                return $query->whereIn('id', $user->stores->pluck('id'));
+            }
+
+        }
+
+        return $query;
+    }
 }

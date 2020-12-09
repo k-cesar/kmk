@@ -72,4 +72,18 @@ class SocioeconomicLevelController extends Controller
 
     return $this->showOne($socioeconomicLevel);
   }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $socioeconomicLevels = SocioeconomicLevel::select('id', 'name')
+      ->withOut('countries');
+
+    return $this->showAll($socioeconomicLevels, Schema::getColumnListing((new SocioeconomicLevel)->getTable()));
+  }
+
 }

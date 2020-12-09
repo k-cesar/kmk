@@ -15,7 +15,7 @@ class TurnController extends Controller
    */
   public function index()
   {
-    $turns = Turn::query();
+    $turns = Turn::visible(auth()->user());
 
     return $this->showAll($turns, Schema::getColumnListing((new Turn)->getTable()));
   }
@@ -41,6 +41,8 @@ class TurnController extends Controller
    */
   public function show(Turn $turn)
   {
+    $this->authorize('manage', $turn);
+
     return $this->showOne($turn);
   }
 
@@ -53,6 +55,8 @@ class TurnController extends Controller
    */
   public function update(TurnRequest $request, Turn $turn)
   {
+    $this->authorize('manage', $turn);
+
     $turn->update($request->validated());
 
     return $this->showOne($turn);
@@ -66,6 +70,8 @@ class TurnController extends Controller
    */
   public function destroy(Turn $turn)
   {
+    $this->authorize('manage', $turn);
+    
     $turn->secureDelete();
 
     return $this->showOne($turn);

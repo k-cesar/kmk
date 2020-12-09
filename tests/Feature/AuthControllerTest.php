@@ -15,20 +15,6 @@ class AuthControllerTest extends ApiTestCase
   /**
    * @test
    */
-  public function a_guest_can_register()
-  {
-    $attributes = factory(User::class)->raw();
-    $attributes['password'] = 'password';
-    $attributes['password_confirmation'] = $attributes['password']; 
-
-    $this->postJson(route('api.register'), $attributes)
-      ->assertCreated()
-      ->assertJson(Arr::only($attributes, 'username'));
-  }
-
-  /**
-   * @test
-   */
   public function an_user_can_login()
   {
     $user = factory(User::class)->create();

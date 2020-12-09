@@ -70,4 +70,17 @@ class MunicipalityController extends Controller
 
     return $this->showOne($municipality);
   }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $municipalities = Municipality::select('id', 'name')
+      ->withOut('state');
+
+    return $this->showAll($municipalities, Schema::getColumnListing((new Municipality)->getTable()));
+  }
 }

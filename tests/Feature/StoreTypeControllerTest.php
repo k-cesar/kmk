@@ -121,4 +121,23 @@ class StoreTypeControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('store_types', $storeType->toArray());
   }
+
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_store_types_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('store-types.options'))
+      ->assertOk();
+
+    $storeTypes = StoreType::select(['id', 'name'])
+      ->limit(10)
+      ->get();
+
+    foreach ($storeTypes as $storeType) {
+      $response->assertJsonFragment($storeType->toArray());
+    }
+  }
 }

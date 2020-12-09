@@ -70,4 +70,16 @@ class StoreFormatController extends Controller
 
     return $this->showOne($storeFormat);
   }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $storeFormats = StoreFormat::select('id', 'name');
+
+    return $this->showAll($storeFormats, Schema::getColumnListing((new StoreFormat)->getTable()));
+  }
 }

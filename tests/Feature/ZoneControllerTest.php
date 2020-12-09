@@ -122,4 +122,24 @@ class ZoneControllerTest extends ApiTestCase
     $this->assertDatabaseMissing('zones', $zone->toArray());
   }
 
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_zones_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('zones.options'))
+      ->assertOk();
+
+    $zones = Zone::select(['id', 'name'])
+      ->withOut('municipality')
+      ->limit(10)
+      ->get();
+
+    foreach ($zones as $zone) {
+      $response->assertJsonFragment($zone->toArray());
+    }
+  }
+
 }

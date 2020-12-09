@@ -123,4 +123,23 @@ class StoreChainControllerTest extends ApiTestCase
     $this->assertDatabaseMissing('store_chains', $storeChain->toArray());
   }
 
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_store_chains_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('store-chains.options'))
+      ->assertOk();
+
+    $storeChains = StoreChain::select(['id', 'name'])
+      ->limit(10)
+      ->get();
+
+    foreach ($storeChains as $storeChain) {
+      $response->assertJsonFragment($storeChain->toArray());
+    }
+  }
+
 }

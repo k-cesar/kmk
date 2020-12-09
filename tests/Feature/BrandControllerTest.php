@@ -122,4 +122,24 @@ class BrandControllerTest extends ApiTestCase
     $this->assertDatabaseMissing('brands', $brand->toArray());
   }
 
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_brands_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('brands.options'))
+      ->assertOk();
+
+    $brands = Brand::select(['id', 'name'])
+      ->withOut('maker')
+      ->limit(10)
+      ->get();
+
+    foreach ($brands as $brand) {
+      $response->assertJsonFragment($brand->toArray());
+    }
+  }
+
 }

@@ -52,5 +52,20 @@ class PaymentMethodRequest extends FormRequest
 
     return $rules;
   }
-  
+
+  /**
+   * Get the validated data from the request.
+   *
+   * @return array
+   */
+  public function validated()
+  {
+    $validatedData = parent::validated();
+
+    if (auth()->user()->role->level > 1) {
+      $validatedData['company_id'] = auth()->user()->company_id;
+    }
+
+    return $validatedData;
+  }
 }

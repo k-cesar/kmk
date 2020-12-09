@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\ApiTestCase;
+use App\Http\Modules\Turn\Turn;
 use App\Http\Modules\StoreTurn\StoreTurn;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -94,14 +95,27 @@ class StoreTurnControllerTest extends ApiTestCase
      */
     public function an_user_with_permission_can_update_a_store_turn()
     {
-        $this->signInWithPermissionsTo(['store-turns.update']);
+        $user = $this->signInWithPermissionsTo(['store-turns.update']);
+
+        $turn = factory(Turn::class)->create();
+
+        if ($user->role->level > 1) {
+            if ($user->role->level == 2) {
+                $user->update(['company_id' => $turn->store->company_id]);
+            } else {
+                $user->stores()->sync($turn->store_id);
+            }
+        }
 
         $storeTurn = factory(StoreTurn::class)->create();
 
-        $attributes = factory(StoreTurn::class)->raw();
+        $attributes = factory(StoreTurn::class)->raw([
+            'store_id' => $turn->store_id,
+            'turn_id'  => $turn->id,
+        ]);
 
         $this->putJson(route('store-turns.update', $storeTurn->id), array_merge($attributes, ['closed_petty_cash_amount' => 1525.15]))
-        ->assertOk();
+            ->assertOk();
     }
 
     /**
