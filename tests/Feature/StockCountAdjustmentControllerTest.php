@@ -47,6 +47,14 @@ class StockCountAdjustmentControllerTest extends ApiTestCase
 
     $store = Store::has('products')->first();
 
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $store->company_id]);
+      } else {
+        $user->stores()->sync($store->id);
+      }
+    }
+
     $stockCount = factory(StockCounts::class)->create([
       'store_id' => $store->id,
       'status'   => StockCounts::OPTION_STATUS_CLOSED,

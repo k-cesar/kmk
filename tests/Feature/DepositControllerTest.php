@@ -84,6 +84,14 @@ class DepositControllerTest extends ApiTestCase
 
     $storeTurn = factory(StoreTurn::class)->create(['is_open' => true]);
 
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $storeTurn->store->company_id]);
+      } else {
+        $user->stores()->sync($storeTurn->store_id);
+      }
+    }
+
     $attributes = factory(Deposit::class)->raw([
       'store_id'      => $storeTurn->store_id,
       'store_turn_id' => $storeTurn->id,
@@ -112,6 +120,14 @@ class DepositControllerTest extends ApiTestCase
     $user = $this->signInWithPermissionsTo(['deposits.update']);
 
     $storeTurn = factory(StoreTurn::class)->create(['is_open' => true]);
+
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $storeTurn->store->company_id]);
+      } else {
+        $user->stores()->sync($storeTurn->store_id);
+      }
+    }
 
     $attributes = factory(Deposit::class)->raw([
       'store_id'      => $storeTurn->store_id,

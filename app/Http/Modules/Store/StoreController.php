@@ -15,7 +15,7 @@ class StoreController extends Controller
    */
   public function index()
   {
-    $stores = Store::query();
+    $stores = Store::visible(auth()->user());
 
     return $this->showAll($stores, Schema::getColumnListing((new Store)->getTable()));
   }
@@ -41,6 +41,8 @@ class StoreController extends Controller
    */
   public function show(Store $store)
   {
+    $this->authorize('manage', $store);
+
     return $this->showOne($store);
   }
 
@@ -53,6 +55,8 @@ class StoreController extends Controller
    */
   public function update(StoreRequest $request, Store $store)
   {
+    $this->authorize('manage', $store);
+
     $store->update($request->validated());
 
     return $this->showOne($store);
@@ -66,8 +70,26 @@ class StoreController extends Controller
    */
   public function destroy(Store $store)
   {
+    $this->authorize('manage', $store);
+
+    $store->users()->sync([]);
+
     $store->secureDelete();
 
     return $this->showOne($store);
+  }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $stores = Store::select('id', 'name')
+      ->withOut('storeType', 'storeChain', 'storeFlag', 'locationType', 'storeFormat', 'socioeconomicLevel', 'state', 'municipality', 'zone', 'company', 'turns')
+      ->visible(auth()->user());
+
+    return $this->showAll($stores, Schema::getColumnListing((new Store)->getTable()));
   }
 }

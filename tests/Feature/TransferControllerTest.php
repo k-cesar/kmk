@@ -90,6 +90,15 @@ class TransferControllerTest extends ApiTestCase
 
     $storeOutput = Store::has('products')->first();
     $storeInput  = Store::has('products')->where('id', '!=', $storeOutput->id)->first();
+    $storeInput->update(['company_id' => $storeOutput->company_id]);
+
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $storeOutput->company_id]);
+      } else {
+        $user->stores()->sync(Store::all()->pluck('id'));
+      }
+    }
 
     $productA = $storeOutput->products->first();
     $productB = $storeOutput->products->last();
@@ -169,6 +178,7 @@ class TransferControllerTest extends ApiTestCase
     }
 
     $storeInput = Store::whereDoesntHave('products')->first();
+    $storeInput->update(['company_id' => $storeOutput->company_id]);
 
     $attributes = [
       'origin_store_id'  => $storeOutput->id,

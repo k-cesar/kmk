@@ -51,7 +51,7 @@ class TurnRequest extends FormRequest
             $fail("El campo {$attribute} es inválido.");
           }
         },
-          ],
+      ],
     ];
 
     if ($this->isMethod('PUT')) {

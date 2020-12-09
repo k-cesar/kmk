@@ -272,11 +272,10 @@ class Store extends Model
     {
         if ($user->role->level > 1) {
             if ($user->role->level == 2) {
-                return $query->whereIn('id', $user->company->stores->pluck('id'));
+                return $query->where('company_id', $user->company_id);
             } else {
                 return $query->whereIn('id', $user->stores->pluck('id'));
             }
-
         }
 
         return $query;

@@ -3,6 +3,7 @@
 namespace App\Http\Modules\StockCounts;
 
 use Illuminate\Validation\Rule;
+use App\Http\Modules\Store\Store;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StockCountAdjustmentRequest extends FormRequest
@@ -25,7 +26,19 @@ class StockCountAdjustmentRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'store_id'       => 'required|exists:stores,id',
+      'store_id'   => [
+        'required',
+        'integer',
+        function ($attribute, $value, $fail) {
+          $store = Store::where('id', $value)
+            ->visible(auth()->user())
+            ->first();
+
+          if (!$store) {
+            $fail("El campo {$attribute} es inválido.");
+          }
+        },
+      ],
       'stock_count_id' => [
         'required',
         Rule::exists('stock_counts', 'id')

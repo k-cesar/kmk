@@ -47,9 +47,17 @@ class SellPaymentControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_all_sell_payments()
   {
-    $this->signInWithPermissionsTo(['sell-payments.index']);
+    $user = $this->signInWithPermissionsTo(['sell-payments.index']);
 
     $sell = Sell::whereHas('sellPayment')->first();
+
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $sell->store->company_id]);
+      } else {
+        $user->stores()->sync($sell->store_id);
+      }
+    }
 
     $response = $this->getJson(route('sell-payments.index', ['store_id' => $sell->store_id]))
       ->assertOk();
@@ -64,7 +72,7 @@ class SellPaymentControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_update_a_sell_payment()
   {
-    $this->signInWithPermissionsTo(['sell-payments.update']);
+    $user = $this->signInWithPermissionsTo(['sell-payments.update']);
 
     $sell = Sell::query()
       ->where('status', Sell::OPTION_STATUS_PENDING)
@@ -73,6 +81,14 @@ class SellPaymentControllerTest extends ApiTestCase
         return $query->where('is_open', true);
       })
       ->first();
+
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $sell->store->company_id]);
+      } else {
+        $user->stores()->sync($sell->store_id);
+      }
+    }
 
     $paymentMethod = PaymentMethod::where('name', '!=', PaymentMethod::OPTION_PAYMENT_CREDIT)->first();
 
