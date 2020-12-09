@@ -122,4 +122,24 @@ class MunicipalityControllerTest extends ApiTestCase
     $this->assertDatabaseMissing('municipalities', $municipality->toArray());
   }
 
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_municipalities_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('municipalities.options'))
+      ->assertOk();
+
+    $municipalities = Municipality::select(['id', 'name'])
+      ->withOut('state')
+      ->limit(10)
+      ->get();
+
+    foreach ($municipalities as $municipality) {
+      $response->assertJsonFragment($municipality->toArray());
+    }
+  }
+
 }

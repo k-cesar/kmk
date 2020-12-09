@@ -70,4 +70,16 @@ class StoreChainController extends Controller
 
     return $this->showOne($storeChain);
   }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $storeChains = StoreChain::select('id', 'name');
+
+    return $this->showAll($storeChains, Schema::getColumnListing((new StoreChain)->getTable()));
+  }
 }

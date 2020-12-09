@@ -2,7 +2,8 @@
 
 namespace App\Http\Modules\PresentationCombo;
 
-use Illuminate\Validation\Rule;
+use App\Http\Modules\Turn\Turn;
+use App\Http\Modules\Store\Store;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PresentationComboRequest extends FormRequest
@@ -33,10 +34,42 @@ class PresentationComboRequest extends FormRequest
       'presentations.*'          => 'exists:presentations,id',
       'prices'                   => 'required|array',
       'prices.*.suggested_price' => 'required|numeric|min:0',
-      'prices.*.store_id'        => 'required|exists:stores,id',
       'prices.*.turns'           => 'required|array',
-      'prices.*.turns.*'         => 'exists:turns,id',
     ];
+
+    foreach($this->get('prices', []) as $indexPrice => $price) {
+
+      $rules["prices.$indexPrice.store_id"] = [
+        'required',
+        'integer',
+        function ($attribute, $value, $fail) {
+          $store = Store::where('id', $value)
+            ->visible(auth()->user())
+            ->first();
+  
+          if (!$store) {
+            $fail("El campo {$attribute} {$value} es inválido.");
+          }
+        },
+      ];
+
+      foreach($price['turns'] ?? [] as $indexTurn => $turn_id) {
+
+        $rules["prices.$indexPrice.turns.$indexTurn"] = [
+          'integer',
+          function ($attribute, $value, $fail) use ($price, $turn_id) {
+            $turn = Turn::where('id', $value)
+              ->where('store_id', $price['store_id'] ?? -1)
+              ->visible(auth()->user())
+              ->first();
+
+            if (!$turn) {
+              $fail("El campo {$attribute} {$turn_id} es inválido.");
+            }
+          },
+        ];
+      }
+    }
 
     if ($this->isMethod('PUT')) {
       $rules['description'] = "required|string|max:150|unique:presentation_combos,description,{$this->presentation_combo->id}";

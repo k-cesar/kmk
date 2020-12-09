@@ -70,4 +70,18 @@ class RegionController extends Controller
 
     return $this->showOne($region);
   }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $regions = Region::select('id', 'name')
+      ->withOut('country');
+
+    return $this->showAll($regions, Schema::getColumnListing((new Region)->getTable()));
+  }
+
 }

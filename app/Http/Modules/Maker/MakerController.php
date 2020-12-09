@@ -70,4 +70,16 @@ class MakerController extends Controller
 
     return $this->showOne($maker);
   }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $makers = Maker::select('id', 'name');
+
+    return $this->showAll($makers, Schema::getColumnListing((new Maker)->getTable()));
+  }
 }

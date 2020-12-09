@@ -121,4 +121,24 @@ class ProductDepartmentControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('product_departments', $productDepartment->toArray());
   }
+
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_product_departments_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('product-departments.options'))
+      ->assertOk();
+
+    $productDepartments = ProductDepartment::select(['id', 'name'])
+      ->withOut('productDepartment')
+      ->limit(10)
+      ->get();
+
+    foreach ($productDepartments as $productDepartment) {
+      $response->assertJsonFragment($productDepartment->toArray());
+    }
+  }
 }

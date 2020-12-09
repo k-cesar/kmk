@@ -5,6 +5,7 @@ namespace App\Http\Modules\ProductSubcategory;
 use App\Traits\SecureDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Modules\ProductCategory\ProductCategory;
 
 class ProductSubcategory extends Model
 {
@@ -24,4 +25,21 @@ class ProductSubcategory extends Model
         'name',
         'product_category_id'
     ];
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['productCategory'];
+
+     /**
+     * Get the Product Category that owns the product Subcategory.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function productCategory()
+    {
+        return $this->belongsTo(ProductCategory::class);
+    }
 }

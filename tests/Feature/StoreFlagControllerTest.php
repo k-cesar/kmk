@@ -122,4 +122,24 @@ class StoreFlagControllerTest extends ApiTestCase
     $this->assertDatabaseMissing('store_flags', $storeFlag->toArray());
   }
 
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_store_flags_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('store-flags.options'))
+      ->assertOk();
+
+    $storeFlags = StoreFlag::select(['id', 'name'])
+      ->withOut('storeChain')
+      ->limit(10)
+      ->get();
+
+    foreach ($storeFlags as $storeFlag) {
+      $response->assertJsonFragment($storeFlag->toArray());
+    }
+  }
+
 }

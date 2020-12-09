@@ -122,4 +122,23 @@ class StoreFormatControllerTest extends ApiTestCase
     $this->assertDatabaseMissing('store_formats', $storeFormat->toArray());
   }
 
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_store_formats_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('store-formats.options'))
+      ->assertOk();
+
+    $storeFormats = StoreFormat::select(['id', 'name'])
+      ->limit(10)
+      ->get();
+
+    foreach ($storeFormats as $storeFormat) {
+      $response->assertJsonFragment($storeFormat->toArray());
+    }
+  }
+
 }

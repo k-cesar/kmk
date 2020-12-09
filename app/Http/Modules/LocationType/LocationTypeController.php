@@ -70,4 +70,16 @@ class LocationTypeController extends Controller
 
     return $this->showOne($locationType);
   }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $locationTypes = LocationType::select('id', 'name');
+
+    return $this->showAll($locationTypes, Schema::getColumnListing((new LocationType)->getTable()));
+  }
 }

@@ -122,4 +122,24 @@ class SocioeconomicLevelControllerTest extends ApiTestCase
     $this->assertDatabaseMissing('socioeconomic_levels', $socioeconomicLevel->toArray());
   }
 
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_socioeconomic_levels_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('socioeconomic-levels.options'))
+      ->assertOk();
+
+    $socioeconomicLevels = SocioeconomicLevel::select(['id', 'name'])
+      ->withOut('countries')
+      ->limit(10)
+      ->get();
+
+    foreach ($socioeconomicLevels as $socioeconomicLevel) {
+      $response->assertJsonFragment($socioeconomicLevel->toArray());
+    }
+  }
+
 }

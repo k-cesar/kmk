@@ -122,4 +122,23 @@ class MakerControllerTest extends ApiTestCase
     $this->assertDatabaseMissing('makers', $maker->toArray());
   }
 
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_makers_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('makers.options'))
+      ->assertOk();
+
+    $makers = Maker::select(['id', 'name'])
+      ->limit(10)
+      ->get();
+
+    foreach ($makers as $maker) {
+      $response->assertJsonFragment($maker->toArray());
+    }
+  }
+
 }

@@ -121,4 +121,25 @@ class RegionControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('regions', $region->toArray());
   }
+
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_regions_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('regions.options'))
+      ->assertOk();
+
+    $regions = Region::select(['id', 'name'])
+      ->withOut('country')
+      ->limit(10)
+      ->get();
+
+    foreach ($regions as $region) {
+      $response->assertJsonFragment($region->toArray());
+    }
+  }
+
 }

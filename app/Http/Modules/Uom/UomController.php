@@ -70,4 +70,16 @@ class UomController extends Controller
 
     return $this->showOne($uom);
   }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $uoms = Uom::select('id', 'name');
+
+    return $this->showAll($uoms, Schema::getColumnListing((new Uom)->getTable()));
+  }
 }

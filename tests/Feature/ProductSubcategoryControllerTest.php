@@ -52,7 +52,7 @@ class ProductSubcategoryControllerTest extends ApiTestCase
         $this->signInWithPermissionsTo(['product-subcategories.index']);
 
         $response = $this->getJson(route('product-subcategories.index'))
-        ->assertOk();
+            ->assertOk();
         
         foreach (ProductSubcategory::limit(10)->get() as $productSubcategory) {
             $response->assertJsonFragment($productSubcategory->toArray());
@@ -69,8 +69,8 @@ class ProductSubcategoryControllerTest extends ApiTestCase
         $productSubcategory = factory(ProductSubcategory::class)->create();
 
         $this->getJson(route('product-subcategories.show', $productSubcategory->id))
-        ->assertOk()
-        ->assertJson($productSubcategory->toArray());
+            ->assertOk()
+            ->assertJson($productSubcategory->toArray());
     }
 
     /**
@@ -83,7 +83,7 @@ class ProductSubcategoryControllerTest extends ApiTestCase
         $attributes = factory(ProductSubcategory::class)->raw();
 
         $this->postJson(route('product-subcategories.store'), $attributes)
-        ->assertCreated();
+            ->assertCreated();
         
         $this->assertDatabaseHas('product_subcategories', $attributes);
     }
@@ -100,7 +100,7 @@ class ProductSubcategoryControllerTest extends ApiTestCase
         $attributes = factory(ProductSubcategory::class)->raw();
 
         $this->putJson(route('product-subcategories.update', $productSubcategory->id), $attributes)
-        ->assertOk();
+            ->assertOk();
 
         $this->assertDatabaseHas('product_subcategories', $attributes);
     }
@@ -115,8 +115,28 @@ class ProductSubcategoryControllerTest extends ApiTestCase
         $productSubcategory = factory(ProductSubcategory::class)->create();
 
         $this->deleteJson(route('product-subcategories.destroy', $productSubcategory->id))
-        ->assertOk();
+            ->assertOk();
 
         $this->assertDatabaseMissing('product_subcategories', $productSubcategory->toArray());
+    }
+
+    /**
+     * @test
+     */
+    public function an_user_can_see_all_product_subcategories_options()
+    {
+        $user = $this->signIn();
+
+        $response = $this->getJson(route('product-subcategories.options'))
+            ->assertOk();
+
+        $productSubcategories = ProductSubcategory::select(['id', 'name'])
+            ->withOut('productCategory')
+            ->limit(10)
+            ->get();
+
+        foreach ($productSubcategories as $productSubcategory) {
+            $response->assertJsonFragment($productSubcategory->toArray());
+        }
     }
 }
