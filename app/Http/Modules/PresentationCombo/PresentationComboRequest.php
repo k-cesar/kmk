@@ -45,7 +45,7 @@ class PresentationComboRequest extends FormRequest
         $rules["prices.$indexPrice.turns.$indexTurn"] = [
           'integer',
           function ($attribute, $value, $fail) use ($price, $turn_id) {
-            $turn = Turn::where('id', $value)
+            $turn = Turn::where('id', $turn_id)
               ->where('store_id', $price['store_id'] ?? -1)
               ->visible(auth()->user())
               ->first();
