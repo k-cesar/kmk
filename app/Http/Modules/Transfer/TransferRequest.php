@@ -29,32 +29,8 @@ class TransferRequest extends FormRequest
     $rules = [
       'presentations'      => 'required|array',
       'presentations.*.id' => 'required|distinct|exists:presentations,id',
-      'origin_store_id'    => [
-        'required',
-        'integer',
-        function ($attribute, $value, $fail) {
-          $store = Store::where('id', $value)
-            ->visible(auth()->user())
-            ->first();
-
-          if (!$store) {
-            $fail("El campo {$attribute} es inválido.");
-          }
-        },
-      ],
-      'destiny_store_id'    => [
-        'required',
-        'integer',
-        'different:origin_store_id',
-        function ($attribute, $value, $fail) {
-          $store = Store::where('id', $value)
-            ->visible(auth()->user())
-            ->first();
-
-          if (!$store) {
-            $fail("El campo {$attribute} es inválido.");
-          }
-        },
+      'origin_store_id'    => 'required|integer|store_visible',
+      'destiny_store_id'   => ['required','integer','store_visible','different:origin_store_id',
         function ($attribute, $value, $fail) {
           $stores = Store::whereIn('id', [$this->get('origin_store_id'), $this->get('destiny_store_id')]);
 

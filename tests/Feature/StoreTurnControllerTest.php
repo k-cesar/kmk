@@ -53,12 +53,12 @@ class StoreTurnControllerTest extends ApiTestCase
      */
     public function an_user_with_permission_can_see_all_store_turns()
     {
-        $this->signInWithPermissionsTo(['store-turns.index']);
+        $user = $this->signInWithPermissionsTo(['store-turns.index']);
 
         $response = $this->getJson(route('store-turns.index'))
-        ->assertOk();
+            ->assertOk();
         
-        foreach (StoreTurn::limit(10)->get() as $storeTurn) {
+        foreach (StoreTurn::visible($user)->limit(10)->get() as $storeTurn) {
             $response->assertJsonFragment($storeTurn->toArray());
         }
     }
@@ -81,12 +81,25 @@ class StoreTurnControllerTest extends ApiTestCase
      */
     public function an_user_with_permission_can_store_a_store_turn()
     {
-        $this->signInWithPermissionsTo(['store-turns.store']);
+        $user = $this->signInWithPermissionsTo(['store-turns.store']);
 
-        $attributes = factory(StoreTurn::class)->raw();
+        $turn = factory(Turn::class)->create();
+
+        if ($user->role->level > 1) {
+            if ($user->role->level == 2) {
+                $user->update(['company_id' => $turn->store->company_id]);
+            } else {
+                $user->stores()->sync($turn->store_id);
+            }
+        }
+
+        $attributes = factory(StoreTurn::class)->raw([
+            'store_id' => $turn->store_id,
+            'turn_id'  => $turn->id,
+        ]);
 
         $this->postJson(route('store-turns.store'), $attributes)
-        ->assertCreated();
+            ->assertCreated();
     }
 
 

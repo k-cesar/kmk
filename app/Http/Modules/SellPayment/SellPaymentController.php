@@ -16,7 +16,7 @@ class SellPaymentController extends Controller
   public function index()
   {
     Validator::validate(request()->all(), [
-      'store_id' => 'required|exists:stores,id',
+      'store_id' => 'required|integer|store_visible',
     ]);
     
     $sellsPayments = SellPayment::query()

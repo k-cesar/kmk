@@ -3,7 +3,6 @@
 namespace App\Http\Modules\Turn;
 
 use Illuminate\Validation\Rule;
-use App\Http\Modules\Store\Store;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TurnRequest extends FormRequest
@@ -26,9 +25,10 @@ class TurnRequest extends FormRequest
   public function rules()
   {
     $rules = [
+      'store_id'   => 'required|integer|store_visible',
       'start_time' => 'required|date_format:H:i:s',
       'end_time'   => 'required|date_format:H:i:s|after:start_time',
-      'is_active' =>  'required|boolean',
+      'is_active'  => 'required|boolean',
       'is_default' => 'required|boolean',
       'name'       => [
         'required', 
@@ -38,19 +38,6 @@ class TurnRequest extends FormRequest
           ->where(function ($query) {
             return $query->where('store_id', $this->get('store_id'));
           }),
-      ],
-      'store_id' => [
-        'required',
-        'integer',
-        function ($attribute, $value, $fail) {
-          $store = Store::where('id', $value)
-            ->visible(auth()->user())
-            ->first();
-
-          if (!$store) {
-            $fail("El campo {$attribute} es inválido.");
-          }
-        },
       ],
     ];
 

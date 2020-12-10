@@ -3,7 +3,6 @@
 namespace App\Http\Modules\Deposit;
 
 use Illuminate\Validation\Rule;
-use App\Http\Modules\Store\Store;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DepositRequest extends FormRequest
@@ -26,24 +25,12 @@ class DepositRequest extends FormRequest
   public function rules()
   {
     $rules = [
+      'store_id'        => 'required|integer|store_visible',
       'deposit_number'  => 'required|string|max:100|unique:deposits',
       'amount'          => 'required|numeric|min:0',
       'images'          => 'required|array',
       'images.*.title'  => 'required|string|max:255|distinct',
       'images.*.base64' => 'required|string',
-      'store_id'   => [
-        'required',
-        'integer',
-        function ($attribute, $value, $fail) {
-          $store = Store::where('id', $value)
-            ->visible(auth()->user())
-            ->first();
-
-          if (!$store) {
-            $fail("El campo {$attribute} es inválido.");
-          }
-        },
-      ],
       'store_turn_id'   => [
         'required',
         Rule::exists('store_turns', 'id')

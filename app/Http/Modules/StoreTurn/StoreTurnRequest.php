@@ -3,7 +3,6 @@
 namespace App\Http\Modules\StoreTurn;
 
 use App\Http\Modules\Turn\Turn;
-use App\Http\Modules\Store\Store;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTurnRequest extends FormRequest
@@ -26,21 +25,9 @@ class StoreTurnRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'open_petty_cash_amount'    => 'required|numeric|min:0',
-		    'store_id' => [
-			    'required',
-			    'integer',
-			    function ($attribute, $value, $fail) {
-				    $store = Store::where('id', $value)
-					    ->visible(auth()->user())
-					    ->first();
-
-				    if (!$store) {
-					    $fail("El campo {$attribute} es inválido.");
-				    }
-			    },
-            ],
-            'turn_id' => [
+            'open_petty_cash_amount' => 'required|numeric|min:0',
+            'store_id'               => 'required|integer|store_visible',
+            'turn_id'                => [
                 'required',
                 'integer',
                 function ($attribute, $value, $fail) {

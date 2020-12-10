@@ -24,6 +24,7 @@ class StoreTurnItemController extends Controller
     $storeTurn = StoreTurn::where('store_id', $store->id)
       ->where('turn_id', $turn->id)
       ->where('is_open', true)
+      ->visible(auth()->user())
       ->firstOrFail();
 
     $presentationsQuery = Presentation::select('id', 'description')

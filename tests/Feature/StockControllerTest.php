@@ -40,11 +40,19 @@ class StockControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_all_stocks()
   {
-    $this->signInWithPermissionsTo(['stocks.index']);
+    $user = $this->signInWithPermissionsTo(['stocks.index']);
 
     $store = Store::has('products')->first();
 
-    $response = $this->getJson(route('stocks.index', ['store_id' => $store->id]))
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $store->company_id]);
+      } else {
+        $user->stores()->sync($store->id);
+      }
+    }
+
+    $this->getJson(route('stocks.index', ['store_id' => $store->id]))
       ->assertSee('misuse of aggregate function MAX()')
       ->assertSee('stock_movements');
   }

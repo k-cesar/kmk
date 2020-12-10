@@ -47,9 +47,17 @@ class StoreTurnItemControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_all_store_turn_items()
   {
-    $this->signInWithPermissionsTo(['stores.turns.items.index']);
+    $user = $this->signInWithPermissionsTo(['stores.turns.items.index']);
 
     $storeTurn = factory(StoreTurn::class)->create(['is_open' => true]);
+
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $storeTurn->store->company_id]);
+      } else {
+        $user->stores()->sync($storeTurn->store_id);
+      }
+    }
 
     $response = $this->getJson(route('stores.turns.items.index', [$storeTurn->store_id, $storeTurn->turn_id]))
       ->assertOk();

@@ -3,9 +3,7 @@
 namespace App\Http\Modules\Sell;
 
 use Illuminate\Validation\Rule;
-use App\Http\Modules\Store\Store;
 use Illuminate\Support\Facades\DB;
-use App\Http\Modules\StoreTurn\StoreTurn;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SellOfflineRequest extends FormRequest
@@ -28,6 +26,7 @@ class SellOfflineRequest extends FormRequest
   public function rules()
   {
     $rules = [
+      'store_id'                   => 'required|integer|store_visible',
       'sells'                      => 'required|array',
       'sells.*.payment_method_id'  => 'required|exists:payment_methods,id',
       'sells.*.client_id'          => 'sometimes|exists:clients,id',
@@ -41,19 +40,6 @@ class SellOfflineRequest extends FormRequest
       'sells.*.items.*.quantity'   => 'required|numeric|min:0',
       'sells.*.items.*.unit_price' => 'required|numeric|min:0',
       'sells.*.items.*.type'       => 'required|string|in:PRESENTATION,COMBO',
-      'store_id'                   => [
-        'required',
-        'integer',
-        function ($attribute, $value, $fail) {
-          $store = Store::where('id', $value)
-            ->visible(auth()->user())
-            ->first();
-
-          if (!$store) {
-            $fail("El campo {$attribute} es inválido.");
-          }
-        },
-      ],
     ];
 
     foreach ($this->get('sells', []) as $indexSell => $sell) {

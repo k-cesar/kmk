@@ -3,7 +3,6 @@
 namespace App\Http\Modules\PresentationCombo;
 
 use App\Http\Modules\Turn\Turn;
-use App\Http\Modules\Store\Store;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PresentationComboRequest extends FormRequest
@@ -39,19 +38,7 @@ class PresentationComboRequest extends FormRequest
 
     foreach($this->get('prices', []) as $indexPrice => $price) {
 
-      $rules["prices.$indexPrice.store_id"] = [
-        'required',
-        'integer',
-        function ($attribute, $value, $fail) {
-          $store = Store::where('id', $value)
-            ->visible(auth()->user())
-            ->first();
-  
-          if (!$store) {
-            $fail("El campo {$attribute} {$value} es inválido.");
-          }
-        },
-      ];
+      $rules["prices.$indexPrice.store_id"] = 'required|integer|store_visible';
 
       foreach($price['turns'] ?? [] as $indexTurn => $turn_id) {
 
