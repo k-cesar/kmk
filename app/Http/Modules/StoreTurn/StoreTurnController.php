@@ -17,7 +17,7 @@ class StoreTurnController extends Controller
      */
     public function index()
     {
-        $storeTurns = StoreTurn::query();
+        $storeTurns = StoreTurn::visible(auth()->user());
 
         return $this->showAll($storeTurns, Schema::getColumnListing((new StoreTurn)->getTable()));
     }
@@ -35,7 +35,7 @@ class StoreTurnController extends Controller
         $request['open_date'] = date('Y-m-d');
         
         $validator = Validator::make($request->all(), [
-            'store_id'                  => 'required|exists:stores,id',
+            'store_id'                  => 'required|integer|store_visible',
             'turn_id'                   => 'required|exists:turns,id',
             'open_petty_cash_amount'    => 'required|min:0',
             'is_open'                   => 'required|boolean',
@@ -85,7 +85,7 @@ class StoreTurnController extends Controller
         $request['close_date'] = date('Y-m-d');
 
         $validator = Validator::make($request->all(), [
-            'store_id'                  => 'required|exists:stores,id',
+            'store_id'                  => 'required|integer|store_visible',
             'turn_id'                   => 'required|exists:turns,id',
             'open_petty_cash_amount'    => 'required|min:0',
             'is_open'                   => 'required|boolean',

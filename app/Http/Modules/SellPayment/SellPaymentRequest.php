@@ -4,7 +4,6 @@ namespace App\Http\Modules\SellPayment;
 
 use App\Http\Modules\Sell\Sell;
 use Illuminate\Validation\Rule;
-use App\Http\Modules\Store\Store;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Modules\PaymentMethod\PaymentMethod;
 
@@ -28,22 +27,10 @@ class SellPaymentRequest extends FormRequest
   public function rules()
   {
     $rules = [
+      'store_id'          => 'required|integer|store_visible',
       'payment_method_id' => 'required|exists:payment_methods,id|not_in:'.PaymentMethod::where('name', PaymentMethod::OPTION_PAYMENT_CREDIT)->first()->id,
       'description'       => 'sometimes|nullable|string|max:250',
-      'store_id'   => [
-        'required',
-        'integer',
-        function ($attribute, $value, $fail) {
-          $store = Store::where('id', $value)
-            ->visible(auth()->user())
-            ->first();
-
-          if (!$store) {
-            $fail("El campo {$attribute} es inválido.");
-          }
-        },
-      ],
-      'store_turn_id'            => [
+      'store_turn_id'     => [
         'required',
         Rule::exists('store_turns', 'id')
           ->where(function ($query) {

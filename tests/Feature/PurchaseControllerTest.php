@@ -50,14 +50,22 @@ class PurchaseControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_all_purchases()
   {
-    $this->signInWithPermissionsTo(['purchases.index']);
+    $user = $this->signInWithPermissionsTo(['purchases.index']);
 
-    $storeId = Purchase::all()->first()->store_id;
+    $store = Purchase::all()->first()->store;
 
-    $response = $this->getJson(route('purchases.index', ['store_id' => $storeId]))
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $store->company_id]);
+      } else {
+        $user->stores()->sync($store->id);
+      }
+    }
+
+    $response = $this->getJson(route('purchases.index', ['store_id' => $store->id]))
       ->assertOk();
     
-    foreach (Purchase::where('store_id', $storeId)->limit(10)->get() as $purchase) {
+    foreach (Purchase::where('store_id', $store->id)->limit(10)->get() as $purchase) {
       $response->assertJsonFragment($purchase->toArray());
     }
   }

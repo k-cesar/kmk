@@ -56,11 +56,19 @@ class SellControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_all_sells()
   {
-    $this->signInWithPermissionsTo(['sells.index']);
+    $user = $this->signInWithPermissionsTo(['sells.index']);
 
-    $storeId = Sell::all()->first()->store_id;
+    $store = Sell::all()->first()->store;
 
-    $response = $this->getJson(route('sells.index', ['store_id' => $storeId]))
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $store->company_id]);
+      } else {
+        $user->stores()->sync($store->id);
+      }
+    }
+
+    $response = $this->getJson(route('sells.index', ['store_id' => $store->id]))
       ->assertOk();
     
     foreach (Sell::limit(10)->get() as $sell) {

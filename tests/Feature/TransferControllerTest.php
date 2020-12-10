@@ -51,6 +51,14 @@ class TransferControllerTest extends ApiTestCase
     $storeInput = Store::all()->last();
     $originId = DB::table('origin_sequence')->insertGetId([]);
 
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $storeOutput->company_id]);
+      } else {
+        $user->stores()->sync(Store::all()->pluck('id'));
+      }
+    }
+
     $stockMovement = [
       'user_id'       => $user->id,
       'origin_id'     => $originId,

@@ -57,11 +57,9 @@ class Turn extends Model
     public function scopeVisible($query, User $user)
     {
         if ($user->role->level > 1) {
-            if ($user->role->level == 2) {
-                return $query->whereIn('store_id', $user->company->stores->pluck('id'));
-            } else {
-                return $query->whereIn('store_id', $user->stores->pluck('id'));
-            }
+            $visibleStores = $user->role->level == 2 ? $user->company->stores : $user->stores;
+
+            return $query->whereIn('store_id', $visibleStores->pluck('id'));
 
         }
 
