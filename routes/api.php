@@ -155,6 +155,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('store-formats-options', 'StoreFormat\StoreFormatController@options')->name('store-formats.options');
     
     Route::get('store-types-options', 'StoreType\StoreTypeController@options')->name('store-types.options');
+
+    Route::get('turns-options', 'Turn\TurnController@options')->name('turns.options');
     
     Route::get('uoms-options', 'Uom\UomController@options')->name('uoms.options');
     
