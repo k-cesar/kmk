@@ -77,4 +77,17 @@ class TurnController extends Controller
     return $this->showOne($turn);
   }
 
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $turns = Turn::select(['id', 'start_time', 'end_time'])
+      ->visible(auth()->user());
+
+    return $this->showAll($turns, Schema::getColumnListing((new Turn)->getTable()));
+  }
+
 }
