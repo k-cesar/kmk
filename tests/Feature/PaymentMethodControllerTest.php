@@ -50,12 +50,12 @@ class PaymentMethodControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_all_payment_methods()
   {
-    $this->signInWithPermissionsTo(['payment-methods.index']);
+    $user = $this->signInWithPermissionsTo(['payment-methods.index']);
 
     $response = $this->getJson(route('payment-methods.index'))
       ->assertOk();
     
-    foreach (PaymentMethod::limit(10)->get() as $paymentMethod) {
+    foreach (PaymentMethod::whereIn('company_id', [0, $user->company_id])->limit(10)->get() as $paymentMethod) {
       $response->assertJsonFragment($paymentMethod->toArray());
     }
   }
@@ -120,6 +120,26 @@ class PaymentMethodControllerTest extends ApiTestCase
       ->assertOk();
 
     $this->assertDatabaseMissing('payment_methods', $paymentMethod->toArray());
+  }
+
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_payment_methods_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('payment-methods.options'))
+      ->assertOk();
+
+    $paymentMethods = PaymentMethod::select(['id', 'name'])
+      ->whereIn('company_id', [0, $user->company_id])
+      ->limit(10)
+      ->get();
+
+    foreach ($paymentMethods as $paymentMethod) {
+      $response->assertJsonFragment($paymentMethod->toArray());
+    }
   }
 
 }
