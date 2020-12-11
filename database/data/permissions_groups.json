@@ -231,9 +231,7 @@
         "name": "Ver Ajustes de Inventario",
         "level": 3,
         "routes": [
-          "adjustments.index",
-          "cash-adjustment.index",
-          "cash-adjustment.show"
+          "adjustments.index"
         ]
       },
       {
@@ -241,8 +239,7 @@
         "level": 3,
         "routes": [
           "adjustments.store",
-          "stock-counts-adjustments.store",
-          "cash-adjustment.store"
+          "stock-counts-adjustments.store"
         ]
       },
       {
@@ -393,12 +390,12 @@
       {
         "name": "Ver Cierre de Caja",
         "level": 4,
-        "routes": []
+        "routes": ["stores-cash.index"]
       },
       {
         "name": "Crear Cierre de Caja",
         "level": 4,
-        "routes": []
+        "routes": ["store-turn-modifications.store"]
       },
       {
         "name": "Editar Cierre de Caja",
