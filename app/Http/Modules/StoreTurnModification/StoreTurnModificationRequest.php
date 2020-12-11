@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Modules\CashAdjustment;
+namespace App\Http\Modules\StoreTurnModification;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CashAdjustmentRequest extends FormRequest
+class StoreTurnModificationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,7 @@ class CashAdjustmentRequest extends FormRequest
     {
         $rules = [
             'store_id'    => 'required|integer|store_visible',
-            'amount'      => 'required|numeric',
+            'amount'      => 'required|numeric|min:0',
             'description' => 'required|string|max:255',
             'store_turn_id' => [
                 'required',
@@ -40,4 +40,19 @@ class CashAdjustmentRequest extends FormRequest
 
         return $rules;
     }
+
+    /**
+     * Get the validated data from the request.
+     *
+     * @return array
+     */
+    public function validated()
+    {
+        $validatedData = parent::validated();
+
+        $validatedData['modification_type'] = StoreTurnModification::OPTION_MODIFICATION_TYPE_CASH_PURCHASE;
+
+        return $validatedData;
+    }
+
 }
