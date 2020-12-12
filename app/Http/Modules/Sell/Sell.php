@@ -45,6 +45,7 @@ class Sell extends Model
         'seller_id',
         'status',
         'status_dte',
+        'invoice_link',
     ];
 
     /**

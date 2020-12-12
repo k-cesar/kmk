@@ -89,4 +89,20 @@ class ClientController extends Controller
 
     return $this->showOne($client);
   }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $clients = Client::select('id', 'name', 'nit','address')
+      ->with(['companies' => function ($query) {
+        $query->where('id', auth()->user()->company_id);
+      }]);
+
+    return $this->showAll($clients, Schema::getColumnListing((new Client)->getTable()));
+  }
+
 }

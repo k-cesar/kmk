@@ -15,7 +15,7 @@ class PaymentMethodController extends Controller
    */
   public function index()
   {
-    $paymentMethods = PaymentMethod::query();
+    $paymentMethods = PaymentMethod::whereIn('company_id', [0, auth()->user()->company_id]);
 
     return $this->showAll($paymentMethods, Schema::getColumnListing((new PaymentMethod)->getTable()));
   }
@@ -69,5 +69,18 @@ class PaymentMethodController extends Controller
     $paymentMethod->secureDelete();
 
     return $this->showOne($paymentMethod);
+  }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $paymentMethods = PaymentMethod::select('id', 'name')
+      ->whereIn('company_id', [0, auth()->user()->company_id]);
+
+    return $this->showAll($paymentMethods, Schema::getColumnListing((new PaymentMethod)->getTable()));
   }
 }

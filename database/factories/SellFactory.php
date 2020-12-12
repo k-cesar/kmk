@@ -20,6 +20,7 @@ $factory->define(Sell::class, function (Faker $faker) {
         'seller_id'     => User::inRandomOrder()->first() ?? factory(User::class),
         'status'        => $faker->randomElement(Sell::getOptionsStatus()),
         'status_dte'    => $faker->randomElement(Sell::getOptionsStatusDTE()),
+        'invoice_link'  => $faker->url,
         'store_turn_id' => factory(StoreTurn::class),
     ];
 });

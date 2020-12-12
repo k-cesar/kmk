@@ -118,6 +118,8 @@ Route::group(['middleware' => ['auth', 'access']], function () {
 
 Route::group(['middleware' => ['auth']], function () {
     
+    Route::get('clients-options', 'Client\ClientController@options')->name('clients.options');
+    
     Route::get('brands-options', 'Brand\BrandController@options')->name('brands.options');
     
     Route::get('companies-options', 'Company\CompanyController@options')->name('companies.options');
@@ -131,6 +133,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('makers-options', 'Maker\MakerController@options')->name('makers.options');
     
     Route::get('municipalities-options', 'Municipality\MunicipalityController@options')->name('municipalities.options');
+    
+    Route::get('payment-methods-options', 'PaymentMethod\PaymentMethodController@options')->name('payment-methods.options');
     
     Route::get('product-categories-options', 'ProductCategory\ProductCategoryController@options')->name('product-categories.options');
     

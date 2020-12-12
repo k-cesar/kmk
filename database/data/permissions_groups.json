@@ -71,12 +71,12 @@
       {
         "name": "Crear Manejo de Tiendas",
         "level": 2,
-        "routes": ["stores.store", "turns.store", "store-turns.store"]
+        "routes": ["stores.store", "turns.store"]
       },
       {
         "name": "Editar Manejo de Tiendas",
         "level": 2,
-        "routes": ["stores.update", "turns.update", "store-turns.update"]
+        "routes": ["stores.update", "turns.update"]
       },
       {
         "name": "Eliminar Manejo de Tiendas",
@@ -345,7 +345,7 @@
       {
         "name": "Crear Registro de Ventas",
         "level": 4,
-        "routes": ["sells.store", "sells-offline.store"]
+        "routes": ["sells.store", "sells-offline.store", "store-turns.store", "store-turns.update"]
       },
       {
         "name": "Editar Registro de Ventas",
@@ -439,7 +439,7 @@
     "permissions": [
       {
         "name": "Ver Manejo de Datos de Clientes",
-        "level": 3,
+        "level": 4,
         "routes": ["clients.index", "clients.show"]
       },
       {
