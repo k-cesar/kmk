@@ -51,12 +51,12 @@ class DepositControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_all_deposits()
   {
-    $this->signInWithPermissionsTo(['deposits.index']);
+    $user = $this->signInWithPermissionsTo(['deposits.index']);
 
     $response = $this->getJson(route('deposits.index'))
       ->assertOk();
     
-    foreach (Deposit::limit(10)->get() as $deposit) {
+    foreach (Deposit::visibleThroughStore($user)->limit(10)->get() as $deposit) {
       $response->assertJsonFragment($deposit->toArray());
     }
   }
@@ -66,9 +66,17 @@ class DepositControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_a_deposit()
   {
-    $this->signInWithPermissionsTo(['deposits.show']);
+    $user = $this->signInWithPermissionsTo(['deposits.show']);
 
     $deposit = factory(Deposit::class)->create();
+
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $deposit->store()->first()->company_id]);
+      } else {
+        $user->stores()->sync($deposit->store_id);
+      }
+    }
 
     $this->getJson(route('deposits.show', $deposit->id))
       ->assertOk()
@@ -135,7 +143,7 @@ class DepositControllerTest extends ApiTestCase
       'created_by'    => $user->id,
     ]);
 
-    $deposit = factory(Deposit::class)->create();
+    $deposit = factory(Deposit::class)->create(['store_id' => $storeTurn->store_id]);
 
     $images = factory(DepositImage::class, 2)->raw(['deposit_id' => $deposit->id]);
     

@@ -1,30 +1,35 @@
 <?php
 
-namespace App\Http\Modules\StockCounts;
+namespace App\Http\Modules\StockCount;
 
 use Exception;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Schema;
-use App\Http\Modules\StockCounts\StockCounts;
-use App\Http\Modules\StockCountsDetail\StockCountsDetail;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Modules\StockCount\StockCount;
 
 
-class StockCountsController extends Controller
+class StockCountController extends Controller
 {
 
     public function index(){
-        $stockCounts = StockCounts::query();
 
-        return $this->showAll($stockCounts, Schema::getColumnListing((new StockCounts)->getTable()));
+        Validator::validate(request()->all(), [
+            'store_id' => 'required|integer|store_visible',
+        ]);
+        
+        $stockCounts = StockCount::where('store_id', request('store_id'));
+
+        return $this->showAll($stockCounts, Arr::except(Schema::getColumnListing((new StockCount)->getTable()), 1));
     }
 
-    public function store(StockCountsRequest $request) {
+    public function store(StockCountRequest $request) {
         try {
             DB::beginTransaction();
 
-            $stockCount = StockCounts::create($request->validated());
+            $stockCount = StockCount::create($request->validated());
 
             if(!empty($request->stock_counts_detail_product)) {
                 $stockCountDetailProduct = $request->stock_counts_detail_product;
@@ -37,7 +42,7 @@ class StockCountsController extends Controller
                         'product_id' => $stockCountDetailProduct[$int],
                         'quantity' => $stockCountDetailQuantity[$int],
                     );
-                    StockCountsDetail::create($countsDetail);
+                    StockCountDetail::create($countsDetail);
                 }
             }
             
@@ -50,11 +55,17 @@ class StockCountsController extends Controller
         }
     }
 
-    public function show(StockCounts $stockCount) {
+    public function show(StockCount $stockCount) {
+        
+        $this->authorize('manage', $stockCount);
+
         return $this->showOne($stockCount);
     }
 
-    public function update(StockCountsRequest $request, StockCounts $stockCount, StockCountsDetail $stockCountsDetail) {
+    public function update(StockCountRequest $request, StockCount $stockCount, StockCountDetail $stockCountsDetail) {
+
+        $this->authorize('manage', $stockCount);
+
         try {
             DB::beginTransaction();
 
@@ -75,10 +86,10 @@ class StockCountsController extends Controller
                     $arrDetail[] = $countsDetail;
                 }
 
-                StockCountsDetail::where('stock_count_id', '=', $stockCount->id)->delete();
+                StockCountDetail::where('stock_count_id', '=', $stockCount->id)->delete();
                 
                 foreach($arrDetail AS $key => $value) {
-                    StockCountsDetail::create($value);
+                    StockCountDetail::create($value);
                 }   
             }            
 
@@ -88,15 +99,5 @@ class StockCountsController extends Controller
             DB::rollback();
             return $this->errorResponse(500, "Ha ocurrido un error interno al guardar stock");
         }
-    }
-
-    public function destroy(StockCounts $stockCount) {
-        $stockCount->secureDelete();
-        return $this->showOne($stockCount);
-    }
-
-    public function options(){
-        $stock = StockCounts::select('id', 'count_date', 'status');
-        return $this->showAll($stock, Schema::getColumnListing((new StockCounts)->getTable()));
     }
 }

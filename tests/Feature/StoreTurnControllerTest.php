@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Modules\Store\Store;
 use Tests\ApiTestCase;
 use App\Http\Modules\Turn\Turn;
 use App\Http\Modules\StoreTurn\StoreTurn;
@@ -58,7 +59,7 @@ class StoreTurnControllerTest extends ApiTestCase
         $response = $this->getJson(route('store-turns.index'))
             ->assertOk();
         
-        foreach (StoreTurn::visible($user)->limit(10)->get() as $storeTurn) {
+        foreach (StoreTurn::visibleThroughStore($user)->limit(10)->get() as $storeTurn) {
             $response->assertJsonFragment($storeTurn->toArray());
         }
     }
@@ -68,12 +69,20 @@ class StoreTurnControllerTest extends ApiTestCase
      */
     public function an_user_with_permission_can_see_a_store_turn()
     {
-        $this->signInWithPermissionsTo(['store-turns.show']);
+        $user = $this->signInWithPermissionsTo(['store-turns.show']);
 
         $storeTurn = factory(StoreTurn::class)->create();
 
+        if ($user->role->level > 1) {
+            if ($user->role->level == 2) {
+                $user->update(['company_id' => $storeTurn->store()->first()->company_id]);
+            } else {
+                $user->stores()->sync($storeTurn->store_id);
+            }
+        }
+
         $this->getJson(route('store-turns.show', $storeTurn->id))
-        ->assertOk();
+            ->assertOk();
     }
 
     /**
@@ -91,6 +100,10 @@ class StoreTurnControllerTest extends ApiTestCase
             } else {
                 $user->stores()->sync($turn->store_id);
             }
+        }
+
+        foreach (StoreTurn::where('store_id', $turn->store_id)->get() as $storeTurn) {
+            $storeTurn->update(['is_open' => false]);
         }
 
         $attributes = factory(StoreTurn::class)->raw([
@@ -120,7 +133,9 @@ class StoreTurnControllerTest extends ApiTestCase
             }
         }
 
-        $storeTurn = factory(StoreTurn::class)->create();
+        $storeTurn = factory(StoreTurn::class)->create([
+            'store_id' => $turn->store_id
+        ]);
 
         $attributes = factory(StoreTurn::class)->raw([
             'store_id' => $turn->store_id,
@@ -136,12 +151,20 @@ class StoreTurnControllerTest extends ApiTestCase
      */
     public function an_user_with_permission_can_destroy_a_store_turn()
     {
-        $this->signInWithPermissionsTo(['store-turns.destroy']);
+        $user = $this->signInWithPermissionsTo(['store-turns.destroy']);
 
         $storeTurn = factory(StoreTurn::class)->create();
 
+        if ($user->role->level > 1) {
+            if ($user->role->level == 2) {
+                $user->update(['company_id' => $storeTurn->store()->first()->company_id]);
+            } else {
+                $user->stores()->sync($storeTurn->store_id);
+            }
+        }
+
         $this->deleteJson(route('store-turns.destroy', $storeTurn->id))
-        ->assertOk();
+            ->assertOk();
 
         $this->assertDatabaseMissing('store_turns', $storeTurn->toArray());
     }

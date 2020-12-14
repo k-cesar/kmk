@@ -25,7 +25,7 @@ class PaymentMethodRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'company_id' => 'required|exists:companies,id',
+      'company_id' => 'required|integer|exists:companies,id',
       'name'     => [
         'required', 
         'string',

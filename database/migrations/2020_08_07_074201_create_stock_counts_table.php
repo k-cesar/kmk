@@ -15,8 +15,8 @@ class CreateStockCountsTable extends Migration
     {
         Schema::create('stock_counts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->timestamp('count_date');
             $table->unsignedBigInteger('store_id');
+            $table->timestamp('count_date');
             $table->enum('status', ['OPEN', 'CLOSED', 'CANCELLED'])->default('OPEN');
             $table->unsignedBigInteger('created_by');
             

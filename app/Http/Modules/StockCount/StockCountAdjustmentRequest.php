@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Modules\StockCounts;
+namespace App\Http\Modules\StockCount;
 
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -31,7 +31,7 @@ class StockCountAdjustmentRequest extends FormRequest
         Rule::exists('stock_counts', 'id')
           ->where(function ($query) {
             return $query->where('store_id', $this->get('store_id'))
-              ->where('status', StockCounts::OPTION_STATUS_CLOSED);
+              ->where('status', StockCount::OPTION_STATUS_CLOSED);
           }),
       ],
     ];

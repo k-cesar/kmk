@@ -21,10 +21,11 @@ class StoreTurnItemController extends Controller
    */
   public function index(Request $request, Store $store, Turn $turn)
   {
+    $this->authorize('manage', $store);
+
     $storeTurn = StoreTurn::where('store_id', $store->id)
       ->where('turn_id', $turn->id)
       ->where('is_open', true)
-      ->visible(auth()->user())
       ->firstOrFail();
 
     $presentationsQuery = Presentation::select('id', 'description')

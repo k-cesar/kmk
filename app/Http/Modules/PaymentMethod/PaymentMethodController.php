@@ -15,7 +15,7 @@ class PaymentMethodController extends Controller
    */
   public function index()
   {
-    $paymentMethods = PaymentMethod::whereIn('company_id', [0, auth()->user()->company_id]);
+    $paymentMethods = PaymentMethod::visibleThroughCompany(auth()->user());
 
     return $this->showAll($paymentMethods, Schema::getColumnListing((new PaymentMethod)->getTable()));
   }
@@ -41,6 +41,8 @@ class PaymentMethodController extends Controller
    */
   public function show(PaymentMethod $paymentMethod)
   {
+    $this->authorize('manage', $paymentMethod);
+
     return $this->showOne($paymentMethod);
   }
 
@@ -53,6 +55,8 @@ class PaymentMethodController extends Controller
    */
   public function update(PaymentMethodRequest $request, PaymentMethod $paymentMethod)
   {
+    $this->authorize('manage', $paymentMethod);
+
     $paymentMethod->update($request->validated());
 
     return $this->showOne($paymentMethod);
@@ -66,6 +70,8 @@ class PaymentMethodController extends Controller
    */
   public function destroy(PaymentMethod $paymentMethod)
   {
+    $this->authorize('manage', $paymentMethod);
+    
     $paymentMethod->secureDelete();
 
     return $this->showOne($paymentMethod);
@@ -79,7 +85,7 @@ class PaymentMethodController extends Controller
   public function options()
   {
     $paymentMethods = PaymentMethod::select('id', 'name')
-      ->whereIn('company_id', [0, auth()->user()->company_id]);
+      ->visibleThroughCompany(auth()->user());
 
     return $this->showAll($paymentMethods, Schema::getColumnListing((new PaymentMethod)->getTable()));
   }

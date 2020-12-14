@@ -56,7 +56,7 @@ class TurnControllerTest extends ApiTestCase
     $response = $this->getJson(route('turns.index'))
       ->assertOk();
     
-    foreach (Turn::visible($user)->limit(10)->get() as $turn) {
+    foreach (Turn::visibleThroughStore($user)->limit(10)->get() as $turn) {
       $response->assertJsonFragment($turn->toArray());
     }
   }
@@ -72,8 +72,7 @@ class TurnControllerTest extends ApiTestCase
 
     if ($user->role->level > 1) {
         if ($user->role->level == 2) {
-          $user->update(['company_id' => $turn->store->company_id]);
-          unset($turn->store);
+          $user->update(['company_id' => $turn->store()->first()->company_id]);
         } else {
           $user->stores()->sync([$turn->store_id]);
         }
@@ -151,8 +150,7 @@ class TurnControllerTest extends ApiTestCase
 
     if ($user->role->level > 1) {
         if ($user->role->level == 2) {
-          $user->update(['company_id' => $turn->store->company_id]);
-          unset($turn->store);
+          $user->update(['company_id' => $turn->store()->first()->company_id]);
         } else {
           $user->stores()->sync([$turn->store_id]);
         }
@@ -175,7 +173,7 @@ class TurnControllerTest extends ApiTestCase
       ->assertOk();
 
     $turns = Turn::select(['id', 'start_time', 'end_time'])
-      ->visible($user)
+      ->visibleThroughStore($user)
       ->limit(10)
       ->get();
 

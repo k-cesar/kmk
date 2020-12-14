@@ -90,11 +90,9 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     
     Route::resource('adjustments', 'Adjustment\AdjustmentController')->only('index', 'store');
 
-    Route::resource('stock-counts-adjustments', 'StockCounts\StockCountAdjustmentController')->only('store');
+    Route::resource('stock-counts-adjustments', 'StockCount\StockCountAdjustmentController')->only('store');
 
-    Route::resource('stock-counts', 'StockCounts\StockCountsController')->except('create', 'edit');
-
-    Route::resource('stock-counts-detail', 'StockCountsDetail\StockCountsDetailController')->except('create', 'edit');
+    Route::resource('stock-counts', 'StockCount\StockCountController')->except('create', 'edit', 'destroy');
 
     Route::resource('sells', 'Sell\SellController')->except('create', 'edit', 'update');
     Route::post('sells-offline', 'Sell\SellController@storeOffline')->name('sells-offline.store');

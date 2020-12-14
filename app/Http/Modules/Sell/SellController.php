@@ -124,6 +124,8 @@ class SellController extends Controller
    */
   public function show(Sell $sell)
   {
+    $this->authorize('manage', $sell);
+
     $sell->load('store:id,name')
       ->load('seller:id,name')
       ->load('sellInvoice')
@@ -142,6 +144,8 @@ class SellController extends Controller
    */
   public function destroy(Sell $sell)
   {
+    $this->authorize('manage', $sell);
+
     try {
       DB::beginTransaction();
       

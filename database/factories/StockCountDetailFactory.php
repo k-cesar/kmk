@@ -3,13 +3,13 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use Faker\Generator as Faker;
-use App\Http\Modules\StockCountsDetail\StockCountsDetail;
-use App\Http\Modules\StockCounts\StockCounts;
 use App\Http\Modules\Product\Product;
+use App\Http\Modules\StockCount\StockCount;
+use App\Http\Modules\StockCount\StockCountDetail;
 
-$factory->define(StockCountsDetail::class, function (Faker $faker) {
+$factory->define(StockCountDetail::class, function (Faker $faker) {
     return [
-        'stock_count_id' => factory(StockCounts::class),
+        'stock_count_id' => factory(StockCount::class),
         'product_id' => factory(Product::class),
         'quantity' => 50,
     ];

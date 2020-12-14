@@ -28,7 +28,7 @@ class SellOfflineRequest extends FormRequest
     $rules = [
       'store_id'                   => 'required|integer|store_visible',
       'sells'                      => 'required|array',
-      'sells.*.payment_method_id'  => 'required|exists:payment_methods,id',
+      'sells.*.payment_method_id'  => 'required|integer|payment_method_visible',
       'sells.*.client_id'          => 'sometimes|exists:clients,id',
       'sells.*.name'               => 'required|string|max:250',
       'sells.*.nit'                => 'required|digits_between:1,15',

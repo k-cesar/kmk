@@ -5,13 +5,14 @@ namespace App\Http\Modules\Deposit;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\User\User;
 use App\Http\Modules\Store\Store;
+use App\Traits\ResourceVisibility;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Modules\StoreTurn\StoreTurn;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Deposit extends Model
 {
-    use SoftDeletes, SecureDeletes;
+    use SoftDeletes, SecureDeletes, ResourceVisibility;
 
     /**
      * The attributes that are mass assignable.

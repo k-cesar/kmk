@@ -6,7 +6,7 @@ use Tests\ApiTestCase;
 use App\Http\Modules\Store\Store;
 use Illuminate\Support\Facades\DB;
 use App\Http\Modules\Stock\StockMovement;
-use App\Http\Modules\StockCounts\StockCounts;
+use App\Http\Modules\StockCount\StockCount;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class StockCountAdjustmentControllerTest extends ApiTestCase
@@ -55,9 +55,9 @@ class StockCountAdjustmentControllerTest extends ApiTestCase
       }
     }
 
-    $stockCount = factory(StockCounts::class)->create([
+    $stockCount = factory(StockCount::class)->create([
       'store_id' => $store->id,
-      'status'   => StockCounts::OPTION_STATUS_CLOSED,
+      'status'   => StockCount::OPTION_STATUS_CLOSED,
     ]);
 
     foreach ($store->products as $product) {

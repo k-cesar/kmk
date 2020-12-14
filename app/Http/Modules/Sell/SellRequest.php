@@ -27,7 +27,7 @@ class SellRequest extends FormRequest
   {
     $rules = [
       'store_id'           => 'required|integer|store_visible',
-      'payment_method_id'  => 'required|exists:payment_methods,id',
+      'payment_method_id'  => 'required|integer|payment_method_visible',
       'client_id'          => 'required|exists:clients,id',
       'name'               => 'required|string|max:250',
       'nit'                => 'required|digits_between:1,15',

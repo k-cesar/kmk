@@ -55,7 +55,7 @@ class PaymentMethodControllerTest extends ApiTestCase
     $response = $this->getJson(route('payment-methods.index'))
       ->assertOk();
     
-    foreach (PaymentMethod::whereIn('company_id', [0, $user->company_id])->limit(10)->get() as $paymentMethod) {
+    foreach (PaymentMethod::whereHasCompanyVisible($user)->limit(10)->get() as $paymentMethod) {
       $response->assertJsonFragment($paymentMethod->toArray());
     }
   }
@@ -132,8 +132,8 @@ class PaymentMethodControllerTest extends ApiTestCase
     $response = $this->getJson(route('payment-methods.options'))
       ->assertOk();
 
-    $paymentMethods = PaymentMethod::select(['id', 'name'])
-      ->whereIn('company_id', [0, $user->company_id])
+    $paymentMethods = PaymentMethod::select('id', 'name')
+      ->visibleThroughCompany($user)
       ->limit(10)
       ->get();
 

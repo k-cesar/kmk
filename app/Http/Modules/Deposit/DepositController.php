@@ -18,7 +18,7 @@ class DepositController extends Controller
    */
   public function index()
   {
-    $deposits = Deposit::query()
+    $deposits = Deposit::visibleThroughStore(auth()->user())
       ->with('creator:id,name')
       ->with('depositImages');
 
@@ -64,6 +64,8 @@ class DepositController extends Controller
    */
   public function show(Deposit $deposit)
   {
+    $this->authorize('manage', $deposit);
+
     $deposit->load([
       'store:id,name',
       'creator:id,name',
@@ -82,6 +84,8 @@ class DepositController extends Controller
    */
   public function update(DepositRequest $request, Deposit $deposit)
   {
+    $this->authorize('manage', $deposit);
+    
     try {
       DB::beginTransaction();
 

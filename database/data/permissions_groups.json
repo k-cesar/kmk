@@ -63,9 +63,7 @@
           "stores.index",
           "stores.show",
           "turns.index",
-          "turns.show",
-          "store-turns.index",
-          "store-turns.show"
+          "turns.show"
         ]
       },
       {
@@ -287,25 +285,23 @@
         "level": 3,
         "routes": [
           "stock-counts.index",
-          "stock-counts.show",
-          "stock-counts-detail.index",
-          "stock-counts-detail.show"
+          "stock-counts.show"
         ]
       },
       {
         "name": "Crear Conteos de Inventario",
         "level": 3,
-        "routes": ["stock-counts.store", "stock-counts-detail.store"]
+        "routes": ["stock-counts.store"]
       },
       {
         "name": "Editar Conteos de Inventario",
         "level": 3,
-        "routes": ["stock-counts.update", "stock-counts-detail.update"]
+        "routes": ["stock-counts.update"]
       },
       {
         "name": "Eliminar Conteos de Inventario",
         "level": 3,
-        "routes": ["stock-counts.destroy", "stock-counts-detail.destroy"]
+        "routes": []
       }
     ]
   },
@@ -340,7 +336,7 @@
       {
         "name": "Ver Registro de Ventas",
         "level": 4,
-        "routes": ["sells.index", "sells.show", "stocks.index", "stores.turns.items.index"]
+        "routes": ["sells.index", "sells.show", "stocks.index", "stores.turns.items.index", "store-turns.index", "store-turns.show"]
       },
       {
         "name": "Crear Registro de Ventas",
@@ -439,7 +435,7 @@
     "permissions": [
       {
         "name": "Ver Manejo de Datos de Clientes",
-        "level": 4,
+        "level": 3,
         "routes": ["clients.index", "clients.show"]
       },
       {

@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Modules\StockCounts;
+namespace App\Http\Modules\StockCount;
 
 use App\Traits\SecureDeletes;
-use App\Http\Modules\Store\Store;
 use App\Http\Modules\User\User;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Modules\Store\Store;
 use Illuminate\Database\Eloquent\Model;
-use App\Http\Modules\StockCountsDetail\StockCountsDetail;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class StockCounts extends Model
+class StockCount extends Model
 {
     use SoftDeletes, SecureDeletes;
 
@@ -18,8 +17,8 @@ class StockCounts extends Model
     const OPTION_STATUS_CANCELLED = 'CANCELLED';
 
     protected $fillable = [
-        'count_date',
         'store_id',
+        'count_date',
         'status',
         'created_by',
     ];
@@ -35,7 +34,7 @@ class StockCounts extends Model
     }
 
     public function stock_counts() { 
-        return $this->hasMany(StockCountsDetail::class, 'stock_count_id');
+        return $this->hasMany(StockCountDetail::class, 'stock_count_id');
     }
 
     public function user() {

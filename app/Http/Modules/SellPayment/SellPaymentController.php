@@ -41,6 +41,8 @@ class SellPaymentController extends Controller
    */
   public function update(SellPaymentRequest $request, SellPayment $sellPayment)
   {
+    $this->authorize('manage', $sellPayment);
+
     $sellPayment->update([
       'status'            => SellPayment::OPTION_STATUS_VERIFIED,
       'payment_method_id' => $request->payment_method_id,

@@ -133,6 +133,8 @@ class PurchaseController extends Controller
    */
   public function show(Purchase $purchase)
   {
+    $this->authorize('manage', $purchase);
+    
     $purchase->load('store:id,name', 
       'user:id,name', 
       'provider:id,name', 
@@ -154,6 +156,8 @@ class PurchaseController extends Controller
    */
   public function update(PurchaseRequest $request, Purchase $purchase)
   {
+    $this->authorize('manage', $purchase);
+
     $purchase->update($request->validated());
 
     return $this->showOne($purchase);
