@@ -1,9 +1,9 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Http\Modules\StockCounts\StockCounts;
+use App\Http\Modules\StockCount\StockCount;
 
-class StockCountsSeeder extends Seeder
+class StockCountSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -12,6 +12,6 @@ class StockCountsSeeder extends Seeder
      */
     public function run()
     {
-        factory(StockCounts::class, 5)->create();
+        factory(StockCount::class, 5)->create();
     }
 }

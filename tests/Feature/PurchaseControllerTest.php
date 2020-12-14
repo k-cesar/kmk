@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Modules\PaymentMethod\PaymentMethod;
 use Tests\ApiTestCase;
 use Illuminate\Support\Arr;
 use App\Http\Modules\Store\Store;
@@ -75,7 +76,7 @@ class PurchaseControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_a_purchase()
   {
-    $this->signInWithPermissionsTo(['purchases.show']);
+    $user = $this->signInWithPermissionsTo(['purchases.show']);
 
     $purchase = Purchase::with('store:id,name', 
       'user:id,name', 
@@ -83,6 +84,14 @@ class PurchaseControllerTest extends ApiTestCase
       'paymentMethod:id,name',
       'purchaseDetails.presentation:id,description')
       ->first();
+
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $purchase->store()->first()->company_id]);
+      } else {
+        $user->stores()->sync($purchase->store_id);
+      }
+    }
 
     $this->getJson(route('purchases.show', $purchase->id))
       ->assertOk()
@@ -109,9 +118,9 @@ class PurchaseControllerTest extends ApiTestCase
     }
 
     $attributes = factory(Purchase::class)->raw([
-      'store_id' => $store->id,
-      'user_id'  => $user->id,
-      'total'    => 26000,
+      'store_id'          => $store->id,
+      'user_id'           => $user->id,
+      'total'             => 26000,
     ]);
 
     $presentationsAttributes = [

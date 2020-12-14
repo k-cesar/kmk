@@ -47,7 +47,6 @@ class PresentationComboRequest extends FormRequest
           function ($attribute, $value, $fail) use ($price, $turn_id) {
             $turn = Turn::where('id', $turn_id)
               ->where('store_id', $price['store_id'] ?? -1)
-              ->visible(auth()->user())
               ->first();
 
             if (!$turn) {

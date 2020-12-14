@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Http\Modules\StockCountsDetail;
+namespace App\Http\Modules\StockCount;
 
 use App\Traits\SecureDeletes;
-use App\Http\Modules\StockCounts\StockCounts;
 use App\Http\Modules\Product\Product;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
-class StockCountsDetail extends Model
+class StockCountDetail extends Model
 {
     use SoftDeletes, SecureDeletes;
 

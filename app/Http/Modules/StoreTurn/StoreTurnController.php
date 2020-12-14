@@ -2,11 +2,9 @@
 
 namespace App\Http\Modules\StoreTurn;
 
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Schema;
 use App\Http\Modules\StoreTurn\StoreTurn;
-use Illuminate\Support\Facades\Validator;
 
 class StoreTurnController extends Controller
 {
@@ -17,7 +15,7 @@ class StoreTurnController extends Controller
      */
     public function index()
     {
-        $storeTurns = StoreTurn::visible(auth()->user());
+        $storeTurns = StoreTurn::visibleThroughStore(auth()->user());
 
         return $this->showAll($storeTurns, Schema::getColumnListing((new StoreTurn)->getTable()));
     }
@@ -28,30 +26,9 @@ class StoreTurnController extends Controller
      * @param  App\Http\Modules\storeTurns\StoreTurnRequest  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(Request $request)
+    public function store(StoreTurnRequest $request)
     {
-        $request['is_open'] = 1;
-        $request['open_by'] = auth()->user()->id;
-        $request['open_date'] = date('Y-m-d');
-        
-        $validator = Validator::make($request->all(), [
-            'store_id'                  => 'required|integer|store_visible',
-            'turn_id'                   => 'required|exists:turns,id',
-            'open_petty_cash_amount'    => 'required|min:0',
-            'is_open'                   => 'required|boolean',
-            'open_by'                   => 'required|exists:users,id',
-            'open_date'                 => 'required|date|date_format:Y-m-d',
-        ]);
-        
-        if($validator->fails()) {
-            return $this->errorResponse(422, 'Datos inválidos', $validator->errors());
-        }
-        
-        $storeTurn = StoreTurn::create($validator->validated(), [
-            'open_by'   => auth()->user()->id,
-            'open_date' => date('Y-m-d'),
-            'is_open'   => 1,
-        ]);
+        $storeTurn = StoreTurn::create($request->validated());
 
         return $this->showOne($storeTurn, 201);
     }
@@ -64,6 +41,8 @@ class StoreTurnController extends Controller
      */
     public function show(StoreTurn $storeTurn)
     {
+        $this->authorize('manage', $storeTurn);
+
         return $this->showOne($storeTurn);
     }
 
@@ -76,37 +55,9 @@ class StoreTurnController extends Controller
      */
     public function update(StoreTurnRequest $request, StoreTurn $storeTurn)
     {
-        $openDate = date('Y-m-d', strtotime($storeTurn['open_date']));
-        $request['open_petty_cash_amount'] = $storeTurn['open_petty_cash_amount'];
-        $request['is_open'] = 0;
-        $request['open_by'] = $storeTurn['open_by'];
-        $request['open_date'] = $openDate;
-        $request['closed_by'] = auth()->user()->id;
-        $request['close_date'] = date('Y-m-d');
+        $this->authorize('manage', $storeTurn);
 
-        $validator = Validator::make($request->all(), [
-            'store_id'                  => 'required|integer|store_visible',
-            'turn_id'                   => 'required|exists:turns,id',
-            'open_petty_cash_amount'    => 'required|min:0',
-            'is_open'                   => 'required|boolean',
-            'open_by'                   => 'required|exists:users,id',
-            'open_date'                 => 'required|date|date_format:Y-m-d',
-            'closed_by'                 => 'required|exists:users,id',
-            'close_date'                => 'required|date|date_format:Y-m-d',
-            'closed_petty_cash_amount'  => 'required|min:0',
-        ]);
-        
-        if($validator->fails()) {
-            return $this->errorResponse(422, 'Datos inválidos', $validator->errors());
-        }
-
-        $storeTurn = StoreTurn::create($validator->validated(), [
-            'is_open'                   => 0,
-            'open_by'                   => $request['open_by'],
-            'open_date'                 => $openDate,
-            'closed_by'                 => auth()->user()->id,
-            'close_date'                => date('Y-m-d'),
-        ]);
+        $storeTurn->update($request->validated());
 
         return $this->showOne($storeTurn, 200);
     }
@@ -119,6 +70,8 @@ class StoreTurnController extends Controller
      */
     public function destroy(StoreTurn $storeTurn)
     {
+        $this->authorize('manage', $storeTurn);
+        
         $storeTurn->secureDelete();
 
         return $this->showOne($storeTurn);

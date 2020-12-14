@@ -3,14 +3,15 @@
 namespace App\Http\Modules\PaymentMethod;
 
 use App\Traits\SecureDeletes;
+use App\Traits\ResourceVisibility;
 use App\Http\Modules\Company\Company;
-use App\Http\Modules\Purchase\Purchase;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Modules\Purchase\Purchase;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PaymentMethod extends Model
 {
-    use SoftDeletes, SecureDeletes;
+    use SoftDeletes, SecureDeletes, ResourceVisibility;
 
     const OPTION_PAYMENT_CASH   = 'CASH';
     const OPTION_PAYMENT_CARD   = 'CARD';

@@ -26,7 +26,7 @@ class PurchaseRequest extends FormRequest
     $rules = [
       'store_id'          => 'required|integer|store_visible',
       'provider_id'       => 'required|exists:providers,id',
-      'payment_method_id' => 'required|exists:payment_methods,id',
+      'payment_method_id' => 'required|integer|payment_method_visible',
       'invoice'           => 'required|string|max:100',
       'serial_number'     => 'sometimes|nullable|string|max:100',
       'comments'          => 'sometimes|nullable|string|max:250',

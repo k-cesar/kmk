@@ -81,9 +81,17 @@ class SellControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_a_sell()
   {
-    $this->signInWithPermissionsTo(['sells.show']);
+    $user = $this->signInWithPermissionsTo(['sells.show']);
 
     $sell = factory(Sell::class)->create();
+
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $sell->store()->first()->company_id]);
+      } else {
+        $user->stores()->sync($sell->store_id);
+      }
+    }
 
     $this->getJson(route('sells.show', $sell->id))
       ->assertOk()
@@ -280,11 +288,19 @@ class SellControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_destroy_a_sell()
   {
-    $this->signInWithPermissionsTo(['sells.destroy']);
+    $user = $this->signInWithPermissionsTo(['sells.destroy']);
 
     $sell = factory(Sell::class)->create();
     $sellInvoice = factory(SellInvoice::class)->create(['sell_id' => $sell->id]);
     $sellPayment = factory(SellPayment::class)->create(['sell_id' => $sell->id]);
+
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $sell->store()->first()->company_id]);
+      } else {
+        $user->stores()->sync($sell->store_id);
+      }
+    }
 
     $this->deleteJson(route('sells.destroy', $sell->id))
       ->assertOk();

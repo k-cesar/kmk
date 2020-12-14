@@ -5,10 +5,10 @@ namespace App\Http\Modules\Adjustment;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use App\Http\Modules\Stock\StockMovement;
-use App\Http\Modules\Stock\StockMovementDetail;
 use App\Http\Modules\Stock\StockStore;
-use App\Http\Modules\StockCounts\StockCounts;
+use App\Http\Modules\Stock\StockMovement;
+use App\Http\Modules\StockCount\StockCount;
+use App\Http\Modules\Stock\StockMovementDetail;
 
 class Adjustment
 {
@@ -24,7 +24,7 @@ class Adjustment
     if ($values['origin_type']==StockMovement::OPTION_ORIGIN_TYPE_MANUAL_ADJUSTMENT) {
       $originId = DB::table('origin_sequence')->insertGetId([]);
     } elseif ($values['origin_type']==StockMovement::OPTION_ORIGIN_TYPE_COUNT) {
-      $originId = StockCounts::find($values['stock_count_id'])->id;
+      $originId = StockCount::find($values['stock_count_id'])->id;
     }
 
     try {
@@ -76,12 +76,12 @@ class Adjustment
   /**
   * Store an Adjustment created from StockCount given.
   * 
-  * @param App\Http\Modules\StockCounts\StockCounts
+  * @param App\Http\Modules\StockCount\StockCount
   * 
   * @return boolean
   */
   
-  public static function createFromStockCount(StockCounts $stockCount)
+  public static function createFromStockCount(StockCount $stockCount)
   {
     $products = [];
 

@@ -3,14 +3,14 @@
 namespace App\Http\Modules\Turn;
 
 use App\Traits\SecureDeletes;
-use App\Http\Modules\User\User;
 use App\Http\Modules\Store\Store;
+use App\Traits\ResourceVisibility;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Turn extends Model
 {
-    use SoftDeletes, SecureDeletes;
+    use SoftDeletes, SecureDeletes, ResourceVisibility;
 
     /**
      * The attributes that are mass assignable.
@@ -44,26 +44,6 @@ class Turn extends Model
     public function stores()
     {
         return $this->belongsToMany(Store::class, 'store_turns');
-    }
-
-    /**
-     * Scope a query to only include turns visibles by the user.
-     *
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  \App\Http\Modules\User\User $user
-     * 
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public function scopeVisible($query, User $user)
-    {
-        if ($user->role->level > 1) {
-            $visibleStores = $user->role->level == 2 ? $user->company->stores : $user->stores;
-
-            return $query->whereIn('store_id', $visibleStores->pluck('id'));
-
-        }
-
-        return $query;
     }
 
 }

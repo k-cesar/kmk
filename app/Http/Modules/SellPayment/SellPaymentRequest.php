@@ -28,7 +28,7 @@ class SellPaymentRequest extends FormRequest
   {
     $rules = [
       'store_id'          => 'required|integer|store_visible',
-      'payment_method_id' => 'required|exists:payment_methods,id|not_in:'.PaymentMethod::where('name', PaymentMethod::OPTION_PAYMENT_CREDIT)->first()->id,
+      'payment_method_id' => 'required|integer|payment_method_visible|not_in:'.PaymentMethod::where('name', PaymentMethod::OPTION_PAYMENT_CREDIT)->first()->id,
       'description'       => 'sometimes|nullable|string|max:250',
       'store_turn_id'     => [
         'required',

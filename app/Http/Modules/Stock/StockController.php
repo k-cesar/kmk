@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Modules\StockCounts\StockCounts;
+use App\Http\Modules\StockCount\StockCount;
 
 class StockController extends Controller
 {
@@ -33,7 +33,7 @@ class StockController extends Controller
       ->withTrashed()
       ->toSql();
 
-    $lastCount = StockCounts::select('sc2.count_date AS last_count')
+    $lastCount = StockCount::select('sc2.count_date AS last_count')
       ->from('stock_counts as sc2')
       ->whereRaw("sc2.id = MAX(sc.id)")
       ->withTrashed()
@@ -59,7 +59,7 @@ class StockController extends Controller
       })
       ->leftJoin('stock_counts AS sc', function (JoinClause $leftJoin) {
         $leftJoin->on('scd.stock_count_id', '=', 'sc.id')
-          ->where('sc.status', StockCounts::OPTION_STATUS_CLOSED)
+          ->where('sc.status', StockCount::OPTION_STATUS_CLOSED)
           ->where('sc.store_id', request('store_id'));
       })
       ->groupBy('p.id', 'ss.quantity')

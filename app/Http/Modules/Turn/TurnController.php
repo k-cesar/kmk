@@ -15,7 +15,7 @@ class TurnController extends Controller
    */
   public function index()
   {
-    $turns = Turn::visible(auth()->user());
+    $turns = Turn::visibleThroughStore(auth()->user());
 
     return $this->showAll($turns, Schema::getColumnListing((new Turn)->getTable()));
   }
