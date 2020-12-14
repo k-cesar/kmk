@@ -161,4 +161,24 @@ class TurnControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('turns', $turn->toArray());
   }
+
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_turns_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('turns.options'))
+      ->assertOk();
+
+    $turns = Turn::select(['id', 'start_time', 'end_time'])
+      ->visibleThroughStore($user)
+      ->limit(10)
+      ->get();
+
+    foreach ($turns as $turn) {
+      $response->assertJsonFragment($turn->toArray());
+    }
+  }
 }

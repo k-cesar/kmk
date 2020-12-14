@@ -25,9 +25,8 @@ class StoreTurnRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'store_id'               => 'required|integer|store_visible',
-            'open_petty_cash_amount' => 'required|numeric|min:0',
-            'turn_id'                => ['required','integer',
+            'store_id'               => ['required', 'integer', 'store_visible'],
+            'turn_id'                => ['required', 'integer',
                 function ($attribute, $value, $fail) {
                     $turn = Turn::where('id', $value)
                         ->where('store_id', $this->get('store_id', -1))
@@ -41,9 +40,19 @@ class StoreTurnRequest extends FormRequest
             ]
         ];
 
-        if ($this->isMethod('PUT')) {
-            unset($rules['open_petty_cash_amount']);
+        if ($this->isMethod('POST')) {
+            $rules['open_petty_cash_amount'] = 'required|numeric|min:0';
 
+            array_push($rules['store_id'], function ($attribute, $value, $fail) {
+                $storeTurnOpen = StoreTurn::where('store_id', $value)
+                    ->where('is_open', true)
+                    ->exists();
+
+                if ($storeTurnOpen) {
+                    $fail("La {$attribute} seleccionada ya posee un turno abierto.");
+                }
+            });
+        } else {
             $rules['closed_petty_cash_amount'] = 'required|numeric|min:0';
         }
 
@@ -60,12 +69,12 @@ class StoreTurnRequest extends FormRequest
         $validatedData = parent::validated();
 
         if ($this->isMethod('POST')) {
-            $validatedData['is_open'] = true;
-            $validatedData['open_by'] = auth()->id();
+            $validatedData['is_open']   = true;
+            $validatedData['open_by']   = auth()->id();
             $validatedData['open_date'] = now();
         } else {
-            $validatedData['is_open'] = false;
-            $validatedData['closed_by'] = auth()->id();
+            $validatedData['is_open']    = false;
+            $validatedData['closed_by']  = auth()->id();
             $validatedData['close_date'] = now();
         }
 

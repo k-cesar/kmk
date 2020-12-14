@@ -63,20 +63,18 @@
           "stores.index",
           "stores.show",
           "turns.index",
-          "turns.show",
-          "store-turns.index",
-          "store-turns.show"
+          "turns.show"
         ]
       },
       {
         "name": "Crear Manejo de Tiendas",
         "level": 2,
-        "routes": ["stores.store", "turns.store", "store-turns.store"]
+        "routes": ["stores.store", "turns.store"]
       },
       {
         "name": "Editar Manejo de Tiendas",
         "level": 2,
-        "routes": ["stores.update", "turns.update", "store-turns.update"]
+        "routes": ["stores.update", "turns.update"]
       },
       {
         "name": "Eliminar Manejo de Tiendas",
@@ -231,9 +229,7 @@
         "name": "Ver Ajustes de Inventario",
         "level": 3,
         "routes": [
-          "adjustments.index",
-          "cash-adjustment.index",
-          "cash-adjustment.show"
+          "adjustments.index"
         ]
       },
       {
@@ -241,8 +237,7 @@
         "level": 3,
         "routes": [
           "adjustments.store",
-          "stock-counts-adjustments.store",
-          "cash-adjustment.store"
+          "stock-counts-adjustments.store"
         ]
       },
       {
@@ -341,12 +336,12 @@
       {
         "name": "Ver Registro de Ventas",
         "level": 4,
-        "routes": ["sells.index", "sells.show", "stocks.index", "stores.turns.items.index"]
+        "routes": ["sells.index", "sells.show", "stocks.index", "stores.turns.items.index", "store-turns.index", "store-turns.show"]
       },
       {
         "name": "Crear Registro de Ventas",
         "level": 4,
-        "routes": ["sells.store", "sells-offline.store"]
+        "routes": ["sells.store", "sells-offline.store", "store-turns.store", "store-turns.update"]
       },
       {
         "name": "Editar Registro de Ventas",
@@ -391,12 +386,12 @@
       {
         "name": "Ver Cierre de Caja",
         "level": 4,
-        "routes": []
+        "routes": ["stores-cash.index"]
       },
       {
         "name": "Crear Cierre de Caja",
         "level": 4,
-        "routes": []
+        "routes": ["store-turn-modifications.store"]
       },
       {
         "name": "Editar Cierre de Caja",

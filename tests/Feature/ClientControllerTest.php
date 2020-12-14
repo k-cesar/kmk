@@ -147,4 +147,25 @@ class ClientControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('clients', $client->toArray());
   }
+
+  
+
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_clients_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('clients.options'))
+      ->assertOk();
+
+    $clients = Client::select('id', 'name', 'nit','address')
+      ->limit(10)
+      ->get();
+
+    foreach ($clients as $client) {
+      $response->assertJsonFragment($client->toArray());
+    }
+  }
 }

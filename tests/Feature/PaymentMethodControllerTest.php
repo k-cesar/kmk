@@ -134,6 +134,7 @@ class PaymentMethodControllerTest extends ApiTestCase
 
     $paymentMethods = PaymentMethod::select('id', 'name')
       ->visibleThroughCompany($user)
+      ->limit(10)
       ->get();
 
     foreach ($paymentMethods as $paymentMethod) {

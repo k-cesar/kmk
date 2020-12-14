@@ -100,13 +100,14 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     Route::resource('sell-payments', 'SellPayment\SellPaymentController')->only('index', 'update');
     
     Route::resource('deposits', 'Deposit\DepositController')->except('create', 'edit', 'destroy');
-
-    Route::resource('cash-adjustment', 'CashAdjustment\CashAdjustmentController')->only('index', 'show', 'store');
     
     Route::resource('store-turns', 'StoreTurn\StoreTurnController')->except('create', 'edit');
-
+    
     Route::resource('stores.turns.items', 'Sell\StoreTurnItemController')->only('index');
-
+    
+    Route::resource('store-turn-modifications', 'StoreTurnModification\StoreTurnModificationController')->only('store');
+    
+    Route::resource('stores-cash', 'StoreTurnModification\StoreCashController')->only('index');
 });
 
 /***********************************************************************************************************************
@@ -114,6 +115,8 @@ Route::group(['middleware' => ['auth', 'access']], function () {
  ***********************************************************************************************************************/
 
 Route::group(['middleware' => ['auth']], function () {
+    
+    Route::get('clients-options', 'Client\ClientController@options')->name('clients.options');
     
     Route::get('brands-options', 'Brand\BrandController@options')->name('brands.options');
     
@@ -154,6 +157,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('store-formats-options', 'StoreFormat\StoreFormatController@options')->name('store-formats.options');
     
     Route::get('store-types-options', 'StoreType\StoreTypeController@options')->name('store-types.options');
+
+    Route::get('turns-options', 'Turn\TurnController@options')->name('turns.options');
     
     Route::get('uoms-options', 'Uom\UomController@options')->name('uoms.options');
     

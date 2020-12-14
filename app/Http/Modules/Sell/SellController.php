@@ -53,8 +53,10 @@ class SellController extends Controller
       $dte = (new DTE())->fel($sell);
 
       if ($dte->certifier_success) {
-        $sell->update(['status_dte' => Sell::OPTION_STATUS_DTE_CERTIFIED]);
-        $sell->invoiceLink = config('fel.invoiceBaseUrl').$dte->uuid;
+        $sell->update([
+          'status_dte'   => Sell::OPTION_STATUS_DTE_CERTIFIED,
+          'invoice_link' => config('fel.invoiceBaseUrl').$dte->uuid,
+        ]);
       }
 
       return $this->showOne($sell, 201);
@@ -92,8 +94,10 @@ class SellController extends Controller
         $dte = (new DTE())->fel($sell);
 
         if ($dte->certifier_success) {
-          $sell->update(['status_dte' => Sell::OPTION_STATUS_DTE_CERTIFIED]);
-          $sell->invoiceLink = config('fel.invoiceBaseUrl').$dte->uuid;
+          $sell->update([
+            'status_dte' => Sell::OPTION_STATUS_DTE_CERTIFIED,
+            'invoice_link' => config('fel.invoiceBaseUrl').$dte->uuid
+          ]);
         }
 
         $sells->add($sell);
@@ -158,7 +162,10 @@ class SellController extends Controller
       $dte = (new DTE())->fel($sell, true);
 
       if ($dte->certifier_success) {
-        $sell->update(['status_dte' => Sell::OPTION_STATUS_DTE_CANCELLED]);
+        $sell->update([
+          'status_dte'   => Sell::OPTION_STATUS_DTE_CANCELLED,
+          'invoice_link' => config('fel.invoiceBaseUrl').$dte->uuid,
+        ]);
         $sell->invoiceLink = config('fel.invoiceBaseUrl').$dte->uuid;
       }
       

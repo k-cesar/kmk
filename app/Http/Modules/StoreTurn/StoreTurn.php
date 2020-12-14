@@ -4,6 +4,7 @@ namespace App\Http\Modules\StoreTurn;
 
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Sell\Sell;
+use App\Http\Modules\Turn\Turn;
 use App\Http\Modules\Store\Store;
 use App\Traits\ResourceVisibility;
 use App\Http\Modules\Deposit\Deposit;
@@ -45,6 +46,16 @@ class StoreTurn extends Model
     public function store()
     {
         return $this->belongsTo(Store::class);
+    }
+
+    /**
+     * Get the turn that owns the StoreTurn.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function turn()
+    {
+        return $this->belongsTo(Turn::class);
     }
 
     public function turn_modification()

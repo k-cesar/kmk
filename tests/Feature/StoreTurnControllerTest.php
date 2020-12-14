@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Modules\Store\Store;
 use Tests\ApiTestCase;
 use App\Http\Modules\Turn\Turn;
 use App\Http\Modules\StoreTurn\StoreTurn;
@@ -99,6 +100,10 @@ class StoreTurnControllerTest extends ApiTestCase
             } else {
                 $user->stores()->sync($turn->store_id);
             }
+        }
+
+        foreach (StoreTurn::where('store_id', $turn->store_id)->get() as $storeTurn) {
+            $storeTurn->update(['is_open' => false]);
         }
 
         $attributes = factory(StoreTurn::class)->raw([

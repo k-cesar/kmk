@@ -19,6 +19,7 @@ class DepositController extends Controller
   public function index()
   {
     $deposits = Deposit::visibleThroughStore(auth()->user())
+      ->with('creator:id,name')
       ->with('depositImages');
 
     return $this->showAll($deposits, Schema::getColumnListing((new Deposit)->getTable()));
