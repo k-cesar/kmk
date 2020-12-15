@@ -4,6 +4,7 @@ namespace App\Http\Modules\Store;
 
 use App\Http\Modules\Store\Store;
 use App\Http\Controllers\Controller;
+use App\Http\Modules\Turn\Turn;
 use Illuminate\Support\Facades\Schema;
 
 class StoreController extends Controller
@@ -29,6 +30,14 @@ class StoreController extends Controller
   public function store(StoreRequest $request)
   {
     $store = Store::create($request->validated());
+
+    $store->turns()->create([
+      'name'       => 'Estándar',
+      'start_time' => '08:00:00',
+      'end_time'   => '20:00:00',
+      'is_active'  => 1,
+      'is_default' => 1,
+    ]);
 
     return $this->showOne($store, 201);
   }
