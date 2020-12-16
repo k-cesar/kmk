@@ -14,8 +14,8 @@ class Client extends Model
 {
     use SoftDeletes, SecureDeletes;
 
-    const OPTION_TYPE_ADMIN   = 'ADMIN';
-    const OPTION_TYPE_TENDERO = 'TENDERO';
+    const OPTION_TYPE_INDIVIDUAL   = 'INDIVIDUAL';
+    const OPTION_TYPE_CORPORATION  = 'CORPORATION';
 
     const OPTION_SEX_FEMALE = 'FEMALE';
     const OPTION_SEX_MALE   = 'MALE';
@@ -63,8 +63,8 @@ class Client extends Model
     public static function getOptionsTypes()
     {
         return [
-            self::OPTION_TYPE_ADMIN,
-            self::OPTION_TYPE_TENDERO,
+            self::OPTION_TYPE_INDIVIDUAL,
+            self::OPTION_TYPE_CORPORATION,
         ];
     }
 

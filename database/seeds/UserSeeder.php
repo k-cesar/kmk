@@ -56,7 +56,7 @@ class UserSeeder extends Seeder
     Client::create([
       'id'           => 0,
       'name'         => 'OFFLINE CLIENT',
-      'type'         => Client::OPTION_TYPE_ADMIN,
+      'type'         => Client::OPTION_TYPE_INDIVIDUAL,
       'country_id'   => 0,
       'nit'          => '0000000',
       'address'      => 'Dirección 0',
