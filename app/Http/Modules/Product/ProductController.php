@@ -64,7 +64,17 @@ class ProductController extends Controller
         }
     }
 
+    /**
+    * Remove the specified resource from storage.
+    *
+    * @param  App\Http\Modules\Product\Product  $product
+    * @return \Illuminate\Http\JsonResponse
+    */
     public function destroy(Product $product) {
+        if ($product->presentations->count()) {
+            return $this->errorResponse(409, 'El producto posee presentaciones activas');
+        }
+
         $product->secureDelete();
 
         return $this->showOne($product);
