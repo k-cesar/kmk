@@ -4,6 +4,7 @@ namespace App\Http\Modules\SellPayment;
 
 use App\Http\Modules\Sell\Sell;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Modules\StoreTurn\StoreTurn;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Modules\PaymentMethod\PaymentMethod;
 
@@ -21,11 +22,12 @@ class SellPayment extends Model
      */
     protected $fillable = [
         'sell_id',
+        'payment_method_id',
+        'store_turn_id',
         'amount',
         'card_four_digits',
         'authorization',
         'status',
-        'payment_method_id',
     ];
 
     /**
@@ -46,6 +48,16 @@ class SellPayment extends Model
     public function paymentMethod()
     {
         return $this->belongsTo(PaymentMethod::class);
+    }
+
+    /**
+     * Get the storeTurn that owns the sellPayment.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function storeTurn()
+    {
+        return $this->belongsTo(StoreTurn::class);
     }
 
 }

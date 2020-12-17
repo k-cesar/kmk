@@ -26,7 +26,6 @@ class StoreRequest extends FormRequest
   {
     $rules = [
       'address'                => 'required|string|max:500',
-      'petty_cash_amount'      => 'required|numeric',
       'store_type_id'          => 'required|integer|exists:store_types,id',
       'store_chain_id'         => 'required|integer|exists:store_chains,id',
       'store_flag_id'          => 'required|integer|exists:store_flags,id',
@@ -51,7 +50,9 @@ class StoreRequest extends FormRequest
       ],
     ];
 
-    if ($this->isMethod('PUT')) {
+    if ($this->isMethod('POST')) {
+      $rules['petty_cash_amount'] = 'required|numeric|min:0';
+    } else {
       $rules['name'] = [
         'required', 
         'string',

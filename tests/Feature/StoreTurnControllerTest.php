@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Http\Modules\PaymentMethod\PaymentMethod;
 use App\Http\Modules\Store\Store;
 use Tests\ApiTestCase;
 use App\Http\Modules\Turn\Turn;
@@ -18,7 +19,7 @@ class StoreTurnControllerTest extends ApiTestCase
     {
         parent::setUp();
 
-        $this->seed(['PermissionSeeder', 'StoreTurnSeeder']);
+        $this->seed(['PermissionSeeder','StoreTurnSeeder']);
     }
 
     /**
@@ -123,6 +124,9 @@ class StoreTurnControllerTest extends ApiTestCase
     {
         $user = $this->signInWithPermissionsTo(['store-turns.update']);
 
+        factory(PaymentMethod::class)->create(['name' => PaymentMethod::OPTION_PAYMENT_CARD,]);
+        factory(PaymentMethod::class)->create(['name' => PaymentMethod::OPTION_PAYMENT_CASH,]);
+
         $turn = factory(Turn::class)->create();
 
         if ($user->role->level > 1) {
@@ -134,7 +138,8 @@ class StoreTurnControllerTest extends ApiTestCase
         }
 
         $storeTurn = factory(StoreTurn::class)->create([
-            'store_id' => $turn->store_id
+            'store_id' => $turn->store_id,
+            'is_open'  => true,
         ]);
 
         $attributes = factory(StoreTurn::class)->raw([
@@ -144,29 +149,6 @@ class StoreTurnControllerTest extends ApiTestCase
 
         $this->putJson(route('store-turns.update', $storeTurn->id), array_merge($attributes, ['closed_petty_cash_amount' => 1525.15]))
             ->assertOk();
-    }
-
-    /**
-     * @test
-     */
-    public function an_user_with_permission_can_destroy_a_store_turn()
-    {
-        $user = $this->signInWithPermissionsTo(['store-turns.destroy']);
-
-        $storeTurn = factory(StoreTurn::class)->create();
-
-        if ($user->role->level > 1) {
-            if ($user->role->level == 2) {
-                $user->update(['company_id' => $storeTurn->store()->first()->company_id]);
-            } else {
-                $user->stores()->sync($storeTurn->store_id);
-            }
-        }
-
-        $this->deleteJson(route('store-turns.destroy', $storeTurn->id))
-            ->assertOk();
-
-        $this->assertDatabaseMissing('store_turns', $storeTurn->toArray());
     }
 
 }

@@ -10,7 +10,7 @@ use App\Traits\ResourceVisibility;
 use App\Http\Modules\Deposit\Deposit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Http\Modules\StoreTurnModification\StoreTurnModification;
+use App\Http\Modules\SellPayment\SellPayment;
 
 class StoreTurn extends Model
 {
@@ -19,13 +19,17 @@ class StoreTurn extends Model
     protected $fillable = [
         'store_id',
         'turn_id',
-        'open_petty_cash_amount',
-        'open_by',
-        'closed_by',
-        'closed_petty_cash_amount',
-        'open_date',
-        'close_date',
         'is_open',
+        'open_by',
+        'open_date',
+        'open_petty_cash_amount',
+        'closed_by',
+        'close_date',
+        'closed_petty_cash_amount',
+        'expenses_in_not_purchases',
+        'expenses_reason',
+        'card_sales',
+        'cash_on_hand',
     ];
 
     /**
@@ -58,11 +62,6 @@ class StoreTurn extends Model
         return $this->belongsTo(Turn::class);
     }
 
-    public function turn_modification()
-    {
-        return $this->hasMany(StoreTurnModification::class, 'store_turn_id');
-    }
-
     /**
      * Get the deposits for the storeTurn.
      * 
@@ -72,4 +71,15 @@ class StoreTurn extends Model
     {
         return $this->hasMany(Deposit::class);
     }
+
+    /**
+     * Get the sells for the storeTurn.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function sellPayments()
+    {
+        return $this->hasMany(SellPayment::class);
+    }
+
 }

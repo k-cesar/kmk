@@ -145,5 +145,12 @@ class UserSeeder extends Seeder
       'email'     => 'luis.villegas@kemok.io',
       'role_id'   => 1,
     ])->syncPermissions(Permission::all());
+
+    factory(User::class)->create([
+      'name'      => 'Jimy Sagastume',
+      'username'  => 'jimy',
+      'email'     => 'jimy@kemok.io',
+      'role_id'   => 1,
+    ])->syncPermissions(Permission::all());
   }
 }

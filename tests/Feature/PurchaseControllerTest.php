@@ -256,7 +256,10 @@ class PurchaseControllerTest extends ApiTestCase
       }
     }
 
-    $attributes = factory(Purchase::class)->raw(['store_id' => $purchase->store_id]);
+    $attributes = factory(Purchase::class)->raw([
+      'store_id'          => $purchase->store_id,
+      'payment_method_id' => $purchase->payment_method_id
+    ]);
 
     $attributes = Arr::except($attributes, ['user_id', 'date', 'total']);
 

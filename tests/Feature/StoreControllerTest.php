@@ -114,7 +114,10 @@ class StoreControllerTest extends ApiTestCase
       }
     }
 
-    $attributes = factory(Store::class)->raw(['company_id' => $store->company_id]);
+    $attributes = factory(Store::class)->raw([
+      'company_id'        => $store->company_id,
+      'petty_cash_amount' => $store->petty_cash_amount,
+    ]);
 
     $this->putJson(route('stores.update', $store->id), $attributes)
       ->assertOk();

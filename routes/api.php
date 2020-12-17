@@ -105,9 +105,9 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     
     Route::resource('stores.turns.items', 'Sell\StoreTurnItemController')->only('index');
     
-    Route::resource('store-turn-modifications', 'StoreTurnModification\StoreTurnModificationController')->only('store');
+    Route::resource('cash-adjustments', 'CashAdjustment\CashAdjustmentController')->only('store');
     
-    Route::resource('stores-cash', 'StoreTurnModification\StoreCashController')->only('index');
+    Route::resource('stores-cash', 'CashAdjustment\StoreCashController')->only('index');
 });
 
 /***********************************************************************************************************************

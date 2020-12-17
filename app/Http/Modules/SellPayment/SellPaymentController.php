@@ -2,9 +2,13 @@
 
 namespace App\Http\Modules\SellPayment;
 
+use Exception;
 use App\Http\Modules\Sell\Sell;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Modules\PaymentMethod\PaymentMethod;
 
 class SellPaymentController extends Controller
 {
@@ -43,20 +47,40 @@ class SellPaymentController extends Controller
   {
     $this->authorize('manage', $sellPayment);
 
-    $sellPayment->update([
-      'status'            => SellPayment::OPTION_STATUS_VERIFIED,
-      'payment_method_id' => $request->payment_method_id,
-    ]);
+    try {
+      DB::beginTransaction();
 
-    $sellPayment->sell->status = Sell::OPTION_STATUS_PAID;
+      $sellPayment->update([
+        'store_turn_id'     => $request->store_turn_id,
+        'status'            => SellPayment::OPTION_STATUS_VERIFIED,
+        'payment_method_id' => $request->payment_method_id,
+      ]);
 
-    if ($request->description) {
-      $sellPayment->sell->description = $request->description;
+      $sellPayment->sell->status = Sell::OPTION_STATUS_PAID;
+
+      if ($request->description) {
+        $sellPayment->sell->description = $request->description;
+      }
+
+      $sellPayment->sell->save();
+
+      if ($sellPayment->paymentMethod->name == PaymentMethod::OPTION_PAYMENT_CASH) {
+        $sellPayment->sell->store->petty_cash_amount += $sellPayment->amount;
+        $sellPayment->sell->store->save();
+      }
+
+      DB::commit();
+      
+      return $this->showOne($sellPayment);
+
+    } catch (Exception $exception) {
+      DB::rollback();
+
+      Log::error($exception);
+
+      return $this->errorResponse(500, 'Ha ocurrido un error interno');
     }
 
-    $sellPayment->sell->save();
-
-    return $this->showOne($sellPayment);
   }
 
 }

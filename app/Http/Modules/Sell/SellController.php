@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Modules\PaymentMethod\PaymentMethod;
 
 class SellController extends Controller
 {
@@ -148,14 +149,19 @@ class SellController extends Controller
 
     try {
       DB::beginTransaction();
-      
-      $sell->sellInvoice->delete();
-      $sell->sellPayment->delete();
+
+      if ($sell->sellPayment->paymentMethod->name == PaymentMethod::OPTION_PAYMENT_CASH) {
+        $sell->store->petty_cash_amount -= $sell->total;
+        $sell->store->save();
+      }
 
       $sell->update([
         'status'     => Sell::OPTION_STATUS_CANCELLED,
         'status_dte' => Sell::OPTION_STATUS_DTE_PENDING_CANCELLATION,
       ]);
+
+      $sell->sellInvoice->delete();
+      $sell->sellPayment->delete();
 
       $sell->delete();
 

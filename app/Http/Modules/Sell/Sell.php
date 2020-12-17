@@ -43,6 +43,7 @@ class Sell extends Model
         'date',
         'total',
         'seller_id',
+        'is_to_collect',
         'status',
         'status_dte',
         'invoice_link',
@@ -180,8 +181,13 @@ class Sell extends Model
 
         $paymentMethod = PaymentMethod::find($params['payment_method_id']);
 
-        $sellStatus = $paymentMethod->name == PaymentMethod::OPTION_PAYMENT_CREDIT ? 
-            self::OPTION_STATUS_PENDING : self::OPTION_STATUS_PAID;
+        if ($paymentMethod->name == PaymentMethod::OPTION_PAYMENT_CREDIT) {
+            $sellStatus = self::OPTION_STATUS_PENDING;
+            $isToCollect = true;
+        } else {
+            $sellStatus = self::OPTION_STATUS_PAID;
+            $isToCollect = false;
+        }
         
         $sellStatusDTE = self::OPTION_STATUS_DTE_PENDING_CERTIFICATION;
 
@@ -192,6 +198,7 @@ class Sell extends Model
             'date'          => $date,
             'total'         => $total,
             'seller_id'     => $seller->id,
+            'is_to_collect' => $isToCollect,
             'status'        => $sellStatus,
             'status_dte'    => $sellStatusDTE,
             'store_turn_id' => $storeTurn->id,
@@ -415,12 +422,18 @@ class Sell extends Model
         
         $sellPayment = SellPayment::create([
             'sell_id'           => $sell->id,
+            'payment_method_id' => $paymentMethod->id,
+            'store_turn_id'     => $sell->store_turn_id,
             'amount'            => $sell->total,
             'card_four_digits'  => null,
             'authorization'     => null,
             'status'            => $status,
-            'payment_method_id' => $paymentMethod->id,
         ]);
+
+        if ($paymentMethod->name == PaymentMethod::OPTION_PAYMENT_CASH) {
+          $sell->store->petty_cash_amount += $sellPayment->amount;
+          $sell->store->save();
+        }
 
         return $sellPayment;
     }
