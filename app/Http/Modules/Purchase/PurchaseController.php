@@ -13,6 +13,7 @@ use App\Http\Modules\Stock\StockMovement;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Modules\Presentation\Presentation;
 use App\Http\Modules\Stock\StockMovementDetail;
+use App\Http\Modules\PaymentMethod\PaymentMethod;
 
 class PurchaseController extends Controller
 {
@@ -62,15 +63,20 @@ class PurchaseController extends Controller
           return $presentation;
         });
       
-      $total = $presentations->pluck('total')->sum();
-
       $date = now();
+
+      $total = $presentations->pluck('total')->sum();
 
       $purchase = Purchase::create(array_merge($request->validated(),[
         'user_id' => auth()->user()->id,
         'date'    => $date,
         'total'   => $total
       ]));
+
+      if ($purchase->paymentMethod->name == PaymentMethod::OPTION_PAYMENT_CASH) {
+        $purchase->store->petty_cash_amount -= $total;
+        $purchase->store->save();
+      }
 
       $stockMovement = StockMovement::create([
         'user_id'       => auth()->user()->id,

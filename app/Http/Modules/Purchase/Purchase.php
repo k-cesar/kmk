@@ -3,12 +3,12 @@
 namespace App\Http\Modules\Purchase;
 
 use App\Traits\SecureDeletes;
+use App\Http\Modules\User\User;
 use App\Http\Modules\Store\Store;
 use App\Http\Modules\Provider\Provider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Modules\PaymentMethod\PaymentMethod;
-use App\Http\Modules\User\User;
 
 class Purchase extends Model
 {

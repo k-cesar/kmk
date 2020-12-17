@@ -4,17 +4,17 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStoreTurnModificationsTable extends Migration
+class CreateCashAdjustmentsTable extends Migration
 {
     /**
      * Schema table name to migrate
      * @var string
      */
-    public $tableName = 'store_turn_modifications';
+    public $tableName = 'cash_adjustments';
 
     /**
      * Run the migrations.
-     * @table store_turn_modifications
+     * @table cash_adjustments
      *
      * @return void
      */
@@ -22,15 +22,12 @@ class CreateStoreTurnModificationsTable extends Migration
     {
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('store_turn_id');
             $table->unsignedBigInteger('store_id');
             $table->double('amount');
-            $table->enum('modification_type', ['CASH PURCHASE', 'DEPOSIT', 'OTHER']);
+            $table->enum('type', ['MANUAL']);
             $table->text('description');
             $table->timestamps();
             $table->softDeletes();
-
-            $table->foreign('store_turn_id')->references('id')->on('store_turns');
 
             $table->foreign('store_id')->references('id')->on('stores');
         });

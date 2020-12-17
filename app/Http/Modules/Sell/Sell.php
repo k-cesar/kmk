@@ -415,12 +415,18 @@ class Sell extends Model
         
         $sellPayment = SellPayment::create([
             'sell_id'           => $sell->id,
+            'payment_method_id' => $paymentMethod->id,
+            'store_turn_id'     => $sell->store_turn_id,
             'amount'            => $sell->total,
             'card_four_digits'  => null,
             'authorization'     => null,
             'status'            => $status,
-            'payment_method_id' => $paymentMethod->id,
         ]);
+
+        if ($paymentMethod->name == PaymentMethod::OPTION_PAYMENT_CASH) {
+          $sell->store->petty_cash_amount += $sellPayment->amount;
+          $sell->store->save();
+        }
 
         return $sellPayment;
     }

@@ -4,7 +4,11 @@ namespace App\Http\Modules\StoreTurn;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Schema;
+use App\Http\Modules\Purchase\Purchase;
 use App\Http\Modules\StoreTurn\StoreTurn;
+use App\Http\Modules\SellPayment\SellPayment;
+use App\Http\Modules\PaymentMethod\PaymentMethod;
+use App\Http\Modules\CashAdjustment\CashAdjustment;
 
 class StoreTurnController extends Controller
 {
@@ -59,21 +63,39 @@ class StoreTurnController extends Controller
 
         $storeTurn->update($request->validated());
 
+        $storeTurn->store->petty_cash_amount -= $storeTurn->expenses_in_not_purchases;
+        $storeTurn->store->save();
+
+        $storeTurn->card_sales_pos = $storeTurn->sellPayments()
+            ->where('status', SellPayment::OPTION_STATUS_VERIFIED)
+            ->where('payment_method_id', PaymentMethod::where('name', PaymentMethod::OPTION_PAYMENT_CARD)->first()->id)
+            ->pluck('amount')
+            ->sum();
+
+        $storeTurn->expenses_in_purchases = Purchase::where('store_id', $storeTurn->store_id)
+            ->where('payment_method_id', PaymentMethod::where('name', PaymentMethod::OPTION_PAYMENT_CASH)->first()->id)
+            ->whereBetween('date', [$storeTurn->open_date, $storeTurn->close_date])
+            ->pluck('total')
+            ->sum();
+
+        $storeTurn->deposits_total = $storeTurn->deposits
+            ->pluck('amount')
+            ->sum();
+        
+        $storeTurn->cash_sales = $storeTurn->sellPayments()
+            ->where('status', SellPayment::OPTION_STATUS_VERIFIED)
+            ->where('payment_method_id', PaymentMethod::where('name', PaymentMethod::OPTION_PAYMENT_CASH)->first()->id)
+            ->pluck('amount')
+            ->sum();
+
+        $storeTurn->cash_adjustments_total = CashAdjustment::where('store_id', $storeTurn->store_id)
+            ->whereBetween('created_at', [$storeTurn->open_date, $storeTurn->close_date])
+            ->pluck('amount')
+            ->sum();
+
+        $storeTurn->unsetRelations();
+        
         return $this->showOne($storeTurn, 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  App\Http\Modules\StoreTurn\StoreTurn  $storeTurn
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function destroy(StoreTurn $storeTurn)
-    {
-        $this->authorize('manage', $storeTurn);
-        
-        $storeTurn->secureDelete();
-
-        return $this->showOne($storeTurn);
-    }
 }

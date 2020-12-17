@@ -79,7 +79,7 @@
       {
         "name": "Eliminar Manejo de Tiendas",
         "level": 2,
-        "routes": ["stores.destroy", "turns.destroy", "store-turns.destroy"]
+        "routes": ["stores.destroy", "turns.destroy"]
       }
     ]
   },
@@ -381,25 +381,25 @@
     ]
   },
   {
-    "name": "Cierre de Caja",
+    "name": "Ajuste de Efectivo",
     "permissions": [
       {
-        "name": "Ver Cierre de Caja",
-        "level": 4,
+        "name": "Ver Ajuste de Efectivo",
+        "level": 3,
         "routes": ["stores-cash.index"]
       },
       {
-        "name": "Crear Cierre de Caja",
-        "level": 4,
-        "routes": ["store-turn-modifications.store"]
+        "name": "Crear Ajuste de Efectivo",
+        "level": 3,
+        "routes": ["cash-adjustments.store"]
       },
       {
-        "name": "Editar Cierre de Caja",
+        "name": "Editar Ajuste de Efectivo",
         "level": 3,
         "routes": []
       },
       {
-        "name": "Eliminar Cierre de Caja",
+        "name": "Eliminar Ajuste de Efectivo",
         "level": 3,
         "routes": []
       }

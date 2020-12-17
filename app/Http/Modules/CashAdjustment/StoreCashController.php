@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Modules\StoreTurnModification;
+namespace App\Http\Modules\CashAdjustment;
 
 use App\Http\Modules\Store\Store;
 use App\Http\Controllers\Controller;
