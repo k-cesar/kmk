@@ -51,6 +51,7 @@ class SellPaymentController extends Controller
       DB::beginTransaction();
 
       $sellPayment->update([
+        'store_turn_id'     => $request->store_turn_id,
         'status'            => SellPayment::OPTION_STATUS_VERIFIED,
         'payment_method_id' => $request->payment_method_id,
       ]);

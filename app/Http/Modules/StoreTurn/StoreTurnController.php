@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\StoreTurn;
 
+use App\Http\Modules\Sell\Sell;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Schema;
 use App\Http\Modules\Purchase\Purchase;
@@ -85,6 +86,20 @@ class StoreTurnController extends Controller
         $storeTurn->cash_sales = $storeTurn->sellPayments()
             ->where('status', SellPayment::OPTION_STATUS_VERIFIED)
             ->where('payment_method_id', PaymentMethod::where('name', PaymentMethod::OPTION_PAYMENT_CASH)->first()->id)
+            ->whereHas('sell', function ($query) {
+                $query->where('status', Sell::OPTION_STATUS_PAID)
+                    ->where('is_to_collect', false);
+            })
+            ->pluck('amount')
+            ->sum();
+
+        $storeTurn->cash_collected_in_receivables = $storeTurn->sellPayments()
+            ->where('status', SellPayment::OPTION_STATUS_VERIFIED)
+            ->where('payment_method_id', PaymentMethod::where('name', PaymentMethod::OPTION_PAYMENT_CASH)->first()->id)
+            ->whereHas('sell', function ($query) {
+                $query->where('status', Sell::OPTION_STATUS_PAID)
+                    ->where('is_to_collect', true);
+            })
             ->pluck('amount')
             ->sum();
 

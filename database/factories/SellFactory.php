@@ -18,6 +18,7 @@ $factory->define(Sell::class, function (Faker $faker) {
         'date'          => now(),
         'total'         => rand(1, 30) * 100,
         'seller_id'     => User::inRandomOrder()->first() ?? factory(User::class),
+        'is_to_collect' => rand(0, 1), 
         'status'        => $faker->randomElement(Sell::getOptionsStatus()),
         'status_dte'    => $faker->randomElement(Sell::getOptionsStatusDTE()),
         'invoice_link'  => $faker->url,

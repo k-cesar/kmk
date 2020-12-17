@@ -29,6 +29,7 @@ class CreateSellsTable extends Migration
             $table->timestamp('date');
             $table->double('total');
             $table->unsignedBigInteger('seller_id');
+            $table->boolean('is_to_collect');
             $table->enum('status', ['PENDING', 'CANCELLED', 'PAID']);
             $table->enum('status_dte', ['NA', 'PENDING_CERTIFICATION', 'PENDING_CANCELLATION', 'CANCELLED', 'CERTIFIED']);
             $table->string('invoice_link')->nullable();
