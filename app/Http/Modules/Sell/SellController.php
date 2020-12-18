@@ -51,15 +51,6 @@ class SellController extends Controller
 
       DB::commit();
 
-      $dte = (new DTE())->fel($sell);
-
-      if ($dte->certifier_success) {
-        $sell->update([
-          'status_dte'   => Sell::OPTION_STATUS_DTE_CERTIFIED,
-          'invoice_link' => config('fel.invoiceBaseUrl').$dte->uuid,
-        ]);
-      }
-
       return $this->showOne($sell, 201);
 
     } catch (Exception $exception) {
@@ -91,15 +82,6 @@ class SellController extends Controller
         $sellParams['store_id'] = $params['store_id'];
 
         $sell = Sell::buildAndSave($sellParams);
-
-        $dte = (new DTE())->fel($sell);
-
-        if ($dte->certifier_success) {
-          $sell->update([
-            'status_dte' => Sell::OPTION_STATUS_DTE_CERTIFIED,
-            'invoice_link' => config('fel.invoiceBaseUrl').$dte->uuid
-          ]);
-        }
 
         $sells->add($sell);
       }
@@ -150,30 +132,7 @@ class SellController extends Controller
     try {
       DB::beginTransaction();
 
-      if ($sell->sellPayment->paymentMethod->name == PaymentMethod::OPTION_PAYMENT_CASH) {
-        $sell->store->petty_cash_amount -= $sell->total;
-        $sell->store->save();
-      }
-
-      $sell->update([
-        'status'     => Sell::OPTION_STATUS_CANCELLED,
-        'status_dte' => Sell::OPTION_STATUS_DTE_PENDING_CANCELLATION,
-      ]);
-
-      $sell->sellInvoice->delete();
-      $sell->sellPayment->delete();
-
-      $sell->delete();
-
-      $dte = (new DTE())->fel($sell, true);
-
-      if ($dte->certifier_success) {
-        $sell->update([
-          'status_dte'   => Sell::OPTION_STATUS_DTE_CANCELLED,
-          'invoice_link' => config('fel.invoiceBaseUrl').$dte->uuid,
-        ]);
-        $sell->invoiceLink = config('fel.invoiceBaseUrl').$dte->uuid;
-      }
+      $sell->cancel();
       
       DB::commit();
       

@@ -32,10 +32,6 @@ class CompanyRequest extends FormRequest
       'address'               => 'required|string|max:255',
       'currency_id'           => 'required|exists:currencies,id',
       'country_id'            => 'required|exists:countries,id',
-      'allow_add_products'    => 'required|boolean',
-      'allow_add_stores'      => 'required|boolean',
-      'is_electronic_invoice' => 'required|boolean',
-      'uses_fel'              => 'required|boolean',
       'nit'                   => [
         'required', 
         'digits_between:1,15',
@@ -47,7 +43,6 @@ class CompanyRequest extends FormRequest
     ];
 
     if ($this->isMethod('PUT')) {
-
       $rules['phone'] = "required|digits_between:1,50|unique:companies,phone,{$this->company->id}";
 
       $rules['nit'] = [
@@ -59,6 +54,16 @@ class CompanyRequest extends FormRequest
               ->where('id', '!=', $this->company->id);
           })
       ];
+    }
+
+    if (auth()->user()->role->level < 2) {
+      if ($this->isMethod('POST') || !$this->company->uses_fel) {
+        $rules['uses_fel']              = 'required|boolean';
+        $rules['is_electronic_invoice'] = 'required|boolean';
+      }
+
+      $rules['allow_add_products'] = 'required|boolean';
+      $rules['allow_add_stores']   = 'required|boolean';
     }
 
     return $rules;

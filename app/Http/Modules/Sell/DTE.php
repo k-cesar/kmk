@@ -270,11 +270,11 @@ XML;
 
     return $httpClient->withHeaders(['Content-Type' => 'application/json'])
       ->post($this->urlToSign, [
-      'alias'        => $this->userToSign,
-      'llave'        => $this->tokenToSign,
-      'archivo'      => base64_encode($this->xml),
-      'codigo'       => $id,
-      'es_anulacion' => $this->is_cancellation ? 'S' : 'N',
+        'alias'        => $this->userToSign,
+        'llave'        => $this->tokenToSign,
+        'archivo'      => base64_encode($this->xml),
+        'codigo'       => $id,
+        'es_anulacion' => $this->is_cancellation ? 'S' : 'N',
     ]);
   }
 
