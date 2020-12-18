@@ -77,9 +77,18 @@ class CompanyControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_store_a_company()
   {
-    $this->signInWithPermissionsTo(['companies.store']);
+    $user = $this->signInWithPermissionsTo(['companies.store']);
 
-    $attributes = factory(Company::class)->raw();
+    if ($user->role->level > 1 ) {
+      $default = [
+        'uses_fel'              => 0,
+        'is_electronic_invoice' => 0,
+        'allow_add_products'    => 0,
+        'allow_add_stores'      => 0,
+      ];
+    }
+    
+    $attributes = factory(Company::class)->raw($default ?? []);
 
     $this->postJson(route('companies.store'), $attributes)
       ->assertCreated();
@@ -95,7 +104,23 @@ class CompanyControllerTest extends ApiTestCase
   {
     $user = $this->signInWithPermissionsTo(['companies.update']);
 
-    $attributes = factory(Company::class)->raw();
+    if ($user->role->level > 1 ) {
+      $default = [
+        'allow_add_products'    => $user->company->allow_add_products,
+        'allow_add_stores'      => $user->company->allow_add_stores,
+        'uses_fel'              => $user->company->uses_fel,
+        'is_electronic_invoice' => $user->company->is_electronic_invoice,
+      ];
+    } else {
+      if ($user->company->uses_fel) {
+        $default = [
+          'uses_fel'              => $user->company->uses_fel,
+          'is_electronic_invoice' => $user->company->is_electronic_invoice,
+        ];
+      }
+    }
+
+    $attributes = factory(Company::class)->raw($default);
 
     $this->putJson(route('companies.update', $user->company_id), $attributes)
       ->assertOk();

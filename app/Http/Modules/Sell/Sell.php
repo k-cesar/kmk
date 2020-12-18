@@ -116,7 +116,7 @@ class Sell extends Model
      */
     public function sellPayment()
     {
-        return $this->hasOne(SellPayment::class);
+        return $this->hasOne(SellPayment::class)->withTrashed();
     }
 
     /**
@@ -188,8 +188,6 @@ class Sell extends Model
             $sellStatus = self::OPTION_STATUS_PAID;
             $isToCollect = false;
         }
-        
-        $sellStatusDTE = self::OPTION_STATUS_DTE_PENDING_CERTIFICATION;
 
         $sell = self::create([
             'store_id'      => $params['store_id'],
@@ -200,7 +198,7 @@ class Sell extends Model
             'seller_id'     => $seller->id,
             'is_to_collect' => $isToCollect,
             'status'        => $sellStatus,
-            'status_dte'    => $sellStatusDTE,
+            'status_dte'    => self::OPTION_STATUS_DTE_NA,
             'store_turn_id' => $storeTurn->id,
         ]);
 
@@ -244,6 +242,20 @@ class Sell extends Model
             'total'              => $total,
             'concilation_status' => SellInvoice::OPTION_CONCILATION_STATUS_PENDING,
         ]);
+
+        if ($storeTurn->store->company->uses_fel) {
+
+            $sell->update(['status_dte' => Sell::OPTION_STATUS_DTE_PENDING_CERTIFICATION]);
+            
+            $dte = (new DTE())->fel($sell);
+
+            if ($dte->certifier_success) {
+              $sell->update([
+                'status_dte'   => Sell::OPTION_STATUS_DTE_CERTIFIED,
+                'invoice_link' => config('fel.invoiceBaseUrl').$dte->uuid,
+              ]);
+            }
+        }
         
         return $sell;
     }
@@ -436,6 +448,42 @@ class Sell extends Model
         }
 
         return $sellPayment;
+    }
+
+    /**
+     * Cancel a Sell
+     *
+     * @return void
+     */
+    public function cancel()
+    {
+        if ($this->sellPayment->paymentMethod->name == PaymentMethod::OPTION_PAYMENT_CASH) {
+          $this->store->petty_cash_amount -= $this->total;
+          $this->store->save();
+        }
+
+        $this->sellPayment->delete();
+        $this->sellInvoice->delete();
+
+        $this->update(['status' => Sell::OPTION_STATUS_CANCELLED]);
+
+        if ($this->status_dte==self::OPTION_STATUS_DTE_CERTIFIED && $this->store->company->uses_fel) {
+
+            $this->update(['status_dte' => Sell::OPTION_STATUS_DTE_PENDING_CANCELLATION]);
+
+            $dte = (new DTE())->fel($this, true);
+
+            if ($dte->certifier_success) {
+              $this->update([
+                'status_dte'   => Sell::OPTION_STATUS_DTE_CANCELLED,
+                'invoice_link' => config('fel.invoiceBaseUrl').$dte->uuid,
+              ]);
+
+              $this->invoiceLink = config('fel.invoiceBaseUrl').$dte->uuid;
+            }
+        } 
+
+        $this->delete();
     }
     
 }
