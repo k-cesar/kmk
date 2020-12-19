@@ -170,8 +170,9 @@ class Sell extends Model
     {
         // For offline purpose
         $seller   = isset($params['seller_id']) ? User::find($params['seller_id']) : auth()->user();
-        $clientId = $params['client_id'] ?? 0;  // 0 => Offline Client Id
-        $date     = $params['date']      ?? now();
+        $date     = $params['date'] ?? now();
+
+        $client = self::findOrCreateClient($params);
 
         $storeTurn = StoreTurn::find($params['store_turn_id']);
 
@@ -191,7 +192,7 @@ class Sell extends Model
 
         $sell = self::create([
             'store_id'      => $params['store_id'],
-            'client_id'     => $clientId,
+            'client_id'     => $client->id,
             'description'   => $params['description'] ?? null,
             'date'          => $date,
             'total'         => $total,
@@ -220,14 +221,16 @@ class Sell extends Model
 
         self::saveSellPayment($sell, $paymentMethod);
         
-        // If is not a offline client
-        if ($clientId) {
+        if ($sell->client->nit != 'CF') {
             $storeTurn->store->company->clients()->syncWithoutDetaching([
-                $params['client_id'] => [
+                $sell->client->id => [
                     'email' => $params['email'],
                     'phone' => $params['phone'],
                 ]
             ]);
+
+            $sell->client->nit  = $params['nit'];
+            $sell->client->name = $params['name'];
         }
 
         $invoiceNumber = SellInvoice::getNextInvoiceNumber($storeTurn->store->company);
@@ -236,14 +239,14 @@ class Sell extends Model
             'company_id'         => $storeTurn->store->company_id,
             'invoice'            => $invoiceNumber,
             'sell_id'            => $sell->id,
-            'nit'                => $params['nit'],
-            'name'               => $params['name'],
+            'nit'                => $sell->client->nit,
+            'name'               => $sell->client->name,
             'date'               => $date,
             'total'              => $total,
             'concilation_status' => SellInvoice::OPTION_CONCILATION_STATUS_PENDING,
         ]);
 
-        if ($storeTurn->store->company->uses_fel) {
+        if ($storeTurn->store->company->allow_fel) {
 
             $sell->update(['status_dte' => Sell::OPTION_STATUS_DTE_PENDING_CERTIFICATION]);
             
@@ -258,6 +261,33 @@ class Sell extends Model
         }
         
         return $sell;
+    }
+
+    /**
+     * Find a client by nit or create with params
+     *
+     * @param array
+     * 
+     * @return App\Http\Modules\Client\Client
+     */
+    private static function findOrCreateClient($params)
+    {
+        $countryId = auth()->user()->company_id;
+
+        $client = Client::where('nit', $params['nit'])
+            ->where('country_id', $countryId)
+            ->first();
+
+        if (!$client) {
+            $client = Client::create([
+                'name'       => $params['name'],
+                'country_id' => $countryId,
+                'nit'        => $params['nit'],
+                'address'    => $params['address'],
+            ]);
+        }
+
+        return $client;
     }
 
     /**
@@ -467,7 +497,7 @@ class Sell extends Model
 
         $this->update(['status' => Sell::OPTION_STATUS_CANCELLED]);
 
-        if ($this->status_dte==self::OPTION_STATUS_DTE_CERTIFIED && $this->store->company->uses_fel) {
+        if ($this->status_dte==self::OPTION_STATUS_DTE_CERTIFIED && $this->store->company->allow_fel) {
 
             $this->update(['status_dte' => Sell::OPTION_STATUS_DTE_PENDING_CANCELLATION]);
 

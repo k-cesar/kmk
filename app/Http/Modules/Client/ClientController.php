@@ -14,9 +14,10 @@ class ClientController extends Controller
    */
   public function index()
   {
-    $clients = Client::with(['companies' => function ($query) {
-      $query->where('id', auth()->user()->company_id);
-    }]);
+    $clients = Client::visible(auth()->user())
+      ->with(['companies' => function ($query) {
+        $query->where('id', auth()->user()->company_id);
+      }]);
 
     return $this->showAll($clients, Schema::getColumnListing((new Client)->getTable()));
   }
@@ -49,6 +50,8 @@ class ClientController extends Controller
    */
   public function show(Client $client)
   {
+    $this->authorize('manage', $client);
+
     $client->load(['companies' => function ($query) {
       $query->where('id', auth()->user()->company_id);
     }]);
@@ -65,6 +68,8 @@ class ClientController extends Controller
    */
   public function update(ClientRequest $request, Client $client)
   {
+    $this->authorize('manage', $client);
+
     $client->update($request->validated());
 
     $client->companies()->syncWithoutDetaching([
@@ -85,6 +90,8 @@ class ClientController extends Controller
    */
   public function destroy(Client $client)
   {
+    $this->authorize('destroy', $client);
+
     $client->secureDelete();
 
     return $this->showOne($client);
@@ -98,6 +105,7 @@ class ClientController extends Controller
   public function options()
   {
     $clients = Client::select('id', 'name', 'nit','address')
+      ->visible(auth()->user())
       ->with(['companies' => function ($query) {
         $query->where('id', auth()->user()->company_id);
       }]);

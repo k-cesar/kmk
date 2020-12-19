@@ -135,9 +135,9 @@ class SellControllerTest extends ApiTestCase
     $attributes = [
       'store_id'          => $storeTurn->store_id,
       'payment_method_id' => factory(PaymentMethod::class)->create()->id,
-      'client_id'         => $client->id,
       'name'              => 'test',
       'nit'               => '1234456789',
+      'address'           => 'Ciudad Test',
       'phone'             => '88888888',
       'email'             => 'test@test.com',
       'store_turn_id'     => $storeTurn->id,
@@ -168,7 +168,6 @@ class SellControllerTest extends ApiTestCase
     
     $this->assertDatabaseHas('sells', [
       'store_id'      => $storeTurn->store_id,
-      'client_id'     => $client->id,
       'total'         => 13.25,
       'seller_id'     => $user->id,
       'store_turn_id' => $storeTurn->id,
@@ -211,10 +210,10 @@ class SellControllerTest extends ApiTestCase
 
     $sellA = [
       'seller_id'         => $seller->id,
-      'client_id'         => $client->id,
       'payment_method_id' => factory(PaymentMethod::class)->create()->id,
       'name'              => 'test',
       'nit'               => '1234456789',
+      'address'           => 'Ciudad Test',
       'phone'             => '88888888',
       'email'             => 'test@test.com',
       'store_turn_id'     => $storeTurn->id,
@@ -247,6 +246,7 @@ class SellControllerTest extends ApiTestCase
       'payment_method_id' => factory(PaymentMethod::class)->create()->id,
       'name'              => 'test2',
       'nit'               => '12344567890',
+      'address'           => 'Ciudad Test 2',
       'store_turn_id'     => $storeTurn->id,
       'items'             => [
         [
@@ -268,7 +268,6 @@ class SellControllerTest extends ApiTestCase
 
     $this->assertDatabaseHas('sells', [
       'store_id'      => $storeTurn->store_id,
-      'client_id'     => $client->id,
       'total'         => 13.25,
       'seller_id'     => $seller->id,
       'store_turn_id' => $storeTurn->id,
@@ -276,7 +275,6 @@ class SellControllerTest extends ApiTestCase
 
     $this->assertDatabaseHas('sells', [
       'store_id'      => $storeTurn->store_id,
-      'client_id'     => 0,
       'total'         => 160,
       'seller_id'     => $seller->id,
       'store_turn_id' => $storeTurn->id,

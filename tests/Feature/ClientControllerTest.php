@@ -50,12 +50,12 @@ class ClientControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_all_clients()
   {
-    $this->signInWithPermissionsTo(['clients.index']);
+    $user = $this->signInWithPermissionsTo(['clients.index']);
 
     $response = $this->getJson(route('clients.index'))
       ->assertOk();
     
-    foreach (Client::limit(10)->get() as $client) {
+    foreach (Client::visible($user)->limit(10)->get() as $client) {
       $response->assertJsonFragment($client->toArray());
     }
   }
@@ -81,7 +81,7 @@ class ClientControllerTest extends ApiTestCase
   {
     $user = $this->signInWithPermissionsTo(['clients.store']);
 
-    $attributes = factory(Client::class)->raw();
+    $attributes = factory(Client::class)->raw(['country_id' => $user->company->country_id]);
 
     $extraAttributes = [
       'phone' => $user->phone,
@@ -106,7 +106,7 @@ class ClientControllerTest extends ApiTestCase
   {
     $user = $this->signInWithPermissionsTo(['clients.update']);
 
-    $client = factory(Client::class)->create();
+    $client = factory(Client::class)->create(['country_id' => $user->company->country_id]);
 
     $client->companies()->syncWithoutDetaching([
       $user->company_id => [
@@ -115,7 +115,7 @@ class ClientControllerTest extends ApiTestCase
       ]
     ]);
 
-    $attributes = factory(Client::class)->raw();
+    $attributes = factory(Client::class)->raw(['country_id' => $user->company->country_id]);
 
     $extraAttributes = [
       'phone' => $user->phone,
@@ -125,7 +125,9 @@ class ClientControllerTest extends ApiTestCase
     $this->putJson(route('clients.update', $client->id), array_merge($attributes, $extraAttributes))
       ->assertOk();
 
-    $this->assertDatabaseHas('clients', $attributes);
+    if ($user->role->level < 2) {
+      $this->assertDatabaseHas('clients', $attributes);
+    }
 
     $this->assertDatabaseHas('company_clients', array_merge([
       'client_id' => $client->id,
@@ -138,7 +140,9 @@ class ClientControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_destroy_a_client()
   {
-    $this->signInWithPermissionsTo(['clients.destroy']);
+    $user = $this->signInWithPermissionsTo(['clients.destroy']);
+
+    $user->role->update(['level' => 1]);
 
     $client = factory(Client::class)->create();
 
@@ -161,6 +165,7 @@ class ClientControllerTest extends ApiTestCase
       ->assertOk();
 
     $clients = Client::select('id', 'name', 'nit','address')
+      ->visible($user)
       ->limit(10)
       ->get();
 

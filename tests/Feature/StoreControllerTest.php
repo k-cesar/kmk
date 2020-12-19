@@ -87,7 +87,9 @@ class StoreControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_store_a_store()
   {
-    $this->signInWithPermissionsTo(['stores.store']);
+    $user = $this->signInWithPermissionsTo(['stores.store']);
+
+    $user->company->update(['allow_add_stores' => true]);
 
     $attributes = factory(Store::class)->raw();
 

@@ -30,6 +30,17 @@ class SellInvoice extends Model
     ];
 
     /**
+     * Set the invoice's nit.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setFirstNameAttribute($value)
+    {
+        $this->attributes['nit'] = strtoupper($value);
+    }
+
+    /**
      * Get the sell that owns the sell Invoice.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

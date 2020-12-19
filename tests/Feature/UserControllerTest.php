@@ -86,6 +86,8 @@ class UserControllerTest extends ApiTestCase
   {
     $user = $this->signInWithPermissionsTo(['users.store']);
 
+    $user->company->update(['allow_add_users' => true]);
+
     $stores = factory(Store::class, 2)->create(['company_id' => $user->company_id]);
 
     if ($user->role->level > 2) {

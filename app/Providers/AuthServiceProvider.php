@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -13,10 +13,12 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
+        'App\Http\Modules\Client\Client'               => 'App\Policies\ClientPolicy',
         'App\Http\Modules\Company\Company'             => 'App\Policies\CompanyPolicy',
         'App\Http\Modules\Deposit\Deposit'             => 'App\Policies\DepositPolicy',
         'App\Http\Modules\PaymentMethod\PaymentMethod' => 'App\Policies\PaymentMethodPolicy',
         'App\Http\Modules\Purchase\Purchase'           => 'App\Policies\PurchasePolicy',
+        'App\Http\Modules\Product\Product'             => 'App\Policies\ProductPolicy',
         'App\Http\Modules\Sell\Sell'                   => 'App\Policies\SellPolicy',
         'App\Http\Modules\SellPayment\SellPayment'     => 'App\Policies\SellPaymentPolicy',
         'App\Http\Modules\StockCount\StockCount'       => 'App\Policies\StockCountPolicy',

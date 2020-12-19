@@ -19,7 +19,10 @@ class ProductController extends Controller
         return $this->showAll($products, Schema::getColumnListing((new Product)->getTable()));
     }
 
-    public function store(ProductRequest $request) {
+    public function store(ProductRequest $request)
+    {
+        $this->authorize('create', Product::class);
+
         try {
             DB::beginTransaction();
 
@@ -50,6 +53,9 @@ class ProductController extends Controller
     }
 
     public function update(ProductRequest $request, Product $product) {
+        
+        $this->authorize('manage', $product);
+
         try {
             DB::beginTransaction();
             $product->update($request->validated());
@@ -71,6 +77,9 @@ class ProductController extends Controller
     * @return \Illuminate\Http\JsonResponse
     */
     public function destroy(Product $product) {
+        
+        $this->authorize('manage', $product);
+        
         if ($product->presentations->count()) {
             return $this->errorResponse(409, 'El producto posee presentaciones activas');
         }

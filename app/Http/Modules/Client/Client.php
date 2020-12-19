@@ -4,9 +4,10 @@ namespace App\Http\Modules\Client;
 
 use Illuminate\Support\Str;
 use App\Traits\SecureDeletes;
+use App\Http\Modules\User\User;
 use App\Http\Modules\Sell\Sell;
-use App\Http\Modules\Country\Country;
 use App\Http\Modules\Company\Company;
+use App\Http\Modules\Country\Country;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -82,6 +83,17 @@ class Client extends Model
     }
 
     /**
+     * Set the client's nit.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setFirstNameAttribute($value)
+    {
+        $this->attributes['nit'] = strtoupper($value);
+    }
+
+    /**
      * Get the country that owns the client.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -109,6 +121,23 @@ class Client extends Model
     public function companies()
     {
         return $this->belongsToMany(Company::class, 'company_clients')->withPivot('email', 'phone')->withTimestamps();
+    }
+
+    /**
+     * Scope a query to only include clients visible by the user.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \App\Http\Modules\User\User $user
+     * 
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeVisible($query, User $user)
+    {
+        if ($user->role->level > 1) {
+            return $query->where('country_id', $user->company->country_id);
+        }
+
+        return $query;
     }
 
 

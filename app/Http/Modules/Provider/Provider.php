@@ -41,6 +41,17 @@ class Provider extends Model
     protected $with = ['country'];
 
     /**
+     * Set the provider's nit.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setFirstNameAttribute($value)
+    {
+        $this->attributes['nit'] = strtoupper($value);
+    }
+
+    /**
      * Get the country that owns the brand.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

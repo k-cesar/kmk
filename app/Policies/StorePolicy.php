@@ -11,6 +11,18 @@ class StorePolicy
     use HandlesAuthorization;
 
     /**
+     * Determine if the given user can create stores.
+     *
+     * @param  \App\Models\User  $user
+     * 
+     * @return bool
+     */
+    public function create(User $user)
+    {
+        return $user->company->allow_add_stores;
+    }
+
+    /**
      * Determine whether the user can manage the store.
      *
      * @param  \App\Http\Modules\User\User  $user
