@@ -450,7 +450,7 @@
       },
       {
         "name": "Eliminar Manejo de Datos de Clientes",
-        "level": 3,
+        "level": 1,
         "routes": ["clients.destroy"]
       }
     ]

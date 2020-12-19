@@ -29,6 +29,8 @@ class StoreController extends Controller
    */
   public function store(StoreRequest $request)
   {
+    $this->authorize('create', Store::class);
+    
     $store = Store::create($request->validated());
 
     $store->turns()->create([

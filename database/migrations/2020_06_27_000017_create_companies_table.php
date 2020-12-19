@@ -30,10 +30,10 @@ class CreateCompaniesTable extends Migration
             $table->string('address');
             $table->unsignedBigInteger('country_id');
             $table->unsignedBigInteger('currency_id');
-            $table->tinyInteger('allow_add_products')->default(0);
+            $table->tinyInteger('allow_fel')->default(0);
+            $table->tinyInteger('allow_add_users')->default(0);
             $table->tinyInteger('allow_add_stores')->default(0);
-            $table->tinyInteger('is_electronic_invoice')->default(0);
-            $table->tinyInteger('uses_fel')->default(0);
+            $table->tinyInteger('allow_add_products')->default(0);
             $table->timestamps();
             $table->softDeletes();
 

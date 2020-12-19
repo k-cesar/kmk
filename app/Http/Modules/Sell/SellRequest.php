@@ -28,10 +28,9 @@ class SellRequest extends FormRequest
     $rules = [
       'store_id'           => 'required|integer|store_visible',
       'payment_method_id'  => 'required|integer|payment_method_visible',
-      'client_id'          => 'required|exists:clients,id',
       'name'               => 'required|string|max:250',
-      'nit'                => 'required|digits_between:1,15',
-      'address'            => 'sometimes|nullable|string|max:50',
+      'nit'                => ['required', 'string', 'max:15', 'regex:/^\d+k?$|^cf$/i'],
+      'address'            => 'required|string|max:50',
       'phone'              => 'required|string|max:50',
       'email'              => 'required|string|email|max:100',
       'description'        => 'sometimes|nullable|string|max:250',
@@ -89,6 +88,20 @@ class SellRequest extends FormRequest
     }
 
     return $rules;
+  }
+
+  /**
+   * Get the validated data from the request.
+   *
+   * @return array
+   */
+  public function validated()
+  {
+    $validatedData = parent::validated();
+    
+    $validatedData['nit'] = strtoupper($validatedData['nit']);
+
+    return $validatedData;
   }
   
 }

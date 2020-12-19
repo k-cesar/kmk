@@ -30,8 +30,6 @@ class SellOfflineRequest extends FormRequest
       'sells'                      => 'required|array',
       'sells.*.payment_method_id'  => 'required|integer|payment_method_visible',
       'sells.*.name'               => 'required|string|max:250',
-      'sells.*.nit'                => 'required|digits_between:1,15',
-      'sells.*.address'            => 'sometimes|nullable|string|max:50',
       'sells.*.description'        => 'sometimes|nullable|string|max:250',
       'sells.*.items'              => 'required|array',
       'sells.*.items.*.quantity'   => 'required|numeric|min:0',

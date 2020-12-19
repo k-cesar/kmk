@@ -31,7 +31,6 @@ class StoreTurnControllerTest extends ApiTestCase
         $this->getJson(route('store-turns.show', rand()))->assertUnauthorized();
         $this->postJson(route('store-turns.store'))->assertUnauthorized();
         $this->putJson(route('store-turns.update', rand()))->assertUnauthorized();
-        $this->deleteJson(route('store-turns.destroy', rand()))->assertUnauthorized();
     }
 
     /**
@@ -47,7 +46,6 @@ class StoreTurnControllerTest extends ApiTestCase
         $this->getJson(route('store-turns.show', $randomStoreTurnId))->assertForbidden();
         $this->postJson(route('store-turns.store'))->assertForbidden();
         $this->putJson(route('store-turns.update', $randomStoreTurnId))->assertForbidden();
-        $this->deleteJson(route('store-turns.destroy', $randomStoreTurnId))->assertForbidden();
     }
 
     /**

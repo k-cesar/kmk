@@ -25,19 +25,14 @@ class ProviderRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'country_id' => 'required|exists:countries,id',
-      'name'       => [
-        'required', 
-        'string',
-        'max:150',
+      'country_id' => 'required|integer|exists:countries,id',
+      'name'       => ['required', 'string', 'max:150',
         Rule::unique('providers', 'name')
           ->where(function ($query) {
             return $query->where('country_id', $this->get('country_id'));
           }),
       ],
-      'nit'       => [
-        'required', 
-        'digits_between:1,15',
+      'nit'       => ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
         Rule::unique('providers', 'nit')
           ->where(function ($query) {
             return $query->where('country_id', $this->get('country_id'));
@@ -46,10 +41,7 @@ class ProviderRequest extends FormRequest
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['name'] = [
-        'required', 
-        'string',
-        'max:150',
+      $rules['name'] = ['required', 'string','max:150',
         Rule::unique('providers', 'name')
           ->where(function ($query) {
             return $query->where('country_id', $this->get('country_id'))
@@ -57,9 +49,7 @@ class ProviderRequest extends FormRequest
           }),
       ];
 
-      $rules['nit'] = [
-        'required', 
-        'digits_between:1,15',
+      $rules['nit'] = ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
         Rule::unique('providers', 'nit')
           ->where(function ($query) {
             return $query->where('country_id', $this->get('country_id'))

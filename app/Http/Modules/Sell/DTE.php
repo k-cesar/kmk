@@ -63,13 +63,8 @@ class DTE extends Model
     $this->nitEmisor        = config('fel.nitEmisor');
     $this->fechaHoraEmision = $sell->created_at->format('Y-m-d\TH:i:s-06:00');
     
-    if ($sell->client_id) {
-      $this->idReceptor     = $sell->client->nit;
-      $this->nombreReceptor = $sell->client->name;
-    } else {
-      $this->idReceptor     = 'CF';
-      $this->nombreReceptor = 'Consumidor Final';
-    }
+    $this->idReceptor     = $sell->client->nit;
+    $this->nombreReceptor = $sell->client->name;
 
     if ($this->is_cancellation) {
       $this->urlToCancel                 = config('fel.urlToCancel');

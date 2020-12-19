@@ -80,6 +80,7 @@ class SellController extends Controller
 
       foreach ($sellsParams as $sellParams) {
         $sellParams['store_id'] = $params['store_id'];
+        $sellParams['nit']      = 'CF';
 
         $sell = Sell::buildAndSave($sellParams);
 

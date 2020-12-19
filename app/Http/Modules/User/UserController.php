@@ -28,6 +28,8 @@ class UserController extends Controller
    */
   public function store(UserRequest $request)
   {
+    $this->authorize('create', User::class);
+
     $user = User::create($request->validated());
     $user->syncPermissions(Permission::where('level', '>=', $user->role->level)->get());
     $user->stores()->sync($request->stores);

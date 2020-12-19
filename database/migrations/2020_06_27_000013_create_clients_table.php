@@ -23,14 +23,14 @@ class CreateClientsTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
-            $table->enum('type', ['INDIVIDUAL', 'CORPORATION']);
+            $table->enum('type', ['INDIVIDUAL', 'CORPORATION'])->nullable();
             $table->unsignedBigInteger('country_id');
             $table->string('nit', 15);
             $table->string('uuid', 50)->unique();
-            $table->text('address')->nullable();
-            $table->enum('sex', ['MALE', 'FEMALE']);
+            $table->text('address');
+            $table->enum('sex', ['MALE', 'FEMALE'])->nullable();
             $table->text('biometric_id')->unique()->nullable();
-            $table->date('birthdate');
+            $table->date('birthdate')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

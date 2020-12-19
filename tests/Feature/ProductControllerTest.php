@@ -80,7 +80,9 @@ class ProductControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_store_a_product()
   {
-    $this->signInWithPermissionsTo(['products.store']);
+    $user = $this->signInWithPermissionsTo(['products.store']);
+
+    $user->company->update(['allow_add_products' => true]);
 
     $attributes = factory(Product::class)->raw();
     $extraAttributes['countries'] = factory(Country::class, 2)->create()->pluck('id')->toArray();
@@ -97,7 +99,9 @@ class ProductControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_update_a_product()
   {
-    $this->signInWithPermissionsTo(['products.update']);
+    $user = $this->signInWithPermissionsTo(['products.update']);
+
+    $user->role->update(['level' => 1]);
 
     $product = factory(Product::class)->create();
 
@@ -115,7 +119,9 @@ class ProductControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_destroy_a_product()
   {
-    $this->signInWithPermissionsTo(['products.destroy']);
+    $user = $this->signInWithPermissionsTo(['products.destroy']);
+
+    $user->role->update(['level' => 1]);
 
     $product = factory(Product::class)->create();
 

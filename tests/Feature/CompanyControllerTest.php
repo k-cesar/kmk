@@ -81,10 +81,10 @@ class CompanyControllerTest extends ApiTestCase
 
     if ($user->role->level > 1 ) {
       $default = [
-        'uses_fel'              => 0,
-        'is_electronic_invoice' => 0,
-        'allow_add_products'    => 0,
-        'allow_add_stores'      => 0,
+        'allow_fel'          => 0,
+        'allow_add_users'    => 0,
+        'allow_add_stores'   => 0,
+        'allow_add_products' => 0,
       ];
     }
     
@@ -106,21 +106,18 @@ class CompanyControllerTest extends ApiTestCase
 
     if ($user->role->level > 1 ) {
       $default = [
-        'allow_add_products'    => $user->company->allow_add_products,
-        'allow_add_stores'      => $user->company->allow_add_stores,
-        'uses_fel'              => $user->company->uses_fel,
-        'is_electronic_invoice' => $user->company->is_electronic_invoice,
+        'allow_fel'          => $user->company->allow_fel,
+        'allow_add_users'    => $user->company->allow_add_users,
+        'allow_add_stores'   => $user->company->allow_add_stores,
+        'allow_add_products' => $user->company->allow_add_products,
       ];
     } else {
-      if ($user->company->uses_fel) {
-        $default = [
-          'uses_fel'              => $user->company->uses_fel,
-          'is_electronic_invoice' => $user->company->is_electronic_invoice,
-        ];
+      if ($user->company->allow_fel) {
+        $default = ['allow_fel' => $user->company->allow_fel];
       }
     }
 
-    $attributes = factory(Company::class)->raw($default);
+    $attributes = factory(Company::class)->raw($default ?? []);
 
     $this->putJson(route('companies.update', $user->company_id), $attributes)
       ->assertOk();

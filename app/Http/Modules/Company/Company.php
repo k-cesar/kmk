@@ -30,10 +30,10 @@ class Company extends Model
         'address',
         'country_id',
         'currency_id',
-        'allow_add_products',
+        'allow_fel',
+        'allow_add_users',
         'allow_add_stores',
-        'is_electronic_invoice',
-        'uses_fel',
+        'allow_add_products',
     ];
 
     /**
@@ -42,6 +42,17 @@ class Company extends Model
      * @var array
      */
     protected $with = ['country', 'currency'];
+
+    /**
+     * Set the company's nit.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setFirstNameAttribute($value)
+    {
+        $this->attributes['nit'] = strtoupper($value);
+    }
 
     /**
      * Get the currency that owns the company.

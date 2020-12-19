@@ -32,7 +32,7 @@ class CompanyRequest extends FormRequest
       'address'               => 'required|string|max:255',
       'currency_id'           => 'required|exists:currencies,id',
       'country_id'            => 'required|exists:countries,id',
-      'nit'                   => [
+      'nit'                   => ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
         'required', 
         'digits_between:1,15',
         Rule::unique('companies', 'nit')
@@ -45,9 +45,7 @@ class CompanyRequest extends FormRequest
     if ($this->isMethod('PUT')) {
       $rules['phone'] = "required|digits_between:1,50|unique:companies,phone,{$this->company->id}";
 
-      $rules['nit'] = [
-        'required', 
-        'digits_between:1,15',
+      $rules['nit'] = ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
         Rule::unique('companies', 'nit')
           ->where(function ($query) {
             return $query->where('country_id', $this->get('country_id'))
@@ -57,13 +55,13 @@ class CompanyRequest extends FormRequest
     }
 
     if (auth()->user()->role->level < 2) {
-      if ($this->isMethod('POST') || !$this->company->uses_fel) {
-        $rules['uses_fel']              = 'required|boolean';
-        $rules['is_electronic_invoice'] = 'required|boolean';
+      if ($this->isMethod('POST') || !$this->company->allow_fel) {
+        $rules['allow_fel'] = 'required|boolean';
       }
-
-      $rules['allow_add_products'] = 'required|boolean';
+      
+      $rules['allow_add_users'] = 'required|boolean';
       $rules['allow_add_stores']   = 'required|boolean';
+      $rules['allow_add_products'] = 'required|boolean';
     }
 
     return $rules;
