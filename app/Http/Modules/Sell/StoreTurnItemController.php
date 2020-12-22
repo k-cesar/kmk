@@ -33,17 +33,20 @@ class StoreTurnItemController extends Controller
       ->leftJoin('turns_products AS tp', function (JoinClause $leftJoin) use ($storeTurn) {
         $leftJoin->on('presentations.id', '=', 'tp.presentation_id')
           ->where('tp.turn_id', $storeTurn->turn_id);
-      });
+      })
+      ->filterByDescriptionOrSkuCode(request('presentation_description'), request('sku_code'));
 
     $combosQuery = PresentationCombo::select('presentation_combos.id', 'description')
       ->selectRaw("COALESCE (tc.suggested_price, presentation_combos.suggested_price) AS price, 'COMBO' AS type")
       ->leftJoin('presentation_combos_stores_turns AS tc', function (JoinClause $leftJoin) use ($storeTurn) {
         $leftJoin->on('presentation_combos.id', '=', 'tc.presentation_combo_id')
           ->where('tc.turn_id', $storeTurn->turn_id);
-      });
+      })
+      ->filterByDescriptionPresentationOrSku(request('presentation_combo_description'), request('presentation_description'), request('sku_code'));
 
     $items = DB::query()
       ->fromSub($presentationsQuery->union($combosQuery), 'items')
+      ->orderBy('type', 'DESC')
       ->orderBy('description');
     
     return $this->showAll($items, ['id', 'description', 'type']);

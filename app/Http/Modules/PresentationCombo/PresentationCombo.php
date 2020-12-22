@@ -75,6 +75,35 @@ class PresentationCombo extends Model
     }
 
     /**
+     * Scope a query to filter PresentationCombos that incluide presentations by description or sku_code.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  \App\Http\Modules\User\User $user
+     * 
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeFilterByDescriptionPresentationOrSku($query, $presentationComboDescription, $presentationDescription, $skuCode)
+    {
+        $query->when($presentationComboDescription, function ($query) use ($presentationComboDescription) {
+            $query->orWhere('description', 'ilike', $presentationComboDescription);
+        })
+        ->when($presentationDescription, function ($query) use ($presentationDescription) {
+            $query->orWhereHas('presentations', function ($query) use ($presentationDescription) {
+                $query->where('description', 'ilike', $presentationDescription);
+            });
+        })
+        ->when($skuCode, function ($query) use ($skuCode) {
+            $query->orWhereHas('presentations', function ($query) use ($skuCode) {
+                $query->whereHas('presentationSkus', function ($subQuery) use ($skuCode) {
+                    $subQuery->where('code', 'ilike', $skuCode);
+                });
+            });
+        });
+
+        return $query;
+    }
+
+    /**
      * Sync the prices of the stores and turns
      *
      * @param array $prices

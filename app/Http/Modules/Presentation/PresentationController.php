@@ -7,36 +7,67 @@ use Illuminate\Support\Facades\Schema;
 
 class PresentationController extends Controller
 {
+    /**
+    * Display a listing of the resource.
+    *
+    * @return \Illuminate\Http\JsonResponse
+    */
     public function index()
     {
-        $Presentations = Presentation::query();
+        $presentations = Presentation::orderBy('description')
+            ->filterByDescriptionOrSkuCode(request('presentation_description'), request('sku_code'));
 
-        return $this->showAll($Presentations, Schema::getColumnListing((new Presentation)->getTable()));
+        return $this->showAll($presentations, Schema::getColumnListing((new Presentation)->getTable()));
     }
 
+    /**
+    * Store a newly created resource in storage.
+    *
+    * @param  App\Http\Modules\Presentation\PresentationRequest  $request
+    * @return \Illuminate\Http\JsonResponse
+    */
     public function store(PresentationRequest $request)
     {
-        $Presentation = Presentation::create($request->validated());
+        $presentation = Presentation::create($request->validated());
 
-        return $this->showOne($Presentation, 201);
+        return $this->showOne($presentation, 201);
     }
     
-    public function show(Presentation $Presentation)
+    /**
+    * Display the specified resource.
+    *
+    * @param  App\Http\Modules\Presentation\Presentation  $presentation
+    * @return \Illuminate\Http\JsonResponse
+    */
+    public function show(Presentation $presentation)
     {
-        return $this->showOne($Presentation);
+        return $this->showOne($presentation);
     }
 
-    public function update(PresentationRequest $request, Presentation $Presentation)
+    /**
+    * Update the specified resource in storage.
+    *
+    * @param  App\Http\Modules\Presentation\PresentationRequest  $request
+    * @param  App\Http\Modules\Presentation\Presentation  $presentation
+    * @return \Illuminate\Http\JsonResponse
+    */
+    public function update(PresentationRequest $request, Presentation $presentation)
     {
-        $Presentation->update($request->validated());
+        $presentation->update($request->validated());
 
-        return $this->showOne($Presentation);
+        return $this->showOne($presentation);
     }
 
-    public function destroy(Presentation $Presentation)
+    /**
+    * Remove the specified resource from storage.
+    *
+    * @param  App\Http\Modules\Presentation\Presentation  $presentation
+    * @return \Illuminate\Http\JsonResponse
+    */
+    public function destroy(Presentation $presentation)
     {
-        $Presentation->secureDelete();
+        $presentation->secureDelete();
 
-        return $this->showOne($Presentation);
+        return $this->showOne($presentation);
     }
 }
