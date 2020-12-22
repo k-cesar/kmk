@@ -112,9 +112,9 @@ class UserSeeder extends Seeder
     ])->syncPermissions(Permission::all());
     
     factory(User::class)->create([
-      'name'      => 'Nelson Rodriguez',
-      'username'  => 'estuardo',
-      'email'     => 'estuardo@userlab.co',
+      'name'      => 'José González',
+      'username'  => 'jose',
+      'email'     => 'jose@userlab.co',
       'role_id'   => 1,
       ])->syncPermissions(Permission::all());
       
