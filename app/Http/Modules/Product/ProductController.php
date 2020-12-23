@@ -80,7 +80,7 @@ class ProductController extends Controller
         
         $this->authorize('manage', $product);
         
-        if ($product->presentations->count()) {
+        if ($product->presentations()->exists()) {
             return $this->errorResponse(409, 'El producto posee presentaciones activas');
         }
 
