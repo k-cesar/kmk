@@ -92,7 +92,13 @@ class ClientController extends Controller
   {
     $this->authorize('destroy', $client);
 
-    $client->secureDelete();
+    if ($client->sells()->exists()) {
+      return $this->errorResponse(409, 'El cliente ya ha participado en procesos de venta.');
+    }
+
+    $client->companies()->detach();
+    
+    $client->forceDelete();
 
     return $this->showOne($client);
   }

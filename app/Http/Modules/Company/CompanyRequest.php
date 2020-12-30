@@ -33,8 +33,6 @@ class CompanyRequest extends FormRequest
       'currency_id'           => 'required|exists:currencies,id',
       'country_id'            => 'required|exists:countries,id',
       'nit'                   => ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
-        'required', 
-        'digits_between:1,15',
         Rule::unique('companies', 'nit')
           ->where(function ($query) {
             return $query->where('country_id', $this->get('country_id'));

@@ -274,7 +274,8 @@ class Sell extends Model
     {
         $countryId = auth()->user()->company_id;
 
-        $client = Client::where('nit', $params['nit'])
+        $client = Client::withTrashed()
+            ->where('nit', $params['nit'])
             ->where('country_id', $countryId)
             ->first();
 
