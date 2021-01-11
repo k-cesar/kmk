@@ -385,7 +385,7 @@
     "permissions": [
       {
         "name": "Ver Ajuste de Efectivo",
-        "level": 3,
+        "level": 4,
         "routes": ["stores-cash.index"]
       },
       {
