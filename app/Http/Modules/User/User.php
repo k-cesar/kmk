@@ -97,7 +97,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function stores()
     {
-        return $this->belongsToMany(Store::class, 'store_users');
+        return $this->belongsToMany(Store::class, 'store_users')->withTimestamps();
     }
 
     /**

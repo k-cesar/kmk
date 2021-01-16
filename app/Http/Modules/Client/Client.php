@@ -88,7 +88,7 @@ class Client extends Model
      * @param  string  $value
      * @return void
      */
-    public function setFirstNameAttribute($value)
+    public function setNitAttribute($value)
     {
         $this->attributes['nit'] = strtoupper($value);
     }

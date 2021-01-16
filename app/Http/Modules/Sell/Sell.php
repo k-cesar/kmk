@@ -272,7 +272,7 @@ class Sell extends Model
      */
     private static function findOrCreateClient($params)
     {
-        $countryId = auth()->user()->company_id;
+        $countryId = Store::find($params['store_id'])->company->country_id;
 
         $client = Client::withTrashed()
             ->where('nit', $params['nit'])
