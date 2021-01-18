@@ -26,7 +26,6 @@ class CreateCompanyClientsTable extends Migration
             $table->string('phone', 50)->nullable();
             $table->string('email', 100)->nullable();
             $table->timestamps();
-            $table->softDeletes();
 
             $table->primary(['company_id', 'client_id']);
 

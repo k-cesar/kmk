@@ -24,7 +24,6 @@ class CreateStoreUsersTable extends Migration
             $table->unsignedBigInteger('store_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
-            $table->softDeletes();
 
             $table->primary(['store_id', 'user_id']);
 

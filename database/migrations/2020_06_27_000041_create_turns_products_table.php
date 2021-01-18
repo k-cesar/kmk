@@ -25,7 +25,6 @@ class CreateTurnsProductsTable extends Migration
             $table->unsignedBigInteger('presentation_id');
             $table->double('price');
             $table->timestamps();
-            $table->softDeletes();
 
             $table->primary(['turn_id', 'presentation_id']);
 

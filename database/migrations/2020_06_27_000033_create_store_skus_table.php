@@ -25,7 +25,6 @@ class CreateStoreSkusTable extends Migration
             $table->unsignedBigInteger('presentation_sku_id');
             $table->tinyInteger('is_active');
             $table->timestamps();
-            $table->softDeletes();
 
             $table->primary(['store_id', 'presentation_sku_id']);
 
