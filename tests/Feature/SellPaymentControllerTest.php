@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use App\Http\Modules\PaymentMethod\PaymentMethod;
 use Tests\ApiTestCase;
 use App\Http\Modules\Sell\Sell;
-use App\Http\Modules\StoreTurn\StoreTurn;
 use App\Http\Modules\SellPayment\SellPayment;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 

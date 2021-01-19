@@ -23,13 +23,10 @@ class CreatePresentationCombosTable extends Migration
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->text('description');
-            $table->unsignedBigInteger('uom_id');
-            $table->text('minimal_expresion');
             $table->double('suggested_price');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('uom_id')->references('id')->on('uoms');
         });
     }
 

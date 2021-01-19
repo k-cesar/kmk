@@ -15,7 +15,7 @@ class UserPermissionControllerTest extends ApiTestCase
     {
         parent::setUp();
 
-        $this->seed(['PermissionSeeder', 'RoleSeeder', 'CompanySeeder', 'UserSeeder']);
+        $this->seed(['PermissionSeeder']);
     }
 
     /**
@@ -23,7 +23,7 @@ class UserPermissionControllerTest extends ApiTestCase
      */
     public function a_guest_cannot_access_to_user_permission_resources()
     {
-        $randomUserId = User::all()->random()->id;
+        $randomUserId = factory(User::class)->create()->id;
 
         $this->getJson(route('users.permissions.index', $randomUserId))->assertUnauthorized();
         $this->postJson(route('users.permissions.store', $randomUserId))->assertUnauthorized();

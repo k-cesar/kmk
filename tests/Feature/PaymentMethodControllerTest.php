@@ -14,7 +14,7 @@ class PaymentMethodControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'PaymentMethodSeeder']);
+    $this->seed(['PermissionSeeder']);
   }
 
   /**
@@ -36,7 +36,7 @@ class PaymentMethodControllerTest extends ApiTestCase
   {
     $this->signIn();
     
-    $randomPaymentMethodId = PaymentMethod::all()->random()->id;
+    $randomPaymentMethodId = factory(PaymentMethod::class)->create()->id;
 
     $this->getJson(route('payment-methods.index'))->assertForbidden();
     $this->getJson(route('payment-methods.show', $randomPaymentMethodId))->assertForbidden();

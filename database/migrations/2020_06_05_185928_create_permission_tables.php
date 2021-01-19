@@ -29,7 +29,7 @@ class CreatePermissionTables extends Migration
             $table->timestamps();
         });
 
-        Schema::create('permission_route', function (Blueprint $table) use ($tableNames) {
+        Schema::create('permission_routes', function (Blueprint $table) use ($tableNames) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('permission_id');
             $table->string('route');
@@ -121,7 +121,7 @@ class CreatePermissionTables extends Migration
         Schema::drop($tableNames['model_has_roles']);
         Schema::drop($tableNames['model_has_permissions']);
         Schema::drop($tableNames['roles']);
-        Schema::drop('permission_route');
+        Schema::drop('permission_routes');
         Schema::drop($tableNames['permissions']);
     }
 }

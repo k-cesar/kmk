@@ -26,8 +26,6 @@ class PresentationComboRequest extends FormRequest
   {
     $rules = [
       'description'              => 'required|string|max:255|unique:presentation_combos',
-      'uom_id'                   => 'required|exists:uoms,id',
-      'minimal_expresion'        => 'required|string|max:255',
       'suggested_price'          => 'required|numeric|min:0',
       'presentations'            => 'required|array',
       'presentations.*'          => 'exists:presentations,id',
