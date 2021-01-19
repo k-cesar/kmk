@@ -19,8 +19,8 @@ class AccessMiddleware
         $user = $request->user();
         $routeName = $request->route()->getName();
         $permissions = Permission::select('permissions.*')
-            ->join('permission_route', 'permissions.id', '=', 'permission_route.permission_id')
-            ->where('permission_route.route', $routeName)
+            ->join('permission_routes', 'permissions.id', '=', 'permission_routes.permission_id')
+            ->where('permission_routes.route', $routeName)
             ->get();
 
         if ($user->hasRole(config('app.role_super_admin_name')) || ($permissions->count() && $user->hasAnyPermission($permissions))) {

@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Http\Modules\Company\Company;
 use Tests\ApiTestCase;
 use App\Http\Modules\User\User;
 use App\Http\Modules\Store\Store;
@@ -16,7 +15,7 @@ class UserControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'CompanySeeder', 'UserSeeder']);
+    $this->seed(['PermissionSeeder']);
   }
 
   /**

@@ -42,8 +42,8 @@ abstract class ApiTestCase extends BaseTestCase
     {
         $user = $user ?: factory(User::class)->create();
         $permissions = Permission::select('permissions.*')
-            ->join('permission_route', 'permissions.id', '=', 'permission_route.permission_id')
-            ->whereIn('permission_route.route', $routes)
+            ->join('permission_routes', 'permissions.id', '=', 'permission_routes.permission_id')
+            ->whereIn('permission_routes.route', $routes)
             ->get();
 
         $user->givePermissionTo($permissions);

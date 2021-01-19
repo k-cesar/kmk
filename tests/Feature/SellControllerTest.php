@@ -5,7 +5,6 @@ namespace Tests\Feature;
 use Tests\ApiTestCase;
 use App\Http\Modules\Sell\Sell;
 use Illuminate\Support\Facades\DB;
-use App\Http\Modules\Client\Client;
 use App\Http\Modules\Sell\SellInvoice;
 use App\Http\Modules\StoreTurn\StoreTurn;
 use App\Http\Modules\SellPayment\SellPayment;
@@ -22,7 +21,7 @@ class SellControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'ClientSeeder', 'SellSeeder']);
+    $this->seed(['PermissionSeeder', 'SellSeeder']);
   }
 
   /**
@@ -130,8 +129,6 @@ class SellControllerTest extends ApiTestCase
         'price'           => 2.5,
       ]);
 
-    $client = Client::first();
-
     $attributes = [
       'store_id'          => $storeTurn->store_id,
       'payment_method_id' => factory(PaymentMethod::class)->create()->id,
@@ -198,8 +195,6 @@ class SellControllerTest extends ApiTestCase
     $combo = factory(PresentationCombo::class)->create(['suggested_price' => 5.25]);
 
     $combo->presentations()->sync([$presentationA->id, $presentationB->id]);
-
-    $client = Client::first();
 
     DB::table('turns_products')
       ->insert([

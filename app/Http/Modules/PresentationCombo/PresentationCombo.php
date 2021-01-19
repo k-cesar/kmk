@@ -3,7 +3,6 @@
 namespace App\Http\Modules\PresentationCombo;
 
 use Illuminate\Support\Arr;
-use App\Http\Modules\Uom\Uom;
 use App\Traits\SecureDeletes;
 use Illuminate\Support\Facades\DB;
 use App\Http\Modules\Sell\SellDetail;
@@ -22,8 +21,6 @@ class PresentationCombo extends Model
      */
     protected $fillable = [
         'description',
-        'uom_id',
-        'minimal_expresion',
         'suggested_price',
     ];
 
@@ -32,17 +29,7 @@ class PresentationCombo extends Model
      *
      * @var array
      */
-    protected $with = ['uom', 'presentations'];
-
-    /**
-     * Get the uom that owns the presentation_combo.
-     * 
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function uom()
-    {
-        return $this->belongsTo(Uom::class);
-    }
+    protected $with = ['presentations'];
 
     /**
      * The presentations that belong to the presentation_combo.

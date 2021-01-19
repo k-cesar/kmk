@@ -10,8 +10,6 @@ $factory->define(PresentationCombo::class, function (Faker $faker) {
 
     return [
         'description'       => $faker->unique()->sentence,
-        'uom_id'            => Uom::inRandomOrder()->first() ?? factory(Uom::class),
-        'minimal_expresion' => $faker->sentence,
         'suggested_price'   => rand(1, 50) * 100,
     ];
 });
