@@ -91,7 +91,9 @@ class UserRequest extends FormRequest
       $validatedData['password'] = Hash::make($validatedData['password']);
     }
 
-    if (auth()->user()->role->level > 1) {
+    if ($validatedData['role_id'] == 1) {
+      $validatedData['company_id'] = 0;
+    } else if (auth()->user()->role->level > 1) {
       $validatedData['company_id'] = auth()->user()->company_id;
     }
 
