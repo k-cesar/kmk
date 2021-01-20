@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Tests\ApiTestCase;
 use App\Http\Modules\User\User;
 use App\Http\Modules\Store\Store;
+use App\Http\Modules\Company\Company;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class UserControllerTest extends ApiTestCase
@@ -83,6 +84,8 @@ class UserControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_store_a_user()
   {
+    factory(Company::class)->create(['id' => 0, 'deleted_at' => now()]);
+
     $user = $this->signInWithPermissionsTo(['users.store']);
 
     $user->company->update(['allow_add_users' => true]);
@@ -110,6 +113,10 @@ class UserControllerTest extends ApiTestCase
     unset($attributes['remember_token']);
     unset($attributes['stores']);
 
+    if ($user->role_id == 1) {
+      $attributes['company_id'] = 0;
+    }
+
     $this->assertDatabaseHas('users', $attributes);
 
     foreach ($stores as $store) {
@@ -123,6 +130,8 @@ class UserControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_update_a_user()
   {
+    factory(Company::class)->create(['id' => 0, 'deleted_at' => now()]);
+
     $user = $this->signInWithPermissionsTo(['users.update']);
 
     $stores = factory(Store::class, 2)->create(['company_id' => $user->company_id]);
@@ -143,12 +152,16 @@ class UserControllerTest extends ApiTestCase
     $this->putJson(route('users.update', $user->id), $attributes)
       ->assertOk();
 
-    
     unset($attributes['update_password']);
     unset($attributes['remember_token']);
     unset($attributes['stores']);
 
+    if ($user->role_id == 1) {
+      $attributes['company_id'] = 0;
+    }
+
     $this->assertDatabaseHas('users', $attributes);
+
     foreach ($stores as $store) {
       $this->assertDatabaseHas('store_users', ['store_id' => $store->id, 'user_id' => $user->id]);
     }

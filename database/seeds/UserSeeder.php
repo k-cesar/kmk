@@ -21,29 +21,29 @@ class UserSeeder extends Seeder
   {
     Currency::create([
       'id'           => 0,
-      'name'         => 'Moneda 0',
-      'symbol'       => '00',
-      'abbreviation' => 'Abrebiación 0',
-      'description'  => 'Descripción 0',
+      'name'         => 'Señor Tendero',
+      'symbol'       => '_',
+      'abbreviation' => '_',
+      'description'  => '_',
       'disabled'     => 1,
       'deleted_at'   => now(),
     ]);
 
     Country::create([
       'id'          => 0,
-      'name'        => 'País 0',
+      'name'        => 'Señor Tendero',
       'currency_id' => 0,
       'deleted_at'  => now(),
     ]);
 
     Company::create([
       'id'                 => '0',
-      'name'               => 'Empresa 0',
-      'reason'             => 'Razón Social 0',
-      'regime'             => 'Régimen 0',
-      'nit'                => '00000000',
-      'phone'              => '00000000',
-      'address'            => 'Dirección 0',
+      'name'               => 'Señor Tendero',
+      'reason'             => '_',
+      'regime'             => '_',
+      'nit'                => '_',
+      'phone'              => '_',
+      'address'            => '_',
       'country_id'         => 0,
       'currency_id'        => 0,
       'allow_fel'          => 1,

@@ -67,9 +67,11 @@ class CompanyControllerTest extends ApiTestCase
   {
     $user = $this->signInWithPermissionsTo(['companies.show']);
 
-    $this->getJson(route('companies.show', $user->company_id))
+    $company = $user->role->level == 1 ? factory(Company::class)->create() : $user->company;
+
+    $this->getJson(route('companies.show', $company->id))
       ->assertOk()
-      ->assertJson($user->company->toArray());
+      ->assertJson($company->toArray());
   }
 
   /**
@@ -104,22 +106,26 @@ class CompanyControllerTest extends ApiTestCase
   {
     $user = $this->signInWithPermissionsTo(['companies.update']);
 
+    $company = Company::all()->first();
+
+    $user->update(['company_id' => $company->id]);
+
     if ($user->role->level > 1 ) {
       $default = [
-        'allow_fel'          => $user->company->allow_fel,
-        'allow_add_users'    => $user->company->allow_add_users,
-        'allow_add_stores'   => $user->company->allow_add_stores,
-        'allow_add_products' => $user->company->allow_add_products,
+        'allow_fel'          => $company->allow_fel,
+        'allow_add_users'    => $company->allow_add_users,
+        'allow_add_stores'   => $company->allow_add_stores,
+        'allow_add_products' => $company->allow_add_products,
       ];
     } else {
-      if ($user->company->allow_fel) {
-        $default = ['allow_fel' => $user->company->allow_fel];
+      if ($company->allow_fel) {
+        $default = ['allow_fel' => $company->allow_fel];
       }
     }
 
     $attributes = factory(Company::class)->raw($default ?? []);
 
-    $this->putJson(route('companies.update', $user->company_id), $attributes)
+    $this->putJson(route('companies.update', $company->id), $attributes)
       ->assertOk();
 
     $this->assertDatabaseHas('companies', $attributes);
