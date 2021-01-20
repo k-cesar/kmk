@@ -18,7 +18,9 @@ class PresentationComboController extends Controller
    */
   public function index()
   {
-    $presentationCombos = PresentationCombo::query();
+    $presentationCombos = PresentationCombo::with('presentations:id,description')
+      ->with('presentationCombosStoresTurns.store:id,name')
+      ->with('presentationCombosStoresTurns.turn');
 
     return $this->showAll($presentationCombos, Schema::getColumnListing((new PresentationCombo)->getTable()));
   }
@@ -62,6 +64,10 @@ class PresentationComboController extends Controller
    */
   public function show(PresentationCombo $presentationCombo)
   {
+    $presentationCombo->load('presentations:id,description')
+      ->load('presentationCombosStoresTurns.store:id,name')
+      ->load('presentationCombosStoresTurns.turn');
+
     return $this->showOne($presentationCombo);
   }
 
