@@ -8,9 +8,12 @@ use App\Http\Modules\Turn\Turn;
 use App\Http\Modules\Store\Store;
 use App\Traits\ResourceVisibility;
 use App\Http\Modules\Deposit\Deposit;
+use App\Http\Modules\Purchase\Purchase;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Modules\SellPayment\SellPayment;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Modules\PaymentMethod\PaymentMethod;
+use App\Http\Modules\CashAdjustment\CashAdjustment;
 
 class StoreTurn extends Model
 {
@@ -80,6 +83,59 @@ class StoreTurn extends Model
     public function sellPayments()
     {
         return $this->hasMany(SellPayment::class);
+    }
+
+    /**
+     * Load the card_sales_pos, expenses_in_purchases, deposits_total, 
+     * cash_sales, cash_collected_in_receivables 
+     * and cash_adjustments_total of the StoreTurn
+     *
+     * @return App\Http\Modules\StoreTurn\StoreTurn
+     */
+    public function loadAmounts()
+    {
+        $this->card_sales_pos = $this->sellPayments()
+            ->where('status', SellPayment::OPTION_STATUS_VERIFIED)
+            ->where('payment_method_id', PaymentMethod::where('name', PaymentMethod::OPTION_PAYMENT_CARD)->first()->id)
+            ->pluck('amount')
+            ->sum();
+
+        $this->expenses_in_purchases = Purchase::where('store_id', $this->store_id)
+            ->where('payment_method_id', PaymentMethod::where('name', PaymentMethod::OPTION_PAYMENT_CASH)->first()->id)
+            ->whereBetween('date', [$this->open_date, $this->close_date])
+            ->pluck('total')
+            ->sum();
+
+        $this->deposits_total = $this->deposits
+            ->pluck('amount')
+            ->sum();
+
+        $this->cash_sales = $this->sellPayments()
+            ->where('status', SellPayment::OPTION_STATUS_VERIFIED)
+            ->where('payment_method_id', PaymentMethod::where('name', PaymentMethod::OPTION_PAYMENT_CASH)->first()->id)
+            ->whereHas('sell', function ($query) {
+                $query->where('status', Sell::OPTION_STATUS_PAID)
+                    ->where('is_to_collect', false);
+            })
+            ->pluck('amount')
+            ->sum();
+
+        $this->cash_collected_in_receivables = $this->sellPayments()
+            ->where('status', SellPayment::OPTION_STATUS_VERIFIED)
+            ->where('payment_method_id', PaymentMethod::where('name', PaymentMethod::OPTION_PAYMENT_CASH)->first()->id)
+            ->whereHas('sell', function ($query) {
+                $query->where('status', Sell::OPTION_STATUS_PAID)
+                    ->where('is_to_collect', true);
+            })
+            ->pluck('amount')
+            ->sum();
+
+        $this->cash_adjustments_total = CashAdjustment::where('store_id', $this->store_id)
+            ->whereBetween('created_at', [$this->open_date, $this->close_date])
+            ->pluck('amount')
+            ->sum();
+
+        return $this;
     }
 
 }
