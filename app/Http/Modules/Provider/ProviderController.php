@@ -70,4 +70,17 @@ class ProviderController extends Controller
 
     return $this->showOne($provider);
   }
+
+  /**
+   * Display a compact list of the resource for select/combobox options.
+   *
+   * @return \Illuminate\Http\JsonResponse
+   */
+  public function options()
+  {
+    $providers = Provider::select('id', 'name')
+      ->withOut('country');
+
+    return $this->showAll($providers, Schema::getColumnListing((new Provider)->getTable()));
+  }
 }

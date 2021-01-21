@@ -121,4 +121,25 @@ class ProviderControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('providers', $provider->toArray());
   }
+
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_providers_options()
+  {
+    $this->signIn();
+
+    $response = $this->getJson(route('providers.options'))
+      ->assertOk();
+
+    $providers = Provider::select(['id', 'name'])
+      ->withOut('country')
+      ->limit(10)
+      ->get();
+
+    foreach ($providers as $provider) {
+      $response->assertJsonFragment($provider->toArray());
+    }
+  }
+
 }

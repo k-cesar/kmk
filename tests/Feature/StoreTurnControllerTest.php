@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Http\Modules\PaymentMethod\PaymentMethod;
-use App\Http\Modules\Store\Store;
 use Tests\ApiTestCase;
 use App\Http\Modules\Turn\Turn;
 use App\Http\Modules\StoreTurn\StoreTurn;
@@ -68,6 +67,9 @@ class StoreTurnControllerTest extends ApiTestCase
      */
     public function an_user_with_permission_can_see_a_store_turn()
     {
+        factory(PaymentMethod::class)->create(['name' => PaymentMethod::OPTION_PAYMENT_CARD,]);
+        factory(PaymentMethod::class)->create(['name' => PaymentMethod::OPTION_PAYMENT_CASH,]);
+
         $user = $this->signInWithPermissionsTo(['store-turns.show']);
 
         $storeTurn = factory(StoreTurn::class)->create();

@@ -116,9 +116,9 @@ Route::group(['middleware' => ['auth', 'access']], function () {
 
 Route::group(['middleware' => ['auth']], function () {
     
-    Route::get('clients-options', 'Client\ClientController@options')->name('clients.options');
-    
     Route::get('brands-options', 'Brand\BrandController@options')->name('brands.options');
+    
+    Route::get('clients-options', 'Client\ClientController@options')->name('clients.options');
     
     Route::get('companies-options', 'Company\CompanyController@options')->name('companies.options');
     
@@ -139,6 +139,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('product-departments-options', 'ProductDepartment\ProductDepartmentController@options')->name('product-departments.options');
     
     Route::get('product-subcategories-options', 'ProductSubcategory\ProductSubcategoryController@options')->name('product-subcategories.options');
+    
+    Route::get('providers-options', 'Provider\ProviderController@options')->name('providers.options');
     
     Route::get('regions-options', 'Region\RegionController@options')->name('regions.options');
     
