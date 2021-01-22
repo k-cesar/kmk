@@ -12,6 +12,6 @@ class StoreFormatSeeder extends Seeder
      */
     public function run()
     {
-        factory(StoreFormat::class, 5)->create();
+        factory(StoreFormat::class, 3)->create();
     }
 }

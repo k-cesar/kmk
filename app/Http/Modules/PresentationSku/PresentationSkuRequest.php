@@ -25,17 +25,40 @@ class PresentationSkuRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'code'             => 'required|alpha_num|max:150|unique:presentation_skus',
       'description'      => 'required|string|max:255',
       'presentation_id'  => 'required|exists:presentations,id',
       'seasonal_product' => 'required|boolean',
+      'code'             => ['required', 'alpha_num', 'max:150',
+        Rule:: unique('presentation_skus', 'code')
+          ->whereIn('company_id', [0, auth()->user()->company_id]),
+      ],
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['code'] = "required|string|max:150|unique:presentation_skus,code,{$this->presentation_sku->id}";
+      $rules['code'] = ['required', 'alpha_num', 'max:150',
+        Rule:: unique('presentation_skus', 'code')
+          ->whereIn('company_id', [0, auth()->user()->company_id])
+          ->whereNot('id', $this->presentation_sku->id),
+      ];
     }
 
     return $rules;
+  }
+
+  /**
+   * Get the validated data from the request.
+   *
+   * @return array
+   */
+  public function validated()
+  {
+    $validatedData = parent::validated();
+
+    if ($this->isMethod('POST')) {
+      $validatedData['company_id'] = auth()->user()->company_id;
+    }
+
+    return $validatedData;
   }
   
 }

@@ -2,8 +2,8 @@
 
 namespace App\Http\Modules\Presentation;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\FormRequest;
 
 class PresentationRequest extends FormRequest
 {
@@ -28,32 +28,22 @@ class PresentationRequest extends FormRequest
       'product_id'            => 'required|exists:products,id',
       'price'                 => 'required|numeric|min:0',
       'is_grouping'           => 'required|boolean',
-      'description'           => [
-        'required', 
-        'string',
-        'max:150',
+      'description'           => ['required', 'string', 'max:150',
         Rule::unique('presentations', 'description')
-          ->where(function ($query) {
-            return $query->where('product_id', $this->get('product_id'));
-          }),
-      ], 
+          ->whereIn('company_id', [0, auth()->user()->company_id]),
+      ],
     ];
+
+    if ($this->isMethod('PUT')) {
+      $rules['description'] = ['required', 'string','max:150',
+        Rule::unique('presentations', 'description')
+          ->whereIn('company_id', [0, auth()->user()->company_id])
+          ->whereNot('id', $this->presentation->id),
+      ];
+    }
 
     if ($this->get('is_grouping')) {
       $rules['units'] = 'required|numeric|min:2';
-    }
-
-    if ($this->isMethod('PUT')) {
-      $rules['description'] = [
-        'required', 
-        'string',
-        'max:150',
-        Rule::unique('presentations', 'description')
-          ->where(function ($query) {
-            return $query->where('product_id', $this->get('product_id'))
-              ->where('id', '!=', $this->presentation->id);
-          }),
-      ];
     }
 
     return $rules;
@@ -68,7 +58,11 @@ class PresentationRequest extends FormRequest
   {
     $validatedData = parent::validated();
 
-    if ( ! $validatedData['is_grouping'] ) {
+    if ($this->isMethod('POST')) {
+      $validatedData['company_id'] = auth()->user()->company_id;
+    }
+
+    if (!$validatedData['is_grouping']) {
       $validatedData['units'] = 1;
     }
 

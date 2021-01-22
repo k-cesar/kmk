@@ -3,6 +3,8 @@
 namespace App\Http\Modules\Presentation;
 
 use App\Traits\SecureDeletes;
+use App\Traits\ResourceVisibility;
+use App\Http\Modules\Company\Company;
 use App\Http\Modules\Product\Product;
 use App\Http\Modules\Sell\SellDetail;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +13,7 @@ use App\Http\Modules\PresentationSku\PresentationSku;
 
 class Presentation extends Model
 {
-    use SoftDeletes, SecureDeletes;
+    use SoftDeletes, SecureDeletes, ResourceVisibility;
 
     /**
      * The attributes that are mass assignable.
@@ -19,6 +21,7 @@ class Presentation extends Model
      * @var array
      */
     protected $fillable = [
+        'company_id',
         'product_id',
         'description',
         'price',
@@ -61,6 +64,16 @@ class Presentation extends Model
     public function presentationSkus()
     {
         return $this->hasMany(PresentationSku::class);
+    }
+
+    /**
+     * Get the company that owns the presentation.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class)->withTrashed();
     }
 
     /**

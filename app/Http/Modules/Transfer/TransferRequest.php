@@ -51,10 +51,7 @@ class TransferRequest extends FormRequest
       ->get();
 
     foreach($presentations as $index => $presentation) {
-      $rules["presentations.$index.quantity"] = [
-        'required',
-        'integer',
-        'min:1',
+      $rules["presentations.$index.quantity"] = ['required', 'integer', 'min:1',
         function ($attribute, $value, $fail) use ($presentation, $stock) {
           $productInStock = $stock->where('product_id', $presentation->product_id)->first();
 

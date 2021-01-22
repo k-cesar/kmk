@@ -77,80 +77,91 @@ class UserSeeder extends Seeder
       ->syncPermissions(Permission::all());
 
     factory(User::class)->create([
-      'name'      => 'Stalin Sánchez',
-      'username'  => 'stalin',
-      'email'     => 'stalin@kemok.io',
-      'role_id'   => 1,
+      'name'       => 'Stalin Sánchez',
+      'username'   => 'stalin',
+      'email'      => 'stalin@kemok.io',
+      'company_id' => 0,
+      'role_id'    => 1,
     ])->syncPermissions(Permission::all());
 
     factory(User::class)->create([
-      'name'      => 'Nelson Torres',
-      'username'  => 'nelson',
-      'email'     => 'ntorres144@gmail.com',
-      'role_id'   => 1,
+      'name'       => 'Nelson Torres',
+      'username'   => 'nelson',
+      'email'      => 'ntorres144@gmail.com',
+      'company_id' => 0,
+      'role_id'    => 1,
     ])->syncPermissions(Permission::all());
 
     factory(User::class)->create([
-      'name'      => 'Diego Leal',
-      'username'  => 'diego',
-      'email'     => 'diego@kemok.io',
-      'role_id'   => 1,
+      'name'       => 'Diego Leal',
+      'username'   => 'diego',
+      'email'      => 'diego@kemok.io',
+      'company_id' => 0,
+      'role_id'    => 1,
     ])->syncPermissions(Permission::all());
 
     factory(User::class)->create([
-      'name'      => 'Cesar Salazar',
-      'username'  => 'cesar',
-      'email'     => 'cesar@kemok.io',
-      'role_id'   => 1,
+      'name'       => 'Cesar Salazar',
+      'username'   => 'cesar',
+      'email'      => 'cesar@kemok.io',
+      'company_id' => 0,
+      'role_id'    => 1,
     ])->syncPermissions(Permission::all());
 
     factory(User::class)->create([
-      'name'      => 'Luis de León',
-      'username'  => 'luis_deleon',
-      'email'     => 'luis.deleon@userlab.co',
-      'role_id'   => 1,
+      'name'       => 'Luis de León',
+      'username'   => 'luis_deleon',
+      'email'      => 'luis.deleon@userlab.co',
+      'company_id' => 0,
+      'role_id'    => 1,
     ])->syncPermissions(Permission::all());
     
     factory(User::class)->create([
-      'name'      => 'José González',
-      'username'  => 'jose',
-      'email'     => 'jose@userlab.co',
-      'role_id'   => 1,
+      'name'       => 'José González',
+      'username'   => 'jose',
+      'email'      => 'jose@userlab.co',
+      'company_id' => 0,
+      'role_id'    => 1,
       ])->syncPermissions(Permission::all());
       
     factory(User::class)->create([
-      'name'      => 'Luis Moreno',
-      'username'  => 'luis_moreno',
-      'email'     => 'luis.moreno@userlab.co',
-      'role_id'   => 1,
+      'name'       => 'Luis Moreno',
+      'username'   => 'luis_moreno',
+      'email'      => 'luis.moreno@userlab.co',
+      'company_id' => 0,
+      'role_id'    => 1,
     ])->syncPermissions(Permission::all());
 
     factory(User::class)->create([
-      'name'      => 'Carlos Moreno',
-      'username'  => 'carlos_moreno',
-      'email'     => 'carlos.moreno@userlab.co',
-      'role_id'   => 1,
+      'name'       => 'Carlos Moreno',
+      'username'   => 'carlos_moreno',
+      'email'      => 'carlos.moreno@userlab.co',
+      'company_id' => 0,
+      'role_id'    => 1,
     ])->syncPermissions(Permission::all());
 
     factory(User::class)->create([
-      'name'      => 'Jhonatan López',
-      'username'  => 'jhonatan_lopez',
-      'email'     => 'jhonatan.lopez@kemok.io',
-      'role_id'   => 1,
+      'name'       => 'Jhonatan López',
+      'username'   => 'jhonatan_lopez',
+      'email'      => 'jhonatan.lopez@kemok.io',
+      'company_id' => 0,
+      'role_id'    => 1,
     ])->syncPermissions(Permission::all());
 
     factory(User::class)->create([
-      'name'      => 'Luis Villegas',
-      'username'  => 'luis_villegas',
-      'email'     => 'luis.villegas@kemok.io',
-      'role_id'   => 1,
+      'name'       => 'Luis Villegas',
+      'username'   => 'luis_villegas',
+      'email'      => 'luis.villegas@kemok.io',
+      'company_id' => 0,
+      'role_id'    => 1,
     ])->syncPermissions(Permission::all());
 
     factory(User::class)->create([
-      'name'      => 'Jimy Sagastume',
-      'username'  => 'jimy',
-      'email'     => 'jimy@kemok.io',
-      'role_id'   => 1,
+      'name'       => 'Jimy Sagastume',
+      'username'   => 'jimy',
+      'email'      => 'jimy@kemok.io',
+      'company_id' => 0,
+      'role_id'    => 1,
     ])->syncPermissions(Permission::all());
   }
 }

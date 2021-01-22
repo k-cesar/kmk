@@ -14,7 +14,8 @@ class ProductController extends Controller
 {
     public function index()
     {
-        $products = Product::query();
+        $products = Product::with('company:id,name')
+            ->visibleThroughCompany(auth()->user());
 
         return $this->showAll($products, Schema::getColumnListing((new Product)->getTable()));
     }
@@ -30,6 +31,7 @@ class ProductController extends Controller
             $product->productCountries()->sync($request->countries);
 
             Presentation::create([
+                'company_id'            => $product->company_id,
                 'product_id'            => $product->id,
                 'price'                 => $product->suggested_price,
                 'is_grouping'           => false,
@@ -38,6 +40,7 @@ class ProductController extends Controller
             ]);
 
             DB::commit();
+
             return $this->showOne($product, 201);
         } catch(Exception $exception) {
             DB::rollback();
@@ -58,24 +61,28 @@ class ProductController extends Controller
 
         try {
             DB::beginTransaction();
+            
             $product->update($request->validated());
             $product->productCountries()->sync($request->countries);
 
             DB::commit();
+
             return $this->showOne($product);
         } catch (Exception $exception) {
             DB::rollback();
+            
             Log::error($exception);
+
             return $this->errorResponse(500, "Ha ocurrido un error interno");
         }
     }
 
     /**
-    * Remove the specified resource from storage.
-    *
-    * @param  App\Http\Modules\Product\Product  $product
-    * @return \Illuminate\Http\JsonResponse
-    */
+     * Remove the specified resource from storage.
+     *
+     * @param  App\Http\Modules\Product\Product  $product
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function destroy(Product $product) {
         
         $this->authorize('manage', $product);
@@ -89,8 +96,15 @@ class ProductController extends Controller
         return $this->showOne($product);
     }
 
-    public function options(){
-        $products = Product::select('id', 'description');
+    /**
+     * Display a compact list of the resource for select/combobox options.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function options() {
+        $products = Product::select('id', 'description')
+            ->visibleThroughCompany(auth()->user())
+            ->withOut('productCategory','productSubcategory','brand','all_countries');
 
         return $this->showAll($products, Schema::getColumnListing((new Product)->getTable()));
     }

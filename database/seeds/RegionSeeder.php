@@ -12,6 +12,6 @@ class RegionSeeder extends Seeder
      */
     public function run()
     {
-        factory(Region::class, 5)->create();
+        factory(Region::class, 3)->create();
     }
 }

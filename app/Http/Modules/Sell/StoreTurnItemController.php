@@ -30,10 +30,11 @@ class StoreTurnItemController extends Controller
 
     $presentationsQuery = Presentation::select('id', 'description')
       ->selectRaw("COALESCE (tp.price, presentations.price) AS price, 'PRESENTATION' AS type")
-      ->leftJoin('turns_products AS tp', function (JoinClause $leftJoin) use ($storeTurn) {
+      ->leftJoin('turns_presentations AS tp', function (JoinClause $leftJoin) use ($storeTurn) {
         $leftJoin->on('presentations.id', '=', 'tp.presentation_id')
           ->where('tp.turn_id', $storeTurn->turn_id);
       })
+      ->visibleThroughCompany(auth()->user())
       ->filterByDescriptionOrSkuCode(request('presentation_description'), request('sku_code'));
 
     $combosQuery = PresentationCombo::select('presentation_combos.id', 'description')
@@ -42,6 +43,7 @@ class StoreTurnItemController extends Controller
         $leftJoin->on('presentation_combos.id', '=', 'tc.presentation_combo_id')
           ->where('tc.turn_id', $storeTurn->turn_id);
       })
+      ->visibleThroughCompany(auth()->user())
       ->filterByDescriptionPresentationOrSku(request('presentation_combo_description'), request('presentation_description'), request('sku_code'));
 
     $items = DB::query()

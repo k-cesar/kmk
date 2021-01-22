@@ -30,13 +30,9 @@ class AdjustmentRequest extends FormRequest
       'description'         => 'required|string|max:255',
       'products'            => 'required|array',
       'products.*.quantity' => 'required|numeric|min:0',
-      'products.*.id'       => [
-        'distinct',
-        'required',
+      'products.*.id'       => ['required', 'distinct',
         Rule::exists('stock_stores', 'product_id')
-          ->where(function ($query) {
-            return $query->where('store_id', $this->get('store_id'));
-          }),
+          ->where('store_id', $this->get('store_id')),
       ],
     ];
 

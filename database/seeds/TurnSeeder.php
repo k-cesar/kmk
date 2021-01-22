@@ -12,6 +12,6 @@ class TurnSeeder extends Seeder
      */
     public function run()
     {
-        factory(Turn::class, 5)->create();
+        factory(Turn::class, 3)->create();
     }
 }

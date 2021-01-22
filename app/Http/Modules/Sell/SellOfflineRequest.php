@@ -38,13 +38,10 @@ class SellOfflineRequest extends FormRequest
     ];
 
     foreach ($this->get('sells', []) as $indexSell => $sell) {
-      $rules["sells.$indexSell.store_turn_id"] = [
-        'required',
+      $rules["sells.$indexSell.store_turn_id"] = ['required',
         Rule::exists('store_turns', 'id')
-          ->where(function ($query) use ($sell) {
-            return $query->where('id', $sell['store_turn_id'])
-              ->where('store_id', $this->get('store_id'));
-        }),
+          ->where('id', $sell['store_turn_id'])
+          ->where('store_id', $this->get('store_id')),
       ];
 
       foreach($sell['items'] ?? [] as $indexItem => $item) {

@@ -36,9 +36,7 @@ class ClientRequest extends FormRequest
       'email'        => 'present|nullable|email|max:100',
       'nit'          => ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
         Rule::unique('clients', 'nit')
-          ->where(function ($query) {
-            return $query->where('country_id', $this->get('country_id'));
-          }),
+          ->where('country_id', $this->get('country_id')),
       ],
     ];
 
@@ -51,10 +49,8 @@ class ClientRequest extends FormRequest
       } else {
         $rules['nit'] = ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
           Rule::unique('clients', 'nit')
-            ->where(function ($query) {
-              return $query->where('country_id', $this->get('country_id'))
-                ->where('id', '!=', $this->client->id);
-            })
+            ->where('country_id', $this->get('country_id'))
+            ->whereNot('id', $this->client->id),
         ];
       }
     }

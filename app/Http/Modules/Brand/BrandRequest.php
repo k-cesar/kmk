@@ -26,27 +26,17 @@ class BrandRequest extends FormRequest
   {
     $rules = [
       'maker_id' => 'required|exists:makers,id',
-      'name'     => [
-        'required', 
-        'string',
-        'max:150',
+      'name'     => ['required', 'string', 'max:150',
         Rule::unique('brands', 'name')
-          ->where(function ($query) {
-            return $query->where('maker_id', $this->get('maker_id'));
-          }),
+          ->where('maker_id', $this->get('maker_id')),
       ],
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['name'] = [
-        'required', 
-        'string',
-        'max:150',
+      $rules['name'] = ['required', 'string', 'max:150',
         Rule::unique('brands', 'name')
-          ->where(function ($query) {
-            return $query->where('maker_id', $this->get('maker_id'))
-              ->where('id', '!=', $this->brand->id);
-          }),
+          ->where('maker_id', $this->get('maker_id'))
+          ->whereNot('id', $this->brand->id),
       ];
     }
 

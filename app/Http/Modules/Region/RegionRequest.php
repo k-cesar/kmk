@@ -26,27 +26,17 @@ class RegionRequest extends FormRequest
   {
     $rules = [
       'country_id' => 'required|exists:countries,id',
-      'name'       => [
-        'required', 
-        'string',
-        'max:150',
+      'name'       => ['required', 'string','max:150',
         Rule::unique('regions', 'name')
-          ->where(function ($query) {
-            return $query->where('country_id', $this->get('country_id'));
-          }),
+          ->where('country_id', $this->get('country_id')),
       ],
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['name'] = [
-        'required', 
-        'string',
-        'max:150',
+      $rules['name'] = ['required', 'string','max:150',
         Rule::unique('regions', 'name')
-          ->where(function ($query) {
-            return $query->where('country_id', $this->get('country_id'))
-              ->where('id', '!=', $this->region->id);
-          }),
+          ->where('country_id', $this->get('country_id'))
+          ->whereNot('id', $this->region->id),
       ];
     }
 

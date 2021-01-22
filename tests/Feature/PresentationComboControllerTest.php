@@ -17,7 +17,7 @@ class PresentationComboControllerTest extends ApiTestCase
   {
     parent::setUp();
 
-    $this->seed(['PermissionSeeder', 'PresentationComboSeeder']);
+    $this->seed(['PermissionSeeder', 'RoleSeeder', 'UserSeeder', 'PresentationComboSeeder']);
   }
 
   /**
@@ -84,6 +84,8 @@ class PresentationComboControllerTest extends ApiTestCase
   {
     $user = $this->signInWithPermissionsTo(['presentation-combos.store']);
 
+    $user->company->update(['allow_add_products' => true]);
+
     $stores = factory(Store::class, 2)->create();
 
     if ($user->role->level > 1) {
@@ -96,7 +98,7 @@ class PresentationComboControllerTest extends ApiTestCase
       }
     }
 
-    $attributes = factory(PresentationCombo::class)->raw();
+    $attributes = factory(PresentationCombo::class)->raw(['company_id' => $user->company_id]);
     $extraAttributes['presentations'] = factory(Presentation::class, 2)->create()->pluck('id')->toArray();
     $extraAttributes['prices'] = [
       [
@@ -139,7 +141,7 @@ class PresentationComboControllerTest extends ApiTestCase
 
     $presentationCombo = factory(PresentationCombo::class)->create();
 
-    $attributes = factory(PresentationCombo::class)->raw();
+    $attributes = factory(PresentationCombo::class)->raw(['company_id' => $presentationCombo->company_id]);
     $extraAttributes['presentations'] = factory(Presentation::class, 2)->create()->pluck('id')->toArray();
     $extraAttributes['prices'] = [
       [

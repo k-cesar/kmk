@@ -134,6 +134,10 @@ Route::group(['middleware' => ['auth']], function () {
     
     Route::get('payment-methods-options', 'PaymentMethod\PaymentMethodController@options')->name('payment-methods.options');
     
+    Route::get('presentations-options', 'Presentation\PresentationController@options')->name('presentations.options');
+    
+    Route::get('products-options', 'Product\ProductController@options')->name('products.options');
+    
     Route::get('product-categories-options', 'ProductCategory\ProductCategoryController@options')->name('product-categories.options');
     
     Route::get('product-departments-options', 'ProductDepartment\ProductDepartmentController@options')->name('product-departments.options');

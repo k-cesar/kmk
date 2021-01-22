@@ -26,27 +26,17 @@ class StateRequest extends FormRequest
   {
     $rules = [
       'region_id' => 'required|exists:regions,id',
-      'name'       => [
-        'required', 
-        'string',
-        'max:150',
+      'name'       => ['required', 'string', 'max:150',
         Rule::unique('states', 'name')
-          ->where(function ($query) {
-            return $query->where('region_id', $this->get('region_id'));
-          }),
+          ->where('region_id', $this->get('region_id')),
       ],
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['name'] = [
-        'required', 
-        'string',
-        'max:150',
+      $rules['name'] = ['required', 'string', 'max:150',
         Rule::unique('states', 'name')
-          ->where(function ($query) {
-            return $query->where('region_id', $this->get('region_id'))
-              ->where('id', '!=', $this->state->id);
-          }),
+          ->where('region_id', $this->get('region_id'))
+          ->whereNot('id', $this->state->id),
       ];
     }
 

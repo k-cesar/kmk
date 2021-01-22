@@ -22,11 +22,15 @@ class CreatePresentationCombosTable extends Migration
     {
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('company_id');
             $table->text('description');
             $table->double('suggested_price');
             $table->timestamps();
             $table->softDeletes();
 
+            $table->unique(['company_id', 'description']);
+
+            $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 

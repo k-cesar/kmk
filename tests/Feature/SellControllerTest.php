@@ -122,7 +122,7 @@ class SellControllerTest extends ApiTestCase
 
     $combo->presentations()->sync([$presentationA->id, $presentationB->id]);
 
-    DB::table('turns_products')
+    DB::table('turns_presentations')
       ->insert([
         'turn_id'         => $storeTurn->turn_id,
         'presentation_id' => $presentationA->id,
@@ -196,7 +196,7 @@ class SellControllerTest extends ApiTestCase
 
     $combo->presentations()->sync([$presentationA->id, $presentationB->id]);
 
-    DB::table('turns_products')
+    DB::table('turns_presentations')
       ->insert([
         'turn_id'         => $storeTurn->turn_id,
         'presentation_id' => $presentationA->id,

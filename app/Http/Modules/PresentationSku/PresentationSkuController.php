@@ -15,7 +15,8 @@ class PresentationSkuController extends Controller
    */
   public function index()
   {
-    $presentationSkus = PresentationSku::query();
+    $presentationSkus = PresentationSku::with('company:id,name')
+      ->visibleThroughCompany(auth()->user());
 
     return $this->showAll($presentationSkus, Schema::getColumnListing((new PresentationSku)->getTable()));
   }
@@ -28,6 +29,8 @@ class PresentationSkuController extends Controller
    */
   public function store(PresentationSkuRequest $request)
   {
+    $this->authorize('create', PresentationSku::class);
+
     $presentationSku = PresentationSku::create($request->validated());
 
     return $this->showOne($presentationSku, 201);
@@ -41,6 +44,8 @@ class PresentationSkuController extends Controller
    */
   public function show(PresentationSku $presentationSku)
   {
+    $this->authorize('manage', $presentationSku);
+
     return $this->showOne($presentationSku);
   }
 
@@ -53,6 +58,8 @@ class PresentationSkuController extends Controller
    */
   public function update(PresentationSkuRequest $request, PresentationSku $presentationSku)
   {
+    $this->authorize('manage', $presentationSku);
+
     $presentationSku->update($request->validated());
 
     return $this->showOne($presentationSku);
@@ -66,6 +73,8 @@ class PresentationSkuController extends Controller
    */
   public function destroy(PresentationSku $presentationSku)
   {
+    $this->authorize('manage', $presentationSku);
+
     $presentationSku->secureDelete();
 
     return $this->showOne($presentationSku);

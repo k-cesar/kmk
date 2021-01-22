@@ -3,15 +3,15 @@
 namespace App\Policies;
 
 use App\Http\Modules\User\User;
-use App\Http\Modules\Product\Product;
+use App\Http\Modules\Presentation\Presentation;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ProductPolicy
+class PresentationPolicy
 {
     use HandlesAuthorization;
 
     /**
-     * Determine if the given user can create products.
+     * Determine if the given user can create presentations.
      *
      * @param  \App\Models\User  $user
      * 
@@ -27,17 +27,17 @@ class ProductPolicy
     }
 
     /**
-     * Determine whether the user can manage the product.
+     * Determine whether the user can manage the presentation.
      *
      * @param  \App\Http\Modules\User\User  $user
-     * @param  \App\Http\Modules\Product\Product  $product
+     * @param  \App\Http\Modules\Presentation\Presentation  $presentation
      * 
      * @return mixed
      */
-    public function manage(User $user, Product $product)
+    public function manage(User $user, Presentation $presentation)
     {       
         if ($user->role->level > 1) {
-            return $user->company_id == $product->company_id;
+            return $user->company_id == $presentation->company_id;
         }
 
         return true;

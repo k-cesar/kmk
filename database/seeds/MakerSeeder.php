@@ -12,6 +12,6 @@ class MakerSeeder extends Seeder
      */
     public function run()
     {
-        factory(Maker::class, 5)->create();
+        factory(Maker::class, 3)->create();
     }
 }

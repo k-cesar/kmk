@@ -34,9 +34,7 @@ class CompanyRequest extends FormRequest
       'country_id'            => 'required|exists:countries,id',
       'nit'                   => ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
         Rule::unique('companies', 'nit')
-          ->where(function ($query) {
-            return $query->where('country_id', $this->get('country_id'));
-          }),
+          ->where('country_id', $this->get('country_id')),
       ],
     ];
 
@@ -45,10 +43,8 @@ class CompanyRequest extends FormRequest
 
       $rules['nit'] = ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
         Rule::unique('companies', 'nit')
-          ->where(function ($query) {
-            return $query->where('country_id', $this->get('country_id'))
-              ->where('id', '!=', $this->company->id);
-          })
+          ->where('country_id', $this->get('country_id'))
+          ->whereNot('id', $this->company->id),
       ];
     }
 

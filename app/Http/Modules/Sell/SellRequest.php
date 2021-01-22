@@ -38,14 +38,11 @@ class SellRequest extends FormRequest
       'items.*.quantity'   => 'required|numeric|min:0',
       'items.*.unit_price' => 'required|numeric|min:0',
       'items.*.type'       => 'required|string|in:PRESENTATION,COMBO',
-      'store_turn_id'      => [
-        'required',
+      'store_turn_id'      => ['required',
         Rule::exists('store_turns', 'id')
-          ->where(function ($query) {
-            return $query->where('id', $this->get('store_turn_id'))
-              ->where('store_id', $this->get('store_id'))
-              ->where('is_open', true);
-        }),
+          ->where('id', $this->get('store_turn_id'))
+          ->where('store_id', $this->get('store_id'))
+          ->where('is_open', true),
       ]
     ];
 
@@ -57,9 +54,7 @@ class SellRequest extends FormRequest
         break;
       }
 
-      $rules["items.$index.id"] = [
-        'required',
-        'integer',
+      $rules["items.$index.id"] = ['required', 'integer',
         function ($attribute, $value, $fail) use ($item, $tableName) {
           $exists = DB::table($tableName)
             ->where('id', $value)

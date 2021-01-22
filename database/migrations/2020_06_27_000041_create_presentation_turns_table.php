@@ -4,17 +4,17 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTurnsProductsTable extends Migration
+class CreatePresentationTurnsTable extends Migration
 {
     /**
      * Schema table name to migrate
      * @var string
      */
-    public $tableName = 'turns_products';
+    public $tableName = 'turns_presentations';
 
     /**
      * Run the migrations.
-     * @table turns_products
+     * @table turns_presentations
      *
      * @return void
      */
