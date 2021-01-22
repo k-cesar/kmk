@@ -6,6 +6,8 @@ use App\Http\Modules\Uom\Uom;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Brand\Brand;
 use App\Http\Modules\Store\Store;
+use App\Traits\ResourceVisibility;
+use App\Http\Modules\Company\Company;
 use App\Http\Modules\Country\Country;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,7 +18,7 @@ use App\Http\Modules\ProductSubcategory\ProductSubcategory;
 
 class Product extends Model
 {
-    use SoftDeletes, SecureDeletes;
+    use SoftDeletes, SecureDeletes, ResourceVisibility;
 
     /**
      * The attributes that are mass assignable.
@@ -24,6 +26,7 @@ class Product extends Model
      * @var array
      */
     protected $fillable = [
+        'company_id',
         'description',
         'is_all_countries',
         'brand_id',
@@ -97,4 +100,15 @@ class Product extends Model
     {
         return $this->belongsTo(Uom::class);
     }
+
+    /**
+     * Get the company that owns the product.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class)->withTrashed();
+    }
+    
 }

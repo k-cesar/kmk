@@ -313,7 +313,7 @@ class Sell extends Model
         $presentationsStored = DB::table('presentations', 'p')
             ->select('p.id', 'p.product_id', 'p.units')
             ->selectRaw("COALESCE (tp.price, p.price) AS price")
-            ->leftJoin("turns_products AS tp", function (JoinClause $leftJoin) use ($turnId) {
+            ->leftJoin("turns_presentations AS tp", function (JoinClause $leftJoin) use ($turnId) {
               $leftJoin->on('p.id', '=', "tp.presentation_id")
                 ->where('tp.turn_id', $turnId);
             })
@@ -379,7 +379,7 @@ class Sell extends Model
             ->select('p.id', 'p.product_id', 'p.units')
             ->selectRaw("COALESCE (tp.price, p.price) AS price")
             ->join('presentation_combos_detail AS cd', 'p.id', '=', 'cd.presentation_id' )
-            ->leftJoin("turns_products AS tp", function (JoinClause $leftJoin) use ($turnId) {
+            ->leftJoin("turns_presentations AS tp", function (JoinClause $leftJoin) use ($turnId) {
               $leftJoin->on('p.id', '=', "tp.presentation_id")
                 ->where('tp.turn_id', $turnId);
             })

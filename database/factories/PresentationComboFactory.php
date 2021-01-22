@@ -3,13 +3,14 @@
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
 use Faker\Generator as Faker;
+use App\Http\Modules\Company\Company;
 use App\Http\Modules\PresentationCombo\PresentationCombo;
-use App\Http\Modules\Uom\Uom;
 
 $factory->define(PresentationCombo::class, function (Faker $faker) {
 
     return [
-        'description'       => $faker->unique()->sentence,
-        'suggested_price'   => rand(1, 50) * 100,
+        'company_id'      => Company::inRandomOrder()->first() ?? factory(Company::class),
+        'description'     => $faker->unique()->sentence,
+        'suggested_price' => rand(1, 50) * 100,
     ];
 });

@@ -2,9 +2,10 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
+use Faker\Generator as Faker;
+use App\Http\Modules\Company\Company;
 use App\Http\Modules\Product\Product;
 use App\Http\Modules\Presentation\Presentation;
-use Faker\Generator as Faker;
 
 $factory->define(Presentation::class, function (Faker $faker) {
 
@@ -13,10 +14,11 @@ $factory->define(Presentation::class, function (Faker $faker) {
     $units = $isGrouping ? rand(2, 10) : 1;
 
     return [
-        'description'           => $faker->unique()->sentence,
-        'price'                 => rand(1, 20) * 100,
-        'product_id'            => factory(Product::class),
-        'is_grouping'           => $isGrouping,
-        'units'                 => $units,
+        'company_id'  => Company::inRandomOrder()->first() ?? factory(Company::class),
+        'description' => $faker->unique()->sentence,
+        'price'       => rand(1, 20) * 100,
+        'product_id'  => factory(Product::class),
+        'is_grouping' => $isGrouping,
+        'units'       => $units,
     ];
 });

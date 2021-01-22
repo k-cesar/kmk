@@ -22,14 +22,18 @@ class CreatePresentationSkusTable extends Migration
     {
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('code', 100)->unique();
-            $table->string('description');
+            $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('presentation_id');
+            $table->string('code', 100);
+            $table->string('description');
             $table->tinyInteger('seasonal_product');
             $table->timestamps();
             $table->softDeletes();
 
+            $table->unique(['company_id', 'code']);
+            
             $table->foreign('presentation_id')->references('id')->on('presentations');
+            $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 

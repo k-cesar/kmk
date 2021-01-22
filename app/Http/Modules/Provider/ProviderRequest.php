@@ -28,33 +28,25 @@ class ProviderRequest extends FormRequest
       'country_id' => 'required|integer|exists:countries,id',
       'name'       => ['required', 'string', 'max:150',
         Rule::unique('providers', 'name')
-          ->where(function ($query) {
-            return $query->where('country_id', $this->get('country_id'));
-          }),
+          ->where('country_id', $this->get('country_id')),
       ],
-      'nit'       => ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
+      'nit'        => ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
         Rule::unique('providers', 'nit')
-          ->where(function ($query) {
-            return $query->where('country_id', $this->get('country_id'));
-          }),
+          ->where('country_id', $this->get('country_id')),
       ],
     ];
 
     if ($this->isMethod('PUT')) {
       $rules['name'] = ['required', 'string','max:150',
         Rule::unique('providers', 'name')
-          ->where(function ($query) {
-            return $query->where('country_id', $this->get('country_id'))
-              ->where('id', '!=', $this->provider->id);
-          }),
+          ->where('country_id', $this->get('country_id'))
+          ->whereNot('id', $this->provider->id),
       ];
 
       $rules['nit'] = ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
         Rule::unique('providers', 'nit')
-          ->where(function ($query) {
-            return $query->where('country_id', $this->get('country_id'))
-              ->where('id', '!=', $this->provider->id);
-          })
+          ->where('country_id', $this->get('country_id'))
+          ->whereNot('id', $this->provider->id),
       ];
     }
 

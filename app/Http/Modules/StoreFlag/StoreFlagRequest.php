@@ -26,14 +26,9 @@ class StoreFlagRequest extends FormRequest
   {
     $rules = [
       'store_chain_id' => 'required|exists:store_chains,id',
-      'name'           => [
-        'required', 
-        'string',
-        'max:150',
+      'name'           => ['required', 'string', 'max:150',
         Rule::unique('store_flags', 'name')
-          ->where(function ($query) {
-            return $query->where('store_chain_id', $this->get('store_chain_id'));
-          }),
+          ->where('store_chain_id', $this->get('store_chain_id')),
       ],
     ];
 
@@ -43,10 +38,8 @@ class StoreFlagRequest extends FormRequest
         'string',
         'max:150',
         Rule::unique('store_flags', 'name')
-          ->where(function ($query) {
-            return $query->where('store_chain_id', $this->get('store_chain_id'))
-              ->where('id', '!=', $this->store_flag->id);
-          }),
+          ->where('store_chain_id', $this->get('store_chain_id'))
+          ->whereNot('id', $this->store_flag->id),
       ];
     }
 

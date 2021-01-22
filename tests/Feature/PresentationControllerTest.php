@@ -55,8 +55,8 @@ class PresentationControllerTest extends ApiTestCase
     $response = $this->getJson(route('presentations.index'))
       ->assertOk();
     
-    foreach (Presentation::limit(10)->get() as $Presentation) {
-      $response->assertJsonFragment($Presentation->toArray());
+    foreach (Presentation::limit(10)->get() as $presentation) {
+      $response->assertJsonFragment($presentation->toArray());
     }
   }
 
@@ -67,11 +67,11 @@ class PresentationControllerTest extends ApiTestCase
   {
     $this->signInWithPermissionsTo(['presentations.show']);
 
-    $Presentation = factory(Presentation::class)->create();
+    $presentation = factory(Presentation::class)->create();
 
-    $this->getJson(route('presentations.show', $Presentation->id))
+    $this->getJson(route('presentations.show', $presentation->id))
       ->assertOk()
-      ->assertJson($Presentation->toArray());
+      ->assertJson($presentation->toArray());
   }
 
   /**
@@ -79,9 +79,11 @@ class PresentationControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_store_a_presentation()
   {
-    $this->signInWithPermissionsTo(['presentations.store']);
+    $user = $this->signInWithPermissionsTo(['presentations.store']);
 
-    $attributes = factory(Presentation::class)->raw();
+    $user->company->update(['allow_add_products' => true]);
+
+    $attributes = factory(Presentation::class)->raw(['company_id' => $user->company_id]);
 
     $this->postJson(route('presentations.store'), $attributes)
       ->assertCreated();
@@ -95,13 +97,13 @@ class PresentationControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_update_a_presentation()
   {
-    $this->signInWithPermissionsTo(['presentations.update']);
+    $user = $this->signInWithPermissionsTo(['presentations.update']);
 
-    $Presentation = factory(Presentation::class)->create();
+    $presentation = factory(Presentation::class)->create();
 
-    $attributes = factory(Presentation::class)->raw();
+    $attributes = factory(Presentation::class)->raw(['company_id' => $presentation->company_id]);
 
-    $this->putJson(route('presentations.update', $Presentation->id), $attributes)
+    $this->putJson(route('presentations.update', $presentation->id), $attributes)
       ->assertOk();
 
     $this->assertDatabaseHas('presentations', $attributes);
@@ -114,12 +116,34 @@ class PresentationControllerTest extends ApiTestCase
   {
     $this->signInWithPermissionsTo(['presentations.destroy']);
 
-    $Presentation = factory(Presentation::class)->create();
+    $presentation = factory(Presentation::class)->create();
 
-    $this->deleteJson(route('presentations.destroy', $Presentation->id))
+    $this->deleteJson(route('presentations.destroy', $presentation->id))
       ->assertOk();
 
-    $this->assertDatabaseMissing('presentations', $Presentation->toArray());
+    $this->assertDatabaseMissing('presentations', $presentation->toArray());
+  }
+
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_presentations_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('presentations.options'))
+      ->assertOk();
+
+    $presentations = presentation::select('id', 'description')
+      ->withOut('product')
+      ->visibleThroughCompany($user)
+      ->filterByDescriptionOrSkuCode(request('presentation_description'), request('sku_code'))
+      ->limit(10)
+      ->get();
+
+    foreach ($presentations as $presentation) {
+      $response->assertJsonFragment($presentation->toArray());
+    }
   }
 
 }

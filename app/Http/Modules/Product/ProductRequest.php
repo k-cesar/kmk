@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\Product;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProductRequest extends FormRequest
@@ -17,6 +18,16 @@ class ProductRequest extends FormRequest
     }
 
     /**
+     * Get data to be validated from the request.
+     *
+     * @return array
+     */
+    public function validationData()
+    {
+        return array_merge($this->all(), ['presentation_description' => $this->get('description')]);
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array
@@ -24,7 +35,6 @@ class ProductRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'description'            => 'string|max:255|unique:products',
             'is_all_countries'       => 'required|boolean',
             'brand_id'               => 'required|exists:brands,id',
             'product_category_id'    => 'required|exists:product_categories,id',
@@ -35,12 +45,41 @@ class ProductRequest extends FormRequest
             'suggested_price'        => 'required|numeric|min:0',
             'countries'              => 'required|array',
             'countries.*'            => 'exists:countries,id',
+            'description'            => ['required', 'string', 'max:255',
+              Rule::unique('products', 'description')
+                ->whereIn('company_id', [0, auth()->user()->company_id]),
+            ],
         ];
 
-        if ($this->isMethod('PUT')) {
-            $rules['description'] = "string|max:255|unique:products,description,{$this->product->id}";
+        if ($this->isMethod('POST')) {
+            $rules['presentation_description'] = [
+              Rule::unique('presentations', 'description')
+                ->whereIn('company_id', [0, auth()->user()->company_id]),
+            ];
+        } else {
+            $rules['description'] = ['required', 'string','max:255',
+              Rule::unique('products', 'description')
+                ->whereIn('company_id', [0, auth()->user()->company_id])
+                ->whereNot('id', $this->product->id),
+            ];
         }
 
         return $rules;
+    }
+
+    /**
+     * Get the validated data from the request.
+     *
+     * @return array
+     */
+    public function validated()
+    {
+        $validatedData = parent::validated();
+
+        if ($this->isMethod('POST')) {
+            $validatedData['company_id'] = auth()->user()->company_id;
+        }
+
+        return $validatedData;
     }
 }

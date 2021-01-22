@@ -26,27 +26,17 @@ class PaymentMethodRequest extends FormRequest
   {
     $rules = [
       'company_id' => 'required|integer|exists:companies,id',
-      'name'     => [
-        'required', 
-        'string',
-        'max:150',
+      'name'     => ['required', 'string', 'max:150',
         Rule::unique('payment_methods', 'name')
-          ->where(function ($query) {
-            return $query->where('company_id', $this->get('company_id'));
-          }),
+          ->where('company_id', $this->get('company_id')),
       ],
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['name'] = [
-        'required', 
-        'string',
-        'max:150',
+      $rules['name'] = ['required', 'string', 'max:150',
         Rule::unique('payment_methods', 'name')
-          ->where(function ($query) {
-            return $query->where('company_id', $this->get('company_id'))
-              ->where('id', '!=', $this->payment_method->id);
-          }),
+          ->where('company_id', $this->get('company_id'))
+          ->whereNot('id', $this->payment_method->id),
       ];
     }
 

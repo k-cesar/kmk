@@ -12,6 +12,6 @@ class PresentationSkuSeeder extends Seeder
      */
     public function run()
     {
-        factory(PresentationSku::class, 5)->create();
+        factory(PresentationSku::class, 3)->create();
     }
 }

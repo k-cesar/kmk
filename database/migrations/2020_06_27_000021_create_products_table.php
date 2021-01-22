@@ -22,7 +22,8 @@ class CreateProductsTable extends Migration
     {
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('description')->unique();
+            $table->unsignedBigInteger('company_id');
+            $table->string('description');
             $table->tinyInteger('is_all_countries')->default(1);
             $table->integer('brand_id');
             $table->unsignedBigInteger('product_category_id');
@@ -34,13 +35,13 @@ class CreateProductsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
+            $table->unique(['company_id', 'description']);
+
             $table->foreign('brand_id')->references('id')->on('brands');
-
             $table->foreign('product_category_id')->references('id')->on('product_categories');
-
             $table->foreign('product_subcategory_id')->references('id')->on('product_subcategories');
-
             $table->foreign('uom_id')->references('id')->on('uoms');
+            $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 

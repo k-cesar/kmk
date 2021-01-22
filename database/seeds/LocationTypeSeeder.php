@@ -12,6 +12,6 @@ class LocationTypeSeeder extends Seeder
      */
     public function run()
     {
-        factory(LocationType::class, 5)->create();
+        factory(LocationType::class, 3)->create();
     }
 }

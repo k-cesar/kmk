@@ -39,29 +39,19 @@ class StoreRequest extends FormRequest
       'zone_id'                => 'required|integer|exists:zones,id',
       'latitute'               => 'required|numeric|between:-90,90',
       'longitude'              => 'required|numeric|between:-180,180',
-      'name'                   => [
-        'required', 
-        'string',
-        'max:150',
+      'name'                   => ['required', 'string', 'max:150',
         Rule::unique('stores', 'name')
-          ->where(function ($query) {
-            return $query->where('zone_id', $this->get('zone_id'));
-          }),
+          ->where('zone_id', $this->get('zone_id')),
       ],
     ];
 
     if ($this->isMethod('POST')) {
       $rules['petty_cash_amount'] = 'required|numeric|min:0';
     } else {
-      $rules['name'] = [
-        'required', 
-        'string',
-        'max:150',
+      $rules['name'] = ['required', 'string', 'max:150',
         Rule::unique('stores', 'name')
-          ->where(function ($query) {
-            return $query->where('zone_id', $this->get('zone_id'))
-              ->where('id', '!=', $this->store->id);
-          }),
+          ->where('zone_id', $this->get('zone_id'))
+          ->whereNot('id', $this->store->id),
       ];
     }
 

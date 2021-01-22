@@ -18,7 +18,9 @@ class PresentationComboController extends Controller
    */
   public function index()
   {
-    $presentationCombos = PresentationCombo::with('presentations:id,description')
+    $presentationCombos = PresentationCombo::visibleThroughCompany(auth()->user())
+      ->with('company:id,name')
+      ->with('presentations:id,description')
       ->with('presentationCombosStoresTurns.store:id,name')
       ->with('presentationCombosStoresTurns.turn');
 
@@ -33,6 +35,8 @@ class PresentationComboController extends Controller
    */
   public function store(PresentationComboRequest $request)
   {
+    $this->authorize('create', PresentationCombo::class);
+
     try {
       DB::beginTransaction();
 
@@ -64,6 +68,8 @@ class PresentationComboController extends Controller
    */
   public function show(PresentationCombo $presentationCombo)
   {
+    $this->authorize('manage', $presentationCombo);
+
     $presentationCombo->load('presentations:id,description')
       ->load('presentationCombosStoresTurns.store:id,name')
       ->load('presentationCombosStoresTurns.turn');
@@ -80,6 +86,8 @@ class PresentationComboController extends Controller
    */
   public function update(PresentationComboRequest $request, PresentationCombo $presentationCombo)
   {
+    $this->authorize('manage', $presentationCombo);
+
     try {
       DB::beginTransaction();
 
@@ -109,6 +117,8 @@ class PresentationComboController extends Controller
    */
   public function destroy(PresentationCombo $presentationCombo)
   {
+    $this->authorize('manage', $presentationCombo);
+    
     $presentationCombo->secureDelete();
 
     return $this->showOne($presentationCombo);

@@ -27,30 +27,20 @@ class TurnRequest extends FormRequest
     $rules = [
       'store_id'   => 'required|integer|store_visible',
       'start_time' => 'required|date_format:H:i:s',
-      'end_time'   => 'required|date_format:H:i:s|after:start_time',
+      'end_time'   => 'required|date_format:H:i:s',
       'is_active'  => 'required|boolean',
       'is_default' => 'required|boolean',
-      'name'       => [
-        'required', 
-        'string',
-        'max:255',
+      'name'       => ['required', 'string', 'max:255',
         Rule::unique('turns', 'name')
-          ->where(function ($query) {
-            return $query->where('store_id', $this->get('store_id'));
-          }),
+          ->where('store_id', $this->get('store_id')),
       ],
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['name'] = [
-        'required', 
-        'string',
-        'max:255',
+      $rules['name'] = ['required', 'string', 'max:255',
         Rule::unique('turns', 'name')
-          ->where(function ($query) {
-            return $query->where('store_id', $this->get('store_id'))
-              ->where('id', '!=', $this->turn->id);
-          }),
+          ->where('store_id', $this->get('store_id'))
+          ->whereNot('id', $this->turn->id),
       ];
     }
 

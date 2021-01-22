@@ -79,9 +79,11 @@ class PresentationSkuControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_store_a_presentation_sku()
   {
-    $this->signInWithPermissionsTo(['presentation-skus.store']);
+    $user = $this->signInWithPermissionsTo(['presentation-skus.store']);
 
-    $attributes = factory(PresentationSku::class)->raw();
+    $user->company->update(['allow_add_products' => true]);
+
+    $attributes = factory(PresentationSku::class)->raw(['company_id' => $user->company_id]);
 
     $this->postJson(route('presentation-skus.store'), $attributes)
       ->assertCreated();
@@ -95,11 +97,11 @@ class PresentationSkuControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_update_a_presentation_sku()
   {
-    $this->signInWithPermissionsTo(['presentation-skus.update']);
+    $user = $this->signInWithPermissionsTo(['presentation-skus.update']);
 
     $presentationSku = factory(PresentationSku::class)->create();
 
-    $attributes = factory(PresentationSku::class)->raw();
+    $attributes = factory(PresentationSku::class)->raw(['company_id' => $presentationSku->company_id]);
 
     $this->putJson(route('presentation-skus.update', $presentationSku->id), $attributes)
       ->assertOk();

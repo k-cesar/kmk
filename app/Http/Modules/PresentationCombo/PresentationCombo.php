@@ -4,7 +4,9 @@ namespace App\Http\Modules\PresentationCombo;
 
 use Illuminate\Support\Arr;
 use App\Traits\SecureDeletes;
+use App\Traits\ResourceVisibility;
 use Illuminate\Support\Facades\DB;
+use App\Http\Modules\Company\Company;
 use App\Http\Modules\Sell\SellDetail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,7 +14,7 @@ use App\Http\Modules\Presentation\Presentation;
 
 class PresentationCombo extends Model
 {
-    use SoftDeletes, SecureDeletes;
+    use SoftDeletes, SecureDeletes, ResourceVisibility;
 
     /**
      * The attributes that are mass assignable.
@@ -20,6 +22,7 @@ class PresentationCombo extends Model
      * @var array
      */
     protected $fillable = [
+        'company_id',
         'description',
         'suggested_price',
     ];
@@ -59,6 +62,16 @@ class PresentationCombo extends Model
     public function sellDetails()
     {
         return $this->hasMany(SellDetail::class);
+    }
+
+    /**
+     * Get the company that owns the presentationCombo.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class)->withTrashed();
     }
 
     /**

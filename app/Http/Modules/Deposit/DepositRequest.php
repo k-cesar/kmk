@@ -31,14 +31,11 @@ class DepositRequest extends FormRequest
       'images'          => 'required|array',
       'images.*.title'  => 'required|string|max:255|distinct',
       'images.*.base64' => 'required|string',
-      'store_turn_id'   => [
-        'required',
+      'store_turn_id'   => ['required',
         Rule::exists('store_turns', 'id')
-          ->where(function ($query) {
-            return $query->where('id', $this->get('store_turn_id'))
-              ->where('store_id', $this->get('store_id'))
-              ->where('is_open', true);
-          }),
+          ->where('id', $this->get('store_turn_id'))
+          ->where('store_id', $this->get('store_id'))
+          ->where('is_open', true),
       ]
     ];
 

@@ -2,16 +2,17 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use Illuminate\Support\Str;
-use Faker\Generator as Faker;
-use App\Http\Modules\Product\Product;
 use App\Http\Modules\Uom\Uom;
+use Faker\Generator as Faker;
+use App\Http\Modules\Brand\Brand;
+use App\Http\Modules\Company\Company;
+use App\Http\Modules\Product\Product;
 use App\Http\Modules\ProductCategory\ProductCategory;
 use App\Http\Modules\ProductSubcategory\ProductSubcategory;
-use App\Http\Modules\Brand\Brand;
 
 $factory->define(Product::class, function (Faker $faker) {
     return [
+        'company_id'             => Company::inRandomOrder()->first() ?? factory(Company::class),
         'description'            => $faker->unique()->company,
         'brand_id'               => Brand::inRandomOrder()->first() ?? factory(Brand::class),
         'product_category_id'    => ProductCategory::inRandomOrder()->first() ?? factory(ProductCategory::class),

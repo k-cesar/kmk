@@ -35,8 +35,7 @@ class UserRequest extends FormRequest
       'password'        => 'required|string|min:8|max:25|confirmed',
       'update_password' => 'sometimes|nullable|boolean',
       'stores'          => 'sometimes|array',
-      'stores.*'        => [
-        'integer',
+      'stores.*'        => ['integer',
         function ($attribute, $value, $fail) {
           $store = Store::where('id', $value)
             ->where('company_id', $this->get('company_id'))
@@ -48,13 +47,9 @@ class UserRequest extends FormRequest
           }
         },
       ],
-      'phone'           => [
-        'required', 
-        'digits_between:1,50',
+      'phone'           => ['required', 'digits_between:1,50',
         Rule::unique('users', 'phone')
-          ->where(function ($query) {
-            return $query->where('company_id', $this->get('company_id'));
-          }),
+          ->where('company_id', $this->get('company_id')),
       ],
 
     ];
@@ -64,15 +59,11 @@ class UserRequest extends FormRequest
       $rules['email']    = "sometimes|nullable|string|email|max:255|unique:users,email,{$this->user->id}";
       $rules['password'] = 'sometimes|required|string|min:8|max:25|confirmed';
 
-      $rules['phone'] = [
-        'required', 
-        'digits_between:1,50',
+      $rules['phone'] = ['required', 'digits_between:1,50',
         Rule::unique('users', 'phone')
-          ->where(function ($query) {
-            return $query->where('company_id', $this->get('company_id'))
-            ->where('id', '!=', $this->user->id);
-          }),
-        ];
+          ->where('company_id', $this->get('company_id'))
+          ->whereNot('id', $this->user->id),
+      ];
     }
 
     return $rules;

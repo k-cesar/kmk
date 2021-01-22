@@ -84,7 +84,7 @@ class ProductControllerTest extends ApiTestCase
 
     $user->company->update(['allow_add_products' => true]);
 
-    $attributes = factory(Product::class)->raw();
+    $attributes = factory(Product::class)->raw(['company_id' => $user->company_id]);
     $extraAttributes['countries'] = factory(Country::class, 2)->create()->pluck('id')->toArray();
 
     $this->postJson(route('products.store'), array_merge($attributes, $extraAttributes))
@@ -105,7 +105,7 @@ class ProductControllerTest extends ApiTestCase
 
     $product = factory(Product::class)->create();
 
-    $attributes = factory(Product::class)->raw();
+    $attributes = factory(Product::class)->raw(['company_id' => $product->company_id]);
     $extraAttributes['countries'] = factory(Country::class, 2)->create()->pluck('id')->toArray();
 
     $this->putJson(route('products.update', $product->id), array_merge($attributes, $extraAttributes))
@@ -130,4 +130,26 @@ class ProductControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('products', $product->toArray());
   }
+
+  /**
+   * @test
+   */
+  public function an_user_can_see_all_products_options()
+  {
+    $user = $this->signIn();
+
+    $response = $this->getJson(route('products.options'))
+      ->assertOk();
+
+    $products = product::select('id', 'description')
+      ->visibleThroughCompany($user)
+      ->withOut('productCategory','productSubcategory','brand','all_countries')
+      ->limit(10)
+      ->get();
+
+    foreach ($products as $product) {
+      $response->assertJsonFragment($product->toArray());
+    }
+  }
+
 }

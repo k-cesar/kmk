@@ -22,6 +22,7 @@ class CreatePresentationsTable extends Migration
     {
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('company_id');
             $table->unsignedBigInteger('product_id');
             $table->string('description');
             $table->double('price');
@@ -30,8 +31,9 @@ class CreatePresentationsTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unique(['product_id', 'description']);
-
+            $table->unique(['company_id', 'description']);
+            
+            $table->foreign('company_id')->references('id')->on('companies');
             $table->foreign('product_id')->references('id')->on('products');
         });
     }

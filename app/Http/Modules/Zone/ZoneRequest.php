@@ -26,27 +26,17 @@ class ZoneRequest extends FormRequest
   {
     $rules = [
       'municipality_id' => 'required|exists:municipalities,id',
-      'name'     => [
-        'required', 
-        'string',
-        'max:150',
+      'name'            => ['required', 'string', 'max:150',
         Rule::unique('zones', 'name')
-          ->where(function ($query) {
-            return $query->where('municipality_id', $this->get('municipality_id'));
-          }),
+          ->where('municipality_id', $this->get('municipality_id')),
       ],
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['name'] = [
-        'required', 
-        'string',
-        'max:150',
+      $rules['name'] = ['required', 'string', 'max:150',
         Rule::unique('zones', 'name')
-          ->where(function ($query) {
-            return $query->where('municipality_id', $this->get('municipality_id'))
-              ->where('id', '!=', $this->zone->id);
-          }),
+          ->where('municipality_id', $this->get('municipality_id'))
+          ->whereNot('id', $this->zone->id),
       ];
     }
 
