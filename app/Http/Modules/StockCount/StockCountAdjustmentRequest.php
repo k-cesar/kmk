@@ -26,11 +26,7 @@ class StockCountAdjustmentRequest extends FormRequest
   {
     $rules = [
       'store_id'       => 'required|integer|store_visible',
-      'stock_count_id' => ['required',
-        Rule::exists('stock_counts', 'id')
-          ->where('store_id', $this->get('store_id'))
-          ->where('status', StockCount::OPTION_STATUS_CLOSED),
-      ],
+      'stock_count_id' => "required|exists:stock_counts,id,store_id,{$this->get('store_id')},status,".StockCount::OPTION_STATUS_CLOSED.',deleted_at,NULL',
     ];
 
     return $rules;

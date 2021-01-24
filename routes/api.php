@@ -50,8 +50,6 @@ Route::group(['middleware' => ['auth', 'access']], function () {
     
     Route::resource('product-categories', 'ProductCategory\ProductCategoryController')->except('create', 'edit');
 
-    Route::resource('product-countries', 'ProductCountries\ProductCountriesController')->except('create', 'edit');
-
     Route::resource('product-subcategories', 'ProductSubcategory\ProductSubcategoryController')->except('create', 'edit');
 
     Route::resource('presentations', 'Presentation\PresentationController')->except('create', 'edit');

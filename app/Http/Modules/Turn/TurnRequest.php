@@ -31,18 +31,11 @@ class TurnRequest extends FormRequest
       'is_active'  => 'required|boolean',
       'is_default' => 'required|boolean',
       'name'       => ['required', 'string', 'max:255',
-        Rule::unique('turns', 'name')
-          ->where('store_id', $this->get('store_id')),
+        Rule::unique('turns')
+          ->where('store_id', $this->get('store_id'))
+          ->ignore($this->turn),
       ],
     ];
-
-    if ($this->isMethod('PUT')) {
-      $rules['name'] = ['required', 'string', 'max:255',
-        Rule::unique('turns', 'name')
-          ->where('store_id', $this->get('store_id'))
-          ->whereNot('id', $this->turn->id),
-      ];
-    }
 
     return $rules;
   }

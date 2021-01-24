@@ -24,19 +24,10 @@ class ProductCategoryRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'name'                  => 'required|string|max:255|unique:product_categories',
-      'product_department_id' => 'required|exists:product_departments,id'
+      'name'                  => 'required|string|max:255|unique:product_categories,name'.($this->product_category ? ",{$this->product_category->id}" : ''),
+      'product_department_id' => 'required|integer|exists:product_departments,id,deleted_at,NULL',
     ];
 
-    if ($this->isMethod('PUT')) {
-      $rules['name'] = "required|string|max:255|unique:product_categories,name,{$this->product_category->id}";
-    }
-
-    if ($this->isMethod('GET')) {     
-      $rules = [
-        'name' => 'string|max:255',       
-      ];
-    }
     return $rules;
   }
   

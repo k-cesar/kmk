@@ -24,12 +24,8 @@ class ProductDepartmentRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'name' => 'required|string|max:255|unique:product_departments'     
+      'name' => 'required|string|max:255|unique:product_departments,name'.($this->product_department ? ",{$this->product_department->id}" : ''),
     ];
-
-    if ($this->isMethod('PUT')) {
-      $rules['name'] = "required|string|max:255|unique:product_departments,name,{$this->product_department->id}";
-    }
 
     return $rules;
   }

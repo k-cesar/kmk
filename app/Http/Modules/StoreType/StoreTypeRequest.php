@@ -24,12 +24,8 @@ class StoreTypeRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'name' => 'required|string|max:150|unique:store_types',
+      'name' => 'required|string|max:150|unique:store_types'.($this->store_type ? ",{$this->store_type->id}" : ''),
     ];
-
-    if ($this->isMethod('PUT')) {
-      $rules['name'] = "required|string|max:150|unique:store_types,name,{$this->store_type->id}";
-    }
 
     return $rules;
   }

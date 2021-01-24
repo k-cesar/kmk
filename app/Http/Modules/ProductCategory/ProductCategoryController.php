@@ -13,19 +13,9 @@ class ProductCategoryController extends Controller
    *
    * @return \Illuminate\Http\JsonResponse
    */
-  public function index(ProductCategoryRequest $request)
+  public function index()
   {    
-    $where = [];
-    
-    if ($request->get('name')) {
-      array_push($where, ['name', 'ilike', '%'.$request->get('name').'%']);
-    }
-
-    if ($request->get('product_department_id')) {
-      array_push($where, ['product_department_id', '=', $request->get('product_department_id')]);
-    }
-
-    $productCategories = ProductCategory::where($where);
+    $productCategories = ProductCategory::query();
     
     return $this->showAll($productCategories, Schema::getColumnListing((new ProductCategory)->getTable()));
   }

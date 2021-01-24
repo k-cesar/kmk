@@ -28,13 +28,14 @@ class PresentationComboRequest extends FormRequest
     $rules = [
       'suggested_price'          => 'required|numeric|min:0',
       'presentations'            => 'required|array',
-      'presentations.*'          => 'exists:presentations,id',
+      'presentations.*'          => 'integer|visible_through_company:presentations',
       'prices'                   => 'required|array',
       'prices.*.suggested_price' => 'required|numeric|min:0',
       'prices.*.turns'           => 'required|array',
       'description'              => ['required', 'string', 'max:255',
-        Rule::unique('presentation_combos', 'description')
-          ->whereIn('company_id', [0, auth()->user()->company_id]),
+        Rule::unique('presentation_combos')
+          ->whereIn('company_id', [0, auth()->user()->company_id])
+          ->ignore($this->presentation_combo),
       ],
     ];
 
@@ -56,14 +57,6 @@ class PresentationComboRequest extends FormRequest
           },
         ];
       }
-    }
-
-    if ($this->isMethod('PUT')) {
-      $rules['description'] = ['required', 'string', 'max:255',
-        Rule::unique('presentation_combos', 'description')
-          ->whereIn('company_id', [0, auth()->user()->company_id])
-          ->whereNot('id', $this->presentation_combo->id),
-      ];
     }
 
     return $rules;

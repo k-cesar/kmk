@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\Deposit;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class DepositRequest extends FormRequest
@@ -26,22 +25,13 @@ class DepositRequest extends FormRequest
   {
     $rules = [
       'store_id'        => 'required|integer|store_visible',
-      'deposit_number'  => 'required|string|max:100|unique:deposits',
+      'store_turn_id'   => "required|integer|exists:store_turns,id,store_id,{$this->get('store_id')},is_open,1,deleted_at,NULL",
+      'deposit_number'  => 'required|string|max:100|unique:deposits,deposit_number'.($this->deposit ? ",{$this->deposit->id}" : ''),
       'amount'          => 'required|numeric|min:0',
       'images'          => 'required|array',
       'images.*.title'  => 'required|string|max:255|distinct',
       'images.*.base64' => 'required|string',
-      'store_turn_id'   => ['required',
-        Rule::exists('store_turns', 'id')
-          ->where('id', $this->get('store_turn_id'))
-          ->where('store_id', $this->get('store_id'))
-          ->where('is_open', true),
-      ]
     ];
-
-    if ($this->isMethod('PUT')) {
-      $rules['deposit_number'] = "required|string|max:100|unique:deposits,deposit_number,{$this->deposit->id}";
-    }
 
     return $rules;
   }

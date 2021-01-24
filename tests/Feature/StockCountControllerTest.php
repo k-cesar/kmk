@@ -106,7 +106,7 @@ class StockCountControllerTest extends ApiTestCase
       }
     }
 
-    $attributes = factory(StockCount::class)->raw(['store_id' => $store->id]);
+    $attributes = factory(StockCount::class)->raw(['store_id' => $store->id, 'created_by' => $user->id]);
 
     $this->postJson(route('stock-counts.store'), $attributes)
         ->assertCreated();
@@ -132,8 +132,9 @@ class StockCountControllerTest extends ApiTestCase
     }
 
     $attributes = factory(StockCount::class)->raw([
-      'store_id' => $stockCount->store_id,
-      'status' => StockCount::OPTION_STATUS_OPEN,
+      'store_id'   => $stockCount->store_id,
+      'status'     => StockCount::OPTION_STATUS_OPEN,
+      'created_by' => $stockCount->created_by,
     ]);
 
     $this->putJson(route('stock-counts.update', $stockCount->id), $attributes)

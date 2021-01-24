@@ -27,7 +27,8 @@ class SellRequest extends FormRequest
   {
     $rules = [
       'store_id'           => 'required|integer|store_visible',
-      'payment_method_id'  => 'required|integer|payment_method_visible',
+      'store_turn_id'      => "required|integer|exists:store_turns,id,store_id,{$this->get('store_id')},is_open,1,deleted_at,NULL",
+      'payment_method_id'  => 'required|integer|visible_through_company:payment_methods',
       'name'               => 'required|string|max:250',
       'nit'                => ['required', 'string', 'max:15', 'regex:/^\d+k?$|^cf$/i'],
       'address'            => 'required|string|max:50',
@@ -38,12 +39,6 @@ class SellRequest extends FormRequest
       'items.*.quantity'   => 'required|numeric|min:0',
       'items.*.unit_price' => 'required|numeric|min:0',
       'items.*.type'       => 'required|string|in:PRESENTATION,COMBO',
-      'store_turn_id'      => ['required',
-        Rule::exists('store_turns', 'id')
-          ->where('id', $this->get('store_turn_id'))
-          ->where('store_id', $this->get('store_id'))
-          ->where('is_open', true),
-      ]
     ];
 
     foreach($this->get('items', []) as $index => $item) {
@@ -59,6 +54,9 @@ class SellRequest extends FormRequest
           $exists = DB::table($tableName)
             ->where('id', $value)
             ->whereNull('deleted_at')
+            ->when(auth()->user()->role->level > 1, function ($query) {
+              $query->whereIn('company_id', [0, auth()->user()->company_id]);
+            })
             ->first();
 
           if (!$exists) {

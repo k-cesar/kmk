@@ -29,9 +29,9 @@ class UserRequest extends FormRequest
     $rules = [
       'name'            => 'required|string|max:100',
       'role_id'         => 'required|integer|exists:roles,id|min:'.auth()->user()->role_id,
-      'email'           => 'sometimes|nullable|string|email|max:255|unique:users',
-      'company_id'      => 'required|integer|exists:companies,id',
-      'username'        => 'required|string|max:100|alpha_dash|unique:users',
+      'email'           => 'sometimes|nullable|string|email|max:255|unique:users'.($this->user ? ",{$this->user->id}" : ''),
+      'company_id'      => 'exclude_if:role_id,1|required|integer|exists:companies,id,deleted_at,NULL',
+      'username'        => 'required|string|max:100|alpha_dash|unique:users'.($this->user ? ",{$this->user->id}" : ''),
       'password'        => 'required|string|min:8|max:25|confirmed',
       'update_password' => 'sometimes|nullable|boolean',
       'stores'          => 'sometimes|array',
@@ -48,22 +48,14 @@ class UserRequest extends FormRequest
         },
       ],
       'phone'           => ['required', 'digits_between:1,50',
-        Rule::unique('users', 'phone')
-          ->where('company_id', $this->get('company_id')),
+        Rule::unique('users')
+          ->where('company_id', $this->get('company_id'))
+          ->ignore($this->user),
       ],
-
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['username'] = "required|string|max:50|alpha_dash|unique:users,username,{$this->user->id}";
-      $rules['email']    = "sometimes|nullable|string|email|max:255|unique:users,email,{$this->user->id}";
       $rules['password'] = 'sometimes|required|string|min:8|max:25|confirmed';
-
-      $rules['phone'] = ['required', 'digits_between:1,50',
-        Rule::unique('users', 'phone')
-          ->where('company_id', $this->get('company_id'))
-          ->whereNot('id', $this->user->id),
-      ];
     }
 
     return $rules;

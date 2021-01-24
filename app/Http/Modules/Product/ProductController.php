@@ -28,7 +28,7 @@ class ProductController extends Controller
             DB::beginTransaction();
 
             $product = Product::create($request->validated());
-            $product->productCountries()->sync($request->countries);
+            $product->countries()->sync($request->countries);
 
             Presentation::create([
                 'company_id'            => $product->company_id,
@@ -63,7 +63,7 @@ class ProductController extends Controller
             DB::beginTransaction();
             
             $product->update($request->validated());
-            $product->productCountries()->sync($request->countries);
+            $product->countries()->sync($request->countries);
 
             DB::commit();
 

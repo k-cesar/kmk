@@ -26,34 +26,25 @@ class CompanyRequest extends FormRequest
   {
     $rules = [
       'name'                  => 'required|string|max:255',
+      'phone'                 => 'required|digits_between:1,50|unique:companies,phone'.($this->company ? ",{$this->company->id}" : ''),
       'reason'                => 'required|string|max:1000',
       'regime'                => 'sometimes|nullable|string|max:50',
-      'phone'                 => 'required|digits_between:1,50|unique:companies',
       'address'               => 'required|string|max:255',
-      'currency_id'           => 'required|exists:currencies,id',
-      'country_id'            => 'required|exists:countries,id',
+      'currency_id'           => 'required|integer|exists:currencies,id,deleted_at,NULL',
+      'country_id'            => 'required|integer|exists:countries,id,deleted_at,NULL',
       'nit'                   => ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
-        Rule::unique('companies', 'nit')
-          ->where('country_id', $this->get('country_id')),
+        Rule::unique('companies')
+          ->where('country_id', $this->get('country_id'))
+          ->ignore($this->company),
       ],
     ];
-
-    if ($this->isMethod('PUT')) {
-      $rules['phone'] = "required|digits_between:1,50|unique:companies,phone,{$this->company->id}";
-
-      $rules['nit'] = ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
-        Rule::unique('companies', 'nit')
-          ->where('country_id', $this->get('country_id'))
-          ->whereNot('id', $this->company->id),
-      ];
-    }
 
     if (auth()->user()->role->level < 2) {
       if ($this->isMethod('POST') || !$this->company->allow_fel) {
         $rules['allow_fel'] = 'required|boolean';
       }
       
-      $rules['allow_add_users'] = 'required|boolean';
+      $rules['allow_add_users']    = 'required|boolean';
       $rules['allow_add_stores']   = 'required|boolean';
       $rules['allow_add_products'] = 'required|boolean';
     }

@@ -25,23 +25,13 @@ class StoreFlagRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'store_chain_id' => 'required|exists:store_chains,id',
+      'store_chain_id' => 'required|integer|exists:store_chains,id,deleted_at,NULL',
       'name'           => ['required', 'string', 'max:150',
-        Rule::unique('store_flags', 'name')
-          ->where('store_chain_id', $this->get('store_chain_id')),
+        Rule::unique('store_flags')
+          ->where('store_chain_id', $this->get('store_chain_id'))
+          ->ignore($this->store_flag),
       ],
     ];
-
-    if ($this->isMethod('PUT')) {
-      $rules['name'] = [
-        'required', 
-        'string',
-        'max:150',
-        Rule::unique('store_flags', 'name')
-          ->where('store_chain_id', $this->get('store_chain_id'))
-          ->whereNot('id', $this->store_flag->id),
-      ];
-    }
 
     return $rules;
   }

@@ -26,21 +26,14 @@ class PresentationSkuRequest extends FormRequest
   {
     $rules = [
       'description'      => 'required|string|max:255',
-      'presentation_id'  => 'required|exists:presentations,id',
+      'presentation_id'  => 'required|integer|visible_through_company:presentations',
       'seasonal_product' => 'required|boolean',
       'code'             => ['required', 'alpha_num', 'max:150',
-        Rule:: unique('presentation_skus', 'code')
-          ->whereIn('company_id', [0, auth()->user()->company_id]),
+        Rule:: unique('presentation_skus')
+          ->whereIn('company_id', [0, auth()->user()->company_id])
+          ->ignore($this->presentation_sku),
       ],
     ];
-
-    if ($this->isMethod('PUT')) {
-      $rules['code'] = ['required', 'alpha_num', 'max:150',
-        Rule:: unique('presentation_skus', 'code')
-          ->whereIn('company_id', [0, auth()->user()->company_id])
-          ->whereNot('id', $this->presentation_sku->id),
-      ];
-    }
 
     return $rules;
   }

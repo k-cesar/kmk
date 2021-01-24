@@ -28,7 +28,7 @@ class TransferRequest extends FormRequest
   {
     $rules = [
       'presentations'      => 'required|array',
-      'presentations.*.id' => 'required|distinct|exists:presentations,id',
+      'presentations.*.id' => 'required|integer|distinct|visible_through_company:presentations',
       'origin_store_id'    => 'required|integer|store_visible',
       'destiny_store_id'   => ['required','integer','store_visible','different:origin_store_id',
         function ($attribute, $value, $fail) {

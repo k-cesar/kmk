@@ -2,19 +2,29 @@
 
 namespace App\Rules;
 
-use App\Http\Modules\Store\Store;
+use App\Traits\ResourceVisibility;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Contracts\Validation\Rule;
 
-class StoreVisible implements Rule
+class VisibleThroughCompanyRule implements Rule
 {
     /**
+     * The table name to check.
+     *
+     * @var string
+     */
+    public $table;
+
+    /**
      * Create a new rule instance.
+     * 
+     * @param  string  $table
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($table=null)
     {
-
+        $this->table = $table;
     }
 
     /**
@@ -27,10 +37,20 @@ class StoreVisible implements Rule
      */
     public function passes($attribute, $value)
     {
-        $store = Store::where('id', $value)
-            ->visible(auth()->user());
+        $model = (new class($this->table) extends Model {
+            use ResourceVisibility;
 
-        return $store->exists();
+            public function __construct($table)
+            {
+                $this->table = $table;
+            }
+        });
+
+        $resource = $model->where('id', $value)
+            ->visibleThroughCompany(auth()->user())
+            ->whereNull('deleted_at');
+
+        return $resource->exists();
     }
 
     /**
@@ -44,6 +64,8 @@ class StoreVisible implements Rule
     */
     public function validate($attribute, $value, $params)
     {
+        $this->table = $params[0];
+
         return $this->passes($attribute, $value);
     }
 

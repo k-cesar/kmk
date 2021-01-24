@@ -24,15 +24,11 @@ class SocioeconomicLevelRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'name'             => 'required|string|max:150|unique:socioeconomic_levels',
+      'name'             => 'required|string|max:150|unique:socioeconomic_levels,name'.($this->socioeconomic_level ? ",{$this->socioeconomic_level->id}" : ''),
       'is_all_countries' => 'required|boolean',
       'countries'        => 'sometimes|array',
-      'countries.*'      => 'exists:countries,id',
+      'countries.*'      => 'integer|exists:countries,id,deleted_at,NULL',
     ];
-
-    if ($this->isMethod('PUT')) {
-      $rules['name'] = "required|string|max:150|unique:socioeconomic_levels,name,{$this->socioeconomic_level->id}";
-    }
 
     return $rules;
   }
