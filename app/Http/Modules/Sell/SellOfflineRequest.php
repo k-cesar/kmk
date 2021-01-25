@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\Sell;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -28,7 +27,7 @@ class SellOfflineRequest extends FormRequest
     $rules = [
       'store_id'                   => 'required|integer|store_visible',
       'sells'                      => 'required|array',
-      'sells.*.payment_method_id'  => 'required|integer|payment_method_visible',
+      'sells.*.payment_method_id'  => 'required|integer|visible_through_company:payment_methods',
       'sells.*.name'               => 'required|string|max:250',
       'sells.*.description'        => 'sometimes|nullable|string|max:250',
       'sells.*.items'              => 'required|array',
@@ -38,11 +37,7 @@ class SellOfflineRequest extends FormRequest
     ];
 
     foreach ($this->get('sells', []) as $indexSell => $sell) {
-      $rules["sells.$indexSell.store_turn_id"] = ['required',
-        Rule::exists('store_turns', 'id')
-          ->where('id', $sell['store_turn_id'])
-          ->where('store_id', $this->get('store_id')),
-      ];
+      $rules["sells.$indexSell.store_turn_id"] = "required|integer|exists:store_turns,id,store_id,{$this->get('store_id')},deleted_at,NULL";
 
       foreach($sell['items'] ?? [] as $indexItem => $item) {
 
@@ -52,13 +47,14 @@ class SellOfflineRequest extends FormRequest
           break;
         }
 
-        $rules["sells.$indexSell.items.$indexItem.id"] = [
-          'required',
-          'integer',
+        $rules["sells.$indexSell.items.$indexItem.id"] = ['required', 'integer',
           function ($attribute, $value, $fail) use ($item, $tableName) {
             $exists = DB::table($tableName)
               ->where('id', $value)
               ->whereNull('deleted_at')
+              ->when(auth()->user()->role->level > 1, function ($query) {
+                $query->whereIn('company_id', [0, auth()->user()->company_id]);
+              })
               ->first();
 
             if (!$exists) {

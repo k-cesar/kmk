@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
-use App\Rules\StoreVisible;
-use App\Rules\PaymentMethodVisible;
+use App\Rules\StoreVisibleRule;
 use Illuminate\Support\ServiceProvider;
+use App\Rules\VisibleThroughCompanyRule;
 use Illuminate\Support\Facades\Validator;
 
 class AppServiceProvider extends ServiceProvider
@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Validator::extend('store_visible', StoreVisible::class, (new StoreVisible)->message());
-        Validator::extend('payment_method_visible', PaymentMethodVisible::class, (new PaymentMethodVisible)->message());
+        Validator::extend('store_visible', StoreVisibleRule::class, (new StoreVisibleRule)->message());
+        Validator::extend('visible_through_company', VisibleThroughCompanyRule::class, (new VisibleThroughCompanyRule)->message());
     }
 }

@@ -24,13 +24,9 @@ class CountryRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'name'        => 'required|string|max:150|unique:countries',
-      'currency_id' => 'required|exists:currencies,id'
+      'name'        => 'required|string|max:150|unique:countries,name'.($this->country ? ",{$this->country->id}" : ''),
+      'currency_id' => 'required|integer|exists:currencies,id,deleted_at,NULL',
     ];
-
-    if ($this->isMethod('PUT')) {
-      $rules['name'] = "required|string|max:150|unique:countries,name,{$this->country->id}";
-    }
 
     return $rules;
   }

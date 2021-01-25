@@ -27,13 +27,28 @@ class StockCountRequest extends FormRequest
             'store_id'   => 'required|integer|store_visible',
             'count_date' => 'required|date|date_format:Y-m-d',
             'status'     => 'required|in:'.implode(',', StockCount::getOptionsStatus()),
-            'created_by' => 'required|exists:users,id',
         ];
 
-        if($this->isMethod('PUT')) {
+        if ($this->isMethod('PUT')) {
             $rules['status'] = 'required|in:'.implode(',', StockCount::getOptionStatusForUpdate());
         }
 
         return $rules;
+    }
+
+    /**
+     * Get the validated data from the request.
+     *
+     * @return array
+     */
+    public function validated()
+    {
+      $validatedData = parent::validated();
+
+      if ($this->isMethod('POST')) {
+        $validatedData['created_by'] = auth()->user()->id;
+      }
+
+      return $validatedData;
     }
 }

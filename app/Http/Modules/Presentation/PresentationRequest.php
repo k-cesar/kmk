@@ -25,22 +25,15 @@ class PresentationRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'product_id'            => 'required|exists:products,id',
-      'price'                 => 'required|numeric|min:0',
-      'is_grouping'           => 'required|boolean',
-      'description'           => ['required', 'string', 'max:150',
-        Rule::unique('presentations', 'description')
-          ->whereIn('company_id', [0, auth()->user()->company_id]),
+      'product_id'  => 'required|integer|visible_through_company:products',
+      'price'       => 'required|numeric|min:0',
+      'is_grouping' => 'required|boolean',
+      'description' => ['required', 'string', 'max:150',
+        Rule::unique('presentations')
+          ->whereIn('company_id', [0, auth()->user()->company_id])
+          ->ignore($this->presentation),
       ],
     ];
-
-    if ($this->isMethod('PUT')) {
-      $rules['description'] = ['required', 'string','max:150',
-        Rule::unique('presentations', 'description')
-          ->whereIn('company_id', [0, auth()->user()->company_id])
-          ->whereNot('id', $this->presentation->id),
-      ];
-    }
 
     if ($this->get('is_grouping')) {
       $rules['units'] = 'required|numeric|min:2';

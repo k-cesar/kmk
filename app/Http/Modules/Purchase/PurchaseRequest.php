@@ -24,18 +24,18 @@ class PurchaseRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'provider_id'       => 'required|exists:providers,id',
-      'invoice'           => 'required|string|max:100',
-      'serial_number'     => 'sometimes|nullable|string|max:100',
-      'comments'          => 'sometimes|nullable|string|max:250',
+      'provider_id'   => 'required|integer|exists:providers,id,deleted_at,NULL',
+      'invoice'       => 'required|string|max:100',
+      'serial_number' => 'sometimes|nullable|string|max:100',
+      'comments'      => 'sometimes|nullable|string|max:250',
     ];
 
     if ($this->isMethod('POST')) {
       $rules = array_merge($rules, [
         'store_id'                   => 'required|integer|store_visible',
-        'payment_method_id'          => 'required|integer|payment_method_visible',
+        'payment_method_id'          => 'required|integer|visible_through_company:payment_methods',
         'presentations'              => 'required|array',
-        'presentations.*.id'         => 'required|distinct|exists:presentations,id',
+        'presentations.*.id'         => 'required|integer|distinct|visible_through_company:presentations',
         'presentations.*.quantity'   => 'required|numeric|min:0',
         'presentations.*.unit_price' => 'required|numeric|min:0',
       ]);

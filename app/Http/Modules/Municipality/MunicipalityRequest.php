@@ -25,20 +25,13 @@ class MunicipalityRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'state_id' => 'required|exists:states,id',
+      'state_id' => 'required|integer|exists:states,id,deleted_at,NULL',
       'name'     => ['required', 'string', 'max:150',
-        Rule::unique('municipalities', 'name')
-          ->where('state_id', $this->get('state_id')),
+        Rule::unique('municipalities')
+          ->where('state_id', $this->get('state_id'))
+          ->ignore($this->municipality),
       ],
     ];
-
-    if ($this->isMethod('PUT')) {
-      $rules['name'] = ['required', 'string', 'max:150',
-        Rule::unique('municipalities', 'name')
-          ->where('state_id', $this->get('state_id'))
-          ->whereNot('id', $this->municipality->id),
-      ];
-    }
 
     return $rules;
   }

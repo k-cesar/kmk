@@ -27,7 +27,7 @@ class ClientRequest extends FormRequest
     $rules = [
       'name'         => 'required|string|max:250',
       'type'         => 'required|in:'.implode(',', Client::getOptionsTypes()),
-      'country_id'   => 'required|integer|exists:countries,id',
+      'country_id'   => 'required|integer|exists:countries,id,deleted_at,NULL',
       'address'      => 'sometimes|nullable|string|max:500',
       'sex'          => 'required|in:'.implode(',', Client::getOptionsSex()),
       'biometric_id' => 'sometimes|nullable|string|max:1000',
@@ -35,25 +35,11 @@ class ClientRequest extends FormRequest
       'phone'        => 'present|nullable|max:50',
       'email'        => 'present|nullable|email|max:100',
       'nit'          => ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
-        Rule::unique('clients', 'nit')
-          ->where('country_id', $this->get('country_id')),
+        Rule::unique('clients')
+          ->where('country_id', $this->get('country_id'))
+          ->ignore($this->client),
       ],
     ];
-
-    if ($this->isMethod('PUT')) {
-      if (auth()->user()->role->level > 1) {
-        $rules = [
-          'phone' => 'present|nullable|max:50',
-          'email' => 'present|nullable|email|max:100',
-        ];
-      } else {
-        $rules['nit'] = ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
-          Rule::unique('clients', 'nit')
-            ->where('country_id', $this->get('country_id'))
-            ->whereNot('id', $this->client->id),
-        ];
-      }
-    }
 
     return $rules;
   }

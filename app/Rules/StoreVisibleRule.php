@@ -2,10 +2,10 @@
 
 namespace App\Rules;
 
-use App\Http\Modules\PaymentMethod\PaymentMethod;
+use App\Http\Modules\Store\Store;
 use Illuminate\Contracts\Validation\Rule;
 
-class PaymentMethodVisible implements Rule
+class StoreVisibleRule implements Rule
 {
     /**
      * Create a new rule instance.
@@ -27,10 +27,10 @@ class PaymentMethodVisible implements Rule
      */
     public function passes($attribute, $value)
     {
-        $paymentMethod = PaymentMethod::where('id', $value)
-            ->visibleThroughCompany(auth()->user());
+        $store = Store::where('id', $value)
+            ->visible(auth()->user());
 
-        return $paymentMethod->exists();
+        return $store->exists();
     }
 
     /**

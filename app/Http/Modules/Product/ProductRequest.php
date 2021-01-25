@@ -36,18 +36,19 @@ class ProductRequest extends FormRequest
     {
         $rules = [
             'is_all_countries'       => 'required|boolean',
-            'brand_id'               => 'required|exists:brands,id',
-            'product_category_id'    => 'required|exists:product_categories,id',
-            'product_subcategory_id' => 'required|exists:product_subcategories,id',
+            'brand_id'               => 'required|integer|exists:brands,id,deleted_at,NULL',
+            'product_category_id'    => 'required|integer|exists:product_categories,id,deleted_at,NULL',
+            'product_subcategory_id' => 'required|integer|exists:product_subcategories,id,deleted_at,NULL',
             'is_taxable'             => 'required|boolean',
             'is_inventoriable'       => 'required|boolean',
-            'uom_id'                 => 'required|exists:uoms,id',
+            'uom_id'                 => 'required|integer|exists:uoms,id,deleted_at,NULL',
             'suggested_price'        => 'required|numeric|min:0',
             'countries'              => 'required|array',
-            'countries.*'            => 'exists:countries,id',
+            'countries.*'            => 'integer|exists:countries,id,deleted_at,NULL',
             'description'            => ['required', 'string', 'max:255',
-              Rule::unique('products', 'description')
-                ->whereIn('company_id', [0, auth()->user()->company_id]),
+              Rule::unique('products')
+                ->whereIn('company_id', [0, auth()->user()->company_id])
+                ->ignore($this->product),
             ],
         ];
 
@@ -55,12 +56,6 @@ class ProductRequest extends FormRequest
             $rules['presentation_description'] = [
               Rule::unique('presentations', 'description')
                 ->whereIn('company_id', [0, auth()->user()->company_id]),
-            ];
-        } else {
-            $rules['description'] = ['required', 'string','max:255',
-              Rule::unique('products', 'description')
-                ->whereIn('company_id', [0, auth()->user()->company_id])
-                ->whereNot('id', $this->product->id),
             ];
         }
 

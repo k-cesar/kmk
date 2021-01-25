@@ -25,20 +25,13 @@ class ProductSubcategoryRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'product_category_id' => 'required|exists:product_categories,id',
+            'product_category_id' => 'required|integer|exists:product_categories,id,deleted_at,NULL',
             'name'                => ['required', 'string', 'max:150',
-                Rule::unique('product_subcategories', 'name')
-                    ->where('product_category_id', $this->get('product_category_id')),
+                Rule::unique('product_subcategories')
+                    ->where('product_category_id', $this->get('product_category_id'))
+                    ->ignore($this->product_subcategory),
             ],
         ];
-
-        if ($this->isMethod('PUT')) {
-            $rules['name'] = ['required', 'string', 'max:150',
-                Rule::unique('product_subcategories', 'name')
-                    ->where('product_category_id', $this->get('product_category_id'))
-                    ->whereNot('id', $this->product_subcategory->id),
-            ];
-        }
 
         return $rules;
     }

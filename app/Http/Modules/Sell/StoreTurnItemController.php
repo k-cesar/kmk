@@ -29,19 +29,19 @@ class StoreTurnItemController extends Controller
       ->firstOrFail();
 
     $presentationsQuery = Presentation::select('id', 'description')
-      ->selectRaw("COALESCE (tp.price, presentations.price) AS price, 'PRESENTATION' AS type")
-      ->leftJoin('turns_presentations AS tp', function (JoinClause $leftJoin) use ($storeTurn) {
-        $leftJoin->on('presentations.id', '=', 'tp.presentation_id')
-          ->where('tp.turn_id', $storeTurn->turn_id);
+      ->selectRaw("COALESCE (pt.price, presentations.price) AS price, 'PRESENTATION' AS type")
+      ->leftJoin('presentations_turns AS pt', function (JoinClause $leftJoin) use ($storeTurn) {
+        $leftJoin->on('presentations.id', '=', 'pt.presentation_id')
+          ->where('pt.turn_id', $storeTurn->turn_id);
       })
       ->visibleThroughCompany(auth()->user())
       ->filterByDescriptionOrSkuCode(request('presentation_description'), request('sku_code'));
 
     $combosQuery = PresentationCombo::select('presentation_combos.id', 'description')
-      ->selectRaw("COALESCE (tc.suggested_price, presentation_combos.suggested_price) AS price, 'COMBO' AS type")
-      ->leftJoin('presentation_combos_stores_turns AS tc', function (JoinClause $leftJoin) use ($storeTurn) {
-        $leftJoin->on('presentation_combos.id', '=', 'tc.presentation_combo_id')
-          ->where('tc.turn_id', $storeTurn->turn_id);
+      ->selectRaw("COALESCE (pcst.suggested_price, presentation_combos.suggested_price) AS price, 'COMBO' AS type")
+      ->leftJoin('presentation_combos_stores_turns AS pcst', function (JoinClause $leftJoin) use ($storeTurn) {
+        $leftJoin->on('presentation_combos.id', '=', 'pcst.presentation_combo_id')
+          ->where('pcst.turn_id', $storeTurn->turn_id);
       })
       ->visibleThroughCompany(auth()->user())
       ->filterByDescriptionPresentationOrSku(request('presentation_combo_description'), request('presentation_description'), request('sku_code'));

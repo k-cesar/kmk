@@ -42,4 +42,21 @@ class PresentationPolicy
 
         return true;
     }
+
+    /**
+     * Determine whether the user can manage the presentation's turns price.
+     *
+     * @param  \App\Http\Modules\User\User  $user
+     * @param  \App\Http\Modules\Presentation\Presentation  $presentation
+     * 
+     * @return mixed
+     */
+    public function manageTurnsPrice(User $user, Presentation $presentation)
+    {       
+        if ($user->role->level > 1) {
+            return in_array($presentation->company_id, [0, $user->company_id]);
+        }
+
+        return true;
+    }
 }

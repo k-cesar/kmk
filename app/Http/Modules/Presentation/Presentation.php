@@ -3,6 +3,7 @@
 namespace App\Http\Modules\Presentation;
 
 use App\Traits\SecureDeletes;
+use App\Http\Modules\Turn\Turn;
 use App\Traits\ResourceVisibility;
 use App\Http\Modules\Company\Company;
 use App\Http\Modules\Product\Product;
@@ -77,6 +78,16 @@ class Presentation extends Model
     }
 
     /**
+     * The turns that belong to the presentation.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function turns()
+    {
+        return $this->belongsToMany(Turn::class, 'presentations_turns')->withPivot('price')->withTimestamps();
+    }
+
+    /**
      * Scope a query to filter presentations by description or sku_code.
      *
      * @param  \Illuminate\Database\Eloquent\Builder  $query
@@ -96,6 +107,61 @@ class Presentation extends Model
         });
 
         return $query;
+    }
+
+    /**
+     * Sync the turn prices
+     *
+     * @param array $turnsPrices
+     * @return array
+     */
+    public function syncTurnsPrices($turnsPrices)
+    {
+        $allowedTurns = Turn::visibleThroughStore(auth()->user())
+            ->pluck('id');
+        
+        $turns = $this->turns()
+            ->wherePivotIn('turn_id', $allowedTurns)
+            ->get();
+
+        $turnsPrices = collect($turnsPrices);
+
+        $detached = $turns
+            ->filter(function ($turn) use ($turnsPrices) {
+                return !$turnsPrices->firstWhere('id', $turn->id);
+            });
+
+        $this->turns()->detach($detached);
+        
+        $updated = $turns
+            ->filter(function ($turn) use ($turnsPrices) {
+                $turnPrice = $turnsPrices->firstWhere('id', $turn->id);
+
+                if ($turnPrice) {
+                    return $turn->pivot->price != $turnPrice['price'];
+                }
+
+                return  false;
+            })
+            ->each(function ($turn) use ($turnsPrices) {
+                $turnPrice = $turnsPrices->firstWhere('id', $turn->id);
+
+                $turn->pivot->update(['price' => $turnPrice['price']]);
+            });
+
+        $attached = $turnsPrices
+            ->filter(function ($turnPrice) use ($turns) {
+                return !$turns->firstWhere('id', $turnPrice['id']);
+            })
+            ->each(function ($turnPrice) {
+                $this->turns()->attach($turnPrice['id'], ['price' => $turnPrice['price']]);
+            });
+        
+        return [
+            'attached' => $attached->pluck('id')->toArray(),
+            'updated'  => $updated->pluck('id')->toArray(),
+            'detached' => $detached->pluck('id')->toArray(),
+        ];
     }
     
 }

@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Modules\Presentation\Presentation;
 use App\Http\Modules\ProductCategory\ProductCategory;
-use App\Http\Modules\ProductCountries\ProductCountries;
 use App\Http\Modules\ProductSubcategory\ProductSubcategory;
 
 class Product extends Model
@@ -43,7 +42,7 @@ class Product extends Model
         'productCategory',
         'productSubcategory',
         'brand',
-        'all_countries'
+        'countries:countries.id,name',
     ];
 
     public function productCategory()
@@ -61,12 +60,7 @@ class Product extends Model
         return $this->belongsTo(Brand::class);
     }
 
-    public function all_countries()
-    {
-        return $this->hasMany(ProductCountries::class, 'product_id');
-    }
-
-    public function productCountries()
+    public function countries()
     {
         return $this->belongsToMany(Country::class, 'product_countries');
     }

@@ -25,30 +25,19 @@ class ProviderRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'country_id' => 'required|integer|exists:countries,id',
+      'country_id' => 'required|integer|exists:countries,id,deleted_at,NULL',
       'name'       => ['required', 'string', 'max:150',
-        Rule::unique('providers', 'name')
-          ->where('country_id', $this->get('country_id')),
+        Rule::unique('providers')
+          ->where('country_id', $this->get('country_id'))
+          ->ignore($this->provider),
+          
       ],
       'nit'        => ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
-        Rule::unique('providers', 'nit')
-          ->where('country_id', $this->get('country_id')),
+        Rule::unique('providers')
+          ->where('country_id', $this->get('country_id'))
+          ->ignore($this->provider),
       ],
     ];
-
-    if ($this->isMethod('PUT')) {
-      $rules['name'] = ['required', 'string','max:150',
-        Rule::unique('providers', 'name')
-          ->where('country_id', $this->get('country_id'))
-          ->whereNot('id', $this->provider->id),
-      ];
-
-      $rules['nit'] = ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
-        Rule::unique('providers', 'nit')
-          ->where('country_id', $this->get('country_id'))
-          ->whereNot('id', $this->provider->id),
-      ];
-    }
 
     return $rules;
   }

@@ -24,15 +24,10 @@ class UomRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'name'         => 'required|string|max:255|unique:uoms',
-      'abbreviation' => 'required|string|max:16|unique:uoms',
+      'name'         => 'required|string|max:255|unique:uoms'.($this->uom ? ",{$this->uom->id}" : ''),
+      'abbreviation' => 'required|string|max:16|unique:uoms'.($this->uom ? ",{$this->uom->id}" : ''),
       'description'  => 'sometimes|nullable|string|max:500',
     ];
-
-    if ($this->isMethod('PUT')) {
-      $rules['name'] = "required|string|max:255|unique:uoms,name,{$this->uom->id}";
-      $rules['abbreviation'] = "required|string|max:16|unique:uoms,abbreviation,{$this->uom->id}";
-    }
 
     return $rules;
   }

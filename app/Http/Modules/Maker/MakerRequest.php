@@ -24,12 +24,8 @@ class MakerRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'name' => 'required|string|max:150|unique:makers',
+      'name' => 'required|string|max:150|unique:makers,name'.($this->maker ? ",{$this->maker->id}" : ''),
     ];
-
-    if ($this->isMethod('PUT')) {
-      $rules['name'] = "required|string|max:150|unique:makers,name,{$this->maker->id}";
-    }
 
     return $rules;
   }
