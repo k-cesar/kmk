@@ -312,10 +312,10 @@ class Sell extends Model
 
         $presentationsStored = DB::table('presentations', 'p')
             ->select('p.id', 'p.product_id', 'p.units')
-            ->selectRaw("COALESCE (tp.price, p.price) AS price")
-            ->leftJoin("turns_presentations AS tp", function (JoinClause $leftJoin) use ($turnId) {
-              $leftJoin->on('p.id', '=', "tp.presentation_id")
-                ->where('tp.turn_id', $turnId);
+            ->selectRaw("COALESCE (pt.price, p.price) AS price")
+            ->leftJoin("presentations_turns AS pt", function (JoinClause $leftJoin) use ($turnId) {
+              $leftJoin->on('p.id', '=', "pt.presentation_id")
+                ->where('pt.turn_id', $turnId);
             })
             ->whereIn('p.id', $items->where('type', 'PRESENTATION')->pluck('id'))
             ->whereNull('p.deleted_at')
@@ -323,10 +323,10 @@ class Sell extends Model
         
         $combosStored = DB::table('presentation_combos', 'c')
             ->select('c.id')
-            ->selectRaw("COALESCE (tc.suggested_price, c.suggested_price) AS price, NULL AS product_id")
-            ->leftJoin("presentation_combos_stores_turns AS tc", function (JoinClause $leftJoin) use ($turnId) {
-              $leftJoin->on('c.id', '=', "tc.presentation_combo_id")
-                ->where('tc.turn_id', $turnId);
+            ->selectRaw("COALESCE (pcst.suggested_price, c.suggested_price) AS price, NULL AS product_id")
+            ->leftJoin("presentation_combos_stores_turns AS pcst", function (JoinClause $leftJoin) use ($turnId) {
+              $leftJoin->on('c.id', '=', "pcst.presentation_combo_id")
+                ->where('pcst.turn_id', $turnId);
             })
             ->whereIn('c.id', $items->where('type', 'COMBO')->pluck('id'))
             ->whereNull('c.deleted_at')
@@ -377,11 +377,11 @@ class Sell extends Model
         $presentations = $combos->map(function ($combo) use ($turnId) {
             $presentations = DB::table('presentations', 'p')
             ->select('p.id', 'p.product_id', 'p.units')
-            ->selectRaw("COALESCE (tp.price, p.price) AS price")
+            ->selectRaw("COALESCE (pt.price, p.price) AS price")
             ->join('presentation_combos_detail AS cd', 'p.id', '=', 'cd.presentation_id' )
-            ->leftJoin("turns_presentations AS tp", function (JoinClause $leftJoin) use ($turnId) {
-              $leftJoin->on('p.id', '=', "tp.presentation_id")
-                ->where('tp.turn_id', $turnId);
+            ->leftJoin("presentations_turns AS pt", function (JoinClause $leftJoin) use ($turnId) {
+              $leftJoin->on('p.id', '=', "pt.presentation_id")
+                ->where('pt.turn_id', $turnId);
             })
             ->where('cd.presentation_combo_id', $combo['id'])
             ->get();

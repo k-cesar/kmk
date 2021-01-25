@@ -18,94 +18,97 @@ use Illuminate\Support\Facades\Route;
  ***********************************************************************************************************************/
 
 Route::group(['middleware' => ['auth', 'access']], function () {
-    Route::resource('permissions', 'Permission\PermissionController')->only('index');
-    
-    Route::resource('currencies', 'Currency\CurrencyController')->except('create', 'edit');
-    
-    Route::resource('countries', 'Country\CountryController')->except('create', 'edit');
-    
+    Route::resource('adjustments', 'Adjustment\AdjustmentController')->only('index', 'store');
+
+    Route::resource('brands', 'Brand\BrandController')->except('create', 'edit');
+
+    Route::resource('cash-adjustments', 'CashAdjustment\CashAdjustmentController')->only('store');
+
+    Route::resource('clients', 'Client\ClientController')->except('create', 'edit');
+
     Route::resource('companies', 'Company\CompanyController')->except('create', 'edit');
+
+    Route::resource('countries', 'Country\CountryController')->except('create', 'edit');
+
+    Route::resource('currencies', 'Currency\CurrencyController')->except('create', 'edit');
+
+    Route::resource('deposits', 'Deposit\DepositController')->except('create', 'edit', 'destroy');
+
+    Route::resource('location-types', 'LocationType\LocationTypeController')->except('create', 'edit');
+
+    Route::resource('makers', 'Maker\MakerController')->except('create', 'edit');
+
+    Route::resource('municipalities', 'Municipality\MunicipalityController')->except('create', 'edit');
+
+    Route::resource('payment-methods', 'PaymentMethod\PaymentMethodController')->except('create', 'edit');
+
+    Route::resource('permissions', 'Permission\PermissionController')->only('index');
+
+    Route::resource('presentations', 'Presentation\PresentationController')->except('create', 'edit');
+
+    Route::resource('presentations.turns', 'Presentation\PresentationTurnController')->only('index', 'store');
+
+    Route::resource('presentation-combos', 'PresentationCombo\PresentationComboController')->except('create', 'edit');
+
+    Route::resource('presentation-skus', 'PresentationSku\PresentationSkuController')->except('create', 'edit');
+
+    Route::resource('products', 'Product\ProductController')->except('create', 'edit');
+
+    Route::resource('product-categories', 'ProductCategory\ProductCategoryController')->except('create', 'edit');
+
+    Route::resource('product-departments', 'ProductDepartment\ProductDepartmentController')->except('create', 'edit');
+
+    Route::resource('product-subcategories', 'ProductSubcategory\ProductSubcategoryController')->except('create', 'edit');
+
+    Route::resource('providers', 'Provider\ProviderController')->except('create', 'edit');
+
+    Route::resource('purchases', 'Purchase\PurchaseController')->except('create', 'edit', 'destroy');
+
+    Route::resource('regions', 'Region\RegionController')->except('create', 'edit');
+
+    Route::resource('sells', 'Sell\SellController')->except('create', 'edit', 'update');
+    Route::post('sells-offline', 'Sell\SellController@storeOffline')->name('sells-offline.store');
+
+    Route::resource('sell-payments', 'SellPayment\SellPaymentController')->only('index', 'update');
+
+    Route::resource('socioeconomic-levels', 'SocioeconomicLevel\SocioeconomicLevelController')->except('create', 'edit');
+
+    Route::resource('states', 'State\StateController')->except('create', 'edit');
+
+    Route::resource('stocks', 'Stock\StockController')->only('index');
+
+    Route::resource('stock-counts', 'StockCount\StockCountController')->except('create', 'edit', 'destroy');
+
+    Route::resource('stock-counts-adjustments', 'StockCount\StockCountAdjustmentController')->only('store');
+
+    Route::resource('stores', 'Store\StoreController')->except('create', 'edit');
+
+    Route::resource('store-chains', 'StoreChain\StoreChainController')->except('create', 'edit');
+
+    Route::resource('store-flags', 'StoreFlag\StoreFlagController')->except('create', 'edit');
+
+    Route::resource('store-formats', 'StoreFormat\StoreFormatController')->except('create', 'edit');
+
+    Route::resource('store-turns', 'StoreTurn\StoreTurnController')->except('create', 'edit', 'destroy');
+
+    Route::resource('store-types', 'StoreType\StoreTypeController')->except('create', 'edit');
+
+    Route::resource('stores-cash', 'CashAdjustment\StoreCashController')->only('index');
+
+    Route::resource('stores.turns.items', 'Sell\StoreTurnItemController')->only('index');
+
+    Route::resource('transfers', 'Transfer\TransferController')->only('index', 'store');
+
+    Route::resource('turns', 'Turn\TurnController')->except('create', 'edit');
+
+    Route::resource('uoms', 'Uom\UomController')->except('create', 'edit');
 
     Route::resource('users', 'User\UserController')->except('create', 'edit');
 
     Route::resource('users.permissions', 'User\UserPermissionController')->only('index', 'store');
 
-    Route::resource('makers', 'Maker\MakerController')->except('create', 'edit');
-
-    Route::resource('brands', 'Brand\BrandController')->except('create', 'edit');
-    
-    Route::resource('providers', 'Provider\ProviderController')->except('create', 'edit');
-
-    Route::resource('payment-methods', 'PaymentMethod\PaymentMethodController')->except('create', 'edit');
-
-    Route::resource('uoms', 'Uom\UomController')->except('create', 'edit');
-
-    Route::resource('socioeconomic-levels', 'SocioeconomicLevel\SocioeconomicLevelController')->except('create', 'edit');
-    
-    Route::resource('location-types', 'LocationType\LocationTypeController')->except('create', 'edit');
-    
-    Route::resource('store-types', 'StoreType\StoreTypeController')->except('create', 'edit');
-    
-    Route::resource('product-departments', 'ProductDepartment\ProductDepartmentController')->except('create', 'edit');
-    
-    Route::resource('product-categories', 'ProductCategory\ProductCategoryController')->except('create', 'edit');
-
-    Route::resource('product-subcategories', 'ProductSubcategory\ProductSubcategoryController')->except('create', 'edit');
-
-    Route::resource('presentations', 'Presentation\PresentationController')->except('create', 'edit');
-
-    Route::resource('products', 'Product\ProductController')->except('create', 'edit');
-    
-    Route::resource('store-formats', 'StoreFormat\StoreFormatController')->except('create', 'edit');
-    
-    Route::resource('store-chains', 'StoreChain\StoreChainController')->except('create', 'edit');
-    
-    Route::resource('store-flags', 'StoreFlag\StoreFlagController')->except('create', 'edit');
-    
-    Route::resource('regions', 'Region\RegionController')->except('create', 'edit');
-    
-    Route::resource('states', 'State\StateController')->except('create', 'edit');
-    
-    Route::resource('municipalities', 'Municipality\MunicipalityController')->except('create', 'edit');
-    
     Route::resource('zones', 'Zone\ZoneController')->except('create', 'edit');
-    
-    Route::resource('stores', 'Store\StoreController')->except('create', 'edit');
 
-    Route::resource('clients', 'Client\ClientController')->except('create', 'edit');
-    
-    Route::resource('turns', 'Turn\TurnController')->except('create', 'edit');
-
-    Route::resource('presentation-skus', 'PresentationSku\PresentationSkuController')->except('create', 'edit');
-    
-    Route::resource('presentation-combos', 'PresentationCombo\PresentationComboController')->except('create', 'edit');
-    
-    Route::resource('stocks', 'Stock\StockController')->only('index');
-    
-    Route::resource('purchases', 'Purchase\PurchaseController')->except('create', 'edit', 'destroy');
-    
-    Route::resource('transfers', 'Transfer\TransferController')->only('index', 'store');
-    
-    Route::resource('adjustments', 'Adjustment\AdjustmentController')->only('index', 'store');
-
-    Route::resource('stock-counts-adjustments', 'StockCount\StockCountAdjustmentController')->only('store');
-
-    Route::resource('stock-counts', 'StockCount\StockCountController')->except('create', 'edit', 'destroy');
-
-    Route::resource('sells', 'Sell\SellController')->except('create', 'edit', 'update');
-    Route::post('sells-offline', 'Sell\SellController@storeOffline')->name('sells-offline.store');
-    
-    Route::resource('sell-payments', 'SellPayment\SellPaymentController')->only('index', 'update');
-    
-    Route::resource('deposits', 'Deposit\DepositController')->except('create', 'edit', 'destroy');
-    
-    Route::resource('store-turns', 'StoreTurn\StoreTurnController')->except('create', 'edit', 'destroy');
-    
-    Route::resource('stores.turns.items', 'Sell\StoreTurnItemController')->only('index');
-    
-    Route::resource('cash-adjustments', 'CashAdjustment\CashAdjustmentController')->only('store');
-    
-    Route::resource('stores-cash', 'CashAdjustment\StoreCashController')->only('index');
 });
 
 /***********************************************************************************************************************
@@ -113,7 +116,6 @@ Route::group(['middleware' => ['auth', 'access']], function () {
  ***********************************************************************************************************************/
 
 Route::group(['middleware' => ['auth']], function () {
-    
     Route::get('brands-options', 'Brand\BrandController@options')->name('brands.options');
     
     Route::get('clients-options', 'Client\ClientController@options')->name('clients.options');
