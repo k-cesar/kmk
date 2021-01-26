@@ -31,8 +31,8 @@ class PresentationTurnRequest extends FormRequest
 
     $rules = [
       'apply_for_all'       => 'required|integer|in:0,1',
-      'global_price'        => 'required_if:apply_all,1|numeric|min:0',
-      'prices'              => 'required_if:apply_all,0|array',
+      'global_price'        => 'required_if:apply_for_all,1|numeric|min:0',
+      'prices'              => 'required_if:apply_for_all,0|array',
       'prices.*.price'      => 'required|numeric|min:0',
       'prices.*.turns'      => 'required|array',
       'prices.*.turns.*.id' => "required|integer|distinct|in:{$this->allowedTurns->join(',')}",
@@ -72,7 +72,7 @@ class PresentationTurnRequest extends FormRequest
         ];
       }
     } else {
-      foreach ($this->get('prices') as $price) {
+      foreach ($this->get('prices', []) as $price) {
         foreach ($price['turns'] as $turn) {
           $turnsPrices[] = [
             'id'    => $turn['id'],

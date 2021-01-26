@@ -22,7 +22,8 @@ class PresentationComboController extends Controller
       ->with('company:id,name')
       ->with('presentations:id,description')
       ->with('presentationCombosStoresTurns.store:id,name')
-      ->with('presentationCombosStoresTurns.turn');
+      ->with('presentationCombosStoresTurns.turn')
+      ->filterByDescriptionPresentationOrSku(request('presentation_combo_description'), request('presentation_description'), request('sku_code'));
 
     return $this->showAll($presentationCombos, Schema::getColumnListing((new PresentationCombo)->getTable()));
   }
