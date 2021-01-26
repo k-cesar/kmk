@@ -157,8 +157,8 @@ trait ApiResponser
     Validator::validate(request()->all(), [
       'sort_type' => 'sometimes|string|in:asc,desc',
     ]);
-    
-    $field = request()->get('sort_by');
+
+    $field = request()->get('sort_by', $allowedFieldsToSearchAndSort[0] ?? null);
     $sortType = request()->sort_type ?: $sortType;
 
     if (in_array($field, $allowedFieldsToSearchAndSort)) {

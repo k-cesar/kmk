@@ -29,9 +29,9 @@ class UserRequest extends FormRequest
     $rules = [
       'name'            => 'required|string|max:100',
       'role_id'         => 'required|integer|exists:roles,id|min:'.auth()->user()->role_id,
-      'email'           => 'sometimes|nullable|string|email|max:255|unique:users'.($this->user ? ",{$this->user->id}" : ''),
+      'email'           => 'sometimes|nullable|string|email|max:255|unique:users,email'.($this->user ? ",{$this->user->id}" : ''),
       'company_id'      => 'exclude_if:role_id,1|required|integer|exists:companies,id,deleted_at,NULL',
-      'username'        => 'required|string|max:100|alpha_dash|unique:users'.($this->user ? ",{$this->user->id}" : ''),
+      'username'        => 'required|string|max:100|alpha_dash|unique:users,username'.($this->user ? ",{$this->user->id}" : ''),
       'password'        => 'required|string|min:8|max:25|confirmed',
       'update_password' => 'sometimes|nullable|boolean',
       'stores'          => 'sometimes|array',

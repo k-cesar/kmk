@@ -24,7 +24,7 @@ class StoreFormatRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'name' => 'required|string|max:150|unique:store_formats'.($this->store_format ? ",{$this->store_format->id}" : ''),
+      'name' => 'required|string|max:150|unique:store_formats,name'.($this->store_format ? ",{$this->store_format->id}" : ''),
     ];
 
     return $rules;
