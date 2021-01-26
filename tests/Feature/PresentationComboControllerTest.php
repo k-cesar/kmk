@@ -99,7 +99,7 @@ class PresentationComboControllerTest extends ApiTestCase
     }
 
     $attributes = factory(PresentationCombo::class)->raw(['company_id' => $user->company_id]);
-    $extraAttributes['presentations'] = factory(Presentation::class, 2)->create()->pluck('id')->toArray();
+    $extraAttributes['presentations'] = factory(Presentation::class, 2)->create(['company_id' => $user->company_id])->pluck('id')->toArray();
     $extraAttributes['prices'] = [
       [
         'suggested_price' => 50,
@@ -139,10 +139,10 @@ class PresentationComboControllerTest extends ApiTestCase
       }
     }
 
-    $presentationCombo = factory(PresentationCombo::class)->create();
+    $presentationCombo = factory(PresentationCombo::class)->create(['company_id' => $user->company_id]);
 
     $attributes = factory(PresentationCombo::class)->raw(['company_id' => $presentationCombo->company_id]);
-    $extraAttributes['presentations'] = factory(Presentation::class, 2)->create()->pluck('id')->toArray();
+    $extraAttributes['presentations'] = factory(Presentation::class, 2)->create(['company_id' => $user->company_id])->pluck('id')->toArray();
     $extraAttributes['prices'] = [
       [
         'suggested_price' => 50,
@@ -167,9 +167,9 @@ class PresentationComboControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_destroy_a_presentation_combo()
   {
-    $this->signInWithPermissionsTo(['presentation-combos.destroy']);
+    $user = $this->signInWithPermissionsTo(['presentation-combos.destroy']);
 
-    $presentationCombo = factory(PresentationCombo::class)->create();
+    $presentationCombo = factory(PresentationCombo::class)->create(['company_id' => $user->company_id]);
 
     $this->deleteJson(route('presentation-combos.destroy', $presentationCombo->id))
       ->assertOk();
