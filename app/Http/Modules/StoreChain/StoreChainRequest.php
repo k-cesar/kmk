@@ -24,7 +24,7 @@ class StoreChainRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'name' => 'required|string|max:150|unique:store_chains'.($this->store_chain ? ",{$this->store_chain->id}" : ''),
+      'name' => 'required|string|max:150|unique:store_chains,name'.($this->store_chain ? ",{$this->store_chain->id}" : ''),
     ];
 
     return $rules;
