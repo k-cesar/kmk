@@ -97,14 +97,19 @@ class Presentation extends Model
      */
     public function scopeFilterByDescriptionOrSkuCode($query, $description, $skuCode)
     {
-        $query->when($description, function ($query) use ($description) {
-            $query->orWhere('description', 'ilike', $description);
-        })
-        ->when($skuCode, function ($query) use ($skuCode) {
-            $query->orWhereHas('presentationSkus', function ($subQuery) use ($skuCode) {
-                $subQuery->where('code', 'ilike', $skuCode);
+        $query->when($description, function ($query) use ($description, $skuCode) {
+            $query->where('description', 'ilike', $description)
+                ->when($skuCode, function ($query) use ($skuCode) {
+                    $query->orWhereHas('presentationSkus', function ($subQuery) use ($skuCode) {
+                        $subQuery->where('code', 'ilike', $skuCode);
+                    });
+                });
+            })
+            ->when($skuCode && !$description, function ($query) use ($skuCode) {
+                $query->whereHas('presentationSkus', function ($subQuery) use ($skuCode) {
+                    $subQuery->where('code', 'ilike', $skuCode);
+                });
             });
-        });
 
         return $query;
     }

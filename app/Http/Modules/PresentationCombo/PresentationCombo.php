@@ -84,21 +84,40 @@ class PresentationCombo extends Model
      */
     public function scopeFilterByDescriptionPresentationOrSku($query, $presentationComboDescription, $presentationDescription, $skuCode)
     {
-        $query->when($presentationComboDescription, function ($query) use ($presentationComboDescription) {
-            $query->orWhere('description', 'ilike', $presentationComboDescription);
-        })
-        ->when($presentationDescription, function ($query) use ($presentationDescription) {
-            $query->orWhereHas('presentations', function ($query) use ($presentationDescription) {
-                $query->where('description', 'ilike', $presentationDescription);
-            });
-        })
-        ->when($skuCode, function ($query) use ($skuCode) {
-            $query->orWhereHas('presentations', function ($query) use ($skuCode) {
-                $query->whereHas('presentationSkus', function ($subQuery) use ($skuCode) {
-                    $subQuery->where('code', 'ilike', $skuCode);
+        $query->when($presentationComboDescription, function ($query) use ($presentationComboDescription, $presentationDescription, $skuCode) {
+            $query->where('description', 'ilike', $presentationComboDescription)
+                ->when($presentationDescription, function ($query) use ($presentationDescription) {
+                    $query->orWhereHas('presentations', function ($query) use ($presentationDescription) {
+                        $query->where('description', 'ilike', $presentationDescription);
+                    });
+                })
+                ->when($skuCode, function ($query) use ($skuCode) {
+                    $query->orWhereHas('presentations', function ($query) use ($skuCode) {
+                        $query->whereHas('presentationSkus', function ($subQuery) use ($skuCode) {
+                            $subQuery->where('code', 'ilike', $skuCode);
+                        });
+                    });
+                });
+            })
+            ->when($presentationDescription && !$presentationComboDescription, function ($query) use ($presentationDescription, $skuCode) {
+                $query->whereHas('presentations', function ($query) use ($presentationDescription) {
+                        $query->where('description', 'ilike', $presentationDescription);
+                    })
+                    ->when($skuCode, function ($query) use ($skuCode) {
+                        $query->orWhereHas('presentations', function ($query) use ($skuCode) {
+                            $query->whereHas('presentationSkus', function ($subQuery) use ($skuCode) {
+                                $subQuery->where('code', 'ilike', $skuCode);
+                            });
+                        });
+                    });
+            })
+            ->when($skuCode && !($presentationComboDescription || $presentationDescription), function ($query) use ($skuCode) {
+                $query->whereHas('presentations', function ($query) use ($skuCode) {
+                    $query->whereHas('presentationSkus', function ($subQuery) use ($skuCode) {
+                        $subQuery->where('code', 'ilike', $skuCode);
+                    });
                 });
             });
-        });
 
         return $query;
     }
