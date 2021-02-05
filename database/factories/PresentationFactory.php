@@ -15,7 +15,7 @@ $factory->define(Presentation::class, function (Faker $faker) {
 
     return [
         'company_id'  => Company::inRandomOrder()->first() ?? factory(Company::class),
-        'description' => $faker->unique()->sentence,
+        'description' => strtoupper($faker->unique()->sentence),
         'price'       => rand(1, 20) * 100,
         'product_id'  => factory(Product::class),
         'is_grouping' => $isGrouping,

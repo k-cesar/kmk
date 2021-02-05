@@ -28,7 +28,7 @@ class PresentationComboRequest extends FormRequest
   {
     $rules = [
       'suggested_price'          => 'required|numeric|min:0',
-      'presentations'            => ['required','array',$this->oneCompanyRule],
+      'presentations'            => ['required','array',$this->oneCompanyRule()],
       'presentations.*'          => 'integer|visible_through_company:presentations',
       'prices'                   => 'required|array',
       'prices.*.suggested_price' => 'required|numeric|min:0',
@@ -79,18 +79,20 @@ class PresentationComboRequest extends FormRequest
     return $validatedData;
   }
 
-  private function oneCompanyRule($attribute, $value, $fail)
+  private function oneCompanyRule()
   {
-    $companies = Presentation::query()
-      ->whereIn('id', collect($value))
-      ->whereNotIn('company_id', [0])
-      ->pluck('company_id')
-      ->unique()
-      ->count();
-    
-    if ($companies > 1) {
-      $fail("El campo {$attribute} contiene presentaciones de múltiples empresas.");
-    }
+    return function ($attribute, $value, $fail) {
+      $companies = Presentation::query()
+        ->whereIn('id', collect($value))
+        ->whereNotIn('company_id', [0])
+        ->pluck('company_id')
+        ->unique()
+        ->count();
+      
+      if ($companies > 1) {
+        $fail("El campo {$attribute} contiene presentaciones de múltiples empresas.");
+      }
+    };
   }
   
 }

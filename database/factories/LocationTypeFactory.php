@@ -7,6 +7,6 @@ use App\Http\Modules\LocationType\LocationType;
 
 $factory->define(LocationType::class, function (Faker $faker) {
     return [
-        'name' => $faker->unique()->sentence(),
+        'name' => strtoupper(strtoupper($faker->unique()->sentence)),
     ];
 });

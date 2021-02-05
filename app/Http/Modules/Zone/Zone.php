@@ -30,6 +30,17 @@ class Zone extends Model
     protected $with = ['municipality'];
 
     /**
+     * Set the zone's name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+    }
+
+    /**
      * Get the municipality that owns the Zone.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

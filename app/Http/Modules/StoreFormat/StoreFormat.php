@@ -21,6 +21,17 @@ class StoreFormat extends Model
     ];
 
     /**
+     * Set the storeFormat's name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+    }
+
+    /**
      * Get the stores for the StoreFormat.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

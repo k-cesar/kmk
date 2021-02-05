@@ -8,7 +8,7 @@ use App\Http\Modules\ProductCategory\ProductCategory;
 
 $factory->define(ProductSubcategory::class, function (Faker $faker) {
     return [
-        'name'                => $faker->unique()->sentence(),
+        'name'                => strtoupper($faker->unique()->sentence),
         'product_category_id' => ProductCategory::inRandomOrder()->first() ?? factory(ProductCategory::class),
     ];
 });

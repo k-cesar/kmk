@@ -23,6 +23,17 @@ class ProductDepartment extends Model
     protected $fillable = [
         'name'        
     ];
+
+    /**
+     * Set the productDepartment's name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+    }
    
 
 }

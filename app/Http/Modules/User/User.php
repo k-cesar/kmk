@@ -51,6 +51,28 @@ class User extends Authenticatable implements JWTSubject
     protected $with = ['role', 'company'];
 
     /**
+     * Set the user's email.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setEmailAttribute($value)
+    {
+        $this->attributes['email'] = mb_strtolower($value, 'utf-8');
+    }
+
+    /**
+     * Set the user's username.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setUsernameAttribute($value)
+    {
+        $this->attributes['username'] = mb_strtolower($value, 'utf-8');
+    }
+
+    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed

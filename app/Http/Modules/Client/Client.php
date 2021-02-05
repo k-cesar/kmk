@@ -90,7 +90,7 @@ class Client extends Model
      */
     public function setNitAttribute($value)
     {
-        $this->attributes['nit'] = strtoupper($value);
+        $this->attributes['nit'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
     }
 
     /**

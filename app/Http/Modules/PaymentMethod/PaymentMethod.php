@@ -28,6 +28,17 @@ class PaymentMethod extends Model
     ];
 
     /**
+     * Set the paymentMethod's name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+    }
+
+    /**
      * Get the company that owns the brand.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

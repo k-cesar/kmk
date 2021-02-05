@@ -30,6 +30,17 @@ class SocioeconomicLevel extends Model
     protected $with = ['countries'];
 
     /**
+     * Set the socioeconomicLevel's name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+    }
+
+    /**
      * Get the stores for the SocioeconomicLevel.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

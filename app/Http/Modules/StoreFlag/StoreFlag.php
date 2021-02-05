@@ -30,6 +30,17 @@ class StoreFlag extends Model
     protected $with = ['storeChain'];
 
     /**
+     * Set the storeFlag's name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+    }
+
+    /**
      * Get the storeChain that owns the storeFlag.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

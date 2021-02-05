@@ -32,8 +32,7 @@ class CreateTurnsTable extends Migration
             $table->softDeletes();
 
             $table->unique(['store_id', 'name']);
-            $table->unique(['store_id', 'start_time']);
-            $table->unique(['store_id', 'end_time']);
+            $table->unique(['store_id', 'start_time', 'end_time']);
 
             $table->foreign('store_id')->references('id')->on('stores');
         });

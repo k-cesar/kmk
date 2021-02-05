@@ -35,6 +35,17 @@ class PresentationCombo extends Model
     protected $with = ['presentations'];
 
     /**
+     * Set the presentationCombo's description.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setDescriptionAttribute($value)
+    {
+        $this->attributes['description'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+    }
+
+    /**
      * The presentations that belong to the presentation_combo.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany

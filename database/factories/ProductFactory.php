@@ -13,7 +13,7 @@ use App\Http\Modules\ProductSubcategory\ProductSubcategory;
 $factory->define(Product::class, function (Faker $faker) {
     return [
         'company_id'             => Company::inRandomOrder()->first() ?? factory(Company::class),
-        'description'            => $faker->unique()->company,
+        'description'            => strtoupper($faker->unique()->company),
         'brand_id'               => Brand::inRandomOrder()->first() ?? factory(Brand::class),
         'product_category_id'    => ProductCategory::inRandomOrder()->first() ?? factory(ProductCategory::class),
         'product_subcategory_id' => ProductSubCategory::inRandomOrder()->first() ?? factory(ProductSubCategory::class),

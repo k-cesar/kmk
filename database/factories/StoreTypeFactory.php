@@ -7,6 +7,6 @@ use App\Http\Modules\StoreType\StoreType;
 
 $factory->define(StoreType::class, function (Faker $faker) {
     return [
-        'name' => $faker->unique()->sentence(),
+        'name' => strtoupper($faker->unique()->sentence),
     ];
 });

@@ -26,6 +26,28 @@ class Currency extends Model
     ];
 
     /**
+     * Set the currency's name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+    }
+
+    /**
+     * Set the currency's abbreviation.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setAbbreviationAttribute($value)
+    {
+        $this->attributes['abbreviation'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+    }
+
+    /**
      * Get the countries for the currency.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
