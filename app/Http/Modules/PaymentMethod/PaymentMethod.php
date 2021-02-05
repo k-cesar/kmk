@@ -2,11 +2,12 @@
 
 namespace App\Http\Modules\PaymentMethod;
 
+use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Traits\ResourceVisibility;
 use App\Http\Modules\Company\Company;
-use Illuminate\Database\Eloquent\Model;
 use App\Http\Modules\Purchase\Purchase;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PaymentMethod extends Model
@@ -35,7 +36,7 @@ class PaymentMethod extends Model
      */
     public function setNameAttribute($value)
     {
-        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+        $this->attributes['name'] = Helper::strToUpper($value);
     }
 
     /**

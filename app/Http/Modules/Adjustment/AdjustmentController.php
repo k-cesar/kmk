@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\Adjustment;
 
+use App\Support\Helper;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Http\Modules\Stock\StockMovement;
@@ -28,8 +29,8 @@ class AdjustmentController extends Controller
       ->whereIn('origin_type', [StockMovement::OPTION_ORIGIN_TYPE_MANUAL_ADJUSTMENT, StockMovement::OPTION_ORIGIN_TYPE_COUNT])
       ->where('sm.store_id', request('store_id'))
       ->where('sm.date', 'LIKE', request('date', '%'))
-      ->whereRaw('LOWER(sm.description) LIKE ?', [strtolower(request('description', '%'))])
-      ->whereRaw('LOWER(u.name) LIKE ?', [strtolower(request('user_name', '%'))]);
+      ->whereRaw('UPPER(sm.description) LIKE ?', [Helper::strToUpper(request('description', '%'))])
+      ->whereRaw('UPPER(u.name) LIKE ?', [Helper::strToUpper(request('user_name', '%'))]);
 
     return $this->showAll($adjustments);
   }

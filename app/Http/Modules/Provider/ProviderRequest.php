@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\Provider;
 
+use App\Support\Helper;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -15,6 +16,19 @@ class ProviderRequest extends FormRequest
   public function authorize()
   {
     return true;
+  }
+
+  /**
+   * Prepare the data for validation.
+   *
+   * @return void
+   */
+  protected function prepareForValidation()
+  {
+    $this->merge([
+      'name' => Helper::strToUpper($this->name),
+      'nit'  => Helper::strToUpper($this->nit)
+    ]);
   }
 
   /**

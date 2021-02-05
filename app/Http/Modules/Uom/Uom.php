@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\Uom;
 
+use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Product\Product;
 use Illuminate\Database\Eloquent\Model;
@@ -30,7 +31,7 @@ class Uom extends Model
      */
     public function setNameAttribute($value)
     {
-        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+        $this->attributes['name'] = Helper::strToUpper($value);
     }
     
     /**
@@ -41,7 +42,7 @@ class Uom extends Model
      */
     public function setAbbreviationAttribute($value)
     {
-        $this->attributes['abbreviation'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+        $this->attributes['abbreviation'] = Helper::strToUpper($value);
     }
 
     /**

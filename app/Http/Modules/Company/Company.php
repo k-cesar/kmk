@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\Company;
 
+use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\User\User;
 use App\Http\Modules\Store\Store;
@@ -51,7 +52,7 @@ class Company extends Model
      */
     public function setNitAttribute($value)
     {
-        $this->attributes['nit'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+        $this->attributes['nit'] = Helper::strToUpper($value);
     }
 
     /**

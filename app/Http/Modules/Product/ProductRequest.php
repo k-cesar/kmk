@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\Product;
 
+use App\Support\Helper;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -18,13 +19,16 @@ class ProductRequest extends FormRequest
     }
 
     /**
-     * Get data to be validated from the request.
+     * Prepare the data for validation.
      *
-     * @return array
+     * @return void
      */
-    public function validationData()
+    protected function prepareForValidation()
     {
-        return array_merge($this->all(), ['presentation_description' => $this->get('description')]);
+        $this->merge([
+            'description'              => Helper::strToUpper($this->description),
+            'presentation_description' => Helper::strToUpper($this->description)
+        ]);
     }
 
     /**

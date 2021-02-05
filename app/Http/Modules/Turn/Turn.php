@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\Turn;
 
+use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Store\Store;
 use App\Traits\ResourceVisibility;
@@ -34,7 +35,7 @@ class Turn extends Model
      */
     public function setNameAttribute($value)
     {
-        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+        $this->attributes['name'] = Helper::strToUpper($value);
     }
 
     /**

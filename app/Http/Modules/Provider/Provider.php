@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\Provider;
 
+use App\Support\Helper;
 use Illuminate\Support\Str;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Country\Country;
@@ -48,7 +49,7 @@ class Provider extends Model
      */
     public function setNameAttribute($value)
     {
-        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+        $this->attributes['name'] = Helper::strToUpper($value);
     }
 
     /**
@@ -59,7 +60,7 @@ class Provider extends Model
      */
     public function setNitAttribute($value)
     {
-        $this->attributes['nit'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+        $this->attributes['nit'] = Helper::strToUpper($value);
     }
 
     /**

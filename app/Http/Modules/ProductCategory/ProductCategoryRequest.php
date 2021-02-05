@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\ProductCategory;
 
+use App\Support\Helper;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProductCategoryRequest extends FormRequest
@@ -14,6 +15,18 @@ class ProductCategoryRequest extends FormRequest
   public function authorize()
   {
     return true;
+  }
+
+  /**
+   * Prepare the data for validation.
+   *
+   * @return void
+   */
+  protected function prepareForValidation()
+  {
+    $this->merge([
+      'name' => Helper::strToUpper($this->name)
+    ]);
   }
 
   /**

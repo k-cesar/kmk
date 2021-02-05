@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\User;
 
+use App\Support\Helper;
 use Illuminate\Validation\Rule;
 use App\Http\Modules\Store\Store;
 use Illuminate\Support\Facades\Hash;
@@ -17,6 +18,19 @@ class UserRequest extends FormRequest
   public function authorize()
   {
     return true;
+  }
+
+  /**
+   * Prepare the data for validation.
+   *
+   * @return void
+   */
+  protected function prepareForValidation()
+  {
+    $this->merge([
+      'email'    => Helper::strToLower($this->email),
+      'username' => Helper::strToLower($this->username)
+    ]);
   }
 
   /**

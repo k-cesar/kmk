@@ -495,8 +495,10 @@ class Sell extends Model
 
         $this->sellPayment->delete();
         $this->sellInvoice->delete();
-
+        
         $this->update(['status' => Sell::OPTION_STATUS_CANCELLED]);
+        
+        $this->delete();
 
         if ($this->status_dte==self::OPTION_STATUS_DTE_CERTIFIED && $this->store->company->allow_fel) {
 
@@ -514,7 +516,7 @@ class Sell extends Model
             }
         } 
 
-        $this->delete();
+        
     }
     
 }

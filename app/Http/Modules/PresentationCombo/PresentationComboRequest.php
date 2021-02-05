@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\PresentationCombo;
 
+use App\Support\Helper;
 use App\Http\Modules\Turn\Turn;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -17,6 +18,18 @@ class PresentationComboRequest extends FormRequest
   public function authorize()
   {
     return true;
+  }
+
+  /**
+   * Prepare the data for validation.
+   *
+   * @return void
+   */
+  protected function prepareForValidation()
+  {
+    $this->merge([
+      'description' => Helper::strToUpper($this->description)
+    ]);
   }
 
   /**

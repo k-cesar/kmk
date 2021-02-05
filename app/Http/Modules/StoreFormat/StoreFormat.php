@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\StoreFormat;
 
+use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Store\Store;
 use Illuminate\Database\Eloquent\Model;
@@ -28,7 +29,7 @@ class StoreFormat extends Model
      */
     public function setNameAttribute($value)
     {
-        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+        $this->attributes['name'] = Helper::strToUpper($value);
     }
 
     /**

@@ -2,10 +2,11 @@
 
 namespace App\Http\Modules\ProductCategory;
 
+use App\Support\Helper;
 use App\Traits\SecureDeletes;
-use App\Http\Modules\ProductDepartment\ProductDepartment;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Modules\ProductDepartment\ProductDepartment;
 
 class ProductCategory extends Model
 {
@@ -42,7 +43,7 @@ class ProductCategory extends Model
      */
     public function setNameAttribute($value)
     {
-        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+        $this->attributes['name'] = Helper::strToUpper($value);
     }
 
      /**

@@ -8,6 +8,38 @@ use Spatie\Permission\Models\Permission;
 class Helper
 {
     /**
+     * Make a utf8 string uppercase
+     *
+     * @param string $string
+     * @param boolean $trimSpaces
+     * @return string
+     */
+    public static function strToUpper($string, $trimSpaces=true)
+    {
+        if ($trimSpaces) {
+            $string = preg_replace('/\s+/', ' ', trim($string));
+        }
+        
+        return mb_strtoupper($string, 'utf-8');
+    }
+
+    /**
+     * Make a utf8 string lowercase
+     *
+     * @param string $string
+     * @param boolean $trimSpaces
+     * @return string
+     */
+    public static function strToLower($string, $trimSpaces=true)
+    {
+        if ($trimSpaces) {
+            $string = preg_replace('/\s+/', ' ', trim($string));
+        }
+        
+        return mb_strtolower($string, 'utf-8');
+    }
+
+    /**
      * Convert permissions array or int or string to collection
      *
      * @param string|integer|array ...$permission

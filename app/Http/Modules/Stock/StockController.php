@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\Stock;
 
+use App\Support\Helper;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\Query\JoinClause;
@@ -65,7 +66,7 @@ class StockController extends Controller
       ->groupBy('p.id', 'ss.quantity')
       ->orderBy('p.description')
       ->where('ss.store_id', request('store_id'))
-      ->whereRaw('LOWER(p.description) LIKE ?', [strtolower(request('product_description', '%'))]);
+      ->whereRaw('UPPER(p.description) LIKE ?', [Helper::strToUpper(request('product_description', '%'))]);
 
     return $this->showAll($products);
   }

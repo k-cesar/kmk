@@ -2,14 +2,15 @@
 
 namespace App\Traits;
 
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use App\Support\Helper;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Query\Builder as QueryBuilder;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 
 trait ApiResponser
 {
@@ -130,7 +131,7 @@ trait ApiResponser
             if ($strict_search) {
               return $storedValue != $value;
             } else {
-              return mb_strpos(strtolower($storedValue), strtolower($value)) === false;
+              return mb_strpos(Helper::strToUpper($storedValue), Helper::strToUpper($value)) === false;
             }
           });
         }

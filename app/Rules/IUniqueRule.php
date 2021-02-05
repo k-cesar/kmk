@@ -105,7 +105,7 @@ class IUniqueRule extends Unique implements Rule
      */
     public function getCount($table, $column, $value, $excludeId = null, $idColumn = null, array $extra = [])
     {
-        $query = DB::table($table)->whereRaw("LOWER($column) = LOWER(?)", [$value]);
+        $query = DB::table($table)->whereRaw("UPPER($column) = UPPER(?)", [$value]);
 
         if (! is_null($excludeId) && $excludeId !== 'NULL') {
             $query->where($idColumn ?: 'id', '<>', $excludeId);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\Currency;
 
+use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Company\Company;
 use App\Http\Modules\Country\Country;
@@ -33,7 +34,7 @@ class Currency extends Model
      */
     public function setNameAttribute($value)
     {
-        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+        $this->attributes['name'] = Helper::strToUpper($value);
     }
 
     /**
@@ -44,7 +45,7 @@ class Currency extends Model
      */
     public function setAbbreviationAttribute($value)
     {
-        $this->attributes['abbreviation'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+        $this->attributes['abbreviation'] = Helper::strToUpper($value);
     }
 
     /**

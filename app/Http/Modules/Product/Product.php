@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\Product;
 
+use App\Support\Helper;
 use App\Http\Modules\Uom\Uom;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Brand\Brand;
@@ -53,7 +54,7 @@ class Product extends Model
      */
     public function setDescriptionAttribute($value)
     {
-        $this->attributes['description'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+        $this->attributes['description'] = Helper::strToUpper($value);
     }
 
     public function productCategory()

@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\Sell;
 
+use App\Support\Helper;
 use App\Http\Modules\Sell\Sell;
 use App\Http\Modules\Company\Company;
 use Illuminate\Database\Eloquent\Model;
@@ -37,7 +38,7 @@ class SellInvoice extends Model
      */
     public function setNitAttribute($value)
     {
-        $this->attributes['nit'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+        $this->attributes['nit'] = Helper::strToUpper($value);
     }
 
     /**
