@@ -7,6 +7,6 @@ use App\Http\Modules\StoreChain\StoreChain;
 
 $factory->define(StoreChain::class, function (Faker $faker) {
     return [
-        'name' => $faker->unique()->sentence(),
+        'name' => strtoupper($faker->unique()->sentence),
     ];
 });

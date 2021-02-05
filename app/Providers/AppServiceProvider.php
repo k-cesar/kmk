@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Rules\IUniqueRule;
 use App\Rules\StoreVisibleRule;
 use Illuminate\Support\ServiceProvider;
 use App\Rules\VisibleThroughCompanyRule;
@@ -28,5 +29,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Validator::extend('store_visible', StoreVisibleRule::class, (new StoreVisibleRule)->message());
         Validator::extend('visible_through_company', VisibleThroughCompanyRule::class, (new VisibleThroughCompanyRule)->message());
+        Validator::extend('iunique', IUniqueRule::class, (new IUniqueRule)->message());
     }
 }

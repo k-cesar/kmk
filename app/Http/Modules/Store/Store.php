@@ -61,6 +61,17 @@ class Store extends Model
     protected $with = ['storeType', 'storeChain', 'storeFlag', 'locationType', 'storeFormat', 'socioeconomicLevel', 'state', 'municipality', 'zone', 'company', 'turns'];
 
     /**
+     * Set the store's name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+    }
+
+    /**
      * Get the locationType that owns the store.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

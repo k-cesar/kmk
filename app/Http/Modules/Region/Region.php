@@ -30,6 +30,17 @@ class Region extends Model
     protected $with = ['country'];
 
     /**
+     * Set the region's name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+    }
+
+    /**
      * Get the country that owns the region.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

@@ -38,6 +38,17 @@ class Presentation extends Model
     protected $with = ['product'];
 
     /**
+     * Set the presentation's description.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setDescriptionAttribute($value)
+    {
+        $this->attributes['description'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+    }
+
+    /**
      * Get the product that owns the presentation.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

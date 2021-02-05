@@ -13,7 +13,7 @@ class VisibleThroughCompanyRule implements Rule
      *
      * @var string
      */
-    public $table;
+    private $table;
 
     /**
      * Create a new rule instance.

@@ -18,7 +18,7 @@ use App\Http\Modules\SocioeconomicLevel\SocioeconomicLevel;
 $factory->define(Store::class, function (Faker $faker) {
 
     return [
-        'name'                   => $faker->unique()->company,
+        'name'                   => strtoupper($faker->unique()->company),
         'address'                => $faker->address,
         'petty_cash_amount'      => $faker->randomFloat(3, 0, 9999999),
         'store_type_id'          => StoreType::inRandomOrder()->first() ?? factory(StoreType::class),

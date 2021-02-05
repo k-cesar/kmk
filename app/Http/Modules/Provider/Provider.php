@@ -41,14 +41,25 @@ class Provider extends Model
     protected $with = ['country'];
 
     /**
+     * Set the provider's name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+    }
+
+    /**
      * Set the provider's nit.
      *
      * @param  string  $value
      * @return void
      */
-    public function setFirstNameAttribute($value)
+    public function setNitAttribute($value)
     {
-        $this->attributes['nit'] = strtoupper($value);
+        $this->attributes['nit'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
     }
 
     /**

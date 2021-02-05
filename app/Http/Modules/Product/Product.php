@@ -45,6 +45,17 @@ class Product extends Model
         'countries:countries.id,name',
     ];
 
+    /**
+     * Set the product's description.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setDescriptionAttribute($value)
+    {
+        $this->attributes['description'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+    }
+
     public function productCategory()
     {
         return $this->belongsTo(ProductCategory::class);

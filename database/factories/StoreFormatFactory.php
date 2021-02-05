@@ -7,6 +7,6 @@ use App\Http\Modules\StoreFormat\StoreFormat;
 
 $factory->define(StoreFormat::class, function (Faker $faker) {
     return [
-        'name' => $faker->unique()->sentence(),
+        'name' => strtoupper($faker->unique()->sentence),
     ];
 });

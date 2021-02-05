@@ -25,6 +25,7 @@ class ProductCategory extends Model
         'name',
         'product_department_id',
     ];
+    
    
     /**
      * The relations to eager load on every query.
@@ -32,6 +33,17 @@ class ProductCategory extends Model
      * @var array
      */
     protected $with = ['productDepartment'];
+
+    /**
+     * Set the productCategory's name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setNameAttribute($value)
+    {
+        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+    }
 
      /**
      * Get the Product department that owns the product category.

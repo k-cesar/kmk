@@ -10,7 +10,7 @@ $factory->define(PresentationCombo::class, function (Faker $faker) {
 
     return [
         'company_id'      => Company::inRandomOrder()->first() ?? factory(Company::class),
-        'description'     => $faker->unique()->sentence,
+        'description'     => strtoupper($faker->unique()->sentence),
         'suggested_price' => rand(1, 50) * 100,
     ];
 });

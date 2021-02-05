@@ -9,7 +9,7 @@ use App\Http\Modules\Country\Country;
 $factory->define(Region::class, function (Faker $faker) {
 
     return [
-        'name'       => $faker->unique()->company,
+        'name'       => strtoupper($faker->unique()->company),
         'country_id' => Country::inRandomOrder()->first() ?? factory(Country::class),
     ];
 });

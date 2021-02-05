@@ -35,9 +35,9 @@ class SellInvoice extends Model
      * @param  string  $value
      * @return void
      */
-    public function setFirstNameAttribute($value)
+    public function setNitAttribute($value)
     {
-        $this->attributes['nit'] = strtoupper($value);
+        $this->attributes['nit'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
     }
 
     /**

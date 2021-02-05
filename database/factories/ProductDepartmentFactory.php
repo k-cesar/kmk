@@ -8,6 +8,6 @@ use App\Http\Modules\ProductDepartment\ProductDepartment;
 
 $factory->define(ProductDepartment::class, function (Faker $faker) {
     return [
-        'name'         => $faker->unique()->sentence()       
+        'name'         => strtoupper($faker->unique()->sentence)       
     ];
 });

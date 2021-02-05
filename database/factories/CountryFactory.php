@@ -8,7 +8,7 @@ use App\Http\Modules\Currency\Currency;
 
 $factory->define(Country::class, function (Faker $faker) {
     return [
-        'name'        => $faker->unique()->country,
+        'name'        => strtoupper($faker->unique()->country),
         'currency_id' => Currency::inRandomOrder()->first() ?? factory(Currency::class),
     ];
 });
