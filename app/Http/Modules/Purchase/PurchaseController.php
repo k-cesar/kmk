@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Modules\Presentation\Presentation;
 use App\Http\Modules\Stock\StockMovementDetail;
 use App\Http\Modules\PaymentMethod\PaymentMethod;
+use App\Support\Helper;
 
 class PurchaseController extends Controller
 {
@@ -34,11 +35,11 @@ class PurchaseController extends Controller
       ->with('provider:id,name')
       ->whereHas('user', function ($query) {
         return $query->select('id', 'name')
-          ->whereRaw('LOWER(name) LIKE ?', [strtolower(request()->query('user_name', '%'))]);
+          ->whereRaw('UPPER(name) LIKE ?', [Helper::strToUpper(request()->query('user_name', '%'))]);
       })
       ->whereHas('provider', function ($query) {
         return $query->select('id', 'name')
-          ->whereRaw('LOWER(name) LIKE ?', [strtolower(request()->query('provider_name', '%'))]);
+          ->whereRaw('UPPER(name) LIKE ?', [Helper::strToUpper(request()->query('provider_name', '%'))]);
       })
       ->where('store_id', request('store_id'));
 

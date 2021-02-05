@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\State;
 
+use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Store\Store;
 use App\Http\Modules\Region\Region;
@@ -38,7 +39,7 @@ class State extends Model
      */
     public function setNameAttribute($value)
     {
-        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+        $this->attributes['name'] = Helper::strToUpper($value);
     }
 
     /**

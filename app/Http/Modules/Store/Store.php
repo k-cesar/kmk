@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\Store;
 
+use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Sell\Sell;
 use App\Http\Modules\Turn\Turn;
@@ -68,7 +69,7 @@ class Store extends Model
      */
     public function setNameAttribute($value)
     {
-        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+        $this->attributes['name'] = Helper::strToUpper($value);
     }
 
     /**

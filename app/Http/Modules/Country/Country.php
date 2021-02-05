@@ -2,14 +2,15 @@
 
 namespace App\Http\Modules\Country;
 
+use App\Support\Helper;
 use App\Traits\SecureDeletes;
+use App\Http\Modules\Region\Region;
 use App\Http\Modules\Company\Company;
 use App\Http\Modules\Currency\Currency;
 use App\Http\Modules\Provider\Provider;
-use App\Http\Modules\Region\Region;
-use App\Http\Modules\SocioeconomicLevel\SocioeconomicLevel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Http\Modules\SocioeconomicLevel\SocioeconomicLevel;
 
 class Country extends Model
 {
@@ -40,7 +41,7 @@ class Country extends Model
      */
     public function setNameAttribute($value)
     {
-        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+        $this->attributes['name'] = Helper::strToUpper($value);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\Maker;
 
+use App\Support\Helper;
 use Illuminate\Foundation\Http\FormRequest;
 
 class MakerRequest extends FormRequest
@@ -14,6 +15,18 @@ class MakerRequest extends FormRequest
   public function authorize()
   {
     return true;
+  }
+
+  /**
+   * Prepare the data for validation.
+   *
+   * @return void
+   */
+  protected function prepareForValidation()
+  {
+    $this->merge([
+      'name' => Helper::strToUpper($this->name)
+    ]);
   }
 
   /**

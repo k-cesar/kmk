@@ -2,8 +2,9 @@
 
 namespace App\Http\Modules\StoreType;
 
-use App\Http\Modules\Store\Store;
+use App\Support\Helper;
 use App\Traits\SecureDeletes;
+use App\Http\Modules\Store\Store;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -28,7 +29,7 @@ class StoreType extends Model
      */
     public function setNameAttribute($value)
     {
-        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+        $this->attributes['name'] = Helper::strToUpper($value);
     }
 
     /**

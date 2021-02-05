@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\Brand;
 
+use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Maker\Maker;
 use Illuminate\Database\Eloquent\Model;
@@ -36,7 +37,7 @@ class Brand extends Model
      */
     public function setNameAttribute($value)
     {
-        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+        $this->attributes['name'] = Helper::strToUpper($value);
     }
 
     /**

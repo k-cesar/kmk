@@ -2,10 +2,11 @@
 
 namespace App\Http\Modules\Client;
 
+use App\Support\Helper;
 use Illuminate\Support\Str;
 use App\Traits\SecureDeletes;
-use App\Http\Modules\User\User;
 use App\Http\Modules\Sell\Sell;
+use App\Http\Modules\User\User;
 use App\Http\Modules\Company\Company;
 use App\Http\Modules\Country\Country;
 use Illuminate\Database\Eloquent\Model;
@@ -90,7 +91,7 @@ class Client extends Model
      */
     public function setNitAttribute($value)
     {
-        $this->attributes['nit'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+        $this->attributes['nit'] = Helper::strToUpper($value);
     }
 
     /**

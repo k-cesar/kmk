@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\User;
 
+use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Sell\Sell;
 use App\Http\Modules\Store\Store;
@@ -58,7 +59,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function setEmailAttribute($value)
     {
-        $this->attributes['email'] = mb_strtolower($value, 'utf-8');
+        $this->attributes['email'] = Helper::strToLower($value);
     }
 
     /**
@@ -69,7 +70,7 @@ class User extends Authenticatable implements JWTSubject
      */
     public function setUsernameAttribute($value)
     {
-        $this->attributes['username'] = mb_strtolower($value, 'utf-8');
+        $this->attributes['username'] = Helper::strToLower($value);
     }
 
     /**

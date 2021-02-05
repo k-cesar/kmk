@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\StoreFlag;
 
+use App\Support\Helper;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -15,6 +16,18 @@ class StoreFlagRequest extends FormRequest
   public function authorize()
   {
     return true;
+  }
+
+  /**
+   * Prepare the data for validation.
+   *
+   * @return void
+   */
+  protected function prepareForValidation()
+  {
+    $this->merge([
+      'name' => Helper::strToUpper($this->name)
+    ]);
   }
 
   /**

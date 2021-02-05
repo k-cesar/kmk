@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\PresentationCombo;
 
+use App\Support\Helper;
 use Illuminate\Support\Arr;
 use App\Traits\SecureDeletes;
 use App\Traits\ResourceVisibility;
@@ -42,7 +43,7 @@ class PresentationCombo extends Model
      */
     public function setDescriptionAttribute($value)
     {
-        $this->attributes['description'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+        $this->attributes['description'] = Helper::strToUpper($value);
     }
 
     /**

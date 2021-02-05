@@ -2,6 +2,7 @@
 
 namespace App\Http\Modules\Currency;
 
+use App\Support\Helper;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CurrencyRequest extends FormRequest
@@ -14,6 +15,19 @@ class CurrencyRequest extends FormRequest
   public function authorize()
   {
     return true;
+  }
+
+  /**
+   * Prepare the data for validation.
+   *
+   * @return void
+   */
+  protected function prepareForValidation()
+  {
+    $this->merge([
+      'name'         => Helper::strToUpper($this->name),
+      'abbreviation' => Helper::strToUpper($this->abbreviation)
+    ]);
   }
 
   /**

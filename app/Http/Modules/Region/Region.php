@@ -2,9 +2,10 @@
 
 namespace App\Http\Modules\Region;
 
+use App\Support\Helper;
 use App\Traits\SecureDeletes;
-use App\Http\Modules\Country\Country;
 use App\Http\Modules\State\State;
+use App\Http\Modules\Country\Country;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -37,7 +38,7 @@ class Region extends Model
      */
     public function setNameAttribute($value)
     {
-        $this->attributes['name'] = mb_strtoupper(preg_replace('/\s+/', ' ', trim($value)), 'utf-8');
+        $this->attributes['name'] = Helper::strToUpper($value);
     }
 
     /**

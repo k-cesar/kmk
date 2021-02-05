@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\Sell;
 
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Foundation\Http\FormRequest;
 

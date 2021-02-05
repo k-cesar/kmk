@@ -3,6 +3,7 @@
 namespace App\Http\Modules\Transfer;
 
 use Exception;
+use App\Support\Helper;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
@@ -39,8 +40,8 @@ class TransferController extends Controller
       ->where('smo.origin_type', '=', StockMovement::OPTION_ORIGIN_TYPE_TRANSFER)
       ->where('smo.store_id', '=', request()->store_id)
       ->where('smo.date', 'like', request()->query('date', '%'))
-      ->whereRaw('LOWER(sd.name) LIKE ?', [strtolower(request()->query('destiny_store_name', '%'))])
-      ->whereRaw('LOWER(u.name) LIKE ?', [strtolower(request()->query('user_name', '%'))]);
+      ->whereRaw('UPPER(sd.name) LIKE ?', [Helper::strToUpper(request()->query('destiny_store_name', '%'))])
+      ->whereRaw('UPPER(u.name) LIKE ?', [Helper::strToUpper(request()->query('user_name', '%'))]);
 
     return $this->showAll($transfers);
   }
