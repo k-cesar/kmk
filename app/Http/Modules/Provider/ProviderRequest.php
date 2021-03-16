@@ -2,7 +2,7 @@
 
 namespace App\Http\Modules\Provider;
 
-use App\Support\Helper;
+use App\Rules\IUniqueRule;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -19,19 +19,6 @@ class ProviderRequest extends FormRequest
   }
 
   /**
-   * Prepare the data for validation.
-   *
-   * @return void
-   */
-  protected function prepareForValidation()
-  {
-    $this->merge([
-      'name' => Helper::strToUpper($this->name),
-      'nit'  => Helper::strToUpper($this->nit)
-    ]);
-  }
-
-  /**
    * Get the validation rules that apply to the request.
    *
    * @return array
@@ -41,7 +28,7 @@ class ProviderRequest extends FormRequest
     $rules = [
       'country_id' => 'required|integer|exists:countries,id,deleted_at,NULL',
       'name'       => ['required', 'string', 'max:150',
-        Rule::unique('providers')
+        (new IUniqueRule('providers'))
           ->where('country_id', $this->get('country_id'))
           ->ignore($this->provider),
           

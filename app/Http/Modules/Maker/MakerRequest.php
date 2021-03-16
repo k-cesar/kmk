@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\Maker;
 
-use App\Support\Helper;
 use Illuminate\Foundation\Http\FormRequest;
 
 class MakerRequest extends FormRequest
@@ -18,18 +17,6 @@ class MakerRequest extends FormRequest
   }
 
   /**
-   * Prepare the data for validation.
-   *
-   * @return void
-   */
-  protected function prepareForValidation()
-  {
-    $this->merge([
-      'name' => Helper::strToUpper($this->name)
-    ]);
-  }
-
-  /**
    * Get the validation rules that apply to the request.
    *
    * @return array
@@ -37,7 +24,7 @@ class MakerRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'name' => 'required|string|max:150|unique:makers,name'.($this->maker ? ",{$this->maker->id}" : ''),
+      'name' => 'required|string|max:150|iunique:makers,name,'.($this->maker->id ?? ''),
     ];
 
     return $rules;

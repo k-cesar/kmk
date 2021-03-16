@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\SocioeconomicLevel;
 
-use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Store\Store;
 use App\Http\Modules\Country\Country;
@@ -29,17 +28,6 @@ class SocioeconomicLevel extends Model
      * @var array
      */
     protected $with = ['countries'];
-
-    /**
-     * Set the socioeconomicLevel's name.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = Helper::strToUpper($value);
-    }
 
     /**
      * Get the stores for the SocioeconomicLevel.

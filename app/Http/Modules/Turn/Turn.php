@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\Turn;
 
-use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Store\Store;
 use App\Traits\ResourceVisibility;
@@ -26,17 +25,6 @@ class Turn extends Model
         'is_active',
         'is_default',
     ];
-
-    /**
-     * Set the turn's name.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = Helper::strToUpper($value);
-    }
 
     /**
      * Get the store that owns the turn.

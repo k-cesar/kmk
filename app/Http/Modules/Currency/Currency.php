@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\Currency;
 
-use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Company\Company;
 use App\Http\Modules\Country\Country;
@@ -25,28 +24,6 @@ class Currency extends Model
         'description',
         'disabled',
     ];
-
-    /**
-     * Set the currency's name.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = Helper::strToUpper($value);
-    }
-
-    /**
-     * Set the currency's abbreviation.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setAbbreviationAttribute($value)
-    {
-        $this->attributes['abbreviation'] = Helper::strToUpper($value);
-    }
 
     /**
      * Get the countries for the currency.

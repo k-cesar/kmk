@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\PresentationCombo;
 
-use App\Support\Helper;
 use Illuminate\Support\Arr;
 use App\Traits\SecureDeletes;
 use App\Traits\ResourceVisibility;
@@ -34,17 +33,6 @@ class PresentationCombo extends Model
      * @var array
      */
     protected $with = ['presentations'];
-
-    /**
-     * Set the presentationCombo's description.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setDescriptionAttribute($value)
-    {
-        $this->attributes['description'] = Helper::strToUpper($value);
-    }
 
     /**
      * The presentations that belong to the presentation_combo.

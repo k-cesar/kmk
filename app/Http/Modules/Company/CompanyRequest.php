@@ -2,8 +2,7 @@
 
 namespace App\Http\Modules\Company;
 
-use App\Support\Helper;
-use Illuminate\Validation\Rule;
+use App\Rules\IUniqueRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CompanyRequest extends FormRequest
@@ -16,18 +15,6 @@ class CompanyRequest extends FormRequest
   public function authorize()
   {
     return true;
-  }
-
-  /**
-   * Prepare the data for validation.
-   *
-   * @return void
-   */
-  protected function prepareForValidation()
-  {
-    $this->merge([
-      'nit' => Helper::strToUpper($this->nit)
-    ]);
   }
 
   /**
@@ -46,7 +33,7 @@ class CompanyRequest extends FormRequest
       'currency_id'           => 'required|integer|exists:currencies,id,deleted_at,NULL',
       'country_id'            => 'required|integer|exists:countries,id,deleted_at,NULL',
       'nit'                   => ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
-        Rule::unique('companies')
+        (new IUniqueRule('companies'))
           ->where('country_id', $this->get('country_id'))
           ->ignore($this->company),
       ],

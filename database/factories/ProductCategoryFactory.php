@@ -9,7 +9,7 @@ use App\Http\Modules\ProductDepartment\ProductDepartment;
 
 $factory->define(ProductCategory::class, function (Faker $faker) {
     return [
-        'name'                  => strtoupper($faker->unique()->sentence),
+        'name'                  => $faker->unique()->sentence,
         'product_department_id' => ProductDepartment::inRandomOrder()->first() ?? factory(ProductDepartment::class),
     ];
 });

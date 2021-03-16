@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\StoreFormat;
 
-use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Store\Store;
 use Illuminate\Database\Eloquent\Model;
@@ -20,17 +19,6 @@ class StoreFormat extends Model
     protected $fillable = [
         'name',
     ];
-
-    /**
-     * Set the storeFormat's name.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = Helper::strToUpper($value);
-    }
 
     /**
      * Get the stores for the StoreFormat.

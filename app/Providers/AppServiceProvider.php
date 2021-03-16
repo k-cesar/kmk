@@ -29,6 +29,6 @@ class AppServiceProvider extends ServiceProvider
     {
         Validator::extend('store_visible', StoreVisibleRule::class, (new StoreVisibleRule)->message());
         Validator::extend('visible_through_company', VisibleThroughCompanyRule::class, (new VisibleThroughCompanyRule)->message());
-        Validator::extend('iunique', IUniqueRule::class, (new IUniqueRule)->message());
+        Validator::extend('iunique', IUniqueRule::class, __('validation.unique'));
     }
 }

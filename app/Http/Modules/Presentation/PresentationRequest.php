@@ -2,8 +2,7 @@
 
 namespace App\Http\Modules\Presentation;
 
-use App\Support\Helper;
-use Illuminate\Validation\Rule;
+use App\Rules\IUniqueRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PresentationRequest extends FormRequest
@@ -19,18 +18,6 @@ class PresentationRequest extends FormRequest
   }
 
   /**
-   * Prepare the data for validation.
-   *
-   * @return void
-   */
-  protected function prepareForValidation()
-  {
-    $this->merge([
-      'description' => Helper::strToUpper($this->description)
-    ]);
-  }
-
-  /**
    * Get the validation rules that apply to the request.
    *
    * @return array
@@ -42,7 +29,7 @@ class PresentationRequest extends FormRequest
       'price'       => 'required|numeric|min:0',
       'is_grouping' => 'required|boolean',
       'description' => ['required', 'string', 'max:150',
-        Rule::unique('presentations')
+        (new IUniqueRule('presentations'))
           ->whereIn('company_id', [0, auth()->user()->company_id])
           ->ignore($this->presentation),
       ],

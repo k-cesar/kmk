@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\Uom;
 
-use App\Support\Helper;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UomRequest extends FormRequest
@@ -18,19 +17,6 @@ class UomRequest extends FormRequest
   }
 
   /**
-   * Prepare the data for validation.
-   *
-   * @return void
-   */
-  protected function prepareForValidation()
-  {
-    $this->merge([
-      'name'         => Helper::strToUpper($this->name),
-      'abbreviation' => Helper::strToUpper($this->abbreviation),
-    ]);
-  }
-
-  /**
    * Get the validation rules that apply to the request.
    *
    * @return array
@@ -38,8 +24,8 @@ class UomRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'name'         => 'required|string|max:255|unique:uoms,name'.($this->uom ? ",{$this->uom->id}" : ''),
-      'abbreviation' => 'required|string|max:16|unique:uoms,abbreviation'.($this->uom ? ",{$this->uom->id}" : ''),
+      'name'         => 'required|string|max:255|iunique:uoms,name,'.($this->uom->id ?? ''),
+      'abbreviation' => 'required|string|max:16|iunique:uoms,abbreviation,'.($this->uom->id ?? ''),
       'description'  => 'sometimes|nullable|string|max:500',
     ];
 

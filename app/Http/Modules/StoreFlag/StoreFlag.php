@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\StoreFlag;
 
-use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Store\Store;
 use Illuminate\Database\Eloquent\Model;
@@ -29,17 +28,6 @@ class StoreFlag extends Model
      * @var array
      */
     protected $with = ['storeChain'];
-
-    /**
-     * Set the storeFlag's name.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = Helper::strToUpper($value);
-    }
 
     /**
      * Get the storeChain that owns the storeFlag.

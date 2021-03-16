@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\Maker;
 
-use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Brand\Brand;
 use Illuminate\Database\Eloquent\Model;
@@ -20,17 +19,6 @@ class Maker extends Model
     protected $fillable = [
         'name',
     ];
-
-    /**
-     * Set the maker's name.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = Helper::strToUpper($value);
-    }
 
     /**
      * Get the brands for the maker.

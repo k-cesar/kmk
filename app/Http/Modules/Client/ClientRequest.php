@@ -2,8 +2,7 @@
 
 namespace App\Http\Modules\Client;
 
-use App\Support\Helper;
-use Illuminate\Validation\Rule;
+use App\Rules\IUniqueRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ClientRequest extends FormRequest
@@ -16,18 +15,6 @@ class ClientRequest extends FormRequest
   public function authorize()
   {
     return true;
-  }
-
-  /**
-   * Prepare the data for validation.
-   *
-   * @return void
-   */
-  protected function prepareForValidation()
-  {
-    $this->merge([
-      'nit' => Helper::strToUpper($this->nit)
-    ]);
   }
 
   /**
@@ -48,7 +35,7 @@ class ClientRequest extends FormRequest
       'phone'        => 'present|nullable|max:50',
       'email'        => 'present|nullable|email|max:100',
       'nit'          => ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
-        Rule::unique('clients')
+        (new IUniqueRule('clients'))
           ->where('country_id', $this->get('country_id'))
           ->ignore($this->client),
       ],

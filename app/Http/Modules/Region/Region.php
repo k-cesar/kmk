@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\Region;
 
-use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\State\State;
 use App\Http\Modules\Country\Country;
@@ -29,17 +28,6 @@ class Region extends Model
      * @var array
      */
     protected $with = ['country'];
-
-    /**
-     * Set the region's name.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = Helper::strToUpper($value);
-    }
 
     /**
      * Get the country that owns the region.

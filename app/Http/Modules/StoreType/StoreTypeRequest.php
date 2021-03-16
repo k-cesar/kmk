@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\StoreType;
 
-use App\Support\Helper;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreTypeRequest extends FormRequest
@@ -18,18 +17,6 @@ class StoreTypeRequest extends FormRequest
   }
 
   /**
-   * Prepare the data for validation.
-   *
-   * @return void
-   */
-  protected function prepareForValidation()
-  {
-    $this->merge([
-      'name' => Helper::strToUpper($this->name)
-    ]);
-  }
-
-  /**
    * Get the validation rules that apply to the request.
    *
    * @return array
@@ -37,7 +24,7 @@ class StoreTypeRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'name' => 'required|string|max:150|unique:store_types,name'.($this->store_type ? ",{$this->store_type->id}" : ''),
+      'name' => 'required|string|max:150|iunique:store_types,name,'.($this->store_type->id ?? ''),
     ];
 
     return $rules;

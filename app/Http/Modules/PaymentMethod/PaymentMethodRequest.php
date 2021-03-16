@@ -2,8 +2,7 @@
 
 namespace App\Http\Modules\PaymentMethod;
 
-use App\Support\Helper;
-use Illuminate\Validation\Rule;
+use App\Rules\IUniqueRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PaymentMethodRequest extends FormRequest
@@ -19,18 +18,6 @@ class PaymentMethodRequest extends FormRequest
   }
 
   /**
-   * Prepare the data for validation.
-   *
-   * @return void
-   */
-  protected function prepareForValidation()
-  {
-    $this->merge([
-      'name' => Helper::strToUpper($this->name)
-    ]);
-  }
-
-  /**
    * Get the validation rules that apply to the request.
    *
    * @return array
@@ -40,7 +27,7 @@ class PaymentMethodRequest extends FormRequest
     $rules = [
       'company_id' => 'required|integer|exists:companies,id,deleted_at,NULL',
       'name'       => ['required', 'string', 'max:150',
-        Rule::unique('payment_methods')
+        (new IUniqueRule('payment_methods'))
           ->where('company_id', $this->get('company_id'))
           ->ignore($this->payment_method),
       ],

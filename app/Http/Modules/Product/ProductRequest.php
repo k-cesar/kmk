@@ -2,8 +2,7 @@
 
 namespace App\Http\Modules\Product;
 
-use App\Support\Helper;
-use Illuminate\Validation\Rule;
+use App\Rules\IUniqueRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class ProductRequest extends FormRequest
@@ -26,8 +25,7 @@ class ProductRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'description'              => Helper::strToUpper($this->description),
-            'presentation_description' => Helper::strToUpper($this->description)
+            'presentation_description' => $this->description
         ]);
     }
 
@@ -50,7 +48,7 @@ class ProductRequest extends FormRequest
             'countries'              => 'required|array',
             'countries.*'            => 'integer|exists:countries,id,deleted_at,NULL',
             'description'            => ['required', 'string', 'max:255',
-              Rule::unique('products')
+              (new IUniqueRule('products'))
                 ->whereIn('company_id', [0, auth()->user()->company_id])
                 ->ignore($this->product),
             ],
@@ -58,7 +56,7 @@ class ProductRequest extends FormRequest
 
         if ($this->isMethod('POST')) {
             $rules['presentation_description'] = [
-              Rule::unique('presentations', 'description')
+              (new IUniqueRule('presentations', 'description'))
                 ->whereIn('company_id', [0, auth()->user()->company_id]),
             ];
         }

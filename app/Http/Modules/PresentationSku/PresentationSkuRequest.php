@@ -2,7 +2,7 @@
 
 namespace App\Http\Modules\PresentationSku;
 
-use Illuminate\Validation\Rule;
+use App\Rules\IUniqueRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PresentationSkuRequest extends FormRequest
@@ -29,7 +29,7 @@ class PresentationSkuRequest extends FormRequest
       'presentation_id'  => 'required|integer|visible_through_company:presentations',
       'seasonal_product' => 'required|boolean',
       'code'             => ['required', 'alpha_num', 'max:150',
-        Rule:: unique('presentation_skus')
+        (new IUniqueRule('presentation_skus'))
           ->whereIn('company_id', [0, auth()->user()->company_id])
           ->ignore($this->presentation_sku),
       ],

@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\Municipality;
 
-use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Zone\Zone;
 use App\Http\Modules\State\State;
@@ -30,17 +29,6 @@ class Municipality extends Model
      * @var array
      */
     protected $with = ['state'];
-
-    /**
-     * Set the municipality's name.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = Helper::strToUpper($value);
-    }
 
     /**
      * Get the state that owns the brand.

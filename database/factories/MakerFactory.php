@@ -8,6 +8,6 @@ use App\Http\Modules\Maker\Maker;
 $factory->define(Maker::class, function (Faker $faker) {
 
     return [
-        'name' => strtoupper($faker->unique()->company),
+        'name' => $faker->unique()->company,
     ];
 });
