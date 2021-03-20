@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\Uom;
 
-use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Product\Product;
 use Illuminate\Database\Eloquent\Model;
@@ -22,28 +21,6 @@ class Uom extends Model
         'abbreviation',
         'description',
     ];
-
-    /**
-     * Set the uom's name.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = Helper::strToUpper($value);
-    }
-    
-    /**
-     * Set the uom's abbreviation.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setAbbreviationAttribute($value)
-    {
-        $this->attributes['abbreviation'] = Helper::strToUpper($value);
-    }
 
     /**
      * Get the products for the uom.

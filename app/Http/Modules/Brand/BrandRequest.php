@@ -2,8 +2,7 @@
 
 namespace App\Http\Modules\Brand;
 
-use App\Support\Helper;
-use Illuminate\Validation\Rule;
+use App\Rules\IUniqueRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class BrandRequest extends FormRequest
@@ -19,18 +18,6 @@ class BrandRequest extends FormRequest
   }
 
   /**
-   * Prepare the data for validation.
-   *
-   * @return void
-   */
-  protected function prepareForValidation()
-  {
-    $this->merge([
-      'name' => Helper::strToUpper($this->name)
-    ]);
-  }
-
-  /**
    * Get the validation rules that apply to the request.
    *
    * @return array
@@ -40,7 +27,7 @@ class BrandRequest extends FormRequest
     $rules = [
       'maker_id' => 'required|integer|exists:makers,id,deleted_at,NULL',
       'name'     => ['required', 'string', 'max:150',
-        Rule::unique('brands')
+        (new IUniqueRule('brands'))
           ->where('maker_id', $this->get('maker_id'))
           ->ignore($this->brand),
       ],

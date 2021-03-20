@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\Country;
 
-use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Region\Region;
 use App\Http\Modules\Company\Company;
@@ -32,17 +31,6 @@ class Country extends Model
      * @var array
      */
     protected $with = ['currency'];
-
-    /**
-     * Set the country's name.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = Helper::strToUpper($value);
-    }
 
     /**
      * Get the currency that owns the country.

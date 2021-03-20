@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\Zone;
 
-use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Store\Store;
 use Illuminate\Database\Eloquent\Model;
@@ -29,17 +28,6 @@ class Zone extends Model
      * @var array
      */
     protected $with = ['municipality'];
-
-    /**
-     * Set the zone's name.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = Helper::strToUpper($value);
-    }
 
     /**
      * Get the municipality that owns the Zone.

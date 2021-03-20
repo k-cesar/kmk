@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\State;
 
-use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Store\Store;
 use App\Http\Modules\Region\Region;
@@ -30,17 +29,6 @@ class State extends Model
      * @var array
      */
     protected $with = ['region'];
-
-    /**
-     * Set the state's name.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = Helper::strToUpper($value);
-    }
 
     /**
      * Get the region that owns the state.

@@ -9,7 +9,7 @@ use App\Http\Modules\Municipality\Municipality;
 $factory->define(Zone::class, function (Faker $faker) {
 
     return [
-        'name'            => strtoupper($faker->unique()->company),
+        'name'            => $faker->unique()->company,
         'municipality_id' => Municipality::inRandomOrder()->first() ?? factory(Municipality::class),
     ];
 });

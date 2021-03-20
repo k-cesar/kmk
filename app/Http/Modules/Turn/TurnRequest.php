@@ -2,8 +2,7 @@
 
 namespace App\Http\Modules\Turn;
 
-use App\Support\Helper;
-use Illuminate\Validation\Rule;
+use App\Rules\IUniqueRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class TurnRequest extends FormRequest
@@ -16,18 +15,6 @@ class TurnRequest extends FormRequest
   public function authorize()
   {
     return true;
-  }
-
-  /**
-   * Prepare the data for validation.
-   *
-   * @return void
-   */
-  protected function prepareForValidation()
-  {
-    $this->merge([
-      'name' => Helper::strToUpper($this->name)
-    ]);
   }
 
   /**
@@ -44,7 +31,7 @@ class TurnRequest extends FormRequest
       'is_active'  => 'required|boolean',
       'is_default' => 'required|boolean',
       'name'       => ['required', 'string', 'max:255',
-        Rule::unique('turns')
+        (new IUniqueRule('turns'))
           ->where('store_id', $this->get('store_id'))
           ->ignore($this->turn),
       ],

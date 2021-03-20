@@ -2,8 +2,7 @@
 
 namespace App\Http\Modules\StoreFlag;
 
-use App\Support\Helper;
-use Illuminate\Validation\Rule;
+use App\Rules\IUniqueRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreFlagRequest extends FormRequest
@@ -19,18 +18,6 @@ class StoreFlagRequest extends FormRequest
   }
 
   /**
-   * Prepare the data for validation.
-   *
-   * @return void
-   */
-  protected function prepareForValidation()
-  {
-    $this->merge([
-      'name' => Helper::strToUpper($this->name)
-    ]);
-  }
-
-  /**
    * Get the validation rules that apply to the request.
    *
    * @return array
@@ -40,7 +27,7 @@ class StoreFlagRequest extends FormRequest
     $rules = [
       'store_chain_id' => 'required|integer|exists:store_chains,id,deleted_at,NULL',
       'name'           => ['required', 'string', 'max:150',
-        Rule::unique('store_flags')
+        (new IUniqueRule('store_flags'))
           ->where('store_chain_id', $this->get('store_chain_id'))
           ->ignore($this->store_flag),
       ],

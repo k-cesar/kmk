@@ -27,7 +27,7 @@ class CreateUsersTable extends Migration
             $table->string('email', 100)->nullable();
             $table->string('phone', 50);
             $table->unsignedBigInteger('company_id');
-            $table->string('username', 100);
+            $table->string('username', 100)->unique();
             $table->text('password');
             $table->text('token')->nullable();
             $table->rememberToken();

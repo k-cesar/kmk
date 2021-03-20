@@ -9,7 +9,7 @@ use App\Http\Modules\Maker\Maker;
 $factory->define(Brand::class, function (Faker $faker) {
 
     return [
-        'name'     => strtoupper($faker->unique()->company),
+        'name'     => $faker->unique()->company,
         'maker_id' => Maker::inRandomOrder()->first() ?? factory(Maker::class),
     ];
 });

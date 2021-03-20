@@ -42,17 +42,6 @@ class Provider extends Model
     protected $with = ['country'];
 
     /**
-     * Set the provider's name.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = Helper::strToUpper($value);
-    }
-
-    /**
      * Set the provider's nit.
      *
      * @param  string  $value

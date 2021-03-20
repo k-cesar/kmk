@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\Store;
 
-use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Sell\Sell;
 use App\Http\Modules\Turn\Turn;
@@ -60,17 +59,6 @@ class Store extends Model
      * @var array
      */
     protected $with = ['storeType', 'storeChain', 'storeFlag', 'locationType', 'storeFormat', 'socioeconomicLevel', 'state', 'municipality', 'zone', 'company', 'turns'];
-
-    /**
-     * Set the store's name.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = Helper::strToUpper($value);
-    }
 
     /**
      * Get the locationType that owns the store.

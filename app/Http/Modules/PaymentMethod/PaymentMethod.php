@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\PaymentMethod;
 
-use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Traits\ResourceVisibility;
 use App\Http\Modules\Company\Company;
@@ -27,17 +26,6 @@ class PaymentMethod extends Model
         'name',
         'company_id',
     ];
-
-    /**
-     * Set the paymentMethod's name.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = Helper::strToUpper($value);
-    }
 
     /**
      * Get the company that owns the brand.

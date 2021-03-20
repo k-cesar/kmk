@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\Presentation;
 
-use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Turn\Turn;
 use App\Traits\ResourceVisibility;
@@ -37,17 +36,6 @@ class Presentation extends Model
      * @var array
      */
     protected $with = ['product'];
-
-    /**
-     * Set the presentation's description.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setDescriptionAttribute($value)
-    {
-        $this->attributes['description'] = Helper::strToUpper($value);
-    }
 
     /**
      * Get the product that owns the presentation.

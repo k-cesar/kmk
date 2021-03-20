@@ -8,9 +8,9 @@ use App\Http\Modules\Currency\Currency;
 
 $factory->define(Currency::class, function (Faker $faker) {
     return [
-        'name'         => strtoupper($faker->unique()->sentence),
+        'name'         => $faker->unique()->sentence,
         'symbol'       => $faker->regexify('..'),
-        'abbreviation' => strtoupper(Str::random(16)),
+        'abbreviation' => Str::random(16),
         'description'  => $faker->paragraph(),
         'disabled'     => rand(0, 1),
     ];

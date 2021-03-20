@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\StoreChain;
 
-use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Store\Store;
 use Illuminate\Database\Eloquent\Model;
@@ -21,17 +20,6 @@ class StoreChain extends Model
     protected $fillable = [
         'name',
     ];
-
-    /**
-     * Set the storeChain's name.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = Helper::strToUpper($value);
-    }
 
     /**
      * Get the storeFlags for the storeChain.

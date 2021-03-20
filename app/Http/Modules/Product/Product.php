@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\Product;
 
-use App\Support\Helper;
 use App\Http\Modules\Uom\Uom;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Brand\Brand;
@@ -45,17 +44,6 @@ class Product extends Model
         'brand',
         'countries:countries.id,name',
     ];
-
-    /**
-     * Set the product's description.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setDescriptionAttribute($value)
-    {
-        $this->attributes['description'] = Helper::strToUpper($value);
-    }
 
     public function productCategory()
     {

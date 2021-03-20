@@ -8,7 +8,7 @@ use App\Http\Modules\SocioeconomicLevel\SocioeconomicLevel;
 $factory->define(SocioeconomicLevel::class, function (Faker $faker) {
 
     return [
-        'name' => strtoupper($faker->unique()->name()),
+        'name'             => $faker->unique()->name(),
         'is_all_countries' => rand(0, 1),
     ];
 });

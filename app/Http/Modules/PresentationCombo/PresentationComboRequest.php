@@ -2,9 +2,8 @@
 
 namespace App\Http\Modules\PresentationCombo;
 
-use App\Support\Helper;
+use App\Rules\IUniqueRule;
 use App\Http\Modules\Turn\Turn;
-use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Http\Modules\Presentation\Presentation;
 
@@ -18,18 +17,6 @@ class PresentationComboRequest extends FormRequest
   public function authorize()
   {
     return true;
-  }
-
-  /**
-   * Prepare the data for validation.
-   *
-   * @return void
-   */
-  protected function prepareForValidation()
-  {
-    $this->merge([
-      'description' => Helper::strToUpper($this->description)
-    ]);
   }
 
   /**
@@ -47,7 +34,7 @@ class PresentationComboRequest extends FormRequest
       'prices.*.suggested_price' => 'required|numeric|min:0',
       'prices.*.turns'           => 'required|array',
       'description'              => ['required', 'string', 'max:255',
-        Rule::unique('presentation_combos')
+        (new IUniqueRule('presentation_combos'))
           ->whereIn('company_id', [0, auth()->user()->company_id])
           ->ignore($this->presentation_combo),
       ],

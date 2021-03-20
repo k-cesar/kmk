@@ -2,8 +2,7 @@
 
 namespace App\Http\Modules\Store;
 
-use App\Support\Helper;
-use Illuminate\Validation\Rule;
+use App\Rules\IUniqueRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreRequest extends FormRequest
@@ -16,18 +15,6 @@ class StoreRequest extends FormRequest
   public function authorize()
   {
     return true;
-  }
-
-  /**
-   * Prepare the data for validation.
-   *
-   * @return void
-   */
-  protected function prepareForValidation()
-  {
-    $this->merge([
-      'name' => Helper::strToUpper($this->name)
-    ]);
   }
 
   /**
@@ -53,7 +40,7 @@ class StoreRequest extends FormRequest
       'latitute'               => 'required|numeric|between:-90,90',
       'longitude'              => 'required|numeric|between:-180,180',
       'name'                   => ['required', 'string', 'max:150',
-        Rule::unique('stores')
+        (new IUniqueRule('stores'))
           ->where('zone_id', $this->get('zone_id'))
           ->ignore($this->store),
       ],

@@ -2,16 +2,18 @@
 
 namespace App\Rules;
 
-use Closure;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rules\Unique;
 use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Validation\Concerns\ValidatesAttributes;
 
 class IUniqueRule extends Unique implements Rule 
 {
-    use ValidatesAttributes;
+    /**
+     * The base query builder instance.
+     *
+     * @var \Illuminate\Database\Query\Builder
+     */
+    protected $query;
 
     /**
      * Create a new rule instance.
@@ -20,13 +22,15 @@ class IUniqueRule extends Unique implements Rule
      * @param  string  $column
      * @return void
      */
-    public function __construct($table = '', $column = 'NULL')
+    public function __construct($table = null, $column = null)
     {
+        $this->table  = $table;
+
         $this->column = $column;
-
-        $this->table = $this->resolveTableName($table);
+        
+        $this->query  = DB::table($this->table);
     }
-
+    
     /**
      * Determine if the validation rule passes.
      *
@@ -36,50 +40,11 @@ class IUniqueRule extends Unique implements Rule
      */
     public function passes($attribute, $value)
     {
-        $table       = $this->table;
-        $column      = $this->column=='NULL' ? $attribute : $this->column;
-        $id          = $this->ignore;
-        $idColumn    = $this->idColumn;
-        $extra       = array_merge(
-            $this->extra ?? [],
-            $this->formatWheres()->toArray(),
-            $this->queryCallbacks()
-        );
+        $this->column = $this->column ?: $attribute;
 
-        return $this->getCount(
-            $table, $column, $value, $id, $idColumn, $extra
-        ) == 0;
-    }
+        $this->value  = $value;
 
-    /**
-     * Validate the uniqueness of an attribute value on a given database table.
-     *
-     * If a database column is not specified, the attribute will be used.
-     *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @param  array  $parameters
-     * @return bool
-     */
-    public function validate($attribute, $value, $parameters)
-    {
-        $this->table = $parameters[0];
-
-        $this->column = $parameters[1] ?? $attribute;
-
-        $this->idColumn = $this->ignore = null;
-
-        if (isset($parameters[2])) {
-            [$this->idColumn, $this->ignore] = $this->getUniqueIds($parameters);
-
-            if (! is_null($this->ignore)) {
-                $this->ignore = stripslashes($this->ignore);
-            }
-        }
-
-        $this->extra = $this->getUniqueExtra($parameters);
-
-        return $this->passes($attribute, $value);
+        return $this->buildQuery()->count() == 0;
     }
 
     /**
@@ -93,79 +58,94 @@ class IUniqueRule extends Unique implements Rule
     }
 
     /**
-     * Count the number of objects in a table having the given value.
+     * Build the quiery to find matches
      *
-     * @param  string  $table
-     * @param  string  $column
-     * @param  string  $value
-     * @param  int|null  $excludeId
-     * @param  string|null  $idColumn
-     * @param  array  $extra
-     * @return int
+     * @return \Illuminate\Database\Query\Builder
      */
-    public function getCount($table, $column, $value, $excludeId = null, $idColumn = null, array $extra = [])
+    protected function buildQuery()
     {
-        $query = DB::table($table)->whereRaw("UPPER($column) = UPPER(?)", [$value]);
-
-        if (! is_null($excludeId) && $excludeId !== 'NULL') {
-            $query->where($idColumn ?: 'id', '<>', $excludeId);
-        }
-
-        return $this->addConditions($query, $extra)->count();
+        return $this->query
+            ->whereRaw("LOWER({$this->column}) = LOWER(?)", $this->value)
+            ->when($this->ignore, function ($query) {
+                $query->where($this->idColumn, '!=', $this->ignore);
+            });
     }
 
     /**
-     * Add the given conditions to the query.
+     * Validate the uniqueness of an attribute value on a given database table.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
-     * @param  array  $conditions
-     * @return \Illuminate\Database\Query\Builder
+     * If a database column is not specified, the attribute will be used.
+     *
+     * @param  string  $attribute
+     * @param  mixed  $value
+     * @param  array  $params
+     * @return bool
      */
-    protected function addConditions($query, $conditions)
+    public function validate($attribute, $value, $params)
     {
-        foreach ($conditions as $key => $value) {
-            if ($value instanceof Closure) {
-                $query->where(function ($query) use ($value) {
-                    $value($query);
-                });
-            } else {
-                $this->addWhere($query, $key, $value);
+        $this->table  = $params[0];
+        $this->column = $params[1] ?? $attribute;
+
+        $this->ignore   = $params[2] ?? null;
+        $this->idColumn = $params[3] ?? $this->idColumn;
+
+        $this->query = DB::table($this->table);
+        
+        $this->addExtraWheres($params);
+
+        return $this->passes($attribute, $value);
+    }
+
+    /**
+     * Add extra conditions for a iunique rule.
+     *
+     * @param array $params
+     * @return $this
+     */
+    protected function addExtraWheres($params)
+    {
+        if (isset($params[4])) {
+            $extraParams = array_slice($params, 4);
+
+            $count = count($extraParams);
+
+            for ($i = 0; $i < $count; $i += 2) {
+                $this->query->where($extraParams[$i], $extraParams[$i + 1]);
             }
         }
 
-        return $query;
+        return $this->query;
     }
 
     /**
-     * Add a "where" clause to the given query.
+     * Add a basic where clause to the query.
      *
-     * @param  \Illuminate\Database\Query\Builder  $query
-     * @param  string  $key
-     * @param  string  $extraValue
-     * @return void
+     * @param  \Closure|string|array  $column
+     * @param  mixed  $operator
+     * @param  mixed  $value
+     * @param  string  $boolean
+     * @return $this
      */
-    protected function addWhere($query, $key, $extraValue)
+    public function where($column, $operator = null, $value = null, $boolean = 'and')
     {
-        if ($extraValue === 'NULL') {
-            $query->whereNull($key);
-        } elseif ($extraValue === 'NOT_NULL') {
-            $query->whereNotNull($key);
-        } elseif (Str::startsWith($extraValue, '!')) {
-            $query->where($key, '!=', mb_substr($extraValue, 1));
-        } else {
-            $query->where($key, $extraValue);
-        }
+        $this->query->where($column, $operator, $value, $boolean);
+
+        return $this;
     }
 
     /**
-     * Format the where clauses.
+     * Add a "where in" clause to the query.
      *
-     * @return \Illuminate\Support\Collection
+     * @param  string  $column
+     * @param  mixed  $values
+     * @param  string  $boolean
+     * @param  bool  $not
+     * @return $this
      */
-    protected function formatWheres()
+    public function whereIn($column, $values, $boolean = 'and', $not = false)
     {
-        return collect($this->wheres)->map(function ($where) {
-            return [$where['column'] => $where['value']];
-        })->collapse();
+        $this->query->whereIn($column, $values, $boolean, $not);
+
+        return $this;
     }
 }

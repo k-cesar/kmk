@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\Brand;
 
-use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use App\Http\Modules\Maker\Maker;
 use Illuminate\Database\Eloquent\Model;
@@ -28,17 +27,6 @@ class Brand extends Model
      * @var array
      */
     protected $with = ['maker'];
-
-    /**
-     * Set the brand's name.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = Helper::strToUpper($value);
-    }
 
     /**
      * Get the maker that owns the brand.

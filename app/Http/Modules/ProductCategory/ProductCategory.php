@@ -2,7 +2,6 @@
 
 namespace App\Http\Modules\ProductCategory;
 
-use App\Support\Helper;
 use App\Traits\SecureDeletes;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -34,17 +33,6 @@ class ProductCategory extends Model
      * @var array
      */
     protected $with = ['productDepartment'];
-
-    /**
-     * Set the productCategory's name.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setNameAttribute($value)
-    {
-        $this->attributes['name'] = Helper::strToUpper($value);
-    }
 
      /**
      * Get the Product department that owns the product category.
