@@ -43,7 +43,7 @@ class DepositController extends Controller
 
       $deposit->depositImages()->createMany($request->validated()['images']);
 
-      $deposit->store->petty_cash_amount += $deposit->amount;
+      $deposit->store->petty_cash_amount -= $deposit->amount;
       $deposit->store->save();
 
       DB::commit();
@@ -92,7 +92,7 @@ class DepositController extends Controller
     try {
       DB::beginTransaction();
 
-      $deposit->store->petty_cash_amount += $request->get('amount') - $deposit->amount;
+      $deposit->store->petty_cash_amount -= $request->get('amount') - $deposit->amount;
       $deposit->store->save();
 
       $deposit->depositImages()->delete();
