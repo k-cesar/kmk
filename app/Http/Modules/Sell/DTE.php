@@ -105,7 +105,7 @@ class DTE extends Model
       $totalPrice = round($sellDetail->quantity * $sellDetail->price, 6);
 
       return (object) [
-        'bienOServicio'  => $sellDetail->presentation->product->is_inventorable ? 'B' : 'S',
+        'bienOServicio'  => $sellDetail->presentation->product->is_inventoriable ? 'B' : 'S',
         'numeroLinea'    => $sellDetail->item_line + 1,
         'cantidad'       => $sellDetail->quantity,
         'unidadMedida'   => substr($sellDetail->presentation->product->uom->abbreviation, 0, 3) ?: 'PZA',

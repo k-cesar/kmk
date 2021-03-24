@@ -228,10 +228,9 @@ class Sell extends Model
                     'phone' => $params['phone'],
                 ]
             ]);
-
-            $sell->client->nit  = $params['nit'];
-            $sell->client->name = $params['name'];
         }
+
+        $sell->client->name = $params['name'];
 
         $invoiceNumber = SellInvoice::getNextInvoiceNumber($storeTurn->store->company);
 
