@@ -10,7 +10,7 @@ use App\Http\Modules\StockCount\StockCountDetail;
 $factory->define(StockCountDetail::class, function (Faker $faker) {
     return [
         'stock_count_id' => factory(StockCount::class),
-        'product_id' => factory(Product::class),
-        'quantity' => 50,
+        'product_id'     => factory(Product::class),
+        'quantity'       => 50,
     ];
 });

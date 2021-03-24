@@ -10,10 +10,13 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Modules\StockCount\StockCount;
 
-
 class StockCountController extends Controller
 {
-
+    /**
+    * Display a listing of the resource.
+    *
+    * @return \Illuminate\Http\JsonResponse
+    */
     public function index(){
 
         Validator::validate(request()->all(), [
@@ -25,27 +28,26 @@ class StockCountController extends Controller
         return $this->showAll($stockCounts, Arr::except(Schema::getColumnListing((new StockCount)->getTable()), 1));
     }
 
+    /**
+    * Store a newly created resource in storage.
+    *
+    * @param  App\Http\Modules\StockCount\StockCountRequest  $request
+    * 
+    * @return \Illuminate\Http\JsonResponse
+    */
     public function store(StockCountRequest $request) {
         try {
             DB::beginTransaction();
 
             $stockCount = StockCount::create($request->validated());
 
-            if(!empty($request->stock_counts_detail_product)) {
-                $stockCountDetailProduct = $request->stock_counts_detail_product;
-                $stockCountDetailQuantity = $request->stock_counts_detail_quantity;
-
-
-                for($int = 0; $int < count($stockCountDetailProduct); $int++) {
-                    $countsDetail = array(
-                        'stock_count_id' => $stockCount->id,
-                        'product_id' => $stockCountDetailProduct[$int],
-                        'quantity' => $stockCountDetailQuantity[$int],
-                    );
-                    StockCountDetail::create($countsDetail);
-                }
+            foreach ($request->products as $product) {
+                StockCountDetail::create([
+                    'stock_count_id' => $stockCount->id,
+                    'product_id'     => $product['id'],
+                    'quantity'       => $product['quantity'],
+                ]);
             }
-            
 
             DB::commit();
             return $this->showOne($stockCount, 201);
@@ -55,6 +57,12 @@ class StockCountController extends Controller
         }
     }
 
+    /**
+    * Display the specified resource.
+    *
+    * @param  App\Http\Modules\StockCount\StockCount  $stockCount
+    * @return \Illuminate\Http\JsonResponse
+    */
     public function show(StockCount $stockCount) {
         
         $this->authorize('manage', $stockCount);
@@ -62,42 +70,18 @@ class StockCountController extends Controller
         return $this->showOne($stockCount);
     }
 
-    public function update(StockCountRequest $request, StockCount $stockCount, StockCountDetail $stockCountsDetail) {
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  App\Http\Modules\StockCount\StockCount  $stockCount
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function destroy(StockCount $stockCount)
+    {
+      $this->authorize('destroy', $stockCount);
 
-        $this->authorize('manage', $stockCount);
+      $stockCount->update(['status' => StockCount::OPTION_STATUS_CANCELLED]);
 
-        try {
-            DB::beginTransaction();
-
-            $stockCount->update($request->validated());
-            
-            if(!empty($request->stock_counts_detail_product)) {
-                $stockCountDetailProduct = $request->stock_counts_detail_product;
-                $stockCountDetailQuantity = $request->stock_counts_detail_quantity;
-
-                $arrDetail = array();
-
-                for($int = 0; $int < count($stockCountDetailProduct); $int++) {
-                    $countsDetail = array(
-                        'stock_count_id' => $stockCount->id,
-                        'product_id' => $stockCountDetailProduct[$int],
-                        'quantity' => $stockCountDetailQuantity[$int],
-                    );
-                    $arrDetail[] = $countsDetail;
-                }
-
-                StockCountDetail::where('stock_count_id', '=', $stockCount->id)->delete();
-                
-                foreach($arrDetail AS $key => $value) {
-                    StockCountDetail::create($value);
-                }   
-            }            
-
-            DB::commit();
-            return $this->showOne($stockCount);
-        } catch (Exception $exception) {
-            DB::rollback();
-            return $this->errorResponse(500, "Ha ocurrido un error interno al guardar stock");
-        }
+      return $this->showOne($stockCount);
     }
 }

@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\ApiTestCase;
 use App\Http\Modules\Store\Store;
+use App\Http\Modules\Product\Product;
 use App\Http\Modules\StockCount\StockCount;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -25,7 +26,7 @@ class StockCountControllerTest extends ApiTestCase
     $this->getJson(route('stock-counts.index'))->assertUnauthorized();
     $this->getJson(route('stock-counts.show', rand()))->assertUnauthorized();
     $this->postJson(route('stock-counts.store'))->assertUnauthorized();
-    $this->putJson(route('stock-counts.update', rand()))->assertUnauthorized();
+    $this->deleteJson(route('stock-counts.destroy', rand()))->assertUnauthorized();
   }
 
   /**
@@ -40,7 +41,7 @@ class StockCountControllerTest extends ApiTestCase
     $this->getJson(route('stock-counts.index'))->assertForbidden();
     $this->getJson(route('stock-counts.show', $randomStockCountID))->assertForbidden();
     $this->postJson(route('stock-counts.store'))->assertForbidden();
-    $this->putJson(route('stock-counts.update', $randomStockCountID))->assertForbidden();
+    $this->deleteJson(route('stock-counts.destroy', $randomStockCountID))->assertForbidden();
   }
 
   /**
@@ -97,6 +98,9 @@ class StockCountControllerTest extends ApiTestCase
     $user = $this->signInWithPermissionsTo(['stock-counts.store']);
 
     $store = factory(Store::class)->create();
+    $products = factory(Product::class, 2)->create();
+
+    $store->products()->attach($products->pluck('id'));
 
     if ($user->role->level > 1) {
       if ($user->role->level == 2) {
@@ -106,40 +110,68 @@ class StockCountControllerTest extends ApiTestCase
       }
     }
 
-    $attributes = factory(StockCount::class)->raw(['store_id' => $store->id, 'created_by' => $user->id]);
+    $attributes = factory(StockCount::class)->raw([
+      'store_id'   => $store->id,
+      'created_by' => $user->id,
+      'count_date' => now()->format('Y-m-d'),
+      'status'     => StockCount::OPTION_STATUS_OPEN,
+    ]);
 
-    $this->postJson(route('stock-counts.store'), $attributes)
+    $productsAttributes = [
+      'products' => [
+        [
+          'id'         => $products->first()->id,
+          'quantity'   => 10,
+        ],
+        [
+          'id'         => $products->last()->id,
+          'quantity'   => 20,
+        ]
+      ]
+    ];
+
+    $this->postJson(route('stock-counts.store'), array_merge($attributes, $productsAttributes))
         ->assertCreated();
     
     $this->assertDatabaseHas('stock_counts', $attributes);
+
+    $this->assertDatabaseHas('stock_counts_detail', [
+      'product_id' => $products->first()->id,
+      'quantity'   => 10
+    ]);
+
+    $this->assertDatabaseHas('stock_counts_detail', [
+      'product_id' => $products->last()->id,
+      'quantity'   => 20
+    ]);
   }
 
   /**
    * @test
    */
-  public function an_user_with_permission_can_update_a_stock_counts()
+  public function an_user_with_permission_can_destroy_a_stock_counts()
   {
-    $user = $this->signInWithPermissionsTo(['stock-counts.update']);
+    $user = $this->signInWithPermissionsTo(['stock-counts.destroy']);
 
-    $stockCount = factory(StockCount::class)->create();
+    $store = factory(Store::class)->create();
 
     if ($user->role->level > 1) {
       if ($user->role->level == 2) {
-        $user->update(['company_id' => $stockCount->store->company_id]);
+        $user->update(['company_id' => $store->company_id]);
       } else {
-        $user->stores()->sync($stockCount->store_id);
+        $user->stores()->sync($store->id);
       }
     }
 
-    $attributes = factory(StockCount::class)->raw([
-      'store_id'   => $stockCount->store_id,
-      'status'     => StockCount::OPTION_STATUS_OPEN,
-      'created_by' => $stockCount->created_by,
-    ]);
+    $stockCount = factory(StockCount::class)->create(['store_id' => $store->id, 'status' => StockCount::OPTION_STATUS_OPEN]);
 
-    $this->putJson(route('stock-counts.update', $stockCount->id), $attributes)
+    $this->deleteJson(route('stock-counts.destroy', $stockCount))
         ->assertOk();
-
-    $this->assertDatabaseHas('stock_counts', $attributes);
+    
+    $this->assertDatabaseHas('stock_counts', [
+      'id'     => $stockCount->id,
+      'status' => StockCount::OPTION_STATUS_CANCELLED
+    ]);
   }
+
 }

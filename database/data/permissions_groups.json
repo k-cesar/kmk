@@ -298,12 +298,12 @@
       {
         "name": "Editar Conteos de Inventario",
         "level": 3,
-        "routes": ["stock-counts.update"]
+        "routes": []
       },
       {
         "name": "Eliminar Conteos de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["stock-counts.destroy"]
       }
     ]
   },

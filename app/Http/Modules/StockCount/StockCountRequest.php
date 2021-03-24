@@ -24,14 +24,11 @@ class StockCountRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'store_id'   => 'required|integer|store_visible',
-            'count_date' => 'required|date|date_format:Y-m-d',
-            'status'     => 'required|in:'.implode(',', StockCount::getOptionsStatus()),
+            'store_id'            => 'required|integer|store_visible',
+            'products'            => 'required|array',
+            'products.*.quantity' => 'required|numeric|min:0',
+            'products.*.id'       => "required|integer|distinct|exists:stock_stores,product_id,store_id,{$this->get('store_id')}",
         ];
-
-        if ($this->isMethod('PUT')) {
-            $rules['status'] = 'required|in:'.implode(',', StockCount::getOptionStatusForUpdate());
-        }
 
         return $rules;
     }
@@ -47,6 +44,7 @@ class StockCountRequest extends FormRequest
 
       if ($this->isMethod('POST')) {
         $validatedData['created_by'] = auth()->user()->id;
+        $validatedData['count_date'] = now()->format('Y-m-d');
       }
 
       return $validatedData;

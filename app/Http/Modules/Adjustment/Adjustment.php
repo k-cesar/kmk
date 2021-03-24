@@ -83,29 +83,12 @@ class Adjustment
   
   public static function createFromStockCount(StockCount $stockCount)
   {
-    $products = [];
-
-    $stockCountsDetails = DB::table('stock_counts_detail')
-      ->where('stock_count_id', $stockCount->id)
-      ->get();
-
-    foreach ($stockCountsDetails as $stockCountDetail) {
-      
-      $stockStore = StockStore::where('store_id', $stockCount->store_id)
-        ->where('product_id', $stockCountDetail->product_id)
-        ->first();
-      
-      $diff = $stockCountDetail->quantity - $stockStore->quantity;
-
-      if ($diff) {
-        $product = [
-          'id'       => $stockCountDetail->product_id,
-          'quantity' => $stockCountDetail->quantity,
-        ];
-
-        $products[$product['id']] = $product;
-      }
-    }
+    $products = $stockCount->stockCountDetails->map(function ($stockCountDetail) {
+      return [
+        'id'       => $stockCountDetail->product_id,
+        'quantity' => $stockCountDetail->quantity,
+      ];
+    });
 
     $values = [
       'stock_count_id' => $stockCount->id,
