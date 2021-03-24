@@ -77,7 +77,7 @@ Route::group(['middleware' => ['auth', 'access']], function () {
 
     Route::resource('stocks', 'Stock\StockController')->only('index');
 
-    Route::resource('stock-counts', 'StockCount\StockCountController')->except('create', 'edit', 'destroy');
+    Route::resource('stock-counts', 'StockCount\StockCountController')->except('create', 'edit', 'update');
 
     Route::resource('stock-counts-adjustments', 'StockCount\StockCountAdjustmentController')->only('store');
 

@@ -135,7 +135,7 @@ class PurchaseController extends Controller
   /**
    * Display the specified resource.
    *
-   * @param  App\Http\Modules\Purchase\Purchase  $maker
+   * @param  App\Http\Modules\Purchase\Purchase  $purchase
    * @return \Illuminate\Http\JsonResponse
    */
   public function show(Purchase $purchase)

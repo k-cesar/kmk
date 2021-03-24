@@ -28,7 +28,7 @@ class ClientPolicy
     }
 
     /**
-     * Determine whether the user can manage the client.
+     * Determine whether the user can destroy the client.
      *
      * @param  \App\Http\Modules\User\User  $user
      * @param  \App\Http\Modules\Client\Client  $client

@@ -57,7 +57,7 @@ class StockCountAdjustmentControllerTest extends ApiTestCase
 
     $stockCount = factory(StockCount::class)->create([
       'store_id' => $store->id,
-      'status'   => StockCount::OPTION_STATUS_CLOSED,
+      'status'   => StockCount::OPTION_STATUS_OPEN,
     ]);
 
     foreach ($store->products as $product) {
@@ -75,6 +75,11 @@ class StockCountAdjustmentControllerTest extends ApiTestCase
 
     $this->postJson(route('stock-counts-adjustments.store'), $attributes)
       ->assertCreated();
+
+    $this->assertDatabaseHas('stock_counts', [
+      'id'     => $stockCount->id,
+      'status' => StockCount::OPTION_STATUS_CLOSED
+    ]);
 
     $this->assertDatabaseHas('stock_movements', [
       'store_id'    => $store->id,

@@ -12,10 +12,15 @@ class StockCount extends Model
 {
     use SoftDeletes, SecureDeletes;
 
-    const OPTION_STATUS_OPEN   = 'OPEN';
-    const OPTION_STATUS_CLOSED = 'CLOSED';
+    const OPTION_STATUS_OPEN      = 'OPEN';
+    const OPTION_STATUS_CLOSED    = 'CLOSED';
     const OPTION_STATUS_CANCELLED = 'CANCELLED';
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
         'store_id',
         'count_date',
@@ -23,24 +28,22 @@ class StockCount extends Model
         'created_by',
     ];
 
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
     protected $with = [
         'store',
-        'stock_counts',
+        'stockCountDetails',
         'user',
     ];
 
-    public function store() {
-        return $this->belongsTo(Store::class);
-    }
-
-    public function stock_counts() { 
-        return $this->hasMany(StockCountDetail::class, 'stock_count_id');
-    }
-
-    public function user() {
-        return $this->belongsTo(User::class, 'created_by');
-    }
-
+    /**
+    * Returns all types options availables
+    *
+    * @return array
+    */
     public static function getOptionsStatus() {
         return [
             self::OPTION_STATUS_OPEN,
@@ -49,9 +52,31 @@ class StockCount extends Model
         ];
     }
 
-    public static function getOptionStatusForUpdate() {
-        return [
-            self::OPTION_STATUS_OPEN,
-        ];
+    /**
+     * Get the store that owns the stockCount.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function store() {
+        return $this->belongsTo(Store::class);
+    }
+
+    /**
+     * Get the user that owns the stockCount.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user() {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    /**
+     * Get the stockCountDetails for the stockCount.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\hasMany
+     */
+    public function stockCountDetails()
+    {
+        return $this->hasMany(StockCountDetail::class);
     }
 }

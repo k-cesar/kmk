@@ -16,12 +16,14 @@ class StockCountAdjustmentController extends Controller
    */
   public function store(StockCountAdjustmentRequest $request)
   {
-    $stockCount = StockCount::find($request->validated()['stock_count_id']);
+    $stockCount = StockCount::find($request->stock_count_id);
 
     $adjustmentSaved = Adjustment::createFromStockCount($stockCount);
 
     if ($adjustmentSaved) {
-      return $this->showMessage('Ajuste creado exitosamente', 201);
+      $stockCount->update(['status' => StockCount::OPTION_STATUS_CLOSED]);
+
+      return $this->showMessage('Ajuste por Conteo creado exitosamente', 201);
     } else {
       return $this->errorResponse(500, "Ha ocurrido un error interno");
     }

@@ -30,6 +30,19 @@ class StockCountPolicy
             
         return true;
     }
+
+    /**
+     * Determine whether the user can destroy the stockCount.
+     *
+     * @param  \App\Http\Modules\User\User  $user
+     * @param  \App\Http\Modules\StockCount\StockCount  $stockCount
+     * 
+     * @return mixed
+     */
+    public function destroy(User $user, StockCount $stockCount)
+    {
+        return $stockCount->status==StockCount::OPTION_STATUS_OPEN && $this->manage($user, $stockCount);
+    }
 }
 
 
