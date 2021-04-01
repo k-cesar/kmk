@@ -30,6 +30,9 @@ class StoreTurnItemController extends Controller
 
     $presentationsQuery = Presentation::select('id', 'description')
       ->selectRaw("COALESCE (pt.price, presentations.price) AS price, 'PRESENTATION' AS type")
+      ->when($request->with_skus, function ($query){
+        $query->selectRaw("(SELECT JSON_AGG(code) FROM presentation_skus AS ps WHERE ps.presentation_id=presentations.id) AS skus");
+      })
       ->leftJoin('presentations_turns AS pt', function (JoinClause $leftJoin) use ($storeTurn) {
         $leftJoin->on('presentations.id', '=', 'pt.presentation_id')
           ->where('pt.turn_id', $storeTurn->turn_id);
@@ -39,6 +42,9 @@ class StoreTurnItemController extends Controller
 
     $combosQuery = PresentationCombo::select('presentation_combos.id', 'description')
       ->selectRaw("COALESCE (pcst.suggested_price, presentation_combos.suggested_price) AS price, 'COMBO' AS type")
+      ->when($request->with_skus, function ($query){
+        $query->selectRaw("(SELECT JSON_AGG(0) WHERE NULL) AS skus");
+      })
       ->leftJoin('presentation_combos_stores_turns AS pcst', function (JoinClause $leftJoin) use ($storeTurn) {
         $leftJoin->on('presentation_combos.id', '=', 'pcst.presentation_combo_id')
           ->where('pcst.turn_id', $storeTurn->turn_id);
@@ -47,7 +53,7 @@ class StoreTurnItemController extends Controller
       ->filterByDescriptionPresentationOrSku(request('presentation_combo_description'), request('presentation_description'), request('sku_code'));
 
     $items = DB::query()
-      ->fromSub($presentationsQuery->union($combosQuery), 'items')
+      ->fromSub($presentationsQuery->unionAll($combosQuery), 'items')
       ->orderBy('type', 'DESC')
       ->orderBy('description');
     
