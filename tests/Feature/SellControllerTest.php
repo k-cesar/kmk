@@ -67,7 +67,7 @@ class SellControllerTest extends ApiTestCase
       }
     }
 
-    $response = $this->getJson(route('sells.index', ['store_id' => $store->id]))
+    $response = $this->getJson(route('sells.index', ['store_id' => $store->id, 'strict_search' => true]))
       ->assertOk();
     
     foreach (Sell::limit(10)->get() as $sell) {

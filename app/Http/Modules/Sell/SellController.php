@@ -6,8 +6,8 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
-use App\Http\Modules\PaymentMethod\PaymentMethod;
 
 class SellController extends Controller
 {
@@ -32,7 +32,7 @@ class SellController extends Controller
       })
       ->withTrashed();
 
-    return $this->showAll($sells);
+    return $this->showAll($sells, Schema::getColumnListing((new Sell)->getTable()));
   }
 
   /**
