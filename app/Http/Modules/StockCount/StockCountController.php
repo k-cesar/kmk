@@ -5,6 +5,7 @@ namespace App\Http\Modules\StockCount;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\Validator;
@@ -46,6 +47,7 @@ class StockCountController extends Controller
                     'stock_count_id' => $stockCount->id,
                     'product_id'     => $product['id'],
                     'quantity'       => $product['quantity'],
+                    'quantity_stock' => $product['quantity_stock'],
                 ]);
             }
 
@@ -53,6 +55,8 @@ class StockCountController extends Controller
             return $this->showOne($stockCount, 201);
         } catch (Exception $exception) {
             DB::rollback();
+            Log::error($exception);
+            
             return $this->errorResponse(500, "Ha ocurrido un error interno al guardar stock");
         }
     }

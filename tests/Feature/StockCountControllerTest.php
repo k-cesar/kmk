@@ -120,12 +120,14 @@ class StockCountControllerTest extends ApiTestCase
     $productsAttributes = [
       'products' => [
         [
-          'id'         => $products->first()->id,
-          'quantity'   => 10,
+          'id'             => $products->first()->id,
+          'quantity'       => 10,
+          'quantity_stock' => 5,
         ],
         [
-          'id'         => $products->last()->id,
-          'quantity'   => 20,
+          'id'             => $products->last()->id,
+          'quantity'       => 20,
+          'quantity_stock' => 30,
         ]
       ]
     ];
@@ -136,13 +138,15 @@ class StockCountControllerTest extends ApiTestCase
     $this->assertDatabaseHas('stock_counts', $attributes);
 
     $this->assertDatabaseHas('stock_counts_detail', [
-      'product_id' => $products->first()->id,
-      'quantity'   => 10
+      'product_id'     => $products->first()->id,
+      'quantity'       => 10,
+      'quantity_stock' => 5,
     ]);
 
     $this->assertDatabaseHas('stock_counts_detail', [
-      'product_id' => $products->last()->id,
-      'quantity'   => 20
+      'product_id'     => $products->last()->id,
+      'quantity'       => 20,
+      'quantity_stock' => 30,
     ]);
   }
 

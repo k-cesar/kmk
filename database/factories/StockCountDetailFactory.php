@@ -12,5 +12,6 @@ $factory->define(StockCountDetail::class, function (Faker $faker) {
         'stock_count_id' => factory(StockCount::class),
         'product_id'     => factory(Product::class),
         'quantity'       => 50,
+        'quantity_stock' => 50,
     ];
 });

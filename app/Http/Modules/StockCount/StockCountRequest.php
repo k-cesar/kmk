@@ -24,10 +24,11 @@ class StockCountRequest extends FormRequest
     public function rules()
     {
         $rules = [
-            'store_id'            => 'required|integer|store_visible',
-            'products'            => 'required|array',
-            'products.*.quantity' => 'required|numeric|min:0',
-            'products.*.id'       => "required|integer|distinct|exists:stock_stores,product_id,store_id,{$this->get('store_id')}",
+            'store_id'                  => 'required|integer|store_visible',
+            'products'                  => 'required|array',
+            'products.*.quantity'       => 'required|numeric|min:0',
+            'products.*.quantity_stock' => 'required|numeric|min:0',
+            'products.*.id'             => "required|integer|distinct|exists:stock_stores,product_id,store_id,{$this->get('store_id')}",
         ];
 
         return $rules;
