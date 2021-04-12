@@ -26,6 +26,7 @@ class StockCountDetail extends Model
         'stock_count_id',
         'product_id',
         'quantity',
+        'quantity_stock',
     ];
 
     /**

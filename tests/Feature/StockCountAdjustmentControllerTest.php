@@ -64,7 +64,8 @@ class StockCountAdjustmentControllerTest extends ApiTestCase
       DB::table('stock_counts_detail')->insert([
         'stock_count_id' => $stockCount->id,
         'product_id'     => $product->id,
-        'quantity'       => rand(150, 200)
+        'quantity'       => rand(150, 200),
+        'quantity_stock' => rand(150, 200)
       ]);
     }
 

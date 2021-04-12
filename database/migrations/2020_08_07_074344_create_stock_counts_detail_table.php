@@ -18,6 +18,7 @@ class CreateStockCountsDetailTable extends Migration
             $table->unsignedBigInteger('stock_count_id');
             $table->unsignedBigInteger('product_id');
             $table->float('quantity');
+            $table->float('quantity_stock');
 
             $table->timestamps();
             $table->softDeletes();
