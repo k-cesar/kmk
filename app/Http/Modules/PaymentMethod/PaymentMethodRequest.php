@@ -28,7 +28,7 @@ class PaymentMethodRequest extends FormRequest
       'company_id' => 'required|integer|exists:companies,id,deleted_at,NULL',
       'name'       => ['required', 'string', 'max:150',
         (new IUniqueRule('payment_methods'))
-          ->where('company_id', $this->get('company_id'))
+          ->whereIn('company_id', [0, $this->get('company_id')])
           ->ignore($this->payment_method),
       ],
     ];
