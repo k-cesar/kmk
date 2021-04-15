@@ -76,7 +76,7 @@ class Sell extends Model
      */
     public function client()
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(Client::class)->withTrashed();
     }
 
     /**
@@ -170,7 +170,7 @@ class Sell extends Model
     {
         // For offline purpose
         $seller   = isset($params['seller_id']) ? User::find($params['seller_id']) : auth()->user();
-        $date     = $params['date'] ?? now();
+        $date     = now();
 
         $client = self::findOrCreateClient($params);
 
@@ -221,18 +221,20 @@ class Sell extends Model
 
         self::saveSellPayment($sell, $paymentMethod);
         
-        if ($sell->client->nit != 'CF') {
+        if ($client->nit != 'CF') {
             $storeTurn->store->company->clients()->syncWithoutDetaching([
-                $sell->client->id => [
+                $client->id => array_filter([
                     'email' => $params['email'],
                     'phone' => $params['phone'],
-                ]
+                ])
             ]);
         }
 
-        $sell->client->name = $params['name'];
-
         $invoiceNumber = SellInvoice::getNextInvoiceNumber($storeTurn->store->company);
+
+        if ($client->nit != 'CF'){
+            $sell->client->name = $params['name'];
+        }
 
         SellInvoice::create([
             'company_id'         => $storeTurn->store->company_id,
@@ -275,7 +277,9 @@ class Sell extends Model
 
         $client = Client::withTrashed()
             ->where('nit', $params['nit'])
-            ->where('country_id', $countryId)
+            ->when($params['nit'] != 'CF', function ($query) use ($countryId) {
+                $query->where('country_id', $countryId);
+            })
             ->first();
 
         if (!$client) {

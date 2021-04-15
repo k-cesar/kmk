@@ -27,8 +27,8 @@ class SellOfflineRequest extends FormRequest
     $rules = [
       'store_id'                   => 'required|integer|store_visible',
       'sells'                      => 'required|array',
+      'sells.*.seller_id'          => 'required|integer|exists:users,id',
       'sells.*.payment_method_id'  => 'required|integer|visible_through_company:payment_methods',
-      'sells.*.name'               => 'required|string|max:250',
       'sells.*.description'        => 'sometimes|nullable|string|max:250',
       'sells.*.items'              => 'required|array',
       'sells.*.items.*.quantity'   => 'required|numeric|min:0',
@@ -37,7 +37,7 @@ class SellOfflineRequest extends FormRequest
     ];
 
     foreach ($this->get('sells', []) as $indexSell => $sell) {
-      $rules["sells.$indexSell.store_turn_id"] = "required|integer|exists:store_turns,id,store_id,{$this->get('store_id')},deleted_at,NULL";
+      $rules["sells.$indexSell.store_turn_id"] = "required|integer|exists:store_turns,id,store_id,{$this->get('store_id', 0)},deleted_at,NULL";
 
       foreach($sell['items'] ?? [] as $indexItem => $item) {
 
@@ -47,11 +47,10 @@ class SellOfflineRequest extends FormRequest
           break;
         }
 
-        $rules["sells.$indexSell.items.$indexItem.id"] = ['required', 'integer',
+        $rules["sells.$indexSell.items.$indexItem.id"] = ['required', 'integer', 'bail',
           function ($attribute, $value, $fail) use ($item, $tableName) {
             $exists = DB::table($tableName)
               ->where('id', $value)
-              ->whereNull('deleted_at')
               ->when(auth()->user()->role->level > 1, function ($query) {
                 $query->whereIn('company_id', [0, auth()->user()->company_id]);
               })

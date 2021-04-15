@@ -121,7 +121,7 @@ class Client extends Model
      */
     public function companies()
     {
-        return $this->belongsToMany(Company::class, 'company_clients')->withPivot('email', 'phone')->withTimestamps();
+        return $this->belongsToMany(Company::class, 'company_clients')->withPivot('email', 'phone')->withTimestamps()->withTrashed();
     }
 
     /**
