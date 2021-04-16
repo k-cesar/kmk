@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use Tests\ApiTestCase;
 use App\Http\Modules\Presentation\Presentation;
+use App\Http\Modules\PresentationSku\PresentationSku;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class PresentationControllerTest extends ApiTestCase
@@ -122,6 +123,12 @@ class PresentationControllerTest extends ApiTestCase
       ->assertOk();
 
     $this->assertDatabaseMissing('presentations', $presentation->toArray());
+
+    $presentacionSku = factory(PresentationSku::class)->create();
+    $presentationWithSKU = $presentacionSku->presentation;
+
+    $this->deleteJson(route('presentations.destroy', $presentationWithSKU->id))
+      ->assertStatus(409);
   }
 
   /**

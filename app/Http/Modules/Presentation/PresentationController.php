@@ -75,6 +75,10 @@ class PresentationController extends Controller
     {
         $this->authorize('manage', $presentation);
 
+        if ($presentation->presentationSkus->count() > 0) {
+            return $this->errorResponse(409, "La presentación tiene SKU's activos.");
+        }
+
         $presentation->secureDelete();
 
         return $this->showOne($presentation);
