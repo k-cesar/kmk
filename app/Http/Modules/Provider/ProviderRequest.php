@@ -33,7 +33,7 @@ class ProviderRequest extends FormRequest
           ->ignore($this->provider),
           
       ],
-      'nit'        => ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
+      'nit'        => ['required', 'string', 'alpha_num', 'max:15',
         Rule::unique('providers')
           ->where('country_id', $this->get('country_id'))
           ->ignore($this->provider),

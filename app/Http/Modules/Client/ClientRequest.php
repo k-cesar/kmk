@@ -34,7 +34,7 @@ class ClientRequest extends FormRequest
       'birthdate'    => 'present|nullable|date|date_format:Y-m-d|before:today|after:1900-01-01',
       'phone'        => 'present|nullable|max:50',
       'email'        => 'present|nullable|email|max:100',
-      'nit'          => ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
+      'nit'          => ['required', 'string', 'alpha_num', 'max:15',
         (new IUniqueRule('clients'))
           ->where('country_id', $this->get('country_id'))
           ->ignore($this->client),

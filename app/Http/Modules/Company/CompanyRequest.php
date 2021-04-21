@@ -32,7 +32,7 @@ class CompanyRequest extends FormRequest
       'address'               => 'required|string|max:255',
       'currency_id'           => 'required|integer|exists:currencies,id,deleted_at,NULL',
       'country_id'            => 'required|integer|exists:countries,id,deleted_at,NULL',
-      'nit'                   => ['required', 'string', 'max:15', 'regex:/^\d+k?$/i',
+      'nit'                   => ['required', 'string', 'alpha_num', 'max:15',
         (new IUniqueRule('companies'))
           ->where('country_id', $this->get('country_id'))
           ->ignore($this->company),

@@ -173,4 +173,26 @@ class ClientControllerTest extends ApiTestCase
       $response->assertJsonFragment($client->toArray());
     }
   }
+
+  /**
+   * @test
+   */
+  public function an_user_with_permission_can_not_store_a_client_nit_with_symbols()
+  {
+    $user = $this->signInWithPermissionsTo(['clients.store']);
+
+    $attributes = factory(Client::class)->raw(['country_id' => $user->company->country_id, 'nit' => '123.123']);
+
+    $extraAttributes = [
+      'phone' => $user->phone,
+      'email' => $user->email,
+    ];
+
+    $this->postJson(route('clients.store'), array_merge($attributes, $extraAttributes))
+      ->assertStatus(422)
+      ->assertJsonValidationErrors('nit');
+  }
+
+
+
 }

@@ -142,4 +142,18 @@ class ProviderControllerTest extends ApiTestCase
     }
   }
 
+  /**
+   * @test
+   */
+  public function an_user_with_permission_can_not_store_a_provider_nit_with_symbols()
+  {
+    $this->signInWithPermissionsTo(['providers.store']);
+
+    $attributes = factory(Provider::class)->raw(['nit' => '123$123']);
+
+    $this->postJson(route('providers.store'), $attributes)
+      ->assertStatus(422)
+      ->assertJsonValidationErrors('nit');
+  }
+
 }
