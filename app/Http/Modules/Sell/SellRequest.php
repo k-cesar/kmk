@@ -29,7 +29,7 @@ class SellRequest extends FormRequest
       'store_turn_id'      => "required|integer|exists:store_turns,id,store_id,{$this->get('store_id')},is_open,1,deleted_at,NULL",
       'payment_method_id'  => 'required|integer|visible_through_company:payment_methods',
       'name'               => 'required|string|max:250',
-      'nit'                => ['required', 'string', 'max:15', 'regex:/^\d+k?$|^cf$/i'],
+      'nit'                => 'required|string|alpha_num|max:15',
       'address'            => 'required|string|max:50',
       'phone'              => 'present|nullable|string|max:50',
       'email'              => 'present|nullable|string|email|max:100',

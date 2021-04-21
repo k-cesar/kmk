@@ -13,7 +13,7 @@ $factory->define(Company::class, function (Faker $faker) {
         'name'               => $faker->company,
         'reason'             => $faker->paragraph,
         'regime'             => $faker->sentence(2),
-        'nit'                => $faker->numerify('##############'),
+        'nit'                => strtoupper($faker->bothify('##??##??')),
         'phone'              => rand(100000,9999999),
         'address'            => $faker->address,
         'country_id'         => Country::inRandomOrder()->first() ?? factory(Country::class),

@@ -169,4 +169,18 @@ class CompanyControllerTest extends ApiTestCase
     }
   }
 
+  /**
+   * @test
+   */
+  public function an_user_with_permission_can_not_store_a_company_nit_with_symbols()
+  {
+    $this->signInWithPermissionsTo(['companies.store']);
+
+    $attributes = factory(Company::class)->raw(['nit' => '123-123']);
+
+    $this->postJson(route('companies.store'), $attributes)
+      ->assertStatus(422)
+      ->assertJsonValidationErrors('nit');    
+  }
+
 }

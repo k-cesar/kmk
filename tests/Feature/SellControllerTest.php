@@ -133,7 +133,7 @@ class SellControllerTest extends ApiTestCase
       'store_id'          => $storeTurn->store_id,
       'payment_method_id' => factory(PaymentMethod::class)->create()->id,
       'name'              => 'test',
-      'nit'               => '1234456789',
+      'nit'               => 'abc123abc',
       'address'           => 'Ciudad Test',
       'phone'             => '88888888',
       'email'             => 'test@test.com',
@@ -207,7 +207,7 @@ class SellControllerTest extends ApiTestCase
       'seller_id'         => $seller->id,
       'payment_method_id' => factory(PaymentMethod::class)->create()->id,
       'name'              => 'test',
-      'nit'               => '1234456789',
+      'nit'               => 'abc123abc',
       'address'           => 'Ciudad Test',
       'phone'             => '88888888',
       'email'             => 'test@test.com',
@@ -240,7 +240,7 @@ class SellControllerTest extends ApiTestCase
       'seller_id'         => $seller->id,
       'payment_method_id' => factory(PaymentMethod::class)->create()->id,
       'name'              => 'test2',
-      'nit'               => '12344567890',
+      'nit'               => 'abc123abc',
       'address'           => 'Ciudad Test 2',
       'store_turn_id'     => $storeTurn->id,
       'items'             => [
@@ -301,5 +301,49 @@ class SellControllerTest extends ApiTestCase
     $this->assertDatabaseMissing('sells', $sell->toArray());
     $this->assertDatabaseMissing('sell_invoices', $sellInvoice->toArray());
     $this->assertDatabaseMissing('sell_payments', $sellPayment->toArray());
+  }
+
+
+  /**
+   * @test
+   */
+  public function an_user_with_permission_can_not_store_a_sell_with_symbols_in_client_nit()
+  {
+    $user = $this->signInWithPermissionsTo(['sells.store']);
+
+    $storeTurn = factory(StoreTurn::class)->create(['is_open' => true]);
+
+    if ($user->role->level > 1) {
+      if ($user->role->level == 2) {
+        $user->update(['company_id' => $storeTurn->store->company_id]);
+      } else {
+        $user->stores()->sync($storeTurn->store_id);
+      }
+    }
+
+    $presentationA = factory(Presentation::class)->create(['price' => 5]);
+
+    $attributes = [
+      'store_id'          => $storeTurn->store_id,
+      'payment_method_id' => factory(PaymentMethod::class)->create()->id,
+      'name'              => 'test',
+      'nit'               => '123*123',
+      'address'           => 'Ciudad Test',
+      'phone'             => '88888888',
+      'email'             => 'test@test.com',
+      'store_turn_id'     => $storeTurn->id,
+      'items'             => [
+        [
+          'id'         => $presentationA->id,
+          'quantity'   => 2,
+          'type'       => 'PRESENTATION',
+          'unit_price' => $presentationA->price,
+        ],
+      ]
+    ];
+
+    $this->postJson(route('sells.store'), $attributes)
+      ->assertStatus(422)
+      ->assertJsonValidationErrors('nit');   
   }
 }

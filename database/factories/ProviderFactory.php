@@ -10,7 +10,7 @@ $factory->define(Provider::class, function (Faker $faker) {
 
     return [
         'name'       => $faker->unique()->company,
-        'nit'        => $faker->numerify('##############'),
+        'nit'        => strtoupper($faker->bothify('##??##??')),
         'country_id' => Country::inRandomOrder()->first() ?? factory(Country::class),
     ];
 });
