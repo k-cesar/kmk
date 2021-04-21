@@ -101,7 +101,7 @@ class UserControllerTest extends ApiTestCase
       'company_id' => $user->company_id,
     ]);
 
-    $attributes['password'] = 'password';
+    $attributes['password'] = 'passwordA1';
     $attributes['password_confirmation'] = $attributes['password'];
     $attributes['stores'] = $stores->pluck('id');
 
@@ -184,5 +184,57 @@ class UserControllerTest extends ApiTestCase
 
     $this->assertDatabaseMissing('users', $newUser->toArray());
   }
+
+
+  /**
+   * @test
+   */
+  public function a_password_must_be_valid()
+  {
+    factory(Company::class)->create(['id' => 0, 'deleted_at' => now()]);
+
+    $user = $this->signInWithPermissionsTo(['users.store']);
+
+    $user->company->update(['allow_add_users' => true]);
+
+    $attributes = factory(User::class)->raw([
+      'company_id'            => $user->company_id,
+      'password'              => 'ABCABC12',
+      'password_confirmation' => 'ABCABC12',
+    ]);
+
+    $this->postJson(route('users.store'), $attributes)
+      ->assertStatus(422)
+      ->assertJsonValidationErrors('password');
+
+    $attributes = factory(User::class)->raw([
+      'company_id'            => $user->company_id,
+      'password'              => 'abcabc12',
+      'password_confirmation' => 'abcabc12',
+    ]);
+
+    $this->postJson(route('users.store'), $attributes)
+      ->assertStatus(422)
+      ->assertJsonValidationErrors('password');
+    
+    $attributes = factory(User::class)->raw([
+      'company_id'            => $user->company_id,
+      'password'              => 'abcabcAB',
+      'password_confirmation' => 'abcabcAB',
+    ]);
+
+    $this->postJson(route('users.store'), $attributes)
+      ->assertStatus(422)
+      ->assertJsonValidationErrors('password');
+    
+    $attributes = factory(User::class)->raw([
+      'company_id'            => $user->company_id,
+      'password'              => 'abcABC12',
+      'password_confirmation' => 'abcABC12',
+    ]);
+
+    $this->postJson(route('users.store'), $attributes)
+      ->assertCreated();
+    }
 
 }
