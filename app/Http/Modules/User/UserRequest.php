@@ -32,7 +32,7 @@ class UserRequest extends FormRequest
       'email'           => 'sometimes|nullable|string|email:filter|max:255|iunique:users,email,'.($this->user->id ?? ''),
       'company_id'      => 'exclude_if:role_id,1|required|integer|exists:companies,id,deleted_at,NULL',
       'username'        => 'required|string|max:100|alpha_dash|iunique:users,username,'.($this->user->id ?? ''),
-      'password'        => 'required|string|min:8|max:25|confirmed',
+      'password'        => ['required', 'string', 'min:8', 'max:25', 'confirmed', $this->validPasswordContent()],
       'update_password' => 'sometimes|nullable|boolean',
       'stores'          => 'sometimes|array',
       'stores.*'        => ['integer',
@@ -82,4 +82,25 @@ class UserRequest extends FormRequest
 
     return $validatedData;
   }
+
+  /**
+   * Validate the password content
+   *
+   * @return void
+   */
+  private function validPasswordContent()
+  {
+    return function ($attribute, $value, $fail) {
+      $upper  = preg_match('/[A-Z]/', $value);  // Uppercase Letter
+      $lower  = preg_match('/[a-z]/', $value);  // Lowercase Letter
+      $number = preg_match('/\d/', $value);     // Number
+
+      if (!($upper && $lower && $number)) {
+        $fail("El campo {$attribute} debe tener al menos 1 minúscula, 1 mayúscula y 1 número.");        
+      }
+
+    };
+  }
+
+
 }
