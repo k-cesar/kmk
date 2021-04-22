@@ -4,17 +4,17 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateBrandsTable extends Migration
+class CreateMakersTable extends Migration
 {
     /**
      * Schema table name to migrate
      * @var string
      */
-    public $tableName = 'brands';
+    public $tableName = 'makers';
 
     /**
      * Run the migrations.
-     * @table brands
+     * @table makers
      *
      * @return void
      */
@@ -22,14 +22,14 @@ class CreateBrandsTable extends Migration
     {
         Schema::create($this->tableName, function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name', 150);
-            $table->unsignedBigInteger('maker_id');
+            $table->string('name', 150)->unique();
+            $table->unsignedBigInteger('company_id');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unique(['maker_id', 'name']);
+            $table->unique(['company_id', 'name']);
 
-            $table->foreign('maker_id')->references('id')->on('makers');
+            $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 

@@ -15,7 +15,8 @@ class MakerController extends Controller
    */
   public function index()
   {
-    $makers = Maker::query();
+    $makers = Maker::visibleThroughCompany(auth()->user())
+      ->with('company:id,name');
 
     return $this->showAll($makers, Schema::getColumnListing((new Maker)->getTable()));
   }
@@ -41,6 +42,8 @@ class MakerController extends Controller
    */
   public function show(Maker $maker)
   {
+    $this->authorize('manage', $maker);
+
     return $this->showOne($maker);
   }
 
@@ -53,6 +56,8 @@ class MakerController extends Controller
    */
   public function update(MakerRequest $request, Maker $maker)
   {
+    $this->authorize('manage', $maker);
+
     $maker->update($request->validated());
 
     return $this->showOne($maker);
@@ -66,6 +71,8 @@ class MakerController extends Controller
    */
   public function destroy(Maker $maker)
   {
+    $this->authorize('manage', $maker);
+    
     $maker->secureDelete();
 
     return $this->showOne($maker);
@@ -78,7 +85,8 @@ class MakerController extends Controller
    */
   public function options()
   {
-    $makers = Maker::select('id', 'name');
+    $makers = Maker::select('id', 'name')
+      ->visibleThroughCompany(auth()->user());
 
     return $this->showAll($makers, Schema::getColumnListing((new Maker)->getTable()));
   }

@@ -50,12 +50,12 @@ class ProviderControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_all_providers()
   {
-    $this->signInWithPermissionsTo(['providers.index']);
+    $user = $this->signInWithPermissionsTo(['providers.index']);
 
     $response = $this->getJson(route('providers.index'))
       ->assertOk();
     
-    foreach (Provider::limit(10)->get() as $provider) {
+    foreach (Provider::whereHasCompanyVisible($user)->limit(10)->get() as $provider) {
       $response->assertJsonFragment($provider->toArray());
     }
   }
@@ -65,9 +65,9 @@ class ProviderControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_a_provider()
   {
-    $this->signInWithPermissionsTo(['providers.show']);
+    $user = $this->signInWithPermissionsTo(['providers.show']);
 
-    $provider = factory(Provider::class)->create();
+    $provider = factory(Provider::class)->create(['company_id' => $user->company_id]);
 
     $this->getJson(route('providers.show', $provider->id))
       ->assertOk()
@@ -79,9 +79,9 @@ class ProviderControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_store_a_provider()
   {
-    $this->signInWithPermissionsTo(['providers.store']);
+    $user = $this->signInWithPermissionsTo(['providers.store']);
 
-    $attributes = factory(Provider::class)->raw();
+    $attributes = factory(Provider::class)->raw(['company_id' => $user->company_id]);
 
     $this->postJson(route('providers.store'), $attributes)
       ->assertCreated();
@@ -95,11 +95,11 @@ class ProviderControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_update_a_provider()
   {
-    $this->signInWithPermissionsTo(['providers.update']);
+    $user = $this->signInWithPermissionsTo(['providers.update']);
 
-    $provider = factory(Provider::class)->create();
+    $provider = factory(Provider::class)->create(['company_id' => $user->company_id]);
 
-    $attributes = factory(Provider::class)->raw();
+    $attributes = factory(Provider::class)->raw(['company_id' => $user->company_id]);
 
     $this->putJson(route('providers.update', $provider->id), $attributes)
       ->assertOk();
@@ -112,9 +112,9 @@ class ProviderControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_destroy_a_provider()
   {
-    $this->signInWithPermissionsTo(['providers.destroy']);
+    $user = $this->signInWithPermissionsTo(['providers.destroy']);
 
-    $provider = factory(Provider::class)->create();
+    $provider = factory(Provider::class)->create(['company_id' => $user->company_id]);
 
     $this->deleteJson(route('providers.destroy', $provider->id))
       ->assertOk();
@@ -127,12 +127,13 @@ class ProviderControllerTest extends ApiTestCase
    */
   public function an_user_can_see_all_providers_options()
   {
-    $this->signIn();
+    $user = $this->signIn();
 
     $response = $this->getJson(route('providers.options'))
       ->assertOk();
 
     $providers = Provider::select(['id', 'name'])
+      ->visibleThroughCompany($user)
       ->withOut('country')
       ->limit(10)
       ->get();

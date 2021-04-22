@@ -50,12 +50,12 @@ class MakerControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_all_makers()
   {
-    $this->signInWithPermissionsTo(['makers.index']);
+    $user = $this->signInWithPermissionsTo(['makers.index']);
 
     $response = $this->getJson(route('makers.index'))
       ->assertOk();
     
-    foreach (Maker::limit(10)->get() as $maker) {
+    foreach (Maker::whereHasCompanyVisible($user)->limit(10)->get() as $maker) {
       $response->assertJsonFragment($maker->toArray());
     }
   }
@@ -65,9 +65,9 @@ class MakerControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_a_maker()
   {
-    $this->signInWithPermissionsTo(['makers.show']);
+    $user = $this->signInWithPermissionsTo(['makers.show']);
 
-    $maker = factory(Maker::class)->create();
+    $maker = factory(Maker::class)->create(['company_id' => $user->company_id]);
 
     $this->getJson(route('makers.show', $maker->id))
       ->assertOk()
@@ -79,9 +79,9 @@ class MakerControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_store_a_maker()
   {
-    $this->signInWithPermissionsTo(['makers.store']);
+    $user = $this->signInWithPermissionsTo(['makers.store']);
 
-    $attributes = factory(Maker::class)->raw();
+    $attributes = factory(Maker::class)->raw(['company_id' => $user->company_id]);
 
     $this->postJson(route('makers.store'), $attributes)
       ->assertCreated();
@@ -95,11 +95,11 @@ class MakerControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_update_a_maker()
   {
-    $this->signInWithPermissionsTo(['makers.update']);
+    $user = $this->signInWithPermissionsTo(['makers.update']);
 
-    $maker = factory(Maker::class)->create();
+    $maker = factory(Maker::class)->create(['company_id' => $user->company_id]);
 
-    $attributes = factory(Maker::class)->raw();
+    $attributes = factory(Maker::class)->raw(['company_id' => $user->company_id]);
 
     $this->putJson(route('makers.update', $maker->id), $attributes)
       ->assertOk();
@@ -112,9 +112,9 @@ class MakerControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_destroy_a_maker()
   {
-    $this->signInWithPermissionsTo(['makers.destroy']);
+    $user = $this->signInWithPermissionsTo(['makers.destroy']);
 
-    $maker = factory(Maker::class)->create();
+    $maker = factory(Maker::class)->create(['company_id' => $user->company_id]);
 
     $this->deleteJson(route('makers.destroy', $maker->id))
       ->assertOk();
@@ -133,6 +133,7 @@ class MakerControllerTest extends ApiTestCase
       ->assertOk();
 
     $makers = Maker::select(['id', 'name'])
+      ->visibleThroughCompany($user)
       ->limit(10)
       ->get();
 

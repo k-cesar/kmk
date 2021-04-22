@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Modules\Provider\Provider;
 use Illuminate\Database\Seeder;
+use App\Http\Modules\Provider\Provider;
 
 class ProviderSeeder extends Seeder
 {

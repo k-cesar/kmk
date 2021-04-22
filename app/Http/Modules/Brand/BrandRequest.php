@@ -25,15 +25,31 @@ class BrandRequest extends FormRequest
   public function rules()
   {
     $rules = [
-      'maker_id' => 'required|integer|exists:makers,id,deleted_at,NULL',
-      'name'     => ['required', 'string', 'max:150',
+      'maker_id'   => 'required|integer|exists:makers,id,deleted_at,NULL',
+      'company_id' => 'sometimes|integer|exists:companies,id',
+      'name'       => ['required', 'string', 'max:150',
         (new IUniqueRule('brands'))
           ->where('maker_id', $this->get('maker_id'))
+          ->where('company_id', $this->get('company_id'))
           ->ignore($this->brand),
       ],
     ];
 
     return $rules;
+  }
+
+  /**
+   * Get the validated data from the request.
+   *
+   * @return array
+   */
+  public function validated()
+  {
+    $validatedData = parent::validated();
+
+    $validatedData['company_id'] = auth()->user()->company_id;
+
+    return $validatedData;
   }
   
 }

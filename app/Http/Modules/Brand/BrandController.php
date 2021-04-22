@@ -15,7 +15,8 @@ class BrandController extends Controller
    */
   public function index()
   {
-    $brands = Brand::query();
+    $brands = Brand::visibleThroughCompany(auth()->user())
+      ->with('company:id,name');
 
     return $this->showAll($brands, Schema::getColumnListing((new Brand)->getTable()));
   }
@@ -41,6 +42,8 @@ class BrandController extends Controller
    */
   public function show(Brand $brand)
   {
+    $this->authorize('manage', $brand);
+
     return $this->showOne($brand);
   }
 
@@ -53,6 +56,8 @@ class BrandController extends Controller
    */
   public function update(BrandRequest $request, Brand $brand)
   {
+    $this->authorize('manage', $brand);
+
     $brand->update($request->validated());
 
     return $this->showOne($brand);
@@ -66,6 +71,8 @@ class BrandController extends Controller
    */
   public function destroy(Brand $brand)
   {
+    $this->authorize('manage', $brand);
+
     $brand->secureDelete();
 
     return $this->showOne($brand);
@@ -79,7 +86,8 @@ class BrandController extends Controller
   public function options()
   {
     $brands = Brand::select('id', 'name')
-      ->withOut('maker');
+      ->withOut('maker')
+      ->visibleThroughCompany(auth()->user());
 
     return $this->showAll($brands, Schema::getColumnListing((new Brand)->getTable()));
   }
