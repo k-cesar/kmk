@@ -30,7 +30,7 @@ class BrandRequest extends FormRequest
       'name'       => ['required', 'string', 'max:150',
         (new IUniqueRule('brands'))
           ->where('maker_id', $this->get('maker_id'))
-          ->where('company_id', $this->get('company_id'))
+          ->where('company_id', $this->get('company_id', auth()->user()->company_id))
           ->ignore($this->brand),
       ],
     ];

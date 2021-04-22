@@ -30,13 +30,13 @@ class ProviderRequest extends FormRequest
       'name'       => ['required', 'string', 'max:150',
         (new IUniqueRule('providers'))
           ->where('country_id', $this->get('country_id'))
-          ->whereIn('company_id', [0, $this->get('company_id')])
+          ->whereIn('company_id', [0, $this->get('company_id', auth()->user()->company_id)])
           ->ignore($this->provider),
       ],
       'nit'        => ['required', 'string', 'alpha_num', 'max:15',
         (new IUniqueRule('providers'))
           ->where('country_id', $this->get('country_id'))
-          ->whereIn('company_id', [0, $this->get('company_id')])
+          ->whereIn('company_id', [0, $this->get('company_id', auth()->user()->company_id)])
           ->ignore($this->provider),
       ],
     ];

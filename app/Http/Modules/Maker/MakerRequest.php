@@ -28,7 +28,7 @@ class MakerRequest extends FormRequest
       'company_id' => 'sometimes|integer|exists:companies,id',
       'name'       => ['required', 'string', 'max:150',
         (new IUniqueRule('makers'))
-          ->whereIn('company_id', [0, $this->get('company_id')])
+          ->whereIn('company_id', [0, $this->get('company_id', auth()->user()->company_id)])
           ->ignore($this->maker),
       ],
     ];
