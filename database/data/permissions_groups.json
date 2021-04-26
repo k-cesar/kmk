@@ -69,7 +69,7 @@
       {
         "name": "Crear Manejo de Tiendas",
         "level": 2,
-        "routes": ["stores.store", "turns.store"]
+        "routes": ["stores.store", "turns.store", "stores-duplicate.store"]
       },
       {
         "name": "Editar Manejo de Tiendas",

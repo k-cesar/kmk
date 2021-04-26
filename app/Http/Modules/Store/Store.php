@@ -280,4 +280,31 @@ class Store extends Model
 
         return $query;
     }
+
+    /**
+     * Copy the turns, presentation price turns and combo price turns from the store given
+     *
+     * @param Store $store
+     * @return void
+     */
+    public function copyTurnsAndPricesFrom(Store $store)
+    {
+        $store->turns->each(function (Turn $turn) {
+            $turnDuplicated = $this->turns()->create($turn->toArray());
+
+            $turn->presentations->each(function ($presentation) use ($turnDuplicated) {
+
+                $presentation->turns()->attach([$turnDuplicated->id => ['price' => $presentation->pivot->price]]);
+            });
+
+            $turn->presentationCombosStoresTurns()->each(function ($presentationComboStoreTurn) use ($turnDuplicated) {
+
+                $turnDuplicated->presentationCombosStoresTurns()->create([
+                    'presentation_combo_id' => $presentationComboStoreTurn->presentation_combo_id,
+                    'store_id'              => $turnDuplicated->store_id,
+                    'suggested_price'       => $presentationComboStoreTurn->suggested_price,
+                ]);
+            });
+        });
+    }
 }
