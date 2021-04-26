@@ -55,7 +55,7 @@ class UserRequest extends FormRequest
     ];
 
     if ($this->isMethod('PUT')) {
-      $rules['password'] = 'sometimes|required|string|min:8|max:25|confirmed';
+      $rules['password'] = ['sometimes', 'required', 'string', 'min:8', 'max:25', 'confirmed', $this->validPasswordContent()];
     }
 
     return $rules;

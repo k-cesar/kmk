@@ -5,6 +5,8 @@ namespace App\Http\Modules\Provider;
 use App\Support\Helper;
 use Illuminate\Support\Str;
 use App\Traits\SecureDeletes;
+use App\Traits\ResourceVisibility;
+use App\Http\Modules\Company\Company;
 use App\Http\Modules\Country\Country;
 use App\Http\Modules\Purchase\Purchase;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +14,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Provider extends Model
 {
-    use SoftDeletes, SecureDeletes;
+    use SoftDeletes, SecureDeletes, ResourceVisibility;
 
     /**
      * The attributes that are mass assignable.
@@ -23,6 +25,7 @@ class Provider extends Model
         'name',
         'nit',
         'country_id',
+        'company_id',
     ];
 
     protected static function boot()
@@ -53,13 +56,23 @@ class Provider extends Model
     }
 
     /**
-     * Get the country that owns the brand.
+     * Get the country that owns the provider.
      * 
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function country()
     {
         return $this->belongsTo(Country::class);
+    }
+
+    /**
+     * Get the company that owns the provider.
+     * 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function company()
+    {
+        return $this->belongsTo(Company::class);
     }
 
     /**

@@ -15,7 +15,8 @@ class ProviderController extends Controller
    */
   public function index()
   {
-    $providers = Provider::query();
+    $providers = Provider::visibleThroughCompany(auth()->user())
+      ->with('company:id,name');
 
     return $this->showAll($providers, Schema::getColumnListing((new Provider)->getTable()));
   }
@@ -41,6 +42,8 @@ class ProviderController extends Controller
    */
   public function show(Provider $provider)
   {
+    $this->authorize('manage', $provider);
+
     return $this->showOne($provider);
   }
 
@@ -53,6 +56,8 @@ class ProviderController extends Controller
    */
   public function update(ProviderRequest $request, Provider $provider)
   {
+    $this->authorize('manage', $provider);
+
     $provider->update($request->validated());
 
     return $this->showOne($provider);
@@ -66,6 +71,8 @@ class ProviderController extends Controller
    */
   public function destroy(Provider $provider)
   {
+    $this->authorize('manage', $provider);
+
     $provider->secureDelete();
 
     return $this->showOne($provider);
@@ -79,7 +86,8 @@ class ProviderController extends Controller
   public function options()
   {
     $providers = Provider::select('id', 'name')
-      ->withOut('country');
+      ->withOut('country')
+      ->visibleThroughCompany(auth()->user());
 
     return $this->showAll($providers, Schema::getColumnListing((new Provider)->getTable()));
   }

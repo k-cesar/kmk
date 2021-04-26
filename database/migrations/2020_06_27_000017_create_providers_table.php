@@ -26,13 +26,15 @@ class CreateProvidersTable extends Migration
             $table->string('nit', 15);
             $table->string('uuid', 50)->unique();
             $table->unsignedBigInteger('country_id');
+            $table->unsignedBigInteger('company_id');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->unique(['country_id', 'name']);
-            $table->unique(['country_id', 'nit']);
+            $table->unique(['country_id', 'name', 'company_id']);
+            $table->unique(['country_id', 'nit',  'company_id']);
 
             $table->foreign('country_id')->references('id')->on('countries');
+            $table->foreign('company_id')->references('id')->on('companies');
         });
     }
 

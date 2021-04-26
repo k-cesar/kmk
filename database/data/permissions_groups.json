@@ -150,8 +150,6 @@
           "brands.show",
           "presentation-skus.index",
           "presentation-skus.show",
-          "providers.index",
-          "providers.show",
           "presentation-combos.index",
           "presentation-combos.show",
           "presentations.turns.index"
@@ -166,7 +164,6 @@
           "presentations.store",
           "brands.store",
           "presentation-skus.store",
-          "providers.store",
           "presentation-combos.store",
           "presentations.turns.store"
         ]
@@ -180,7 +177,6 @@
           "presentations.update",
           "brands.update",
           "presentation-skus.update",
-          "providers.update",
           "presentation-combos.update"
         ]
       },
@@ -193,7 +189,6 @@
           "presentations.destroy",
           "brands.destroy",
           "presentation-skus.destroy",
-          "providers.destroy",
           "presentation-combos.destroy"
         ]
       }
@@ -205,22 +200,22 @@
       {
         "name": "Ver Entradas de Inventario",
         "level": 3,
-        "routes": ["purchases.index", "purchases.show"]
+        "routes": ["purchases.index", "purchases.show", "providers.index", "providers.show"]
       },
       {
         "name": "Crear Entradas de Inventario",
         "level": 3,
-        "routes": ["purchases.store"]
+        "routes": ["purchases.store", "providers.store"]
       },
       {
         "name": "Editar Entradas de Inventario",
         "level": 3,
-        "routes": ["purchases.update"]
+        "routes": ["purchases.update", "providers.update"]
       },
       {
         "name": "Eliminar Entradas de Inventario",
         "level": 3,
-        "routes": []
+        "routes": ["providers.destroy"]
       }
     ]
   },

@@ -50,12 +50,12 @@ class BrandControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_all_brands()
   {
-    $this->signInWithPermissionsTo(['brands.index']);
+    $user = $this->signInWithPermissionsTo(['brands.index']);
 
     $response = $this->getJson(route('brands.index'))
       ->assertOk();
     
-    foreach (Brand::limit(10)->get() as $brand) {
+    foreach (Brand::whereHasCompanyVisible($user)->limit(10)->get() as $brand) {
       $response->assertJsonFragment($brand->toArray());
     }
   }
@@ -65,9 +65,9 @@ class BrandControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_see_a_brand()
   {
-    $this->signInWithPermissionsTo(['brands.show']);
+    $user = $this->signInWithPermissionsTo(['brands.show']);
 
-    $brand = factory(Brand::class)->create();
+    $brand = factory(Brand::class)->create(['company_id' => $user->company_id]);
 
     $this->getJson(route('brands.show', $brand->id))
       ->assertOk()
@@ -79,9 +79,9 @@ class BrandControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_store_a_brand()
   {
-    $this->signInWithPermissionsTo(['brands.store']);
+    $user = $this->signInWithPermissionsTo(['brands.store']);
 
-    $attributes = factory(Brand::class)->raw();
+    $attributes = factory(Brand::class)->raw(['company_id' => $user->company_id]);
 
     $this->postJson(route('brands.store'), $attributes)
       ->assertCreated();
@@ -95,11 +95,11 @@ class BrandControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_update_a_brand()
   {
-    $this->signInWithPermissionsTo(['brands.update']);
+    $user = $this->signInWithPermissionsTo(['brands.update']);
 
-    $brand = factory(Brand::class)->create();
+    $brand = factory(Brand::class)->create(['company_id' => $user->company_id]);
 
-    $attributes = factory(Brand::class)->raw();
+    $attributes = factory(Brand::class)->raw(['company_id' => $user->company_id]);
 
     $this->putJson(route('brands.update', $brand->id), $attributes)
       ->assertOk();
@@ -112,9 +112,9 @@ class BrandControllerTest extends ApiTestCase
    */
   public function an_user_with_permission_can_destroy_a_brand()
   {
-    $this->signInWithPermissionsTo(['brands.destroy']);
+    $user = $this->signInWithPermissionsTo(['brands.destroy']);
 
-    $brand = factory(Brand::class)->create();
+    $brand = factory(Brand::class)->create(['company_id' => $user->company_id]);
 
     $this->deleteJson(route('brands.destroy', $brand->id))
       ->assertOk();
@@ -133,6 +133,7 @@ class BrandControllerTest extends ApiTestCase
       ->assertOk();
 
     $brands = Brand::select(['id', 'name'])
+      ->visibleThroughCompany($user)
       ->withOut('maker')
       ->limit(10)
       ->get();

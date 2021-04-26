@@ -13,14 +13,17 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
+        'App\Http\Modules\Brand\Brand'                         => 'App\Policies\BrandPolicy',
         'App\Http\Modules\Client\Client'                       => 'App\Policies\ClientPolicy',
         'App\Http\Modules\Company\Company'                     => 'App\Policies\CompanyPolicy',
         'App\Http\Modules\Deposit\Deposit'                     => 'App\Policies\DepositPolicy',
+        'App\Http\Modules\Maker\Maker'                         => 'App\Policies\MakerPolicy',
         'App\Http\Modules\PaymentMethod\PaymentMethod'         => 'App\Policies\PaymentMethodPolicy',
         'App\Http\Modules\Purchase\Purchase'                   => 'App\Policies\PurchasePolicy',
         'App\Http\Modules\Presentation\Presentation'           => 'App\Policies\PresentationPolicy',
         'App\Http\Modules\PresentationCombo\PresentationCombo' => 'App\Policies\PresentationComboPolicy',
         'App\Http\Modules\PresentationSku\PresentationSku'     => 'App\Policies\PresentationSkuPolicy',
+        'App\Http\Modules\Provider\Provider'                   => 'App\Policies\ProviderPolicy',
         'App\Http\Modules\Product\Product'                     => 'App\Policies\ProductPolicy',
         'App\Http\Modules\Sell\Sell'                           => 'App\Policies\SellPolicy',
         'App\Http\Modules\SellPayment\SellPayment'             => 'App\Policies\SellPaymentPolicy',
